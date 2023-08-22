@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: 2023 Shun Sakai
+#
+# SPDX-License-Identifier: Apache-2.0 OR MIT
+
+[workspace]
+resolver = "2"
+members = ["crate/*"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[profile.release.package.abcrypt-cli]
+# The `lto` setting cannot be specified yet, see https://github.com/rust-lang/cargo/issues/9330
+# lto = true
+strip = true
