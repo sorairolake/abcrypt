@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: 2022 Shun Sakai
+#
+# SPDX-License-Identifier: Apache-2.0 OR MIT
+
+version: 2
+updates:
+  - package-ecosystem: "cargo"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    ignore:
+      - dependency-name: "clap"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"

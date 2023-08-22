@@ -1,0 +1,93 @@
+// SPDX-FileCopyrightText: 2022 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= rscrypt(1)
+// Specify in UTC.
+:docdate: 2023-07-17
+:doctype: manpage
+ifdef::revnumber[:mansource: rscrypt {revnumber}]
+:manmanual: General Commands Manual
+:includedir: ../include
+
+== NAME
+
+rscrypt - an utility for encrypt and decrypt files
+
+== SYNOPSIS
+
+*{manname}* [_OPTION_]... _COMMAND_
+
+== DESCRIPTION
+
+*{manname}* is a command-line utility for encrypt and decrypt files.
+
+== COMMANDS
+
+*rscrypt-enc*(1)::
+
+  Encrypt files.
+
+*rscrypt-dec*(1)::
+
+  Decrypt files.
+
+*rscrypt-info*(1)::
+
+  Provides information about the encryption parameters.
+
+*rscrypt-help*(1)::
+
+  Print the help for a command.
+
+== OPTIONS
+
+*-h*, *--help*::
+
+  Print help information.
+
+*-V*, *--version*::
+
+  Print version information.
+
+*--generate-completion* _SHELL_::
+
+  Generate shell completion. The completion is output to stdout.
+
+  The possible values are:{blank}:::
+
+    *bash*::::
+
+      Bash.
+
+    *elvish*::::
+
+      Elvish.
+
+    *fish*::::
+
+      fish.
+
+    *nushell*::::
+
+      Nushell.
+
+    *powershell*::::
+
+      PowerShell.
+
+    *zsh*::::
+
+      Zsh.
+
+include::{includedir}/section-exit-status.adoc[]
+
+include::{includedir}/section-notes.adoc[]
+
+include::{includedir}/section-reporting-bugs.adoc[]
+
+include::{includedir}/section-copyright.adoc[]
+
+== SEE ALSO
+
+*scrypt*(1)

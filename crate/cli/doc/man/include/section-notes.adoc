@@ -1,0 +1,13 @@
+// SPDX-FileCopyrightText: 2023 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+== NOTES
+
+Source repository:{blank}::
+
+  https://github.com/sorairolake/rscrypt
+
+The scrypt key derivation function and encryption utility:{blank}::
+
+  https://www.tarsnap.com/scrypt.html

@@ -1,0 +1,45 @@
+// SPDX-FileCopyrightText: 2023 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= rscrypt-help(1)
+// Specify in UTC.
+:docdate: 2023-07-17
+:doctype: manpage
+ifdef::revnumber[:mansource: rscrypt {revnumber}]
+:manmanual: General Commands Manual
+:includedir: ../include
+
+== NAME
+
+rscrypt-help - print the help for a command
+
+== SYNOPSIS
+
+*rscrypt help* [_COMMAND_]
+
+== DESCRIPTION
+
+This command prints the help for a command.
+
+This command is identical to any of the following:{blank}::
+
+  $ *rscrypt* [_COMMAND_] *-h*|*--help*
+
+== POSITIONAL ARGUMENTS
+
+_COMMAND_::
+
+  Subcommand to print the help.
+
+include::{includedir}/section-exit-status.adoc[]
+
+include::{includedir}/section-notes.adoc[]
+
+include::{includedir}/section-reporting-bugs.adoc[]
+
+include::{includedir}/section-copyright.adoc[]
+
+== SEE ALSO
+
+*rscrypt*(1), *rscrypt-dec*(1), *rscrypt-enc*(1), *rscrypt-info*(1), *scrypt*(1)

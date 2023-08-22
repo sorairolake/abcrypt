@@ -1,0 +1,89 @@
+// SPDX-FileCopyrightText: 2022 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= rscrypt-info(1)
+// Specify in UTC.
+:docdate: 2023-07-17
+:doctype: manpage
+ifdef::revnumber[:mansource: rscrypt {revnumber}]
+:manmanual: General Commands Manual
+:includedir: ../include
+
+== NAME
+
+rscrypt-info - provides information about the encryption parameters
+
+== SYNOPSIS
+
+*rscrypt info* [_OPTION_]... _FILE_
+
+== DESCRIPTION
+
+This command provides information about the encryption parameters.
+
+== POSITIONAL ARGUMENTS
+
+_FILE_::
+
+  Input file. If "-" is specified, data will be read from stdin.
+
+== OPTIONS
+
+ifdef::cbor,json,msgpack,toml,yaml[]
+*-f*, *--format* _FORMAT_::
+
+  Output format.
+
+  The possible values are:{blank}:::
+
+ifdef::cbor[]
+    *cbor*::::
+
+      Concise Binary Object Representation.
+endif::cbor[]
+
+ifdef::json[]
+    *json*::::
+
+      JavaScript Object Notation.
+endif::json[]
+
+ifdef::msgpack[]
+    *msgpack*::::
+
+      MessagePack.
+endif::msgpack[]
+
+ifdef::toml[]
+    *toml*::::
+
+      Tom's Obvious Minimal Language.
+endif::toml[]
+
+ifdef::yaml[]
+    *yaml*::::
+
+      YAML.
+endif::yaml[]
+endif::[]
+
+*-h*, *--help*::
+
+  Print help information.
+
+*-V*, *--version*::
+
+  Print version information.
+
+include::{includedir}/section-exit-status.adoc[]
+
+include::{includedir}/section-notes.adoc[]
+
+include::{includedir}/section-reporting-bugs.adoc[]
+
+include::{includedir}/section-copyright.adoc[]
+
+== SEE ALSO
+
+*rscrypt*(1), *rscrypt-dec*(1), *rscrypt-enc*(1), *rscrypt-help*(1), *scrypt*(1)

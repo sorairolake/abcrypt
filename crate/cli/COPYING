@@ -1,0 +1,11 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Source: https://github.com/sorairolake/rscrypt
+
+Files: *
+Copyright: 2022-2023 Shun Sakai
+License: GPL-3.0-or-later
+
+Files: asset/*
+       doc/*
+Copyright: 2022-2023 Shun Sakai
+License: CC-BY-4.0
