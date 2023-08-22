@@ -3,17 +3,17 @@
 # SPDX-License-Identifier: Apache-2.0 OR MIT
 
 [package]
-name = "scryptenc"
-version = "0.7.1"
+name = "abcrypt"
+version = "0.1.0"
 authors = ["Shun Sakai <sorairolake@protonmail.ch>"]
 edition = "2021"
 rust-version = "1.60.0"
-description = "An implementation of the scrypt encrypted data format"
-documentation = "https://docs.rs/scryptenc"
+description = "An implementation of the abcrypt encrypted data format"
+documentation = "https://docs.rs/abcrypt"
 readme = "README.md"
-repository = "https://github.com/sorairolake/scryptenc-rs"
+repository = "https://github.com/sorairolake/abcrypt"
 license = "Apache-2.0 OR MIT"
-keywords = ["crypto", "scrypt"]
+keywords = ["abcrypt", "crypto"]
 categories = ["cryptography", "no-std"]
 exclude = [
   "/.bumpversion.cfg",
