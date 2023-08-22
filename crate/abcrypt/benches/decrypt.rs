@@ -14,7 +14,7 @@ extern crate test;
 
 use test::Bencher;
 
-use scryptenc::Decryptor;
+use abcrypt::Decryptor;
 
 const PASSWORD: &str = "password";
 // Generated using `scrypt` version 1.3.1.

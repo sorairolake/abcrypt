@@ -2,17 +2,31 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-//! Specifications of the scrypt encrypted data format.
+//! Specifications of the abcrypt encrypted data format.
 
-use core::mem;
-
-use hmac::{digest::MacError, Hmac, Mac};
+use argon2::Params;
+use blake2::{
+    digest::{self, Mac, Output},
+    Blake2bMac512,
+};
+use chacha20poly1305::{AeadCore, Key as XChaCha20Poly1305Key, XChaCha20Poly1305, XNonce};
 use rand::{rngs::StdRng, Rng, SeedableRng};
-use sha2::{Digest, Sha256};
 
 use crate::error::Error;
 
-/// Version of the scrypt data file.
+/// A type alias for magic number of the abcrypt encrypted data format.
+type MagicNumber = [u8; 7];
+
+/// A type alias for salt of Argon2.
+type Salt = [u8; 32];
+
+/// A type alias for output of BLAKE2b-512-MAC.
+type Blake2bMac512Output = Output<Blake2bMac512>;
+
+/// A type alias for key of BLAKE2b-512-MAC.
+type Blake2bMac512Key = digest::Key<Blake2bMac512>;
+
+/// Version of the abcrypt encrypted data format.
 #[derive(Clone, Copy, Debug)]
 pub enum Version {
     /// Version 0.
@@ -25,120 +39,103 @@ impl From<Version> for u8 {
     }
 }
 
-/// Header of the scrypt encrypted data format.
+/// Header of the abcrypt encrypted data format.
 #[derive(Clone, Debug)]
 pub struct Header {
-    magic_number: [u8; 6],
+    magic_number: MagicNumber,
     version: Version,
-    params: scrypt::Params,
-    salt: [u8; 32],
-    checksum: [u8; 16],
-    mac: [u8; HeaderMac::SIZE],
+    params: Params,
+    salt: Salt,
+    nonce: XNonce,
+    mac: Blake2bMac512Output,
 }
 
 impl Header {
-    /// Magic number of the scrypt encrypted data format.
+    /// Magic number of the abcrypt encrypted data format.
     ///
-    /// This is the ASCII code for "scrypt".
-    const MAGIC_NUMBER: [u8; 6] = *b"scrypt";
+    /// This is the ASCII code for "abcrypt".
+    const MAGIC_NUMBER: MagicNumber = *b"abcrypt";
 
     /// The number of bytes of the header.
-    pub const SIZE: usize = 96;
+    pub const SIZE: usize = 140;
 
     /// Creates a new `Header`.
-    pub fn new(params: scrypt::Params) -> Self {
-        fn generate_salt() -> [u8; 32] {
-            StdRng::from_entropy().gen()
-        }
-
+    pub fn new(params: Params) -> Self {
         let magic_number = Self::MAGIC_NUMBER;
         let version = Version::V0;
-        let salt = generate_salt();
-
-        let checksum = Default::default();
-        let mac = Default::default();
-
+        let salt = StdRng::from_entropy().gen();
+        let nonce = XChaCha20Poly1305::generate_nonce(&mut StdRng::from_entropy());
+        let mac = Blake2bMac512Output::default();
         Self {
             magic_number,
             version,
             params,
             salt,
-            checksum,
+            nonce,
             mac,
         }
     }
 
     /// Parses `data` into the header.
     pub fn parse(data: &[u8]) -> Result<Self, Error> {
-        if data.len() < 128 {
+        if data.len() < 156 {
             return Err(Error::InvalidLength);
         }
 
-        let magic_number = if data[..6] == Self::MAGIC_NUMBER {
+        let magic_number = if data[..7] == Self::MAGIC_NUMBER {
             Ok(Self::MAGIC_NUMBER)
         } else {
             Err(Error::InvalidMagicNumber)
         }?;
-        let version = if data[6] == Version::V0.into() {
+        let version = if data[7] == Version::V0.into() {
             Ok(Version::V0)
         } else {
-            Err(Error::UnknownVersion(data[6]))
+            Err(Error::UnknownVersion(data[7]))
         }?;
-        let log_n = data[7];
-        let r = u32::from_be_bytes(
+        let m_cost = u32::from_le_bytes(
             data[8..12]
                 .try_into()
-                .expect("size of `r` parameter should be 4 bytes"),
+                .expect("size of `m_cost` should be 4 bytes"),
         );
-        let p = u32::from_be_bytes(
+        let t_cost = u32::from_le_bytes(
             data[12..16]
                 .try_into()
-                .expect("size of `p` parameter should be 4 bytes"),
+                .expect("size of `t_cost` should be 4 bytes"),
         );
-        let params = scrypt::Params::new(log_n, r, p, scrypt::Params::RECOMMENDED_LEN)
-            .map_err(Error::from)?;
-        let salt = data[16..48]
+        let p_cost = u32::from_le_bytes(
+            data[16..20]
+                .try_into()
+                .expect("size of `p_cost` should be 4 bytes"),
+        );
+        let params =
+            Params::new(m_cost, t_cost, p_cost, None).map_err(Error::InvalidArgon2Params)?;
+        let salt = data[20..52]
             .try_into()
             .expect("size of salt should be 32 bytes");
-
-        let checksum = Default::default();
-        let mac = Default::default();
-
+        let nonce = XNonce::clone_from_slice(&data[52..76]);
+        let mac = Blake2bMac512Output::default();
         Ok(Self {
             magic_number,
             version,
             params,
             salt,
-            checksum,
+            nonce,
             mac,
         })
     }
 
-    /// Gets a SHA-256 checksum of this header.
-    pub fn compute_checksum(&mut self) {
-        let result = Sha256::digest(&self.as_bytes()[..48]);
-        self.checksum.copy_from_slice(&result[..16]);
+    /// Gets a BLAKE2b-512-MAC of this header.
+    pub fn compute_mac(&mut self, key: &Blake2bMac512Key) {
+        let mut mac = Blake2bMac512::new(key);
+        mac.update(&self.as_bytes()[..76]);
+        self.mac.copy_from_slice(&mac.finalize().into_bytes());
     }
 
-    /// Verifies a SHA-256 checksum stored in this header.
-    pub fn verify_checksum(&mut self, checksum: &[u8]) -> Result<(), Error> {
-        self.compute_checksum();
-        if self.checksum == checksum {
-            Ok(())
-        } else {
-            Err(Error::InvalidChecksum)
-        }
-    }
-
-    /// Gets a HMAC-SHA-256 of this header.
-    pub fn compute_mac(&mut self, key: &DerivedKey) {
-        let mac = compute_mac(&key.mac(), &self.as_bytes()[..64]);
-        self.mac.copy_from_slice(&mac);
-    }
-
-    /// Verifies a HMAC-SHA-256 stored in this header.
-    pub fn verify_mac(&mut self, key: &DerivedKey, tag: &[u8]) -> Result<(), Error> {
-        verify_mac(&key.mac(), &self.as_bytes()[..64], tag).map_err(Error::InvalidHeaderMac)?;
+    /// Verifies a BLAKE2b-512-MAC stored in this header.
+    pub fn verify_mac(&mut self, key: &Blake2bMac512Key, tag: &[u8]) -> Result<(), Error> {
+        let mut mac = Blake2bMac512::new(key);
+        mac.update(&self.as_bytes()[..76]);
+        mac.verify(tag.into()).map_err(Error::InvalidHeaderMac)?;
         self.mac.copy_from_slice(tag);
         Ok(())
     }
@@ -146,97 +143,60 @@ impl Header {
     /// Converts this header to a byte array.
     pub fn as_bytes(&self) -> [u8; Self::SIZE] {
         let mut header = [u8::default(); Self::SIZE];
-        header[..6].copy_from_slice(&self.magic_number);
-        header[6] = self.version.into();
-        header[7] = self.params.log_n();
-        header[8..12].copy_from_slice(&self.params.r().to_be_bytes());
-        header[12..16].copy_from_slice(&self.params.p().to_be_bytes());
-        header[16..48].copy_from_slice(&self.salt);
-
-        header[48..64].copy_from_slice(&self.checksum);
-        header[64..].copy_from_slice(&self.mac);
-
+        header[..7].copy_from_slice(&self.magic_number);
+        header[7] = self.version.into();
+        header[8..12].copy_from_slice(&self.params.m_cost().to_le_bytes());
+        header[12..16].copy_from_slice(&self.params.t_cost().to_le_bytes());
+        header[16..20].copy_from_slice(&self.params.p_cost().to_le_bytes());
+        header[20..52].copy_from_slice(&self.salt);
+        header[52..76].copy_from_slice(&self.nonce);
+        header[76..].copy_from_slice(&self.mac);
         header
     }
 
-    /// Returns the scrypt parameters stored in this header.
-    pub const fn params(&self) -> scrypt::Params {
-        self.params
+    /// Returns the Argon2 parameters stored in this header.
+    pub fn params(&self) -> Params {
+        self.params.clone()
     }
 
     /// Returns a salt stored in this header.
-    pub const fn salt(&self) -> [u8; 32] {
+    pub const fn salt(&self) -> Salt {
         self.salt
+    }
+
+    /// Returns a nonce stored in this header.
+    pub const fn nonce(&self) -> XNonce {
+        self.nonce
     }
 }
 
 /// Derived key.
 #[derive(Clone, Debug)]
 pub struct DerivedKey {
-    encrypt: [u8; 32],
-    mac: [u8; 32],
+    encrypt: XChaCha20Poly1305Key,
+    mac: Blake2bMac512Key,
 }
 
 impl DerivedKey {
+    /// The number of bytes of the derived key.
+    pub const SIZE: usize = 96;
+
     /// Creates a new `DerivedKey`.
-    pub fn new(dk: [u8; 64]) -> Self {
-        let encrypt = dk[..32]
-            .try_into()
-            .expect("AES-256-CTR key size should be 256 bits");
-        let mac = dk[32..]
-            .try_into()
-            .expect("HMAC-SHA-256 key size should be 256 bits");
+    pub fn new(dk: [u8; Self::SIZE]) -> Self {
+        let encrypt = XChaCha20Poly1305Key::clone_from_slice(&dk[..32]);
+        let mac = Blake2bMac512Key::clone_from_slice(&dk[32..]);
         Self { encrypt, mac }
     }
 
     /// Returns the key for encrypted.
-    pub const fn encrypt(&self) -> [u8; 32] {
+    pub const fn encrypt(&self) -> XChaCha20Poly1305Key {
         self.encrypt
     }
 
     /// Returns the key for a MAC.
-    pub const fn mac(&self) -> [u8; 32] {
+    pub const fn mac(&self) -> Blake2bMac512Key {
         self.mac
     }
-}
-
-/// The MAC (authentication tag) of the header.
-#[derive(Clone, Debug)]
-pub struct HeaderMac([u8; 32]);
-
-impl HeaderMac {
-    /// The number of bytes of the MAC.
-    pub const SIZE: usize = mem::size_of::<Self>();
-
-    /// Creates a new `HeaderMac`.
-    pub const fn new(mac: [u8; Self::SIZE]) -> Self {
-        Self(mac)
-    }
-
-    /// Converts this MAC to a byte array.
-    pub const fn as_bytes(&self) -> [u8; Self::SIZE] {
-        self.0
-    }
-}
-
-/// Gets a HMAC-SHA-256.
-pub fn compute_mac(key: &[u8], data: &[u8]) -> [u8; 32] {
-    type HmacSha256 = Hmac<Sha256>;
-
-    let mut mac =
-        HmacSha256::new_from_slice(key).expect("HMAC-SHA-256 key size should be 256 bits");
-    mac.update(data);
-    mac.finalize().into_bytes().into()
-}
-
-/// Verifies a HMAC-SHA-256.
-pub fn verify_mac(key: &[u8], data: &[u8], tag: &[u8]) -> Result<(), MacError> {
-    type HmacSha256 = Hmac<Sha256>;
-
-    let mut mac =
-        HmacSha256::new_from_slice(key).expect("HMAC-SHA-256 key size should be 256 bits");
-    mac.update(data);
-    mac.verify(tag.into())
 }
 
 #[cfg(test)]
@@ -257,16 +217,16 @@ mod tests {
 
     #[test]
     fn magic_number() {
-        assert_eq!(str::from_utf8(&Header::MAGIC_NUMBER).unwrap(), "scrypt");
+        assert_eq!(str::from_utf8(&Header::MAGIC_NUMBER).unwrap(), "abcrypt");
     }
 
     #[test]
     fn header_size() {
-        assert_eq!(Header::SIZE, 96);
+        assert_eq!(Header::SIZE, 140);
     }
 
     #[test]
-    fn header_mac_size() {
-        assert_eq!(HeaderMac::SIZE, 32);
+    fn derived_key_size() {
+        assert_eq!(DerivedKey::SIZE, 96);
     }
 }

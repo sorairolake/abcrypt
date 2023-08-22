@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-//! An example of decrypting a file from the scrypt encrypted data format.
+//! An example of decrypting a file from the abcrypt encrypted data format.
 
 // Lint levels of rustc.
 #![forbid(unsafe_code)]
@@ -40,14 +40,14 @@ fn main() -> anyhow::Result<()> {
         .with_prompt("Enter password")
         .interact()
         .context("could not read password")?;
-    let cipher = match scryptenc::Decryptor::new(ciphertext, password) {
-        c @ Err(scryptenc::Error::InvalidHeaderMac(_)) => c.context("password is incorrect"),
+    let cipher = match abcrypt::Decryptor::new(ciphertext, password) {
+        c @ Err(abcrypt::Error::InvalidHeaderMac(_)) => c.context("password is incorrect"),
         c => c.with_context(|| format!("the header in {} is invalid", opt.input.display())),
     }?;
-    let decrypted = cipher
+    let plaintext = cipher
         .decrypt_to_vec()
         .with_context(|| format!("{} is corrupted", opt.input.display()))?;
-    std::fs::write(opt.output, decrypted)
+    std::fs::write(opt.output, plaintext)
         .with_context(|| format!("could not write the result to {}", opt.input.display()))?;
     Ok(())
 }

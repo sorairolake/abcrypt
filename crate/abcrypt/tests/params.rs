@@ -9,7 +9,7 @@
 // Lint levels of Clippy.
 #![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
 
-use scryptenc::Params;
+use abcrypt::Params;
 
 // Generated using `scrypt` version 1.3.1.
 const TEST_DATA_ENC: &[u8] = include_bytes!("data/data.txt.enc");
@@ -21,25 +21,19 @@ fn success() {
 }
 
 #[test]
-fn log_n() {
+fn m_cost() {
     let params = Params::new(TEST_DATA_ENC).unwrap();
-    assert_eq!(params.log_n(), 10);
+    assert_eq!(params.m_cost(), 32);
 }
 
 #[test]
-fn n() {
+fn t_cost() {
     let params = Params::new(TEST_DATA_ENC).unwrap();
-    assert_eq!(params.n(), 1024);
+    assert_eq!(params.t_cost(), 3);
 }
 
 #[test]
-fn r() {
+fn p_cost() {
     let params = Params::new(TEST_DATA_ENC).unwrap();
-    assert_eq!(params.r(), 8);
-}
-
-#[test]
-fn p() {
-    let params = Params::new(TEST_DATA_ENC).unwrap();
-    assert_eq!(params.p(), 1);
+    assert_eq!(params.p_cost(), 4);
 }

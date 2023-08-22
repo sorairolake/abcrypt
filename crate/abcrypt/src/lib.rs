@@ -2,56 +2,55 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-//! The `scryptenc` crate is an implementation of the scrypt encrypted data
+//! The `abcrypt` crate is an implementation of the abcrypt encrypted data
 //! format.
-//!
-//! The format is defined [here][specification-url].
 //!
 //! # Examples
 //!
 //! ## Encrypt and decrypt
 //!
 //! ```
-//! use scryptenc::{scrypt::Params, Decryptor, Encryptor};
+//! use abcrypt::{argon2::Params, Decryptor, Encryptor};
 //!
 //! let data = b"Hello, world!";
 //! let password = "password";
 //!
 //! // Encrypt `data` using `password`.
-//! let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
-//! let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
-//! assert_ne!(encrypted, data);
+//! let params = Params::new(32, 3, 4, None).unwrap();
+//! let ciphertext = Encryptor::with_params(data, password, params)
+//!     .map(Encryptor::encrypt_to_vec)
+//!     .unwrap();
+//! assert_ne!(ciphertext, data);
 //!
 //! // And decrypt it back.
-//! let decrypted = Decryptor::new(encrypted, password)
+//! let plaintext = Decryptor::new(ciphertext, password)
 //!     .and_then(Decryptor::decrypt_to_vec)
 //!     .unwrap();
-//! assert_eq!(decrypted, data);
+//! assert_eq!(plaintext, data);
 //! ```
 //!
-//! ## Extract the scrypt parameters in the encrypted data
+//! ## Extract the Argon2 parameters in the encrypted data
 //!
 //! ```
-//! use scryptenc::{scrypt, Encryptor};
+//! use abcrypt::{argon2, Encryptor};
 //!
 //! let data = b"Hello, world!";
 //! let password = "password";
 //!
 //! // Encrypt `data` using `password`.
-//! let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
-//! let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
+//! let params = argon2::Params::new(32, 3, 4, None).unwrap();
+//! let ciphertext = Encryptor::with_params(data, password, params)
+//!     .map(Encryptor::encrypt_to_vec)
+//!     .unwrap();
 //!
-//! // And extract the scrypt parameters from it.
-//! let params = scryptenc::Params::new(encrypted).unwrap();
-//! assert_eq!(params.log_n(), 10);
-//! assert_eq!(params.n(), 1024);
-//! assert_eq!(params.r(), 8);
-//! assert_eq!(params.p(), 1);
+//! // And extract the Argon2 parameters from it.
+//! let params = abcrypt::Params::new(ciphertext).unwrap();
+//! assert_eq!(params.m_cost(), 32);
+//! assert_eq!(params.t_cost(), 3);
+//! assert_eq!(params.p_cost(), 4);
 //! ```
-//!
-//! [specification-url]: https://github.com/Tarsnap/scrypt/blob/1.3.1/FORMAT
 
-#![doc(html_root_url = "https://docs.rs/scryptenc/0.7.1/")]
+#![doc(html_root_url = "https://docs.rs/abcrypt/0.1.0/")]
 #![no_std]
 #![cfg_attr(doc_cfg, feature(doc_auto_cfg, doc_cfg))]
 // Lint levels of rustc.
@@ -72,7 +71,11 @@ mod error;
 mod format;
 mod params;
 
-pub use hmac::digest;
-pub use scrypt;
+pub use argon2;
+pub use blake2;
+pub use chacha20poly1305;
 
 pub use crate::{decrypt::Decryptor, encrypt::Encryptor, error::Error, params::Params};
+
+const ARGON2_ALGORITHM: argon2::Algorithm = argon2::Algorithm::Argon2id;
+const ARGON2_VERSION: argon2::Version = argon2::Version::V0x13;

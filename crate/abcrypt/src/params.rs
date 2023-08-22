@@ -2,129 +2,115 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-//! The scrypt parameters.
+//! The Argon2 parameters.
 
 use crate::{error::Error, format::Header};
 
-/// The scrypt parameters used for the encrypted data.
-#[derive(Clone, Copy, Debug)]
-pub struct Params(scrypt::Params);
+/// The Argon2 parameters used for the encrypted data.
+#[derive(Clone, Debug)]
+pub struct Params(argon2::Params);
 
 impl Params {
-    /// Creates a new instance of the scrypt parameters from `data`.
+    /// Creates a new instance of the Argon2 parameters from `data`.
     ///
     /// # Errors
     ///
-    /// This function will return an error in the following situations:
+    /// Returns [`Err`] if any of the following are true:
     ///
-    /// - `data` is less than 128 bytes.
-    /// - The magic number is not "scrypt".
-    /// - The version number other than `0`.
-    /// - The scrypt parameters are invalid.
+    /// - `data` is shorter than 156 bytes.
+    /// - The magic number is invalid.
+    /// - The version number is the unrecognized abcrypt version number.
+    /// - The Argon2 parameters are invalid.
     ///
     /// # Examples
     ///
     /// ```
-    /// # use scryptenc::{Encryptor, Params};
+    /// # use abcrypt::{Encryptor, Params};
     /// #
     /// let data = b"Hello, world!";
     /// let password = "password";
     ///
-    /// let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
-    /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
+    /// let params = argon2::Params::new(32, 3, 4, None).unwrap();
+    /// let ciphertext = Encryptor::with_params(data, password, params)
+    ///     .map(Encryptor::encrypt_to_vec)
+    ///     .unwrap();
     ///
-    /// assert!(Params::new(encrypted).is_ok());
+    /// assert!(Params::new(ciphertext).is_ok());
     /// ```
     pub fn new(data: impl AsRef<[u8]>) -> Result<Self, Error> {
         let params = Header::parse(data.as_ref()).map(|h| h.params())?;
         Ok(Self(params))
     }
 
-    /// Gets log2 of the scrypt parameter `N`.
+    /// Gets memory size in KiB.
     ///
     /// # Examples
     ///
     /// ```
-    /// # use scryptenc::{Encryptor, Params};
+    /// # use abcrypt::{Encryptor, Params};
     /// #
     /// let data = b"Hello, world!";
     /// let password = "password";
     ///
-    /// let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
-    /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
+    /// let params = argon2::Params::new(32, 3, 4, None).unwrap();
+    /// let ciphertext = Encryptor::with_params(data, password, params)
+    ///     .map(Encryptor::encrypt_to_vec)
+    ///     .unwrap();
     ///
-    /// let params = Params::new(encrypted).unwrap();
-    /// assert_eq!(params.log_n(), 10);
+    /// let params = Params::new(ciphertext).unwrap();
+    /// assert_eq!(params.m_cost(), 32);
     /// ```
     #[must_use]
     #[inline]
-    pub fn log_n(&self) -> u8 {
-        self.0.log_n()
+    pub fn m_cost(&self) -> u32 {
+        self.0.m_cost()
     }
 
-    /// Gets `N` parameter.
+    /// Gets number of iterations.
     ///
     /// # Examples
     ///
     /// ```
-    /// # use scryptenc::{Encryptor, Params};
+    /// # use abcrypt::{Encryptor, Params};
     /// #
     /// let data = b"Hello, world!";
     /// let password = "password";
     ///
-    /// let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
-    /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
+    /// let params = argon2::Params::new(32, 3, 4, None).unwrap();
+    /// let ciphertext = Encryptor::with_params(data, password, params)
+    ///     .map(Encryptor::encrypt_to_vec)
+    ///     .unwrap();
     ///
-    /// let params = Params::new(encrypted).unwrap();
-    /// assert_eq!(params.n(), 1024);
+    /// let params = Params::new(ciphertext).unwrap();
+    /// assert_eq!(params.t_cost(), 3);
     /// ```
     #[must_use]
     #[inline]
-    pub fn n(&self) -> u64 {
-        1 << self.0.log_n()
+    pub fn t_cost(&self) -> u32 {
+        self.0.t_cost()
     }
 
-    /// Gets `r` parameter.
+    /// Gets degree of parallelism.
     ///
     /// # Examples
     ///
     /// ```
-    /// # use scryptenc::{Encryptor, Params};
+    /// # use abcrypt::{Encryptor, Params};
     /// #
     /// let data = b"Hello, world!";
     /// let password = "password";
     ///
-    /// let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
-    /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
+    /// let params = argon2::Params::new(32, 3, 4, None).unwrap();
+    /// let ciphertext = Encryptor::with_params(data, password, params)
+    ///     .map(Encryptor::encrypt_to_vec)
+    ///     .unwrap();
     ///
-    /// let params = Params::new(encrypted).unwrap();
-    /// assert_eq!(params.r(), 8);
+    /// let params = Params::new(ciphertext).unwrap();
+    /// assert_eq!(params.p_cost(), 4);
     /// ```
     #[must_use]
     #[inline]
-    pub fn r(&self) -> u32 {
-        self.0.r()
-    }
-
-    /// Gets `p` parameter.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// # use scryptenc::{Encryptor, Params};
-    /// #
-    /// let data = b"Hello, world!";
-    /// let password = "password";
-    ///
-    /// let params = scrypt::Params::new(10, 8, 1, scrypt::Params::RECOMMENDED_LEN).unwrap();
-    /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
-    ///
-    /// let params = Params::new(encrypted).unwrap();
-    /// assert_eq!(params.p(), 1);
-    /// ```
-    #[must_use]
-    #[inline]
-    pub fn p(&self) -> u32 {
-        self.0.p()
+    pub fn p_cost(&self) -> u32 {
+        self.0.p_cost()
     }
 }

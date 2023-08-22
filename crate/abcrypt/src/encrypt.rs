@@ -2,20 +2,21 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-//! Encrypts to the scrypt encrypted data format.
+//! Encrypts to the abcrypt encrypted data format.
 
 use alloc::vec::Vec;
+use core::mem;
 
-use aes::{
-    cipher::{generic_array::GenericArray, KeyIvInit, StreamCipher},
-    Aes256,
+use argon2::{Argon2, Params};
+use chacha20poly1305::{aead::Aead, KeyInit, Tag, XChaCha20Poly1305};
+
+use crate::{
+    error::Error,
+    format::{DerivedKey, Header},
+    ARGON2_ALGORITHM, ARGON2_VERSION,
 };
-use ctr::Ctr128BE;
-use scrypt::Params;
 
-use crate::format::{self, DerivedKey, Header, HeaderMac};
-
-/// Encryptor for the scrypt encrypted data format.
+/// Encryptor for the abcrypt encrypted data format.
 #[derive(Clone, Debug)]
 pub struct Encryptor {
     header: Header,
@@ -26,57 +27,72 @@ pub struct Encryptor {
 impl Encryptor {
     /// Creates a new `Encryptor`.
     ///
-    /// This uses the recommended scrypt parameters created by
-    /// [`Params::recommended`] which are sufficient for most use-cases.
+    /// This uses the default Argon2 parameters created by [`Params::default`].
+    ///
+    /// # Errors
+    ///
+    /// Returns [`Err`] if the Argon2 context is invalid.
     ///
     /// # Examples
     ///
     /// ```
-    /// # use scryptenc::Encryptor;
+    /// # use abcrypt::Encryptor;
     /// #
     /// let data = b"Hello, world!";
     /// let password = "password";
     ///
-    /// let cipher = Encryptor::new(data, password);
-    /// let encrypted = cipher.encrypt_to_vec();
-    /// # assert_ne!(encrypted, data);
+    /// let cipher = Encryptor::new(data, password).unwrap();
+    /// let ciphertext = cipher.encrypt_to_vec();
+    /// # assert_ne!(ciphertext, data);
+    /// #
+    /// # let params = abcrypt::Params::new(ciphertext).unwrap();
+    /// # assert_eq!(params.m_cost(), argon2::Params::DEFAULT_M_COST);
+    /// # assert_eq!(params.t_cost(), argon2::Params::DEFAULT_T_COST);
+    /// # assert_eq!(params.p_cost(), argon2::Params::DEFAULT_P_COST);
     /// ```
-    pub fn new(data: impl AsRef<[u8]>, password: impl AsRef<[u8]>) -> Self {
-        Self::with_params(data, password, Params::recommended())
+    pub fn new(data: impl AsRef<[u8]>, password: impl AsRef<[u8]>) -> Result<Self, Error> {
+        Self::with_params(data, password, Params::default())
     }
 
-    #[allow(clippy::missing_panics_doc)]
     /// Creates a new `Encryptor` with the specified [`Params`].
+    ///
+    /// # Errors
+    ///
+    /// Returns [`Err`] if the Argon2 context is invalid.
     ///
     /// # Examples
     ///
     /// ```
-    /// # use scryptenc::{scrypt::Params, Encryptor};
+    /// # use abcrypt::{argon2::Params, Encryptor};
     /// #
     /// let data = b"Hello, world!";
     /// let password = "password";
     ///
-    /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
-    /// let cipher = Encryptor::with_params(data, password, params);
-    /// let encrypted = cipher.encrypt_to_vec();
-    /// # assert_ne!(encrypted, data);
+    /// let params = Params::new(32, 3, 4, None).unwrap();
+    /// let cipher = Encryptor::with_params(data, password, params).unwrap();
+    /// let ciphertext = cipher.encrypt_to_vec();
+    /// # assert_ne!(ciphertext, data);
     /// ```
-    pub fn with_params(data: impl AsRef<[u8]>, password: impl AsRef<[u8]>, params: Params) -> Self {
-        let inner = |data: &[u8], password: &[u8], params: Params| -> Self {
+    pub fn with_params(
+        data: impl AsRef<[u8]>,
+        password: impl AsRef<[u8]>,
+        params: Params,
+    ) -> Result<Self, Error> {
+        let inner = |data: &[u8], password: &[u8], params: Params| -> Result<Self, Error> {
             let mut header = Header::new(params);
 
-            // The derived key size is 64 bytes. The first 256 bits are for AES-256-CTR key,
-            // and the last 256 bits are for HMAC-SHA-256 key.
-            let mut dk = [u8::default(); 64];
-            scrypt::scrypt(password, &header.salt(), &params, &mut dk)
-                .expect("derived key size should be 64 bytes");
+            // The derived key size is 96 bytes. The first 256 bits are for
+            // XChaCha20-Poly1305 key, and the last 512 bits are for BLAKE2b-512-MAC key.
+            let mut dk = [u8::default(); DerivedKey::SIZE];
+            Argon2::new(ARGON2_ALGORITHM, ARGON2_VERSION, header.params())
+                .hash_password_into(password, &header.salt(), &mut dk)
+                .map_err(Error::InvalidArgon2Context)?;
             let dk = DerivedKey::new(dk);
 
-            header.compute_checksum();
-            header.compute_mac(&dk);
+            header.compute_mac(&dk.mac());
 
             let data = data.to_vec();
-            Self { header, dk, data }
+            Ok(Self { header, dk, data })
         };
         inner(data.as_ref(), password.as_ref(), params)
     }
@@ -85,38 +101,37 @@ impl Encryptor {
     ///
     /// # Panics
     ///
-    /// Panics if `buf` and the encrypted data have different lengths.
+    /// Panics if any of the following are true:
+    ///
+    /// - `buf` and the encrypted data have different lengths.
+    /// - The buffer has insufficient capacity to store the resulting
+    ///   ciphertext.
     ///
     /// # Examples
     ///
     /// ```
-    /// # use scryptenc::{scrypt::Params, Encryptor};
+    /// # use abcrypt::{argon2::Params, Encryptor};
     /// #
     /// let data = b"Hello, world!";
     /// let password = "password";
     ///
-    /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
-    /// let cipher = Encryptor::with_params(data, password, params);
-    /// let mut buf = [u8::default(); 141];
+    /// let params = Params::new(32, 3, 4, None).unwrap();
+    /// let cipher = Encryptor::with_params(data, password, params).unwrap();
+    /// let mut buf = [u8::default(); 169];
     /// cipher.encrypt(&mut buf);
     /// # assert_ne!(buf, data.as_slice());
     /// ```
     pub fn encrypt(self, mut buf: impl AsMut<[u8]>) {
         let inner = |encryptor: Self, buf: &mut [u8]| {
-            type Aes256Ctr128BE = Ctr128BE<Aes256>;
+            let cipher = XChaCha20Poly1305::new(&encryptor.dk.encrypt());
+            let ciphertext = cipher
+                .encrypt(&encryptor.header.nonce(), encryptor.data.as_slice())
+                .expect(
+                    "the buffer should have sufficient capacity to store the resulting ciphertext",
+                );
 
-            let bound = (Header::SIZE, encryptor.out_len() - HeaderMac::SIZE);
-
-            let mut cipher =
-                Aes256Ctr128BE::new(&encryptor.dk.encrypt().into(), &GenericArray::default());
-            let mut data = encryptor.data;
-            cipher.apply_keystream(&mut data);
-
-            buf[..bound.0].copy_from_slice(&encryptor.header.as_bytes());
-            buf[bound.0..bound.1].copy_from_slice(&data);
-
-            let mac = format::compute_mac(&encryptor.dk.mac(), &buf[..bound.1]);
-            buf[bound.1..].copy_from_slice(&mac);
+            buf[..Header::SIZE].copy_from_slice(&encryptor.header.as_bytes());
+            buf[Header::SIZE..].copy_from_slice(&ciphertext);
         };
         inner(self, buf.as_mut());
     }
@@ -126,15 +141,15 @@ impl Encryptor {
     /// # Examples
     ///
     /// ```
-    /// # use scryptenc::{scrypt::Params, Encryptor};
+    /// # use abcrypt::{argon2::Params, Encryptor};
     /// #
     /// let data = b"Hello, world!";
     /// let password = "password";
     ///
-    /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
-    /// let cipher = Encryptor::with_params(data, password, params);
-    /// let encrypted = cipher.encrypt_to_vec();
-    /// # assert_ne!(encrypted, data);
+    /// let params = Params::new(32, 3, 4, None).unwrap();
+    /// let cipher = Encryptor::with_params(data, password, params).unwrap();
+    /// let ciphertext = cipher.encrypt_to_vec();
+    /// # assert_ne!(ciphertext, data);
     /// ```
     #[must_use]
     pub fn encrypt_to_vec(self) -> Vec<u8> {
@@ -148,18 +163,18 @@ impl Encryptor {
     /// # Examples
     ///
     /// ```
-    /// # use scryptenc::{scrypt::Params, Encryptor};
+    /// # use abcrypt::{argon2::Params, Encryptor};
     /// #
     /// let data = b"Hello, world!";
     /// let password = "password";
     ///
-    /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
-    /// let cipher = Encryptor::with_params(data, password, params);
-    /// assert_eq!(cipher.out_len(), 141);
+    /// let params = Params::new(32, 3, 4, None).unwrap();
+    /// let cipher = Encryptor::with_params(data, password, params).unwrap();
+    /// assert_eq!(cipher.out_len(), 169);
     /// ```
     #[must_use]
     #[inline]
     pub fn out_len(&self) -> usize {
-        Header::SIZE + self.data.len() + HeaderMac::SIZE
+        Header::SIZE + self.data.len() + mem::size_of::<Tag>()
     }
 }
