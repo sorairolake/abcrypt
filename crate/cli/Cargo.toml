@@ -34,6 +34,7 @@ name = "abcrypt"
 path = "src/main.rs"
 
 [dependencies]
+abcrypt = { version = "0.1.0", path = "../abcrypt" }
 anyhow = "1.0.75"
 byte-unit = "4.0.19"
 ciborium = { version = "0.2.1", optional = true }
