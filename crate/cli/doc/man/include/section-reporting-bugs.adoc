@@ -6,4 +6,4 @@
 
 Bugs can be reported on GitHub at:{blank}::
 
-  https://github.com/sorairolake/rscrypt/issues
+  https://github.com/sorairolake/abcrypt/issues

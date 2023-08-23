@@ -6,8 +6,4 @@
 
 Source repository:{blank}::
 
-  https://github.com/sorairolake/rscrypt
-
-The scrypt key derivation function and encryption utility:{blank}::
-
-  https://www.tarsnap.com/scrypt.html
+  https://github.com/sorairolake/abcrypt

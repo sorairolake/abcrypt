@@ -1,0 +1,85 @@
+// SPDX-FileCopyrightText: 2022 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= abcrypt-decrypt(1)
+// Specify in UTC.
+:docdate: 2023-08-23
+:doctype: manpage
+ifdef::revnumber[:mansource: abcrypt {revnumber}]
+:manmanual: General Commands Manual
+:includedir: ../include
+
+== NAME
+
+abcrypt-decrypt - decrypt files
+
+== SYNOPSIS
+
+*abcrypt decrypt* [_OPTION_]... [_FILE_]
+
+== DESCRIPTION
+
+This command decrypt files. By default, the result will be write to stdout.
+
+*abcrypt dec* and *abcrypt d* are aliases for this command.
+
+== POSITIONAL ARGUMENTS
+
+_FILE_::
+
+  Input file. If _FILE_ is not specified, data will be read from stdin.
+
+== OPTIONS
+
+*-o*, *--output* _FILE_::
+
+  Output the result to a file.
+
+*--passphrase-from-tty*::
+
+  Read the password from /dev/tty. This is the default behavior.
+
+*--passphrase-from-stdin*::
+
+  Read the password from stdin.
+
+*--passphrase-from-env* _VAR_::
+
+  Read the password from the environment variable. Note that storing a password
+  in an environment variable can be a security risk.
+
+*--passphrase-from-file* _FILE_::
+
+  Read the password from the file. Note that storing a password in a file can
+  be a security risk.
+
+*-v*, *--verbose*::
+
+  Print the encryption parameters.
+
+*-h*, *--help*::
+
+  Print help information.
+
+*-V*, *--version*::
+
+  Print version information.
+
+include::{includedir}/section-exit-status.adoc[]
+
+include::{includedir}/section-notes.adoc[]
+
+== EXAMPLES
+
+Decrypt a file:{blank}::
+
+  $ *abcrypt decrypt file.abcrypt*
+
+include::{includedir}/section-reporting-bugs.adoc[]
+
+include::{includedir}/section-copyright.adoc[]
+
+== SEE ALSO
+
+*abcrypt*(1), *abcrypt-encrypt*(1), *abcrypt-help*(1), *abcrypt-information*(1)

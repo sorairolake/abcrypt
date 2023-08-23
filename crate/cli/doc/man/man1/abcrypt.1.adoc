@@ -2,17 +2,17 @@
 //
 // SPDX-License-Identifier: CC-BY-4.0
 
-= rscrypt(1)
+= abcrypt(1)
 // Specify in UTC.
-:docdate: 2023-07-17
+:docdate: 2023-08-23
 :doctype: manpage
-ifdef::revnumber[:mansource: rscrypt {revnumber}]
+ifdef::revnumber[:mansource: abcrypt {revnumber}]
 :manmanual: General Commands Manual
 :includedir: ../include
 
 == NAME
 
-rscrypt - an utility for encrypt and decrypt files
+abcrypt - an utility for encrypt and decrypt files
 
 == SYNOPSIS
 
@@ -24,19 +24,19 @@ rscrypt - an utility for encrypt and decrypt files
 
 == COMMANDS
 
-*rscrypt-enc*(1)::
+*abcrypt-encrypt*(1)::
 
   Encrypt files.
 
-*rscrypt-dec*(1)::
+*abcrypt-decrypt*(1)::
 
   Decrypt files.
 
-*rscrypt-info*(1)::
+*abcrypt-information*(1)::
 
   Provides information about the encryption parameters.
 
-*rscrypt-help*(1)::
+*abcrypt-help*(1)::
 
   Print the help for a command.
 
@@ -90,4 +90,4 @@ include::{includedir}/section-copyright.adoc[]
 
 == SEE ALSO
 
-*scrypt*(1)
+*age*(1), *rage*(1), *scrypt*(1)

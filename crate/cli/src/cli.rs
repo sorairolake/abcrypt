@@ -4,25 +4,17 @@
 
 use std::{
     ffi::OsString,
-    fmt,
     io::{self, Write},
-    ops::Deref,
     path::PathBuf,
-    str::FromStr,
-    time::Duration,
 };
 
-use anyhow::anyhow;
-use byte_unit::{n_eib_bytes, n_mib_bytes};
-use clap::{
-    value_parser, ArgGroup, Args, CommandFactory, Parser, Subcommand, ValueEnum, ValueHint,
-};
+use abcrypt::argon2::Params;
+use clap::{ArgGroup, Args, CommandFactory, Parser, Subcommand, ValueEnum, ValueHint};
 use clap_complete::Generator;
-use fraction::{Fraction, Zero};
 
 #[derive(Debug, Parser)]
 #[command(
-    name("rscrypt"),
+    name("abcrypt"),
     version,
     about,
     max_term_width(100),
@@ -44,94 +36,52 @@ pub struct Opt {
 #[derive(Debug, Subcommand)]
 pub enum Command {
     /// Encrypt files.
-    #[command(name("enc"))]
+    #[command(visible_aliases(["enc", "e"]))]
     Encrypt(Encrypt),
 
     /// Decrypt files.
-    #[command(name("dec"))]
+    #[command(visible_aliases(["dec", "d"]))]
     Decrypt(Decrypt),
 
     /// Provides information about the encryption parameters.
-    #[command(name("info"))]
+    #[command(visible_aliases(["info", "i"]))]
     Information(Information),
 }
 
 #[allow(clippy::struct_excessive_bools)]
 #[derive(Args, Debug)]
-#[command(
-    group(ArgGroup::new("password")),
-    group(
-        ArgGroup::new("resources")
-            .multiple(true)
-            .conflicts_with("force")
-            .conflicts_with("parameters")
-    ),
-    group(ArgGroup::new("parameters").multiple(true))
-)]
+#[command(group(ArgGroup::new("password")))]
 pub struct Encrypt {
-    /// Force the encryption to proceed even if it requires an excessive amount
-    /// of resources.
-    #[arg(short, long, requires("parameters"))]
-    pub force: bool,
+    /// Output the result to a file.
+    #[arg(short, long, value_name("FILE"), value_hint(ValueHint::FilePath))]
+    pub output: Option<PathBuf>,
 
-    /// Use at most the specified bytes of RAM to compute the derived key.
-    #[arg(short('M'), long, value_name("BYTE"), group("resources"))]
-    pub max_memory: Option<Byte>,
-
-    /// Use at most the specified fraction of the available RAM to compute the
-    /// derived key.
+    /// Set the memory size in KiB.
     #[arg(
         short,
         long,
-        default_value("0.125"),
-        value_name("RATE"),
-        group("resources")
+        default_value_t = Params::DEFAULT_M_COST,
+        value_name("NUM")
     )]
-    pub max_memory_fraction: Rate,
+    pub memory_size: u32,
 
-    /// Use at most the specified duration of CPU time to compute the derived
-    /// key.
+    /// Set the number of iterations.
     #[arg(
         short('t'),
         long,
-        default_value("5s"),
-        value_name("DURATION"),
-        group("resources")
+        default_value_t = Params::DEFAULT_T_COST,
+        value_name("NUM")
     )]
-    pub max_time: Time,
+    pub iterations: u32,
 
-    /// Set the work parameter N.
+    /// Set the degree of parallelism.
     #[arg(
-        value_parser(value_parser!(u8).range(10..=40)),
+        short,
         long,
-        requires("r"),
-        requires("p"),
-        value_name("VALUE"),
-        group("parameters")
+        default_value_t = Params::DEFAULT_P_COST,
+        value_name("NUM")
     )]
-    pub log_n: Option<u8>,
-
-    /// Set the work parameter r.
-    #[arg(
-        value_parser(value_parser!(u32).range(1..=32)),
-        short,
-        requires("log_n"),
-        requires("p"),
-        value_name("VALUE"),
-        group("parameters")
-    )]
-    pub r: Option<u32>,
-
-    /// Set the work parameter p.
-    #[arg(
-        value_parser(value_parser!(u32).range(1..=32)),
-        short,
-        requires("log_n"),
-        requires("r"),
-        value_name("VALUE"),
-        group("parameters")
-    )]
-    pub p: Option<u32>,
+    pub parallelism: u32,
 
     /// Read the password from /dev/tty.
     ///
@@ -165,60 +115,24 @@ pub struct Encrypt {
     )]
     pub passphrase_from_file: Option<PathBuf>,
 
-    /// Print encryption parameters and resource limits.
+    /// Print the encryption parameters.
     #[arg(short, long)]
     pub verbose: bool,
 
     /// Input file.
     ///
-    /// If "-" is specified, data will be read from stdin.
-    #[arg(value_name("INFILE"), value_hint(ValueHint::FilePath))]
-    pub input: PathBuf,
-
-    /// Output file.
-    ///
-    /// If [OUTFILE] is not specified, the result will be write to stdout.
-    #[arg(value_name("OUTFILE"), value_hint(ValueHint::FilePath))]
-    pub output: Option<PathBuf>,
+    /// If [FILE] is not specified, data will be read from stdin.
+    #[arg(value_name("FILE"), value_hint(ValueHint::FilePath))]
+    pub input: Option<PathBuf>,
 }
 
 #[allow(clippy::struct_excessive_bools)]
 #[derive(Args, Debug)]
-#[command(
-    group(ArgGroup::new("password")),
-    group(ArgGroup::new("resources").multiple(true).conflicts_with("force"))
-)]
+#[command(group(ArgGroup::new("password")))]
 pub struct Decrypt {
-    /// Force the decryption to proceed even if it requires an excessive amount
-    /// of resources.
-    #[arg(short, long)]
-    pub force: bool,
-
-    /// Use at most the specified bytes of RAM to compute the derived key.
-    #[arg(short('M'), long, value_name("BYTE"), group("resources"))]
-    pub max_memory: Option<Byte>,
-
-    /// Use at most the specified fraction of the available RAM to compute the
-    /// derived key.
-    #[arg(
-        short,
-        long,
-        default_value("0.5"),
-        value_name("RATE"),
-        group("resources")
-    )]
-    pub max_memory_fraction: Rate,
-
-    /// Use at most the specified duration of CPU time to compute the derived
-    /// key.
-    #[arg(
-        short('t'),
-        long,
-        default_value("300s"),
-        value_name("DURATION"),
-        group("resources")
-    )]
-    pub max_time: Time,
+    /// Output the result to a file.
+    #[arg(short, long, value_name("FILE"), value_hint(ValueHint::FilePath))]
+    pub output: Option<PathBuf>,
 
     /// Read the password from /dev/tty.
     ///
@@ -248,41 +162,29 @@ pub struct Decrypt {
     )]
     pub passphrase_from_file: Option<PathBuf>,
 
-    /// Print encryption parameters and resource limits.
+    /// Print the encryption parameters.
     #[arg(short, long)]
     pub verbose: bool,
 
     /// Input file.
     ///
-    /// If "-" is specified, data will be read from stdin.
-    #[arg(value_name("INFILE"), value_hint(ValueHint::FilePath))]
-    pub input: PathBuf,
-
-    /// Output file.
-    ///
-    /// If [OUTFILE] is not specified, the result will be write to stdout.
-    #[arg(value_name("OUTFILE"), value_hint(ValueHint::FilePath))]
-    pub output: Option<PathBuf>,
+    /// If [FILE] is not specified, data will be read from stdin.
+    #[arg(value_name("FILE"), value_hint(ValueHint::FilePath))]
+    pub input: Option<PathBuf>,
 }
 
 #[derive(Args, Debug)]
 pub struct Information {
-    /// Output format.
-    #[cfg(any(
-        feature = "cbor",
-        feature = "json",
-        feature = "msgpack",
-        feature = "toml",
-        feature = "yaml"
-    ))]
-    #[arg(short, long, value_enum, value_name("FORMAT"), ignore_case(true))]
-    pub format: Option<Format>,
+    /// Output the encryption parameters as JSON.
+    #[cfg(feature = "json")]
+    #[arg(short, long)]
+    pub json: bool,
 
     /// Input file.
     ///
-    /// If "-" is specified, data will be read from stdin.
+    /// If [FILE] is not specified, data will be read from stdin.
     #[arg(value_name("FILE"), value_hint(ValueHint::FilePath))]
-    pub input: PathBuf,
+    pub input: Option<PathBuf>,
 }
 
 impl Opt {
@@ -341,120 +243,6 @@ impl Generator for Shell {
             Self::Zsh => clap_complete::Shell::Zsh.generate(cmd, buf),
         }
     }
-}
-
-/// Amount of RAM.
-#[derive(Clone, Copy, Debug)]
-pub struct Byte(byte_unit::Byte);
-
-impl Deref for Byte {
-    type Target = byte_unit::Byte;
-
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-
-impl FromStr for Byte {
-    type Err = anyhow::Error;
-
-    fn from_str(bytes: &str) -> anyhow::Result<Self> {
-        match byte_unit::Byte::from_str(bytes) {
-            Ok(b) if b.get_bytes() < n_mib_bytes!(1) => {
-                Err(anyhow!("amount of RAM is less than 1 MiB"))
-            }
-            Ok(b) if b.get_bytes() > n_eib_bytes!(16) => {
-                Err(anyhow!("amount of RAM is more than 16 EiB"))
-            }
-            Err(err) => Err(anyhow!("amount of RAM is not a valid value: {err}")),
-            Ok(b) => Ok(Self(b)),
-        }
-    }
-}
-
-/// Fraction of the available RAM.
-#[derive(Clone, Copy, Debug)]
-pub struct Rate(Fraction);
-
-impl Deref for Rate {
-    type Target = Fraction;
-
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-
-impl FromStr for Rate {
-    type Err = anyhow::Error;
-
-    fn from_str(rate: &str) -> anyhow::Result<Self> {
-        match Fraction::from_str(rate) {
-            Ok(r) if r == Fraction::zero() => Err(anyhow!("fraction is 0")),
-            Ok(r) if r > Fraction::from(0.5) => Err(anyhow!("fraction is more than 0.5")),
-            Err(err) => Err(anyhow!("fraction is not a valid number: {err}")),
-            Ok(r) => Ok(Self(r)),
-        }
-    }
-}
-
-/// CPU time.
-#[derive(Clone, Copy)]
-pub struct Time(Duration);
-
-impl fmt::Debug for Time {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        self.0.fmt(f)
-    }
-}
-
-impl Deref for Time {
-    type Target = Duration;
-
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-
-impl FromStr for Time {
-    type Err = anyhow::Error;
-
-    fn from_str(duration: &str) -> anyhow::Result<Self> {
-        match humantime::Duration::from_str(duration) {
-            Ok(d) => Ok(Self(*d)),
-            Err(err) => Err(anyhow!("time is not a valid value: {err}")),
-        }
-    }
-}
-
-#[cfg(any(
-    feature = "cbor",
-    feature = "json",
-    feature = "msgpack",
-    feature = "toml",
-    feature = "yaml"
-))]
-#[derive(Clone, Copy, Debug, ValueEnum)]
-pub enum Format {
-    /// Concise Binary Object Representation.
-    #[cfg(feature = "cbor")]
-    Cbor,
-
-    /// JavaScript Object Notation.
-    #[cfg(feature = "json")]
-    Json,
-
-    /// MessagePack.
-    #[cfg(feature = "msgpack")]
-    #[value(name("msgpack"))]
-    MessagePack,
-
-    /// Tom's Obvious Minimal Language.
-    #[cfg(feature = "toml")]
-    Toml,
-
-    /// YAML.
-    #[cfg(feature = "yaml")]
-    Yaml,
 }
 
 #[cfg(test)]

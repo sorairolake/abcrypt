@@ -2,21 +2,21 @@
 //
 // SPDX-License-Identifier: CC-BY-4.0
 
-= rscrypt-help(1)
+= abcrypt-help(1)
 // Specify in UTC.
-:docdate: 2023-07-17
+:docdate: 2023-08-23
 :doctype: manpage
-ifdef::revnumber[:mansource: rscrypt {revnumber}]
+ifdef::revnumber[:mansource: abcrypt {revnumber}]
 :manmanual: General Commands Manual
 :includedir: ../include
 
 == NAME
 
-rscrypt-help - print the help for a command
+abcrypt-help - print the help for a command
 
 == SYNOPSIS
 
-*rscrypt help* [_COMMAND_]
+*abcrypt help* [_COMMAND_]
 
 == DESCRIPTION
 
@@ -24,7 +24,7 @@ This command prints the help for a command.
 
 This command is identical to any of the following:{blank}::
 
-  $ *rscrypt* [_COMMAND_] *-h*|*--help*
+  $ *abcrypt* [_COMMAND_] *-h*|*--help*
 
 == POSITIONAL ARGUMENTS
 
@@ -42,4 +42,5 @@ include::{includedir}/section-copyright.adoc[]
 
 == SEE ALSO
 
-*rscrypt*(1), *rscrypt-dec*(1), *rscrypt-enc*(1), *rscrypt-info*(1), *scrypt*(1)
+*abcrypt*(1), *abcrypt-decrypt*(1), *abcrypt-encrypt*(1),
+*abcrypt-information*(1)
