@@ -6,8 +6,8 @@
 
 == Prerequisites
 
-.To build *rscrypt*, you will need the following dependencies
-* https://doc.rust-lang.org/stable/cargo/[Cargo] (v1.65.0 or later)
+.To build *abcrypt*, you will need the following dependencies
+* https://doc.rust-lang.org/stable/cargo/[Cargo] (v1.66.0 or later)
 
 .To build man pages, you will need the following additional dependencies
 * https://asciidoctor.org/[Asciidoctor]
@@ -17,8 +17,8 @@
 .To clone the repository
 [source, shell]
 ----
-git clone https://github.com/sorairolake/rscrypt.git
-cd rscrypt
+git clone https://github.com/sorairolake/abcrypt.git
+cd abcrypt
 ----
 
 .To build a package
@@ -29,27 +29,7 @@ just build
 
 == Crate features
 
-`cbor`::
-
-  Enable outputting the encryption parameters as CBOR. This is enabled by
-  default.
-
 `json`::
 
   Enable outputting the encryption parameters as JSON. This is enabled by
-  default.
-
-`msgpack`::
-
-  Enable outputting the encryption parameters as MessagePack. This is enabled
-  by default.
-
-`toml`::
-
-  Enable outputting the encryption parameters as TOML. This is enabled by
-  default.
-
-`yaml`::
-
-  Enable outputting the encryption parameters as YAML. This is enabled by
   default.

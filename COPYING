@@ -9,7 +9,7 @@ Files: crate/cli/*
 Copyright: 2022-2023 Shun Sakai
 License: GPL-3.0-or-later
 
-Files: asset/*
-       doc/*
+Files: doc/*
+       crate/cli/doc/*
 Copyright: 2022-2023 Shun Sakai
 License: CC-BY-4.0
