@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-//! An example of encrypting a file to the scrypt encrypted data format.
+//! An example of encrypting a file to the abcrypt encrypted data format.
 
 // Lint levels of rustc.
 #![forbid(unsafe_code)]

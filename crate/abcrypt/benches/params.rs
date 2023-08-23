@@ -16,7 +16,7 @@ use test::Bencher;
 
 use abcrypt::Params;
 
-// Generated using `scrypt` version 1.3.1.
+// Generated using `abcrypt` crate version 0.1.0.
 const TEST_DATA_ENC: &[u8] = include_bytes!("../tests/data/data.txt.enc");
 
 #[bench]

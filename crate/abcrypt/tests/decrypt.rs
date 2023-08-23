@@ -13,7 +13,7 @@ use abcrypt::{argon2, blake2::digest::MacError, chacha20poly1305, Decryptor, Err
 
 const PASSWORD: &str = "password";
 const TEST_DATA: &[u8] = include_bytes!("data/data.txt");
-// Generated using `scrypt` version 1.3.1.
+// Generated using `abcrypt` crate version 0.1.0.
 const TEST_DATA_ENC: &[u8] = include_bytes!("data/data.txt.enc");
 
 #[test]
