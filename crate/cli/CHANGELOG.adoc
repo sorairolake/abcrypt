@@ -4,7 +4,7 @@
 
 = Changelog
 :toc: macro
-:project-url: https://github.com/sorairolake/rscrypt
+:project-url: https://github.com/sorairolake/abcrypt
 :compare-url: {project-url}/compare
 :issue-url: {project-url}/issues
 :pull-request-url: {project-url}/pull
@@ -16,139 +16,7 @@ project adheres to https://semver.org/[Semantic Versioning].
 
 toc::[]
 
-== {compare-url}/v0.5.8\...v0.5.9[0.5.9] - 2023-08-18
-
-=== Changed
-
-* Change `SPDX-FileCopyrightText` of each file to include only the year of
-  initial publication ({pull-request-url}/218[#218])
-* Remove unnecessary newline after period ({pull-request-url}/219[#219])
-
-== {compare-url}/v0.5.7\...v0.5.8[0.5.8] - 2023-08-11
-
-=== Changed
-
-* Make the display of information about the encryption parameters similar to
-  the reference implementation ({pull-request-url}/213[#213])
-
-== {compare-url}/v0.5.6\...v0.5.7[0.5.7] - 2023-08-09
-
-=== Changed
-
-* Rename value of `--max-memory` option ({pull-request-url}/199[#199])
-* Use LZMA instead of LZMA2 in 7z format for pre-built binary
-  ({pull-request-url}/200[#200])
-
-== {compare-url}/v0.5.5\...v0.5.6[0.5.6] - 2023-08-03
-
-=== Changed
-
-* Change the comment header to the format recommended by the REUSE
-  Specification ({pull-request-url}/180[#180])
-* Make this project REUSE compliant ({pull-request-url}/181[#181])
-
-== {compare-url}/v0.5.4\...v0.5.5[0.5.5] - 2023-07-21
-
-=== Added
-
-* Add `homepage` field to `Cargo.toml`
-
-== {compare-url}/v0.5.3\...v0.5.4[0.5.4] - 2023-07-18
-
-=== Changed
-
-* Change license for `demo.gif`
-
-=== Fixed
-
-* Fix broken include directives ({pull-request-url}/174[#174])
-
-== {compare-url}/v0.5.2\...v0.5.3[0.5.3] - 2023-07-17
-
-=== Added
-
-* Add feature to generate Nushell completions ({pull-request-url}/161[#161])
-* Add man page for `help` subcommand
-
-== {compare-url}/v0.5.1\...v0.5.2[0.5.2] - 2023-07-12
-
-=== Changed
-
-* Change license of documents to CC BY 4.0 ({pull-request-url}/158[#158])
-
-== {compare-url}/v0.5.0\...v0.5.1[0.5.1] - 2023-06-12
-
-=== Changed
-
-* Update dependencies
-
-== {compare-url}/v0.4.2\...v0.5.0[0.5.0] - 2023-05-16
-
-=== Changed
-
-* Update dependencies
-* Bump MSRV to 1.65.0
-
-== {compare-url}/v0.4.1\...v0.4.2[0.4.2] - 2023-04-02
-
-=== Fixed
-
-* Fix the exit code when EOF signature is mismatched
-
-== {compare-url}/v0.4.0\...v0.4.1[0.4.1] - 2023-01-30
-
-=== Fixed
-
-* Fix missing the `lang` attribute in the book
-
-== {compare-url}/v0.3.0\...v0.4.0[0.4.0] - 2023-01-28
-
-=== Changed
-
-* Bump sysexits to v0.4
-* Bump MSRV to 1.64.0
-
-== {compare-url}/v0.2.0\...v0.3.0[0.3.0] - 2022-12-18
-
-=== Added
-
-* Add MessagePack to output format
-
-=== Changed
-
-* Change the minimum value of `--max-memory` to 1 MiB
-* Change value of `--max-time` to be human-friendly
-
-=== Fixed
-
-* Fix create a package for Windows in CD
-
-== {compare-url}/v0.1.1\...v0.2.0[0.2.0] - 2022-12-10
-
-=== Added
-
-* Add options related to resources
-* Add option to output the encryption parameters as data exchange formats
-
-=== Changed
-
-* Change to allow empty password
-
-=== Fixed
-
-* Fix to remove trailing newline from password
-
-== {compare-url}/v0.1.0\...v0.1.1[0.1.1] - 2022-11-24
-
-=== Changed
-
-* Move common code into functions
-
-=== Fixed
-
-* Change to not read both passphrase and input data from stdin at the same time
-
-== {project-url}/releases/tag/v0.1.0[0.1.0] - 2022-11-18
+== {project-url}[Unreleased]
 
 === Added
 
