@@ -10,15 +10,12 @@ edition = "2021"
 rust-version = "1.66.0"
 description = "An utility for encrypt and decrypt files"
 readme = "README.md"
-homepage = "https://sorairolake.github.io/abcrypt/"
 repository = "https://github.com/sorairolake/abcrypt"
 license = "GPL-3.0-or-later"
 keywords = ["abcrypt"]
 categories = ["command-line-utilities"]
 exclude = [
   "/.github",
-  "/*.json",
-  "/*.json.license",
   "/clippy.toml",
   "/Cross.toml",
   "/doc",
