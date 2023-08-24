@@ -50,7 +50,7 @@ fn basic_encrypt() {
         .arg("encrypt")
         .arg("--passphrase-from-stdin")
         .arg("data/data.txt")
-        .write_stdin("password")
+        .write_stdin("passphrase")
         .assert()
         .success();
 }
@@ -69,7 +69,7 @@ fn validate_m_parameter_ranges_for_encrypt_command() {
         .arg("7")
         .arg("--passphrase-from-stdin")
         .arg("data/data.txt")
-        .write_stdin("password")
+        .write_stdin("passphrase")
         .assert()
         .failure()
         .code(65)
@@ -80,7 +80,7 @@ fn validate_m_parameter_ranges_for_encrypt_command() {
         .arg("268435456")
         .arg("--passphrase-from-stdin")
         .arg("data/data.txt")
-        .write_stdin("password")
+        .write_stdin("passphrase")
         .assert()
         .failure()
         .code(65)
@@ -95,7 +95,7 @@ fn validate_t_parameter_ranges_for_encrypt_command() {
         .arg("0")
         .arg("--passphrase-from-stdin")
         .arg("data/data.txt")
-        .write_stdin("password")
+        .write_stdin("passphrase")
         .assert()
         .failure()
         .code(65)
@@ -106,7 +106,7 @@ fn validate_t_parameter_ranges_for_encrypt_command() {
         .arg("4294967296")
         .arg("--passphrase-from-stdin")
         .arg("data/data.txt")
-        .write_stdin("password")
+        .write_stdin("passphrase")
         .assert()
         .failure()
         .code(2)
@@ -123,7 +123,7 @@ fn validate_p_parameter_ranges_for_encrypt_command() {
         .arg("0")
         .arg("--passphrase-from-stdin")
         .arg("data/data.txt")
-        .write_stdin("password")
+        .write_stdin("passphrase")
         .assert()
         .failure()
         .code(65)
@@ -136,7 +136,7 @@ fn validate_p_parameter_ranges_for_encrypt_command() {
         .arg("16777216")
         .arg("--passphrase-from-stdin")
         .arg("data/data.txt")
-        .write_stdin("password")
+        .write_stdin("passphrase")
         .assert()
         .failure()
         .code(65)
@@ -148,11 +148,11 @@ fn validate_conflicts_if_reading_from_stdin_for_encrypt_command() {
     command()
         .arg("encrypt")
         .arg("--passphrase-from-stdin")
-        .write_stdin("password")
+        .write_stdin("passphrase")
         .assert()
         .failure()
         .stderr(predicate::str::ends_with(
-            "cannot read both password and input data from stdin\n",
+            "cannot read both passphrase and input data from stdin\n",
         ));
 }
 
@@ -163,7 +163,7 @@ fn encrypt_verbose() {
         .arg("--passphrase-from-stdin")
         .arg("-v")
         .arg("data/data.txt")
-        .write_stdin("password")
+        .write_stdin("passphrase")
         .assert()
         .success()
         .stderr(predicate::str::starts_with(
@@ -177,7 +177,7 @@ fn basic_decrypt() {
         .arg("decrypt")
         .arg("--passphrase-from-stdin")
         .arg("data/data.txt.enc")
-        .write_stdin("password")
+        .write_stdin("passphrase")
         .assert()
         .success()
         .stdout(predicate::eq("Hello, world!\n"));
@@ -194,11 +194,11 @@ fn validate_conflicts_if_reading_from_stdin_for_decrypt_command() {
     command()
         .arg("decrypt")
         .arg("--passphrase-from-stdin")
-        .write_stdin("password")
+        .write_stdin("passphrase")
         .assert()
         .failure()
         .stderr(predicate::str::ends_with(
-            "cannot read both password and input data from stdin\n",
+            "cannot read both passphrase and input data from stdin\n",
         ));
 }
 
@@ -209,7 +209,7 @@ fn decrypt_verbose() {
         .arg("--passphrase-from-stdin")
         .arg("-v")
         .arg("data/data.txt.enc")
-        .write_stdin("password")
+        .write_stdin("passphrase")
         .assert()
         .success()
         .stdout(predicate::eq("Hello, world!\n"))

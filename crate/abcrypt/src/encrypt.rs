@@ -39,9 +39,9 @@ impl Encryptor {
     /// # use abcrypt::Encryptor;
     /// #
     /// let data = b"Hello, world!";
-    /// let password = "password";
+    /// let passphrase = "passphrase";
     ///
-    /// let cipher = Encryptor::new(data, password).unwrap();
+    /// let cipher = Encryptor::new(data, passphrase).unwrap();
     /// let ciphertext = cipher.encrypt_to_vec();
     /// # assert_ne!(ciphertext, data);
     /// #
@@ -50,8 +50,8 @@ impl Encryptor {
     /// # assert_eq!(params.t_cost(), argon2::Params::DEFAULT_T_COST);
     /// # assert_eq!(params.p_cost(), argon2::Params::DEFAULT_P_COST);
     /// ```
-    pub fn new(data: impl AsRef<[u8]>, password: impl AsRef<[u8]>) -> Result<Self, Error> {
-        Self::with_params(data, password, Params::default())
+    pub fn new(data: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Self, Error> {
+        Self::with_params(data, passphrase, Params::default())
     }
 
     /// Creates a new `Encryptor` with the specified [`Params`].
@@ -66,26 +66,26 @@ impl Encryptor {
     /// # use abcrypt::{argon2::Params, Encryptor};
     /// #
     /// let data = b"Hello, world!";
-    /// let password = "password";
+    /// let passphrase = "passphrase";
     ///
     /// let params = Params::new(32, 3, 4, None).unwrap();
-    /// let cipher = Encryptor::with_params(data, password, params).unwrap();
+    /// let cipher = Encryptor::with_params(data, passphrase, params).unwrap();
     /// let ciphertext = cipher.encrypt_to_vec();
     /// # assert_ne!(ciphertext, data);
     /// ```
     pub fn with_params(
         data: impl AsRef<[u8]>,
-        password: impl AsRef<[u8]>,
+        passphrase: impl AsRef<[u8]>,
         params: Params,
     ) -> Result<Self, Error> {
-        let inner = |data: &[u8], password: &[u8], params: Params| -> Result<Self, Error> {
+        let inner = |data: &[u8], passphrase: &[u8], params: Params| -> Result<Self, Error> {
             let mut header = Header::new(params);
 
             // The derived key size is 96 bytes. The first 256 bits are for
             // XChaCha20-Poly1305 key, and the last 512 bits are for BLAKE2b-512-MAC key.
             let mut dk = [u8::default(); DerivedKey::SIZE];
             Argon2::new(ARGON2_ALGORITHM, ARGON2_VERSION, header.params())
-                .hash_password_into(password, &header.salt(), &mut dk)
+                .hash_password_into(passphrase, &header.salt(), &mut dk)
                 .map_err(Error::InvalidArgon2Context)?;
             let dk = DerivedKey::new(dk);
 
@@ -94,7 +94,7 @@ impl Encryptor {
             let data = data.to_vec();
             Ok(Self { header, dk, data })
         };
-        inner(data.as_ref(), password.as_ref(), params)
+        inner(data.as_ref(), passphrase.as_ref(), params)
     }
 
     /// Encrypts data into `buf`.
@@ -113,10 +113,10 @@ impl Encryptor {
     /// # use abcrypt::{argon2::Params, Encryptor};
     /// #
     /// let data = b"Hello, world!";
-    /// let password = "password";
+    /// let passphrase = "passphrase";
     ///
     /// let params = Params::new(32, 3, 4, None).unwrap();
-    /// let cipher = Encryptor::with_params(data, password, params).unwrap();
+    /// let cipher = Encryptor::with_params(data, passphrase, params).unwrap();
     /// let mut buf = [u8::default(); 169];
     /// cipher.encrypt(&mut buf);
     /// # assert_ne!(buf, data.as_slice());
@@ -144,10 +144,10 @@ impl Encryptor {
     /// # use abcrypt::{argon2::Params, Encryptor};
     /// #
     /// let data = b"Hello, world!";
-    /// let password = "password";
+    /// let passphrase = "passphrase";
     ///
     /// let params = Params::new(32, 3, 4, None).unwrap();
-    /// let cipher = Encryptor::with_params(data, password, params).unwrap();
+    /// let cipher = Encryptor::with_params(data, passphrase, params).unwrap();
     /// let ciphertext = cipher.encrypt_to_vec();
     /// # assert_ne!(ciphertext, data);
     /// ```
@@ -166,10 +166,10 @@ impl Encryptor {
     /// # use abcrypt::{argon2::Params, Encryptor};
     /// #
     /// let data = b"Hello, world!";
-    /// let password = "password";
+    /// let passphrase = "passphrase";
     ///
     /// let params = Params::new(32, 3, 4, None).unwrap();
-    /// let cipher = Encryptor::with_params(data, password, params).unwrap();
+    /// let cipher = Encryptor::with_params(data, passphrase, params).unwrap();
     /// assert_eq!(cipher.out_len(), 169);
     /// ```
     #[must_use]

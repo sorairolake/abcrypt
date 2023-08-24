@@ -13,17 +13,17 @@
 //! use abcrypt::{argon2::Params, Decryptor, Encryptor};
 //!
 //! let data = b"Hello, world!";
-//! let password = "password";
+//! let passphrase = "passphrase";
 //!
-//! // Encrypt `data` using `password`.
+//! // Encrypt `data` using `passphrase`.
 //! let params = Params::new(32, 3, 4, None).unwrap();
-//! let ciphertext = Encryptor::with_params(data, password, params)
+//! let ciphertext = Encryptor::with_params(data, passphrase, params)
 //!     .map(Encryptor::encrypt_to_vec)
 //!     .unwrap();
 //! assert_ne!(ciphertext, data);
 //!
 //! // And decrypt it back.
-//! let plaintext = Decryptor::new(ciphertext, password)
+//! let plaintext = Decryptor::new(ciphertext, passphrase)
 //!     .and_then(Decryptor::decrypt_to_vec)
 //!     .unwrap();
 //! assert_eq!(plaintext, data);
@@ -35,11 +35,11 @@
 //! use abcrypt::{argon2, Encryptor};
 //!
 //! let data = b"Hello, world!";
-//! let password = "password";
+//! let passphrase = "passphrase";
 //!
-//! // Encrypt `data` using `password`.
+//! // Encrypt `data` using `passphrase`.
 //! let params = argon2::Params::new(32, 3, 4, None).unwrap();
-//! let ciphertext = Encryptor::with_params(data, password, params)
+//! let ciphertext = Encryptor::with_params(data, passphrase, params)
 //!     .map(Encryptor::encrypt_to_vec)
 //!     .unwrap();
 //!

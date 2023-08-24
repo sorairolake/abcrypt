@@ -15,7 +15,7 @@ mod cli;
 mod input;
 mod output;
 mod params;
-mod password;
+mod passphrase;
 mod utils;
 
 use std::{io, process::ExitCode};

@@ -10,13 +10,13 @@ use clap::Parser;
 
 use crate::{
     cli::{Command, Opt},
-    input, output, params, password,
+    input, output, params, passphrase,
 };
 
-/// Ensures that there are no conflicts if reading the password from stdin.
+/// Ensures that there are no conflicts if reading the passphrase from stdin.
 fn ensure_stdin_does_not_conflict(path: Option<&Path>) -> anyhow::Result<()> {
     if path.is_none() {
-        bail!("cannot read both password and input data from stdin");
+        bail!("cannot read both passphrase and input data from stdin");
     }
     Ok(())
 }
@@ -39,18 +39,18 @@ pub fn run() -> anyhow::Result<()> {
                 }
                 let input = input::read(arg.input.as_deref())?;
 
-                let password = match (
+                let passphrase = match (
                     arg.passphrase_from_tty,
                     arg.passphrase_from_stdin,
                     arg.passphrase_from_tty_once,
                     arg.passphrase_from_env,
                     arg.passphrase_from_file,
                 ) {
-                    (_, true, ..) => password::read_password_from_stdin(),
-                    (_, _, true, ..) => password::read_password_from_tty_once(),
-                    (.., Some(env), _) => password::read_password_from_env(&env),
-                    (.., Some(file)) => password::read_password_from_file(&file),
-                    _ => password::read_password_from_tty(),
+                    (_, true, ..) => passphrase::read_passphrase_from_stdin(),
+                    (_, _, true, ..) => passphrase::read_passphrase_from_tty_once(),
+                    (.., Some(env), _) => passphrase::read_passphrase_from_env(&env),
+                    (.., Some(file)) => passphrase::read_passphrase_from_file(&file),
+                    _ => passphrase::read_passphrase_from_tty(),
                 }?;
 
                 let params =
@@ -61,7 +61,7 @@ pub fn run() -> anyhow::Result<()> {
                     params::displayln(params.m_cost(), params.t_cost(), params.p_cost());
                 }
 
-                let cipher = Encryptor::with_params(input, password, params)?;
+                let cipher = Encryptor::with_params(input, passphrase, params)?;
                 let encrypted = cipher.encrypt_to_vec();
 
                 if let Some(file) = arg.output {
@@ -76,16 +76,16 @@ pub fn run() -> anyhow::Result<()> {
                 }
                 let input = input::read(arg.input.as_deref())?;
 
-                let password = match (
+                let passphrase = match (
                     arg.passphrase_from_tty,
                     arg.passphrase_from_stdin,
                     arg.passphrase_from_env,
                     arg.passphrase_from_file,
                 ) {
-                    (_, true, ..) => password::read_password_from_stdin(),
-                    (.., Some(env), _) => password::read_password_from_env(&env),
-                    (.., Some(file)) => password::read_password_from_file(&file),
-                    _ => password::read_password_from_tty_once(),
+                    (_, true, ..) => passphrase::read_passphrase_from_stdin(),
+                    (.., Some(env), _) => passphrase::read_passphrase_from_env(&env),
+                    (.., Some(file)) => passphrase::read_passphrase_from_file(&file),
+                    _ => passphrase::read_passphrase_from_tty_once(),
                 }?;
 
                 let params = params::get(&input)?;
@@ -93,9 +93,9 @@ pub fn run() -> anyhow::Result<()> {
                     params::displayln(params.m_cost(), params.t_cost(), params.p_cost());
                 }
 
-                let cipher = match Decryptor::new(input, password) {
+                let cipher = match Decryptor::new(input, passphrase) {
                     c @ Err(abcrypt::Error::InvalidHeaderMac(_)) => {
-                        c.context("password is incorrect")
+                        c.context("passphrase is incorrect")
                     }
                     c => c.context("the header in the encrypted data is invalid"),
                 }?;

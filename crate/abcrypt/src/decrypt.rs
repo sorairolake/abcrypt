@@ -44,27 +44,27 @@ impl Decryptor {
     /// # use abcrypt::{argon2::Params, Decryptor, Encryptor};
     /// #
     /// let data = b"Hello, world!";
-    /// let password = "password";
+    /// let passphrase = "passphrase";
     ///
     /// let params = Params::new(32, 3, 4, None).unwrap();
-    /// let ciphertext = Encryptor::with_params(data, password, params)
+    /// let ciphertext = Encryptor::with_params(data, passphrase, params)
     ///     .map(Encryptor::encrypt_to_vec)
     ///     .unwrap();
     /// # assert_ne!(ciphertext, data);
     ///
-    /// let cipher = Decryptor::new(ciphertext, password).unwrap();
+    /// let cipher = Decryptor::new(ciphertext, passphrase).unwrap();
     /// let plaintext = cipher.decrypt_to_vec().unwrap();
     /// # assert_eq!(plaintext, data);
     /// ```
-    pub fn new(data: impl AsRef<[u8]>, password: impl AsRef<[u8]>) -> Result<Self, Error> {
-        let inner = |data: &[u8], password: &[u8]| -> Result<Self, Error> {
+    pub fn new(data: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Self, Error> {
+        let inner = |data: &[u8], passphrase: &[u8]| -> Result<Self, Error> {
             let mut header = Header::parse(data)?;
 
             // The derived key size is 96 bytes. The first 256 bits are for
             // XChaCha20-Poly1305 key, and the last 512 bits are for BLAKE2b-512-MAC key.
             let mut dk = [u8::default(); DerivedKey::SIZE];
             Argon2::new(ARGON2_ALGORITHM, ARGON2_VERSION, header.params())
-                .hash_password_into(password, &header.salt(), &mut dk)
+                .hash_password_into(passphrase, &header.salt(), &mut dk)
                 .map_err(Error::InvalidArgon2Context)?;
             let dk = DerivedKey::new(dk);
 
@@ -77,7 +77,7 @@ impl Decryptor {
                 ciphertext,
             })
         };
-        inner(data.as_ref(), password.as_ref())
+        inner(data.as_ref(), passphrase.as_ref())
     }
 
     /// Decrypts data into `buf`.
@@ -97,15 +97,15 @@ impl Decryptor {
     /// # use abcrypt::{argon2::Params, Decryptor, Encryptor};
     /// #
     /// let data = b"Hello, world!";
-    /// let password = "password";
+    /// let passphrase = "passphrase";
     ///
     /// let params = Params::new(32, 3, 4, None).unwrap();
-    /// let ciphertext = Encryptor::with_params(data, password, params)
+    /// let ciphertext = Encryptor::with_params(data, passphrase, params)
     ///     .map(Encryptor::encrypt_to_vec)
     ///     .unwrap();
     /// # assert_ne!(ciphertext, data);
     ///
-    /// let cipher = Decryptor::new(ciphertext, password).unwrap();
+    /// let cipher = Decryptor::new(ciphertext, passphrase).unwrap();
     /// let mut buf = [u8::default(); 13];
     /// cipher.decrypt(&mut buf).unwrap();
     /// # assert_eq!(buf, data.as_slice());
@@ -136,15 +136,15 @@ impl Decryptor {
     /// # use abcrypt::{argon2::Params, Decryptor, Encryptor};
     /// #
     /// let data = b"Hello, world!";
-    /// let password = "password";
+    /// let passphrase = "passphrase";
     ///
     /// let params = Params::new(32, 3, 4, None).unwrap();
-    /// let ciphertext = Encryptor::with_params(data, password, params)
+    /// let ciphertext = Encryptor::with_params(data, passphrase, params)
     ///     .map(Encryptor::encrypt_to_vec)
     ///     .unwrap();
     /// # assert_ne!(ciphertext, data);
     ///
-    /// let cipher = Decryptor::new(ciphertext, password).unwrap();
+    /// let cipher = Decryptor::new(ciphertext, passphrase).unwrap();
     /// let plaintext = cipher.decrypt_to_vec().unwrap();
     /// # assert_eq!(plaintext, data);
     /// ```
@@ -162,15 +162,15 @@ impl Decryptor {
     /// # use abcrypt::{argon2::Params, Decryptor, Encryptor};
     /// #
     /// let data = b"Hello, world!";
-    /// let password = "password";
+    /// let passphrase = "passphrase";
     ///
     /// let params = Params::new(32, 3, 4, None).unwrap();
-    /// let ciphertext = Encryptor::with_params(data, password, params)
+    /// let ciphertext = Encryptor::with_params(data, passphrase, params)
     ///     .map(Encryptor::encrypt_to_vec)
     ///     .unwrap();
     /// # assert_ne!(ciphertext, data);
     ///
-    /// let cipher = Decryptor::new(ciphertext, password).unwrap();
+    /// let cipher = Decryptor::new(ciphertext, passphrase).unwrap();
     /// assert_eq!(cipher.out_len(), 13);
     /// ```
     #[must_use]

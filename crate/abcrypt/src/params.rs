@@ -28,10 +28,10 @@ impl Params {
     /// # use abcrypt::{Encryptor, Params};
     /// #
     /// let data = b"Hello, world!";
-    /// let password = "password";
+    /// let passphrase = "passphrase";
     ///
     /// let params = argon2::Params::new(32, 3, 4, None).unwrap();
-    /// let ciphertext = Encryptor::with_params(data, password, params)
+    /// let ciphertext = Encryptor::with_params(data, passphrase, params)
     ///     .map(Encryptor::encrypt_to_vec)
     ///     .unwrap();
     ///
@@ -50,10 +50,10 @@ impl Params {
     /// # use abcrypt::{Encryptor, Params};
     /// #
     /// let data = b"Hello, world!";
-    /// let password = "password";
+    /// let passphrase = "passphrase";
     ///
     /// let params = argon2::Params::new(32, 3, 4, None).unwrap();
-    /// let ciphertext = Encryptor::with_params(data, password, params)
+    /// let ciphertext = Encryptor::with_params(data, passphrase, params)
     ///     .map(Encryptor::encrypt_to_vec)
     ///     .unwrap();
     ///
@@ -74,10 +74,10 @@ impl Params {
     /// # use abcrypt::{Encryptor, Params};
     /// #
     /// let data = b"Hello, world!";
-    /// let password = "password";
+    /// let passphrase = "passphrase";
     ///
     /// let params = argon2::Params::new(32, 3, 4, None).unwrap();
-    /// let ciphertext = Encryptor::with_params(data, password, params)
+    /// let ciphertext = Encryptor::with_params(data, passphrase, params)
     ///     .map(Encryptor::encrypt_to_vec)
     ///     .unwrap();
     ///
@@ -98,10 +98,10 @@ impl Params {
     /// # use abcrypt::{Encryptor, Params};
     /// #
     /// let data = b"Hello, world!";
-    /// let password = "password";
+    /// let passphrase = "passphrase";
     ///
     /// let params = argon2::Params::new(32, 3, 4, None).unwrap();
-    /// let ciphertext = Encryptor::with_params(data, password, params)
+    /// let ciphertext = Encryptor::with_params(data, passphrase, params)
     ///     .map(Encryptor::encrypt_to_vec)
     ///     .unwrap();
     ///

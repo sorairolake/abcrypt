@@ -36,12 +36,12 @@ fn main() -> anyhow::Result<()> {
     let ciphertext = std::fs::read(&opt.input)
         .with_context(|| format!("could not read data from {}", opt.input.display()))?;
 
-    let password = dialoguer::Password::with_theme(&dialoguer::theme::ColorfulTheme::default())
-        .with_prompt("Enter password")
+    let passphrase = dialoguer::Password::with_theme(&dialoguer::theme::ColorfulTheme::default())
+        .with_prompt("Enter passphrase")
         .interact()
-        .context("could not read password")?;
-    let cipher = match abcrypt::Decryptor::new(ciphertext, password) {
-        c @ Err(abcrypt::Error::InvalidHeaderMac(_)) => c.context("password is incorrect"),
+        .context("could not read passphrase")?;
+    let cipher = match abcrypt::Decryptor::new(ciphertext, passphrase) {
+        c @ Err(abcrypt::Error::InvalidHeaderMac(_)) => c.context("passphrase is incorrect"),
         c => c.with_context(|| format!("the header in {} is invalid", opt.input.display())),
     }?;
     let plaintext = cipher

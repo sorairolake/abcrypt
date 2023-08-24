@@ -4,7 +4,7 @@
 
 = abcrypt-encrypt(1)
 // Specify in UTC.
-:docdate: 2023-08-23
+:docdate: 2023-08-24
 :doctype: manpage
 ifdef::revnumber[:mansource: abcrypt {revnumber}]
 :manmanual: General Commands Manual
@@ -53,25 +53,25 @@ _FILE_::
 
 *--passphrase-from-tty*::
 
-  Read the password from /dev/tty. This is the default behavior.
+  Read the passphrase from /dev/tty. This is the default behavior.
 
 *--passphrase-from-stdin*::
 
-  Read the password from stdin.
+  Read the passphrase from stdin.
 
 *--passphrase-from-tty-once*::
 
-  Read the password from /dev/tty only once.
+  Read the passphrase from /dev/tty only once.
 
 *--passphrase-from-env* _VAR_::
 
-  Read the password from the environment variable. Note that storing a password
-  in an environment variable can be a security risk.
+  Read the passphrase from the environment variable. Note that storing a
+  passphrase in an environment variable can be a security risk.
 
 *--passphrase-from-file* _FILE_::
 
-  Read the password from the file. Note that storing a password in a file can
-  be a security risk.
+  Read the passphrase from the file. Note that storing a passphrase in a file
+  can be a security risk.
 
 *-v*, *--verbose*::
 
