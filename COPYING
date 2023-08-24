@@ -6,6 +6,7 @@ Copyright: 2022-2023 Shun Sakai
 License: Apache-2.0 or MIT
 
 Files: crate/cli/*
+       .github/workflows/CD.yaml
 Copyright: 2022-2023 Shun Sakai
 License: GPL-3.0-or-later
 
