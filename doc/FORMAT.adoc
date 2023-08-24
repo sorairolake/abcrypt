@@ -1,0 +1,186 @@
+// SPDX-FileCopyrightText: 2023 Shun Sakai
+//
+// SPDX-License-Identifier: Apache-2.0 OR MIT
+
+= Abcrypt Encrypted Data Format
+Shun Sakai <sorairolake@protonmail.ch>
+v0.1.0, 2023-08-24
+:sectanchors:
+:toc: preamble
+
+abcrypt is a modern file encryption format with the data authenticity. This
+document describes the abcrypt encrypted data format.
+
+== Conventions used in this document
+
+[#argon2]
+Argon2 is the key derivation function from
+https://datatracker.ietf.org/doc/html/rfc9106[RFC 9106].
+
+[#blake2b-512-mac]
+BLAKE2b-512-MAC is the keyed hash function based on BLAKE2 standardized in
+https://datatracker.ietf.org/doc/html/rfc7693[RFC 7693]. This uses BLAKE2b and
+always outputs a 64-byte MAC.
+
+[#xchacha20-poly1305]
+XChaCha20-Poly1305 is the AEAD algorithm from
+https://datatracker.ietf.org/doc/html/draft-arciszewski-xchacha-03[draft-arciszewski-xchacha-03].
+
+== Format overview
+
+.The structure of the abcrypt format
+|===
+|Offset |Size |Description |Detail
+
+|0
+|7
+|Magic number ("abcrypt").
+|<<_header_format>>
+
+|7
+|1
+|Version number.
+|<<_version_number>>
+
+|8
+|4
+|Memory size `m`.
+|<<_argon2_parameters>>
+
+|12
+|4
+|Number of iterations `t`.
+|<<_argon2_parameters>>
+
+|16
+|4
+|Degree of parallelism `p`.
+|<<_argon2_parameters>>
+
+|20
+|32
+|Salt.
+|<<_salt>>
+
+|52
+|24
+|Nonce.
+|<<_nonce>>
+
+|76
+|64
+|MAC of the header.
+|<<_header_mac>>
+
+|140
+|X
+|Ciphertext.
+|<<_file_body>>
+
+|140+X
+|16
+|MAC of the ciphertext.
+|<<_file_body>>
+|===
+
+All multibyte values are stored in little-endian.
+
+== Key derivation
+
+The derived key for computing the header MAC and the derived key for encryption
+are produced by <<argon2,Argon2>>. The abcrypt format uses Argon2id as the type
+and 0x13 (19) as the version.
+
+.The derived key is produced as follows
+----
+derived_key = Argon2(
+    m_cost = header[8..12],
+    t_cost = header[12..16],
+    p_cost = header[16..20],
+    output_len = 96,
+    algorithm = Argon2id,
+    version = 0x13,
+    pwd = password,
+    salt = header[20..52],
+)
+----
+
+The resulting derived key (`derived_key`) length is 96 bytes. The first 32
+bytes of `derived_key` are for encryption
+(<<xchacha20-poly1305,XChaCha20-Poly1305>> key), and the last 64 bytes are for
+computing the header MAC (<<blake2b-512-mac,BLAKE2b-512-MAC>> key).
+
+<<_argon2_parameters,`m_cost`>>, <<_argon2_parameters,`t_cost`>>,
+<<_argon2_parameters,`p_cost`>>, and <<_argon2_parameters,`salt`>> used when
+encrypting are stored in the header, and these stored values are used when
+decrypting.
+
+== Header format
+
+=== Magic number
+
+A 7-byte string for identifying the abcrypt format. The value is "abcrypt"
+(`61 62 63 72 79 70 74` in hex).
+
+=== Version number
+
+A 1-byte version number of the abcrypt format. The current value is 0.
+
+=== Argon2 parameters
+
+.Argon2 has the following parameters that control
+. Memory size in KiB (`m`).
+. Number of iterations (`t`).
+. Degree of parallelism (`p`).
+
+Each parameter is represented as 4 bytes in little-endian.
+
+=== Salt
+
+A 32-byte salt for <<argon2,Argon2>>.
+
+NOTE: The salt should be generated from a CSPRNG.
+
+=== Nonce
+
+A 24-byte nonce for <<xchacha20-poly1305,XChaCha20-Poly1305>>.
+
+NOTE: The nonce should be generated from a CSPRNG.
+
+=== Header MAC
+
+The MAC (authentication tag) of the header. The MAC is computed with
+<<blake2b-512-mac,BLAKE2b-512-MAC>> over the whole header up to and including
+the nonce (first 76 bytes of the header).
+
+.The MAC is computed as follows
+----
+mac = BLAKE2b(
+    data = header[..76],
+    output_size = 64,
+    key = derived_key[32..],
+    salt = [],
+    person = [],
+)
+----
+
+== File body
+
+The file body is encrypted with XChaCha20-Poly1305.
+
+.The ciphertext is computed as follows
+----
+ciphertext = XChaCha20-Poly1305(
+    key = derived_key[..32],
+    nonce = header[20..52],
+    plaintext = plaintext,
+)
+----
+
+IMPORTANT: The abcrypt format uses a postfix tag.
+
+== Format changelog
+
+Version 0::
+
+  Initial release.
