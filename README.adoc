@@ -1,0 +1,54 @@
+// SPDX-FileCopyrightText: 2023 Shun Sakai
+//
+// SPDX-License-Identifier: Apache-2.0 OR MIT
+
+= abcrypt
+:project-url: https://github.com/sorairolake/abcrypt
+:shields-url: https://img.shields.io
+:crates-io-url: https://crates.io
+:crates-io-crates: {crates-io-url}/crates
+:ci-badge: {shields-url}/github/actions/workflow/status/sorairolake/abcrypt/CI.yaml?branch=develop&label=CI&logo=github&style=for-the-badge
+:ci-url: {project-url}/actions?query=branch%3Adevelop+workflow%3ACI++
+
+image:{ci-badge}[CI,link={ci-url}]
+
+*abcrypt* is a simple, modern and secure file encryption tool, file format and
+Rust library.
+
+== Crates
+
+|===
+|Name |Version |Description
+
+|{project-url}/tree/develop/crate/abcrypt[`abcrypt`]
+|image:{shields-url}/crates/v/abcrypt?style=for-the-badge[Version,link={crates-io-crates}/abcrypt]
+|The abcrypt format reference implementation.
+
+|{project-url}/tree/develop/crate/cli[`abcrypt-cli`]
+|image:{shields-url}/crates/v/abcrypt-cli?style=for-the-badge[Version,link={crates-io-crates}/abcrypt-cli]
+|File encryption tool using the abcrypt format.
+|===
+
+== Format specification
+
+The format specification is at link:doc/FORMAT.adoc[FORMAT.adoc].
+
+== Contributing
+
+Please see link:CONTRIBUTING.adoc[].
+
+== License
+
+Copyright (C) 2022&ndash;2023 Shun Sakai (see link:AUTHORS.adoc[])
+
+. Unless otherwise noted, each file is distributed under the terms of either
+  the _Apache License 2.0_ or the _MIT License_.
+. Each file in the `crate/cli` directory and some other files are distributed
+  under the terms of the _GNU General Public License v3.0 or later_.
+. Some documents are distributed under the terms of the _Creative Commons
+  Attribution 4.0 International Public License_.
+
+This project is compliant with version 3.0 of the
+https://reuse.software/spec/[_REUSE Specification_]. See link:COPYING[] and
+copyright notices of individual files for more details on copyright and
+licensing information.
