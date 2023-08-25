@@ -51,7 +51,7 @@ jobs:
         toolchain: ${{ matrix.msrv }} # MSRV
         targets: ${{ matrix.target }}
     - name: Cache build artifacts
-      uses: Swatinem/rust-cache@v2.6.1
+      uses: Swatinem/rust-cache@v2.6.2
       with:
         key: ${{ matrix.target }}
     - name: Run tests
@@ -91,7 +91,7 @@ jobs:
         toolchain: 1.66.0 # MSRV
         targets: ${{ matrix.target }}
     - name: Cache build artifacts
-      uses: Swatinem/rust-cache@v2.6.1
+      uses: Swatinem/rust-cache@v2.6.2
       with:
         key: ${{ matrix.target }}
     - name: Run tests
@@ -113,7 +113,7 @@ jobs:
         toolchain: stable
         components: rustfmt
     - name: Cache build artifacts
-      uses: Swatinem/rust-cache@v2.6.1
+      uses: Swatinem/rust-cache@v2.6.2
     - name: Check code formatted
       run: cargo fmt --all -- --check
 
@@ -129,7 +129,7 @@ jobs:
         toolchain: stable
         components: clippy
     - name: Cache build artifacts
-      uses: Swatinem/rust-cache@v2.6.1
+      uses: Swatinem/rust-cache@v2.6.2
     - name: Check no lint warnings
       run: cargo clippy --workspace -- -D warnings
     - name: Check no lint warnings (all features)
@@ -148,7 +148,7 @@ jobs:
       with:
         toolchain: nightly
     - name: Cache build artifacts
-      uses: Swatinem/rust-cache@v2.6.1
+      uses: Swatinem/rust-cache@v2.6.2
     - name: Run benchmarks
       run: cargo bench -p abcrypt
     - name: Run benchmarks (all features)
