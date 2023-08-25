@@ -5,10 +5,11 @@
 //! Decrypts from the abcrypt encrypted data format.
 
 use alloc::vec::Vec;
-use core::mem;
 
 use argon2::Argon2;
-use chacha20poly1305::{aead::Aead, KeyInit, Tag, XChaCha20Poly1305};
+use chacha20poly1305::{
+    aead::generic_array::typenum::Unsigned, aead::Aead, AeadCore, KeyInit, XChaCha20Poly1305,
+};
 
 use crate::{
     error::Error,
@@ -176,6 +177,6 @@ impl Decryptor {
     #[must_use]
     #[inline]
     pub fn out_len(&self) -> usize {
-        self.ciphertext.len() - mem::size_of::<Tag>()
+        self.ciphertext.len() - <XChaCha20Poly1305 as AeadCore>::TagSize::USIZE
     }
 }

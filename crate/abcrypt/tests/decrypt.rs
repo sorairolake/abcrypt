@@ -50,12 +50,22 @@ fn incorrect_passphrase() {
 }
 
 #[test]
-fn invalid_length() {
-    let data = [u8::default(); 155];
-    let plaintext = Decryptor::new(data, PASSPHRASE)
-        .and_then(Decryptor::decrypt_to_vec)
-        .unwrap_err();
-    assert_eq!(plaintext, Error::InvalidLength);
+fn invalid_input_length() {
+    {
+        let data = [u8::default(); 155];
+        let plaintext = Decryptor::new(data, PASSPHRASE)
+            .and_then(Decryptor::decrypt_to_vec)
+            .unwrap_err();
+        assert_eq!(plaintext, Error::InvalidLength);
+    }
+
+    {
+        let data = [u8::default(); 156];
+        let plaintext = Decryptor::new(data, PASSPHRASE)
+            .and_then(Decryptor::decrypt_to_vec)
+            .unwrap_err();
+        assert_eq!(plaintext, Error::InvalidMagicNumber);
+    }
 }
 
 #[test]

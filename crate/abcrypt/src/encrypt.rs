@@ -5,10 +5,11 @@
 //! Encrypts to the abcrypt encrypted data format.
 
 use alloc::vec::Vec;
-use core::mem;
 
 use argon2::{Argon2, Params};
-use chacha20poly1305::{aead::Aead, KeyInit, Tag, XChaCha20Poly1305};
+use chacha20poly1305::{
+    aead::generic_array::typenum::Unsigned, aead::Aead, AeadCore, KeyInit, XChaCha20Poly1305,
+};
 
 use crate::{
     error::Error,
@@ -175,6 +176,6 @@ impl Encryptor {
     #[must_use]
     #[inline]
     pub fn out_len(&self) -> usize {
-        Header::SIZE + self.data.len() + mem::size_of::<Tag>()
+        Header::SIZE + self.data.len() + <XChaCha20Poly1305 as AeadCore>::TagSize::USIZE
     }
 }

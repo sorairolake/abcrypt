@@ -57,6 +57,15 @@ fn invalid_output_length() {
 }
 
 #[test]
+fn minimum_output_length() {
+    let cipher =
+        Encryptor::with_params([], PASSPHRASE, Params::new(32, 3, 4, None).unwrap()).unwrap();
+    assert_eq!(cipher.out_len(), 156);
+    let ciphertext = cipher.encrypt_to_vec();
+    assert_eq!(ciphertext.len(), 156);
+}
+
+#[test]
 fn magic_number() {
     let ciphertext =
         Encryptor::with_params(TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())

@@ -4,12 +4,16 @@
 
 //! Specifications of the abcrypt encrypted data format.
 
+use core::mem;
+
 use argon2::Params;
 use blake2::{
-    digest::{self, Mac, Output},
+    digest::{self, typenum::Unsigned, Mac, Output, OutputSizeUser},
     Blake2bMac512,
 };
-use chacha20poly1305::{AeadCore, Key as XChaCha20Poly1305Key, XChaCha20Poly1305, XNonce};
+use chacha20poly1305::{
+    AeadCore, Key as XChaCha20Poly1305Key, KeySizeUser, XChaCha20Poly1305, XNonce,
+};
 use rand::{rngs::StdRng, Rng, SeedableRng};
 
 use crate::error::Error;
@@ -28,6 +32,7 @@ type Blake2bMac512Key = digest::Key<Blake2bMac512>;
 
 /// Version of the abcrypt encrypted data format.
 #[derive(Clone, Copy, Debug)]
+#[repr(u8)]
 pub enum Version {
     /// Version 0.
     V0,
@@ -57,7 +62,12 @@ impl Header {
     const MAGIC_NUMBER: MagicNumber = *b"abcrypt";
 
     /// The number of bytes of the header.
-    pub const SIZE: usize = 140;
+    pub const SIZE: usize = mem::size_of::<MagicNumber>()
+        + mem::size_of::<Version>()
+        + (mem::size_of::<u32>() * 3)
+        + mem::size_of::<Salt>()
+        + <XChaCha20Poly1305 as AeadCore>::NonceSize::USIZE
+        + <Blake2bMac512 as OutputSizeUser>::OutputSize::USIZE;
 
     /// Creates a new `Header`.
     pub fn new(params: Params) -> Self {
@@ -78,7 +88,7 @@ impl Header {
 
     /// Parses `data` into the header.
     pub fn parse(data: &[u8]) -> Result<Self, Error> {
-        if data.len() < 156 {
+        if data.len() < Self::SIZE + <XChaCha20Poly1305 as AeadCore>::TagSize::USIZE {
             return Err(Error::InvalidLength);
         }
 
@@ -179,7 +189,8 @@ pub struct DerivedKey {
 
 impl DerivedKey {
     /// The number of bytes of the derived key.
-    pub const SIZE: usize = 96;
+    pub const SIZE: usize = <XChaCha20Poly1305 as KeySizeUser>::KeySize::USIZE
+        + <Blake2bMac512 as KeySizeUser>::KeySize::USIZE;
 
     /// Creates a new `DerivedKey`.
     pub fn new(dk: [u8; Self::SIZE]) -> Self {
