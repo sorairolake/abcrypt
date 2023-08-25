@@ -4,7 +4,7 @@
 
 = Abcrypt Encrypted Data Format
 Shun Sakai <sorairolake@protonmail.ch>
-v0.1.0, 2023-08-24
+v0.1.0, 2023-08-25
 :sectanchors:
 :toc: preamble
 
@@ -27,6 +27,12 @@ XChaCha20-Poly1305 is the AEAD algorithm from
 https://datatracker.ietf.org/doc/html/draft-arciszewski-xchacha-03[draft-arciszewski-xchacha-03].
 
 == Format overview
+
+An abcrypt file is composed of two parts: a <<_header_format,header>>
+containing the required data and a <<_file_body,file body>> encrypted with the
+derived key.
+
+abcrypt files may use the extension `.abc` or `.abcrypt`.
 
 .The structure of the abcrypt format
 |===
