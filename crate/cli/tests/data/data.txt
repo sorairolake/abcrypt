@@ -1,1 +1,1 @@
-Hello, world!
+../../../abcrypt/tests/data/data.txt

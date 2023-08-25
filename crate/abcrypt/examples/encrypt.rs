@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-//! An example of encrypting a file to the scrypt encrypted data format.
+//! An example of encrypting a file to the abcrypt encrypted data format.
 
 // Lint levels of rustc.
 #![forbid(unsafe_code)]
@@ -20,6 +20,18 @@ use clap::Parser;
 #[derive(Debug, Parser)]
 #[clap(version, about)]
 struct Opt {
+    /// Set the memory size in KiB.
+    #[clap(short, long, default_value("4096"), value_name("NUM"))]
+    memory_size: u32,
+
+    /// Set the number of iterations.
+    #[clap(short('t'), long, default_value("3"), value_name("NUM"))]
+    iterations: u32,
+
+    /// Set the degree of parallelism.
+    #[clap(short, long, default_value("1"), value_name("NUM"))]
+    parallelism: u32,
+
     /// File to encrypt.
     #[clap(value_name("INFILE"))]
     input: std::path::PathBuf,
@@ -36,14 +48,16 @@ fn main() -> anyhow::Result<()> {
     let plaintext = std::fs::read(&opt.input)
         .with_context(|| format!("could not read data from {}", opt.input.display()))?;
 
-    let password = dialoguer::Password::with_theme(&dialoguer::theme::ColorfulTheme::default())
-        .with_prompt("Enter password")
-        .with_confirmation("Confirm password", "Passwords mismatch, try again")
+    let passphrase = dialoguer::Password::with_theme(&dialoguer::theme::ColorfulTheme::default())
+        .with_prompt("Enter passphrase")
+        .with_confirmation("Confirm passphrase", "Passphrases mismatch, try again")
         .interact()
-        .context("could not read password")?;
-    let cipher = scryptenc::Encryptor::new(plaintext, password);
-    let encrypted = cipher.encrypt_to_vec();
-    std::fs::write(opt.output, encrypted)
+        .context("could not read passphrase")?;
+    let params =
+        abcrypt::argon2::Params::new(opt.memory_size, opt.iterations, opt.parallelism, None)?;
+    let cipher = abcrypt::Encryptor::with_params(plaintext, passphrase, params)?;
+    let ciphertext = cipher.encrypt_to_vec();
+    std::fs::write(opt.output, ciphertext)
         .with_context(|| format!("could not write the result to {}", opt.input.display()))?;
     Ok(())
 }

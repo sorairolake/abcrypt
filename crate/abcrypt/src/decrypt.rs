@@ -2,99 +2,91 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-//! Decrypts from the scrypt encrypted data format.
+//! Decrypts from the abcrypt encrypted data format.
 
 use alloc::vec::Vec;
 
-use aes::{
-    cipher::{generic_array::GenericArray, KeyIvInit, StreamCipher},
-    Aes256,
+use argon2::Argon2;
+use chacha20poly1305::{
+    aead::generic_array::typenum::Unsigned, aead::Aead, AeadCore, KeyInit, XChaCha20Poly1305,
 };
-use ctr::Ctr128BE;
 
 use crate::{
     error::Error,
-    format::{self, DerivedKey, Header, HeaderMac},
+    format::{DerivedKey, Header},
+    ARGON2_ALGORITHM, ARGON2_VERSION,
 };
 
-/// Decryptor for the scrypt encrypted data format.
+/// Decryptor for the abcrypt encrypted data format.
 #[derive(Clone, Debug)]
 pub struct Decryptor {
     header: Header,
     dk: DerivedKey,
-    data: Vec<u8>,
-    header_mac: HeaderMac,
+    ciphertext: Vec<u8>,
 }
 
 impl Decryptor {
-    #[allow(clippy::missing_panics_doc)]
     /// Creates a new `Decryptor`.
     ///
     /// # Errors
     ///
-    /// This function will return an error in the following situations:
+    /// Returns [`Err`] if any of the following are true:
     ///
-    /// - `data` is less than 128 bytes.
-    /// - The magic number is not "scrypt".
-    /// - The version number other than `0`.
-    /// - The scrypt parameters are invalid.
-    /// - SHA-256 checksum of the header mismatch.
-    /// - HMAC-SHA-256 of the header is invalid.
+    /// - `data` is shorter than 156 bytes.
+    /// - The magic number is invalid.
+    /// - The version number is the unrecognized abcrypt version number.
+    /// - The Argon2 parameters are invalid.
+    /// - The Argon2 context is invalid.
+    /// - The MAC (authentication tag) of the header is invalid.
     ///
     /// # Examples
     ///
     /// ```
-    /// # use scryptenc::{scrypt::Params, Decryptor, Encryptor};
+    /// # use abcrypt::{argon2::Params, Decryptor, Encryptor};
     /// #
     /// let data = b"Hello, world!";
-    /// let password = "password";
+    /// let passphrase = "passphrase";
     ///
-    /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
-    /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
-    /// # assert_ne!(encrypted, data);
+    /// let params = Params::new(32, 3, 4, None).unwrap();
+    /// let ciphertext = Encryptor::with_params(data, passphrase, params)
+    ///     .map(Encryptor::encrypt_to_vec)
+    ///     .unwrap();
+    /// # assert_ne!(ciphertext, data);
     ///
-    /// let cipher = Decryptor::new(encrypted, password).unwrap();
-    /// let decrypted = cipher.decrypt_to_vec().unwrap();
-    /// # assert_eq!(decrypted, data);
+    /// let cipher = Decryptor::new(ciphertext, passphrase).unwrap();
+    /// let plaintext = cipher.decrypt_to_vec().unwrap();
+    /// # assert_eq!(plaintext, data);
     /// ```
-    pub fn new(data: impl AsRef<[u8]>, password: impl AsRef<[u8]>) -> Result<Self, Error> {
-        let inner = |data: &[u8], password: &[u8]| -> Result<Self, Error> {
+    pub fn new(data: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Self, Error> {
+        let inner = |data: &[u8], passphrase: &[u8]| -> Result<Self, Error> {
             let mut header = Header::parse(data)?;
 
-            header.verify_checksum(&data[48..64])?;
-
-            // The derived key size is 64 bytes. The first 256 bits are for AES-256-CTR key,
-            // and the last 256 bits are for HMAC-SHA-256 key.
-            let mut dk = [u8::default(); 64];
-            scrypt::scrypt(password, &header.salt(), &header.params(), &mut dk)
-                .expect("derived key size should be 64 bytes");
+            // The derived key size is 96 bytes. The first 256 bits are for
+            // XChaCha20-Poly1305 key, and the last 512 bits are for BLAKE2b-512-MAC key.
+            let mut dk = [u8::default(); DerivedKey::SIZE];
+            Argon2::new(ARGON2_ALGORITHM, ARGON2_VERSION, header.params())
+                .hash_password_into(passphrase, &header.salt(), &mut dk)
+                .map_err(Error::InvalidArgon2Context)?;
             let dk = DerivedKey::new(dk);
 
-            header.verify_mac(&dk, &data[64..Header::SIZE])?;
+            header.verify_mac(&dk.mac(), &data[76..Header::SIZE])?;
 
-            let (data, header_mac) =
-                data[Header::SIZE..].split_at(data.len() - Header::SIZE - HeaderMac::SIZE);
-            let data = data.to_vec();
-            let header_mac = HeaderMac::new(
-                header_mac
-                    .try_into()
-                    .expect("output size of HMAC-SHA-256 should be 256 bits"),
-            );
+            let ciphertext = data[Header::SIZE..].to_vec();
             Ok(Self {
                 header,
                 dk,
-                data,
-                header_mac,
+                ciphertext,
             })
         };
-        inner(data.as_ref(), password.as_ref())
+        inner(data.as_ref(), passphrase.as_ref())
     }
 
     /// Decrypts data into `buf`.
     ///
     /// # Errors
     ///
-    /// Returns `Err` if HMAC-SHA-256 at EOF is invalid.
+    /// Returns [`Err`] if the MAC (authentication tag) of the ciphertext is
+    /// invalid.
     ///
     /// # Panics
     ///
@@ -103,39 +95,30 @@ impl Decryptor {
     /// # Examples
     ///
     /// ```
-    /// # use scryptenc::{scrypt::Params, Decryptor, Encryptor};
+    /// # use abcrypt::{argon2::Params, Decryptor, Encryptor};
     /// #
     /// let data = b"Hello, world!";
-    /// let password = "password";
+    /// let passphrase = "passphrase";
     ///
-    /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
-    /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
-    /// # assert_ne!(encrypted, data);
+    /// let params = Params::new(32, 3, 4, None).unwrap();
+    /// let ciphertext = Encryptor::with_params(data, passphrase, params)
+    ///     .map(Encryptor::encrypt_to_vec)
+    ///     .unwrap();
+    /// # assert_ne!(ciphertext, data);
     ///
-    /// let cipher = Decryptor::new(encrypted, password).unwrap();
+    /// let cipher = Decryptor::new(ciphertext, passphrase).unwrap();
     /// let mut buf = [u8::default(); 13];
     /// cipher.decrypt(&mut buf).unwrap();
     /// # assert_eq!(buf, data.as_slice());
     /// ```
     pub fn decrypt(self, mut buf: impl AsMut<[u8]>) -> Result<(), Error> {
         let inner = |decryptor: Self, buf: &mut [u8]| -> Result<(), Error> {
-            type Aes256Ctr128BE = Ctr128BE<Aes256>;
+            let cipher = XChaCha20Poly1305::new(&decryptor.dk.encrypt());
+            let plaintext = cipher
+                .decrypt(&decryptor.header.nonce(), decryptor.ciphertext.as_slice())
+                .map_err(Error::InvalidMac)?;
 
-            let input = [decryptor.header.as_bytes().as_slice(), &decryptor.data].concat();
-
-            let mut cipher =
-                Aes256Ctr128BE::new(&decryptor.dk.encrypt().into(), &GenericArray::default());
-            let mut data = decryptor.data;
-            cipher.apply_keystream(&mut data);
-
-            format::verify_mac(
-                &decryptor.dk.mac(),
-                &input,
-                &decryptor.header_mac.as_bytes(),
-            )
-            .map_err(Error::InvalidMac)?;
-
-            buf.copy_from_slice(&data);
+            buf.copy_from_slice(&plaintext);
             Ok(())
         };
         inner(self, buf.as_mut())
@@ -145,23 +128,26 @@ impl Decryptor {
     ///
     /// # Errors
     ///
-    /// Returns `Err` if HMAC-SHA-256 at EOF is invalid.
+    /// Returns [`Err`] if the MAC (authentication tag) of the ciphertext is
+    /// invalid.
     ///
     /// # Examples
     ///
     /// ```
-    /// # use scryptenc::{scrypt::Params, Decryptor, Encryptor};
+    /// # use abcrypt::{argon2::Params, Decryptor, Encryptor};
     /// #
     /// let data = b"Hello, world!";
-    /// let password = "password";
+    /// let passphrase = "passphrase";
     ///
-    /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
-    /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
-    /// # assert_ne!(encrypted, data);
+    /// let params = Params::new(32, 3, 4, None).unwrap();
+    /// let ciphertext = Encryptor::with_params(data, passphrase, params)
+    ///     .map(Encryptor::encrypt_to_vec)
+    ///     .unwrap();
+    /// # assert_ne!(ciphertext, data);
     ///
-    /// let cipher = Decryptor::new(encrypted, password).unwrap();
-    /// let decrypted = cipher.decrypt_to_vec().unwrap();
-    /// # assert_eq!(decrypted, data);
+    /// let cipher = Decryptor::new(ciphertext, passphrase).unwrap();
+    /// let plaintext = cipher.decrypt_to_vec().unwrap();
+    /// # assert_eq!(plaintext, data);
     /// ```
     pub fn decrypt_to_vec(self) -> Result<Vec<u8>, Error> {
         let mut buf = vec![u8::default(); self.out_len()];
@@ -174,21 +160,23 @@ impl Decryptor {
     /// # Examples
     ///
     /// ```
-    /// # use scryptenc::{scrypt::Params, Decryptor, Encryptor};
+    /// # use abcrypt::{argon2::Params, Decryptor, Encryptor};
     /// #
     /// let data = b"Hello, world!";
-    /// let password = "password";
+    /// let passphrase = "passphrase";
     ///
-    /// let params = Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap();
-    /// let encrypted = Encryptor::with_params(data, password, params).encrypt_to_vec();
-    /// # assert_ne!(encrypted, data);
+    /// let params = Params::new(32, 3, 4, None).unwrap();
+    /// let ciphertext = Encryptor::with_params(data, passphrase, params)
+    ///     .map(Encryptor::encrypt_to_vec)
+    ///     .unwrap();
+    /// # assert_ne!(ciphertext, data);
     ///
-    /// let cipher = Decryptor::new(encrypted, password).unwrap();
+    /// let cipher = Decryptor::new(ciphertext, passphrase).unwrap();
     /// assert_eq!(cipher.out_len(), 13);
     /// ```
     #[must_use]
     #[inline]
     pub fn out_len(&self) -> usize {
-        self.data.len()
+        self.ciphertext.len() - <XChaCha20Poly1305 as AeadCore>::TagSize::USIZE
     }
 }

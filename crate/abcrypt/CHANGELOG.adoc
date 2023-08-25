@@ -4,7 +4,7 @@
 
 = Changelog
 :toc: macro
-:project-url: https://github.com/sorairolake/scryptenc-rs
+:project-url: https://github.com/sorairolake/abcrypt
 :compare-url: {project-url}/compare
 :issue-url: {project-url}/issues
 :pull-request-url: {project-url}/pull
@@ -16,132 +16,7 @@ project adheres to https://semver.org/[Semantic Versioning].
 
 toc::[]
 
-== {compare-url}/v0.7.0\...v0.7.1[0.7.1] - 2023-08-18
-
-=== Changed
-
-* Change `SPDX-FileCopyrightText` of each file to include only the year of
-  initial publication ({pull-request-url}/45[#45])
-* Remove unnecessary newline after period ({pull-request-url}/46[#46])
-
-== {compare-url}/v0.6.0\...v0.7.0[0.7.0] - 2023-08-11
-
-=== Changed
-
-* Split `Params` from `format.rs` ({pull-request-url}/38[#38])
-* Use `StdRng` instead of `ChaCha20Rng` to generate salt
-  ({pull-request-url}/38[#38])
-* Rename `Error::InvalidHeaderSignature` to `Error::InvalidHeaderMac`
-  ({pull-request-url}/40[#40])
-* Rename `Error::InvalidSignature` to `Error::InvalidMac`
-  ({pull-request-url}/40[#40])
-
-== {compare-url}/v0.5.3\...v0.6.0[0.6.0] - 2023-08-09
-
-=== Added
-
-* Add doctests to public API ({pull-request-url}/34[#34])
-* Implement `Clone`, `Copy`, `Eq` and `PartialEq` for `Error`
-  ({pull-request-url}/35[#35])
-
-=== Fixed
-
-* Fix `benches/encrypt.rs` ({pull-request-url}/30[#30])
-
-== {compare-url}/v0.5.2\...v0.5.3[0.5.3] - 2023-08-06
-
-=== Changed
-
-* Update documentation ({pull-request-url}/26[#26])
-
-== {compare-url}/v0.5.1\...v0.5.2[0.5.2] - 2023-08-01
-
-=== Changed
-
-* Change the comment header to the format recommended by the REUSE
-  Specification ({pull-request-url}/23[#23])
-* Make this project REUSE compliant ({pull-request-url}/24[#24])
-
-== {compare-url}/v0.5.0\...v0.5.1[0.5.1] - 2023-07-04
-
-=== Changed
-
-* Enable `doc_auto_cfg` feature
-
-== {compare-url}/v0.4.1\...v0.5.0[0.5.0] - 2023-03-12
-
-=== Added
-
-* Add `Error::InvalidHeaderSignature`
-
-=== Changed
-
-* Bump `scrypt` to v0.11
-* Bump MSRV to 1.60.0
-* Change to return `Error::InvalidHeaderSignature` if the header signature was
-  invalid
-
-== {compare-url}/v0.4.0\...v0.4.1[0.4.1] - 2022-11-09
-
-=== Changed
-
-* Re-export `digest` and `scrypt` crates
-
-== {compare-url}/v0.3.1\...v0.4.0[0.4.0] - 2022-11-04
-
-=== Added
-
-* Add `no_std` support
-* Add benchmarks
-
-=== Removed
-
-* Remove `Error::Io`
-
-== {compare-url}/v0.3.0\...v0.3.1[0.3.1] - 2022-11-01
-
-=== Changed
-
-* Change password input prompt of examples
-* Change `Result::unwrap()` to `Result::expect()`
-
-== {compare-url}/v0.2.1\...v0.3.0[0.3.0] - 2022-10-31
-
-=== Changed
-
-* Change the inner structure of `Params`
-* Change error message
-* Update examples
-* Change order of parameters in public API
-
-=== Removed
-
-* Remove `From<scrypt::Params>` for `Params`
-* Remove `TryFrom<Params>` for `scrypt::Params`
-
-== {compare-url}/v0.2.0\...v0.2.1[0.2.1] - 2022-10-24
-
-=== Added
-
-* Add `inline` attribute
-
-== {compare-url}/v0.1.0\...v0.2.0[0.2.0] - 2022-10-14
-
-=== Added
-
-* Add `Encryptor::out_len()` and `Decryptor::out_len()`
-* Add `Clone` for `Encryptor` and `Decryptor`
-
-=== Changed
-
-* Change the type of parameters for `Encryptor::encrypt()` and
-  `Decryptor::decrypt()`. These now takes `impl AsMut<[u8]>`.
-* Rename `Encryptor::new()` to `Encryptor::with_params()`
-* Change `Encryptor::new()` to use the recommended scrypt parameters instead of
-  taking parameters
-* Change the structure of types about the format
-
-== {project-url}/releases/tag/v0.1.0[0.1.0] - 2022-10-09
+== {project-url}[Unreleased]
 
 === Added
 

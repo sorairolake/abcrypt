@@ -5,11 +5,16 @@
 version: 2
 updates:
   - package-ecosystem: "cargo"
-    directory: "/"
+    directory: "/crate/abcrypt"
     schedule:
       interval: "weekly"
     ignore:
       - dependency-name: "clap"
+
+  - package-ecosystem: "cargo"
+    directory: "/crate/cli"
+    schedule:
+      interval: "weekly"
 
   - package-ecosystem: "github-actions"
     directory: "/"

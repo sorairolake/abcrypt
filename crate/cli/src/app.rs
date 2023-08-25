@@ -4,19 +4,19 @@
 
 use std::path::Path;
 
+use abcrypt::{argon2, Decryptor, Encryptor};
 use anyhow::{bail, Context};
 use clap::Parser;
-use scryptenc::{scrypt, Decryptor, Encryptor, Error as ScryptencError};
 
 use crate::{
     cli::{Command, Opt},
-    input, output, params, password,
+    input, output, params, passphrase,
 };
 
-/// Ensures that there are no conflicts if reading the password from stdin.
-fn ensure_stdin_does_not_conflict(path: &Path) -> anyhow::Result<()> {
-    if path == Path::new("-") {
-        bail!("cannot read both password and input data from stdin");
+/// Ensures that there are no conflicts if reading the passphrase from stdin.
+fn ensure_stdin_does_not_conflict(path: Option<&Path>) -> anyhow::Result<()> {
+    if path.is_none() {
+        bail!("cannot read both passphrase and input data from stdin");
     }
     Ok(())
 }
@@ -34,59 +34,34 @@ pub fn run() -> anyhow::Result<()> {
     if let Some(command) = opt.command {
         match command {
             Command::Encrypt(arg) => {
-                let input = input::read(&arg.input)?;
+                if arg.passphrase_from_stdin {
+                    ensure_stdin_does_not_conflict(arg.input.as_deref())?;
+                }
+                let input = input::read(arg.input.as_deref())?;
 
-                let password = match (
+                let passphrase = match (
                     arg.passphrase_from_tty,
                     arg.passphrase_from_stdin,
                     arg.passphrase_from_tty_once,
                     arg.passphrase_from_env,
                     arg.passphrase_from_file,
                 ) {
-                    (_, true, ..) => {
-                        ensure_stdin_does_not_conflict(&arg.input)?;
-                        password::read_password_from_stdin()
-                    }
-                    (_, _, true, ..) => password::read_password_from_tty_once(),
-                    (.., Some(env), _) => password::read_password_from_env(&env),
-                    (.., Some(file)) => password::read_password_from_file(&file),
-                    _ => password::read_password_from_tty(),
+                    (_, true, ..) => passphrase::read_passphrase_from_stdin(),
+                    (_, _, true, ..) => passphrase::read_passphrase_from_tty_once(),
+                    (.., Some(env), _) => passphrase::read_passphrase_from_env(&env),
+                    (.., Some(file)) => passphrase::read_passphrase_from_file(&file),
+                    _ => passphrase::read_passphrase_from_tty(),
                 }?;
 
-                let params = if let (Some(log_n), Some(r), Some(p)) = (arg.log_n, arg.r, arg.p) {
-                    scrypt::Params::new(log_n, r, p, scrypt::Params::RECOMMENDED_LEN)
-                        .expect("encryption parameters should be valid")
-                } else {
-                    params::new(arg.max_memory, arg.max_memory_fraction, arg.max_time)
-                };
+                let params =
+                    argon2::Params::new(arg.memory_size, arg.iterations, arg.parallelism, None)
+                        .map_err(abcrypt::Error::InvalidArgon2Params)?;
 
                 if arg.verbose {
-                    if arg.force {
-                        params::displayln_without_resources(params.log_n(), params.r(), params.p());
-                    } else {
-                        params::displayln_with_resources(
-                            params.log_n(),
-                            params.r(),
-                            params.p(),
-                            arg.max_memory,
-                            arg.max_memory_fraction,
-                            arg.max_time,
-                        );
-                    }
+                    params::displayln(params.m_cost(), params.t_cost(), params.p_cost());
                 }
 
-                if !arg.force {
-                    params::check(
-                        arg.max_memory,
-                        arg.max_memory_fraction,
-                        arg.max_time,
-                        params.log_n(),
-                        params.r(),
-                        params.p(),
-                    )?;
-                }
-
-                let cipher = Encryptor::with_params(input, password, params);
+                let cipher = Encryptor::with_params(input, passphrase, params)?;
                 let encrypted = cipher.encrypt_to_vec();
 
                 if let Some(file) = arg.output {
@@ -96,61 +71,37 @@ pub fn run() -> anyhow::Result<()> {
                 }
             }
             Command::Decrypt(arg) => {
-                let input = input::read(&arg.input)?;
+                if arg.passphrase_from_stdin {
+                    ensure_stdin_does_not_conflict(arg.input.as_deref())?;
+                }
+                let input = input::read(arg.input.as_deref())?;
 
-                let password = match (
+                let passphrase = match (
                     arg.passphrase_from_tty,
                     arg.passphrase_from_stdin,
                     arg.passphrase_from_env,
                     arg.passphrase_from_file,
                 ) {
-                    (_, true, ..) => {
-                        ensure_stdin_does_not_conflict(&arg.input)?;
-                        password::read_password_from_stdin()
-                    }
-                    (.., Some(env), _) => password::read_password_from_env(&env),
-                    (.., Some(file)) => password::read_password_from_file(&file),
-                    _ => password::read_password_from_tty_once(),
+                    (_, true, ..) => passphrase::read_passphrase_from_stdin(),
+                    (.., Some(env), _) => passphrase::read_passphrase_from_env(&env),
+                    (.., Some(file)) => passphrase::read_passphrase_from_file(&file),
+                    _ => passphrase::read_passphrase_from_tty_once(),
                 }?;
 
-                let params = params::get(&input, &arg.input)?;
+                let params = params::get(&input)?;
                 if arg.verbose {
-                    if arg.force {
-                        params::displayln_without_resources(params.log_n(), params.r(), params.p());
-                    } else {
-                        params::displayln_with_resources(
-                            params.log_n(),
-                            params.r(),
-                            params.p(),
-                            arg.max_memory,
-                            arg.max_memory_fraction,
-                            arg.max_time,
-                        );
-                    }
+                    params::displayln(params.m_cost(), params.t_cost(), params.p_cost());
                 }
 
-                if !arg.force {
-                    params::check(
-                        arg.max_memory,
-                        arg.max_memory_fraction,
-                        arg.max_time,
-                        params.log_n(),
-                        params.r(),
-                        params.p(),
-                    )?;
-                }
-
-                let cipher = match Decryptor::new(input, password) {
-                    c @ Err(ScryptencError::InvalidHeaderMac(_)) => {
-                        c.context("password is incorrect")
+                let cipher = match Decryptor::new(input, passphrase) {
+                    c @ Err(abcrypt::Error::InvalidHeaderMac(_)) => {
+                        c.context("passphrase is incorrect")
                     }
-                    c => c.with_context(|| {
-                        format!("the header in {} is invalid", arg.input.display())
-                    }),
+                    c => c.context("the header in the encrypted data is invalid"),
                 }?;
                 let decrypted = cipher
                     .decrypt_to_vec()
-                    .with_context(|| format!("{} is corrupted", arg.input.display()))?;
+                    .context("the encrypted data is corrupted")?;
 
                 if let Some(file) = arg.output {
                     output::write_to_file(&file, &decrypted)?;
@@ -159,37 +110,23 @@ pub fn run() -> anyhow::Result<()> {
                 }
             }
             Command::Information(arg) => {
-                let input = input::read(&arg.input)?;
+                let input = input::read(arg.input.as_deref())?;
 
-                let params = params::get(&input, &arg.input)?;
-                #[cfg(any(
-                    feature = "cbor",
-                    feature = "json",
-                    feature = "msgpack",
-                    feature = "toml",
-                    feature = "yaml"
-                ))]
-                if let Some(format) = arg.format {
-                    let params = params::Params::new(params);
+                let params = params::get(&input)?;
+                #[cfg(feature = "json")]
+                if arg.json {
+                    let params = params::Params::new(&params);
                     let output = params
-                        .to_vec(format)
+                        .to_vec()
                         .context("could not output the encryption parameters")?;
                     if let Ok(string) = std::str::from_utf8(&output) {
                         println!("{string}");
                     } else {
                         output::write_to_stdout(&output)?;
                     }
-                } else {
-                    params::displayln_without_resources(params.log_n(), params.r(), params.p());
+                    return Ok(());
                 }
-                #[cfg(not(any(
-                    feature = "cbor",
-                    feature = "json",
-                    feature = "msgpack",
-                    feature = "toml",
-                    feature = "yaml"
-                )))]
-                params::displayln_without_resources(params.log_n(), params.r(), params.p());
+                params::displayln(params.m_cost(), params.t_cost(), params.p_cost());
             }
         }
     } else {

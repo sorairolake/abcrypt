@@ -6,45 +6,44 @@
 
 use core::fmt;
 
-use hmac::digest::MacError;
-use scrypt::errors::InvalidParams;
+use blake2::digest::MacError;
 
-/// The error type for the scrypt encrypted data format.
+/// The error type for the abcrypt encrypted data format.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Error {
-    /// The encrypted data was shorter than 128 bytes.
+    /// The encrypted data was shorter than 156 bytes.
     InvalidLength,
 
     /// The magic number (file signature) was invalid.
     InvalidMagicNumber,
 
-    /// The version was the unrecognized scrypt version number.
+    /// The version was the unrecognized abcrypt version number.
     UnknownVersion(u8),
 
-    /// The scrypt parameters were invalid.
-    InvalidParams(InvalidParams),
+    /// The Argon2 parameters were invalid.
+    InvalidArgon2Params(argon2::Error),
 
-    /// The checksum of the header mismatched.
-    InvalidChecksum,
+    /// The Argon2 context was invalid.
+    InvalidArgon2Context(argon2::Error),
 
     /// The MAC (authentication tag) of the header was invalid.
     InvalidHeaderMac(MacError),
 
-    /// The MAC (authentication tag) at EOF was invalid.
-    InvalidMac(MacError),
+    /// The MAC (authentication tag) of the ciphertext was invalid.
+    InvalidMac(chacha20poly1305::Error),
 }
 
 impl fmt::Display for Error {
     #[inline]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            Self::InvalidLength => write!(f, "encrypted data is shorter than 128 bytes"),
+            Self::InvalidLength => write!(f, "encrypted data is shorter than 156 bytes"),
             Self::InvalidMagicNumber => write!(f, "invalid magic number"),
             Self::UnknownVersion(version) => write!(f, "unknown version number `{version}`"),
-            Self::InvalidParams(err) => write!(f, "{err}"),
-            Self::InvalidChecksum => write!(f, "checksum mismatch"),
+            Self::InvalidArgon2Params(_) => write!(f, "invalid Argon2 parameters"),
+            Self::InvalidArgon2Context(_) => write!(f, "invalid Argon2 context"),
             Self::InvalidHeaderMac(_) => write!(f, "invalid header MAC"),
-            Self::InvalidMac(_) => write!(f, "invalid MAC"),
+            Self::InvalidMac(_) => write!(f, "invalid ciphertext MAC"),
         }
     }
 }
@@ -54,16 +53,11 @@ impl std::error::Error for Error {
     #[inline]
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         match self {
-            Self::InvalidHeaderMac(err) | Self::InvalidMac(err) => Some(err),
+            Self::InvalidArgon2Params(err) | Self::InvalidArgon2Context(err) => Some(err),
+            Self::InvalidHeaderMac(err) => Some(err),
+            Self::InvalidMac(err) => Some(err),
             _ => None,
         }
-    }
-}
-
-impl From<InvalidParams> for Error {
-    #[inline]
-    fn from(source: InvalidParams) -> Self {
-        Self::InvalidParams(source)
     }
 }
 
@@ -80,17 +74,20 @@ mod tests {
             Error::UnknownVersion(u8::MAX)
         );
         assert_eq!(
-            Error::InvalidParams(InvalidParams).clone(),
-            Error::InvalidParams(InvalidParams)
+            Error::InvalidArgon2Params(argon2::Error::AdTooLong).clone(),
+            Error::InvalidArgon2Params(argon2::Error::AdTooLong)
         );
-        assert_eq!(Error::InvalidChecksum.clone(), Error::InvalidChecksum);
+        assert_eq!(
+            Error::InvalidArgon2Context(argon2::Error::AdTooLong).clone(),
+            Error::InvalidArgon2Context(argon2::Error::AdTooLong)
+        );
         assert_eq!(
             Error::InvalidHeaderMac(MacError).clone(),
             Error::InvalidHeaderMac(MacError)
         );
         assert_eq!(
-            Error::InvalidMac(MacError).clone(),
-            Error::InvalidMac(MacError)
+            Error::InvalidMac(chacha20poly1305::Error).clone(),
+            Error::InvalidMac(chacha20poly1305::Error)
         );
     }
 
@@ -115,13 +112,13 @@ mod tests {
         }
 
         {
-            let a = Error::InvalidParams(InvalidParams);
+            let a = Error::InvalidArgon2Params(argon2::Error::AdTooLong);
             let b = a;
             assert_eq!(a, b);
         }
 
         {
-            let a = Error::InvalidChecksum;
+            let a = Error::InvalidArgon2Context(argon2::Error::AdTooLong);
             let b = a;
             assert_eq!(a, b);
         }
@@ -133,7 +130,7 @@ mod tests {
         }
 
         {
-            let a = Error::InvalidMac(MacError);
+            let a = Error::InvalidMac(chacha20poly1305::Error);
             let b = a;
             assert_eq!(a, b);
         }
@@ -151,17 +148,23 @@ mod tests {
             "UnknownVersion(255)"
         );
         assert_eq!(
-            format!("{:?}", Error::InvalidParams(InvalidParams)),
-            "InvalidParams(InvalidParams)"
+            format!("{:?}", Error::InvalidArgon2Params(argon2::Error::AdTooLong)),
+            "InvalidArgon2Params(AdTooLong)"
         );
-        assert_eq!(format!("{:?}", Error::InvalidChecksum), "InvalidChecksum");
+        assert_eq!(
+            format!(
+                "{:?}",
+                Error::InvalidArgon2Context(argon2::Error::AdTooLong)
+            ),
+            "InvalidArgon2Context(AdTooLong)"
+        );
         assert_eq!(
             format!("{:?}", Error::InvalidHeaderMac(MacError)),
             "InvalidHeaderMac(MacError)"
         );
         assert_eq!(
-            format!("{:?}", Error::InvalidMac(MacError)),
-            "InvalidMac(MacError)"
+            format!("{:?}", Error::InvalidMac(chacha20poly1305::Error)),
+            "InvalidMac(Error)"
         );
     }
 
@@ -171,20 +174,35 @@ mod tests {
         assert_eq!(Error::InvalidLength, Error::InvalidLength);
         assert_ne!(Error::InvalidLength, Error::InvalidMagicNumber);
         assert_ne!(Error::InvalidLength, Error::UnknownVersion(u8::MAX));
-        assert_ne!(Error::InvalidLength, Error::InvalidParams(InvalidParams));
-        assert_ne!(Error::InvalidLength, Error::InvalidChecksum);
+        assert_ne!(
+            Error::InvalidLength,
+            Error::InvalidArgon2Params(argon2::Error::AdTooLong)
+        );
+        assert_ne!(
+            Error::InvalidLength,
+            Error::InvalidArgon2Context(argon2::Error::AdTooLong)
+        );
         assert_ne!(Error::InvalidLength, Error::InvalidHeaderMac(MacError));
-        assert_ne!(Error::InvalidLength, Error::InvalidMac(MacError));
+        assert_ne!(
+            Error::InvalidLength,
+            Error::InvalidMac(chacha20poly1305::Error)
+        );
         assert_ne!(Error::InvalidMagicNumber, Error::InvalidLength);
         assert_eq!(Error::InvalidMagicNumber, Error::InvalidMagicNumber);
         assert_ne!(Error::InvalidMagicNumber, Error::UnknownVersion(u8::MAX));
         assert_ne!(
             Error::InvalidMagicNumber,
-            Error::InvalidParams(InvalidParams)
+            Error::InvalidArgon2Params(argon2::Error::AdTooLong)
         );
-        assert_ne!(Error::InvalidMagicNumber, Error::InvalidChecksum);
+        assert_ne!(
+            Error::InvalidMagicNumber,
+            Error::InvalidArgon2Context(argon2::Error::AdTooLong)
+        );
         assert_ne!(Error::InvalidMagicNumber, Error::InvalidHeaderMac(MacError));
-        assert_ne!(Error::InvalidMagicNumber, Error::InvalidMac(MacError));
+        assert_ne!(
+            Error::InvalidMagicNumber,
+            Error::InvalidMac(chacha20poly1305::Error)
+        );
         assert_ne!(Error::UnknownVersion(u8::MAX), Error::InvalidLength);
         assert_ne!(Error::UnknownVersion(u8::MAX), Error::InvalidMagicNumber);
         assert_eq!(
@@ -193,43 +211,76 @@ mod tests {
         );
         assert_ne!(
             Error::UnknownVersion(u8::MAX),
-            Error::InvalidParams(InvalidParams)
+            Error::InvalidArgon2Params(argon2::Error::AdTooLong)
         );
-        assert_ne!(Error::UnknownVersion(u8::MAX), Error::InvalidChecksum);
+        assert_ne!(
+            Error::UnknownVersion(u8::MAX),
+            Error::InvalidArgon2Context(argon2::Error::AdTooLong)
+        );
         assert_ne!(
             Error::UnknownVersion(u8::MAX),
             Error::InvalidHeaderMac(MacError)
         );
-        assert_ne!(Error::UnknownVersion(u8::MAX), Error::InvalidMac(MacError));
-        assert_ne!(Error::InvalidParams(InvalidParams), Error::InvalidLength);
         assert_ne!(
-            Error::InvalidParams(InvalidParams),
+            Error::UnknownVersion(u8::MAX),
+            Error::InvalidMac(chacha20poly1305::Error)
+        );
+        assert_ne!(
+            Error::InvalidArgon2Params(argon2::Error::AdTooLong),
+            Error::InvalidLength
+        );
+        assert_ne!(
+            Error::InvalidArgon2Params(argon2::Error::AdTooLong),
             Error::InvalidMagicNumber
         );
         assert_ne!(
-            Error::InvalidParams(InvalidParams),
+            Error::InvalidArgon2Params(argon2::Error::AdTooLong),
             Error::UnknownVersion(u8::MAX)
         );
         assert_eq!(
-            Error::InvalidParams(InvalidParams),
-            Error::InvalidParams(InvalidParams)
+            Error::InvalidArgon2Params(argon2::Error::AdTooLong),
+            Error::InvalidArgon2Params(argon2::Error::AdTooLong)
         );
-        assert_ne!(Error::InvalidParams(InvalidParams), Error::InvalidChecksum);
         assert_ne!(
-            Error::InvalidParams(InvalidParams),
+            Error::InvalidArgon2Params(argon2::Error::AdTooLong),
+            Error::InvalidArgon2Context(argon2::Error::AdTooLong)
+        );
+        assert_ne!(
+            Error::InvalidArgon2Params(argon2::Error::AdTooLong),
             Error::InvalidHeaderMac(MacError)
         );
         assert_ne!(
-            Error::InvalidParams(InvalidParams),
-            Error::InvalidMac(MacError)
+            Error::InvalidArgon2Params(argon2::Error::AdTooLong),
+            Error::InvalidMac(chacha20poly1305::Error)
         );
-        assert_ne!(Error::InvalidChecksum, Error::InvalidLength);
-        assert_ne!(Error::InvalidChecksum, Error::InvalidMagicNumber);
-        assert_ne!(Error::InvalidChecksum, Error::UnknownVersion(u8::MAX));
-        assert_ne!(Error::InvalidChecksum, Error::InvalidParams(InvalidParams));
-        assert_eq!(Error::InvalidChecksum, Error::InvalidChecksum);
-        assert_ne!(Error::InvalidChecksum, Error::InvalidHeaderMac(MacError));
-        assert_ne!(Error::InvalidChecksum, Error::InvalidMac(MacError));
+        assert_ne!(
+            Error::InvalidArgon2Context(argon2::Error::AdTooLong),
+            Error::InvalidLength
+        );
+        assert_ne!(
+            Error::InvalidArgon2Context(argon2::Error::AdTooLong),
+            Error::InvalidMagicNumber
+        );
+        assert_ne!(
+            Error::InvalidArgon2Context(argon2::Error::AdTooLong),
+            Error::UnknownVersion(u8::MAX)
+        );
+        assert_ne!(
+            Error::InvalidArgon2Context(argon2::Error::AdTooLong),
+            Error::InvalidArgon2Params(argon2::Error::AdTooLong)
+        );
+        assert_eq!(
+            Error::InvalidArgon2Context(argon2::Error::AdTooLong),
+            Error::InvalidArgon2Context(argon2::Error::AdTooLong)
+        );
+        assert_ne!(
+            Error::InvalidArgon2Context(argon2::Error::AdTooLong),
+            Error::InvalidHeaderMac(MacError)
+        );
+        assert_ne!(
+            Error::InvalidArgon2Context(argon2::Error::AdTooLong),
+            Error::InvalidMac(chacha20poly1305::Error)
+        );
         assert_ne!(Error::InvalidHeaderMac(MacError), Error::InvalidLength);
         assert_ne!(Error::InvalidHeaderMac(MacError), Error::InvalidMagicNumber);
         assert_ne!(
@@ -238,37 +289,55 @@ mod tests {
         );
         assert_ne!(
             Error::InvalidHeaderMac(MacError),
-            Error::InvalidParams(InvalidParams)
+            Error::InvalidArgon2Params(argon2::Error::AdTooLong)
         );
-        assert_ne!(Error::InvalidHeaderMac(MacError), Error::InvalidChecksum);
+        assert_ne!(
+            Error::InvalidHeaderMac(MacError),
+            Error::InvalidArgon2Context(argon2::Error::AdTooLong)
+        );
         assert_eq!(
             Error::InvalidHeaderMac(MacError),
             Error::InvalidHeaderMac(MacError)
         );
         assert_ne!(
             Error::InvalidHeaderMac(MacError),
-            Error::InvalidMac(MacError)
+            Error::InvalidMac(chacha20poly1305::Error)
         );
-        assert_ne!(Error::InvalidMac(MacError), Error::InvalidLength);
-        assert_ne!(Error::InvalidMac(MacError), Error::InvalidMagicNumber);
-        assert_ne!(Error::InvalidMac(MacError), Error::UnknownVersion(u8::MAX));
         assert_ne!(
-            Error::InvalidMac(MacError),
-            Error::InvalidParams(InvalidParams)
+            Error::InvalidMac(chacha20poly1305::Error),
+            Error::InvalidLength
         );
-        assert_ne!(Error::InvalidMac(MacError), Error::InvalidChecksum);
         assert_ne!(
-            Error::InvalidMac(MacError),
+            Error::InvalidMac(chacha20poly1305::Error),
+            Error::InvalidMagicNumber
+        );
+        assert_ne!(
+            Error::InvalidMac(chacha20poly1305::Error),
+            Error::UnknownVersion(u8::MAX)
+        );
+        assert_ne!(
+            Error::InvalidMac(chacha20poly1305::Error),
+            Error::InvalidArgon2Params(argon2::Error::AdTooLong)
+        );
+        assert_ne!(
+            Error::InvalidMac(chacha20poly1305::Error),
+            Error::InvalidArgon2Context(argon2::Error::AdTooLong)
+        );
+        assert_ne!(
+            Error::InvalidMac(chacha20poly1305::Error),
             Error::InvalidHeaderMac(MacError)
         );
-        assert_eq!(Error::InvalidMac(MacError), Error::InvalidMac(MacError));
+        assert_eq!(
+            Error::InvalidMac(chacha20poly1305::Error),
+            Error::InvalidMac(chacha20poly1305::Error)
+        );
     }
 
     #[test]
     fn display() {
         assert_eq!(
             format!("{}", Error::InvalidLength),
-            "encrypted data is shorter than 128 bytes"
+            "encrypted data is shorter than 156 bytes"
         );
         assert_eq!(
             format!("{}", Error::InvalidMagicNumber),
@@ -279,15 +348,21 @@ mod tests {
             "unknown version number `255`"
         );
         assert_eq!(
-            format!("{}", Error::InvalidParams(InvalidParams)),
-            "invalid scrypt parameters"
+            format!("{}", Error::InvalidArgon2Params(argon2::Error::AdTooLong)),
+            "invalid Argon2 parameters"
         );
-        assert_eq!(format!("{}", Error::InvalidChecksum), "checksum mismatch");
+        assert_eq!(
+            format!("{}", Error::InvalidArgon2Context(argon2::Error::AdTooLong)),
+            "invalid Argon2 context"
+        );
         assert_eq!(
             format!("{}", Error::InvalidHeaderMac(MacError)),
             "invalid header MAC"
         );
-        assert_eq!(format!("{}", Error::InvalidMac(MacError)), "invalid MAC");
+        assert_eq!(
+            format!("{}", Error::InvalidMac(chacha20poly1305::Error)),
+            "invalid ciphertext MAC"
+        );
     }
 
     #[cfg(feature = "std")]
@@ -298,23 +373,21 @@ mod tests {
         assert!(Error::InvalidLength.source().is_none());
         assert!(Error::InvalidMagicNumber.source().is_none());
         assert!(Error::UnknownVersion(u8::MAX).source().is_none());
-        assert!(Error::InvalidParams(InvalidParams).source().is_none());
-        assert!(Error::InvalidChecksum.source().is_none());
+        assert!(Error::InvalidArgon2Params(argon2::Error::AdTooLong)
+            .source()
+            .unwrap()
+            .is::<argon2::Error>());
+        assert!(Error::InvalidArgon2Context(argon2::Error::AdTooLong)
+            .source()
+            .unwrap()
+            .is::<argon2::Error>());
         assert!(Error::InvalidHeaderMac(MacError)
             .source()
             .unwrap()
             .is::<MacError>());
-        assert!(Error::InvalidMac(MacError)
+        assert!(Error::InvalidMac(chacha20poly1305::Error)
             .source()
             .unwrap()
-            .is::<MacError>());
-    }
-
-    #[test]
-    fn from_invalid_params_to_error() {
-        assert_eq!(
-            Error::from(InvalidParams),
-            Error::InvalidParams(InvalidParams)
-        );
+            .is::<chacha20poly1305::Error>());
     }
 }

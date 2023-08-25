@@ -14,19 +14,16 @@ extern crate test;
 
 use test::Bencher;
 
-use scryptenc::{scrypt::Params, Encryptor};
+use abcrypt::{argon2::Params, Encryptor};
 
-const PASSWORD: &str = "password";
+const PASSPHRASE: &str = "passphrase";
 const TEST_DATA: &[u8] = include_bytes!("../tests/data/data.txt");
 
 #[bench]
 fn encrypt(b: &mut Bencher) {
     b.iter(|| {
-        Encryptor::with_params(
-            TEST_DATA,
-            PASSWORD,
-            Params::new(10, 8, 1, Params::RECOMMENDED_LEN).unwrap(),
-        )
-        .encrypt_to_vec()
+        Encryptor::with_params(TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())
+            .map(Encryptor::encrypt_to_vec)
+            .unwrap()
     });
 }

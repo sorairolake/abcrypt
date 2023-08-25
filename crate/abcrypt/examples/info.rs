@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-//! An example of reading the scrypt parameters from a file.
+//! An example of reading the Argon2 parameters from a file.
 
 // Lint levels of rustc.
 #![forbid(unsafe_code)]
@@ -20,7 +20,7 @@ use clap::Parser;
 #[derive(Debug, Parser)]
 #[clap(version, about)]
 struct Opt {
-    /// File to print the scrypt parameters.
+    /// File to print the Argon2 parameters.
     #[clap(value_name("FILE"))]
     input: std::path::PathBuf,
 }
@@ -32,17 +32,17 @@ fn main() -> anyhow::Result<()> {
     let contents = std::fs::read(&opt.input)
         .with_context(|| format!("could not read data from {}", opt.input.display()))?;
 
-    let params = scryptenc::Params::new(contents).with_context(|| {
+    let params = abcrypt::Params::new(contents).with_context(|| {
         format!(
-            "{} is not a valid scrypt encrypted file",
+            "{} is not a valid Argon2 encrypted file",
             opt.input.display()
         )
     })?;
     println!(
-        "Parameters used: N = {}; r = {}; p = {};",
-        params.n(),
-        params.r(),
-        params.p()
+        "Parameters used: m = {}; t = {}; p = {};",
+        params.m_cost(),
+        params.t_cost(),
+        params.p_cost()
     );
     Ok(())
 }
