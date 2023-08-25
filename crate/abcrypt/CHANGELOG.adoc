@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
 = Changelog
-:toc: macro
+:toc: preamble
 :project-url: https://github.com/sorairolake/abcrypt
 :compare-url: {project-url}/compare
 :issue-url: {project-url}/issues
@@ -13,8 +13,6 @@ All notable changes to this project will be documented in this file.
 
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
-
-toc::[]
 
 == {project-url}/releases/tag/abcrypt-v0.1.0[0.1.0] - 2023-08-25
 

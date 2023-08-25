@@ -4,7 +4,18 @@
 
 = Abcrypt Encrypted Data Format
 Shun Sakai <sorairolake@protonmail.ch>
+// Specify in UTC.
 v0.1.0, 2023-08-25
+ifndef::env-github[:icons: font]
+ifdef::env-github[]
+:caution-caption: :fire:
+:important-caption: :exclamation:
+:note-caption: :paperclip:
+:tip-caption: :bulb:
+:warning-caption: :warning:
+endif::[]
+:idprefix:
+:idseparator: -
 :sectanchors:
 :toc: preamble
 
@@ -13,24 +24,23 @@ document describes the abcrypt encrypted data format.
 
 == Conventions used in this document
 
-[#argon2]
+[#argon2,reftext=Argon2]
 Argon2 is the key derivation function from
 https://datatracker.ietf.org/doc/html/rfc9106[RFC 9106].
 
-[#blake2b-512-mac]
+[#blake2b-512-mac,reftext=BLAKE2b-512-MAC]
 BLAKE2b-512-MAC is the keyed hash function based on BLAKE2 standardized in
 https://datatracker.ietf.org/doc/html/rfc7693[RFC 7693]. This uses BLAKE2b and
 always outputs a 64-byte MAC.
 
-[#xchacha20-poly1305]
+[#xchacha20-poly1305,reftext=XChaCha20-Poly1305]
 XChaCha20-Poly1305 is the AEAD algorithm from
 https://datatracker.ietf.org/doc/html/draft-arciszewski-xchacha-03[draft-arciszewski-xchacha-03].
 
 == Format overview
 
-An abcrypt file is composed of two parts: a <<_header_format,header>>
-containing the required data and a <<_file_body,file body>> encrypted with the
-derived key.
+An abcrypt file is composed of two parts: a <<header-format,header>> containing
+the required data and a <<file-body,file body>> encrypted with the derived key.
 
 abcrypt files may use the extension `.abc` or `.abcrypt`.
 
@@ -41,52 +51,52 @@ abcrypt files may use the extension `.abc` or `.abcrypt`.
 |0
 |7
 |Magic number ("abcrypt").
-|<<_header_format>>
+|<<header-format>>
 
 |7
 |1
 |Version number.
-|<<_version_number>>
+|<<version-number>>
 
 |8
 |4
 |Memory size `m`.
-|<<_argon2_parameters>>
+|<<argon2-parameters>>
 
 |12
 |4
 |Number of iterations `t`.
-|<<_argon2_parameters>>
+|<<argon2-parameters>>
 
 |16
 |4
 |Degree of parallelism `p`.
-|<<_argon2_parameters>>
+|<<argon2-parameters>>
 
 |20
 |32
 |Salt.
-|<<_salt>>
+|<<salt>>
 
 |52
 |24
 |Nonce.
-|<<_nonce>>
+|<<nonce>>
 
 |76
 |64
 |MAC of the header.
-|<<_header_mac>>
+|<<header-mac>>
 
 |140
 |X
 |Ciphertext.
-|<<_file_body>>
+|<<file-body>>
 
 |140+X
 |16
 |MAC of the ciphertext.
-|<<_file_body>>
+|<<file-body>>
 |===
 
 All multibyte values are stored in little-endian.
@@ -94,8 +104,8 @@ All multibyte values are stored in little-endian.
 == Key derivation
 
 The derived key for computing the header MAC and the derived key for encryption
-are produced by <<argon2,Argon2>>. The abcrypt format uses Argon2id as the type
-and 0x13 (19) as the version.
+are produced by <<argon2>>. The abcrypt format uses Argon2id as the type and
+0x13 (19) as the version.
 
 .The derived key is produced as follows
 ----
@@ -112,12 +122,11 @@ derived_key = Argon2(
 ----
 
 The resulting derived key (`derived_key`) length is 96 bytes. The first 32
-bytes of `derived_key` are for encryption
-(<<xchacha20-poly1305,XChaCha20-Poly1305>> key), and the last 64 bytes are for
-computing the header MAC (<<blake2b-512-mac,BLAKE2b-512-MAC>> key).
+bytes of `derived_key` are for encryption (<<xchacha20-poly1305>> key), and the
+last 64 bytes are for computing the header MAC (<<blake2b-512-mac>> key).
 
-<<_argon2_parameters,`m_cost`>>, <<_argon2_parameters,`t_cost`>>,
-<<_argon2_parameters,`p_cost`>>, and <<_argon2_parameters,`salt`>> used when
+<<argon2-parameters,`m_cost`>>, <<argon2-parameters,`t_cost`>>,
+<<argon2-parameters,`p_cost`>>, and <<argon2-parameters,`salt`>> used when
 encrypting are stored in the header, and these stored values are used when
 decrypting.
 
@@ -143,21 +152,21 @@ Each parameter is represented as 4 bytes in little-endian.
 
 === Salt
 
-A 32-byte salt for <<argon2,Argon2>>.
+A 32-byte salt for <<argon2>>.
 
 NOTE: The salt should be generated from a CSPRNG.
 
 === Nonce
 
-A 24-byte nonce for <<xchacha20-poly1305,XChaCha20-Poly1305>>.
+A 24-byte nonce for <<xchacha20-poly1305>>.
 
 NOTE: The nonce should be generated from a CSPRNG.
 
 === Header MAC
 
 The MAC (authentication tag) of the header. The MAC is computed with
-<<blake2b-512-mac,BLAKE2b-512-MAC>> over the whole header up to and including
-the nonce (first 76 bytes of the header).
+<<blake2b-512-mac>> over the whole header up to and including the nonce (first
+76 bytes of the header).
 
 .The MAC is computed as follows
 ----
