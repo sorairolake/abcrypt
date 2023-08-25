@@ -1,0 +1,104 @@
+// SPDX-FileCopyrightText: 2022 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= abcrypt-encrypt(1)
+// Specify in UTC.
+:docdate: 2023-08-24
+:doctype: manpage
+ifdef::revnumber[:mansource: abcrypt {revnumber}]
+:manmanual: General Commands Manual
+:includedir: ../include
+
+== NAME
+
+abcrypt-encrypt - encrypt files
+
+== SYNOPSIS
+
+*abcrypt encrypt* [_OPTION_]... [_FILE_]
+
+== DESCRIPTION
+
+This command encrypt files. By default, the result will be write to stdout.
+
+*abcrypt enc* and *abcrypt e* are aliases for this command.
+
+== POSITIONAL ARGUMENTS
+
+_FILE_::
+
+  Input file. If _FILE_ is not specified, data will be read from stdin.
+
+== OPTIONS
+
+*-o*, *--output* _FILE_::
+
+  Output the result to a file.
+
+*-m*, *--memory-size* _NUM_::
+
+  Set the memory size in KiB. _NUM_ should be between *8* and *268435455*.
+  Default is 19456.
+
+*-t*, *--iterations* _NUM_::
+
+  Set the number of iterations. _NUM_ should be between *1* and *4294967295*.
+  Default is 2.
+
+*-p*, *--parallelism* _NUM_::
+
+  Set the degree of parallelism. _NUM_ should be between *1* and *16777215*.
+  Default is 1.
+
+*--passphrase-from-tty*::
+
+  Read the passphrase from /dev/tty. This is the default behavior.
+
+*--passphrase-from-stdin*::
+
+  Read the passphrase from stdin.
+
+*--passphrase-from-tty-once*::
+
+  Read the passphrase from /dev/tty only once.
+
+*--passphrase-from-env* _VAR_::
+
+  Read the passphrase from the environment variable. Note that storing a
+  passphrase in an environment variable can be a security risk.
+
+*--passphrase-from-file* _FILE_::
+
+  Read the passphrase from the file. Note that storing a passphrase in a file
+  can be a security risk.
+
+*-v*, *--verbose*::
+
+  Print the encryption parameters.
+
+*-h*, *--help*::
+
+  Print help information.
+
+*-V*, *--version*::
+
+  Print version information.
+
+include::{includedir}/section-exit-status.adoc[]
+
+include::{includedir}/section-notes.adoc[]
+
+== EXAMPLES
+
+Encrypt a file:{blank}::
+
+  $ *abcrypt encrypt file*
+
+include::{includedir}/section-reporting-bugs.adoc[]
+
+include::{includedir}/section-copyright.adoc[]
+
+== SEE ALSO
+
+*abcrypt*(1), *abcrypt-decrypt*(1), *abcrypt-help*(1), *abcrypt-information*(1)

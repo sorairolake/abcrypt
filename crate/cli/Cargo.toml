@@ -1,0 +1,47 @@
+# SPDX-FileCopyrightText: 2022 Shun Sakai
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+[package]
+name = "abcrypt-cli"
+version = "0.1.0"
+authors = ["Shun Sakai <sorairolake@protonmail.ch>"]
+edition = "2021"
+rust-version = "1.66.0"
+description = "An utility for encrypt and decrypt files"
+readme = "README.md"
+repository = "https://github.com/sorairolake/abcrypt"
+license = "GPL-3.0-or-later"
+keywords = ["abcrypt"]
+categories = ["command-line-utilities"]
+exclude = [
+  "/clippy.toml",
+  "/doc",
+  "/rustfmt.toml",
+  "/tests",
+]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[[bin]]
+name = "abcrypt"
+path = "src/main.rs"
+
+[dependencies]
+abcrypt = { version = "0.1.0", path = "../abcrypt" }
+anyhow = "1.0.75"
+clap = { version = "4.3.24", features = ["derive", "wrap_help"] }
+clap_complete = "4.3.2"
+clap_complete_nushell = "4.3.2"
+dialoguer = { version = "0.10.4", default-features = false, features = ["password"] }
+serde = { version = "1.0.185", features = ["derive"], optional = true }
+serde_json = { version = "1.0.105", optional = true }
+sysexits = "0.6.3"
+
+[dev-dependencies]
+assert_cmd = "2.0.12"
+predicates = "3.0.3"
+
+[features]
+default = ["json"]
+json = ["dep:serde", "dep:serde_json"]

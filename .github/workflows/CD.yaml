@@ -1,0 +1,170 @@
+# SPDX-FileCopyrightText: 2022 Shun Sakai
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+name: CD
+
+on:
+  push:
+    branches:
+      - 'develop'
+    tags:
+      - 'abcrypt-cli-v[0-9]+.[0-9]+.[0-9]+'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build
+    runs-on: ${{ matrix.os }}
+    outputs:
+      extracted_version: ${{ steps.extracted_version.outputs.version }}
+    strategy:
+      matrix:
+        target:
+          - aarch64-unknown-linux-musl
+          - arm-unknown-linux-musleabihf
+          - armv7-unknown-linux-musleabihf
+          - x86_64-unknown-linux-musl
+          - aarch64-apple-darwin
+          - x86_64-apple-darwin
+          - aarch64-pc-windows-msvc
+          - x86_64-pc-windows-msvc
+        include:
+          - target: aarch64-unknown-linux-musl
+            os: ubuntu-22.04
+            use-cross: true
+          - target: arm-unknown-linux-musleabihf
+            os: ubuntu-22.04
+            use-cross: true
+          - target: armv7-unknown-linux-musleabihf
+            os: ubuntu-22.04
+            use-cross: true
+          - target: x86_64-unknown-linux-musl
+            os: ubuntu-22.04
+            use-cross: true
+          - target: aarch64-apple-darwin
+            os: macos-12
+          - target: x86_64-apple-darwin
+            os: macos-12
+          - target: aarch64-pc-windows-msvc
+            os: windows-2022
+          - target: x86_64-pc-windows-msvc
+            os: windows-2022
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Setup Rust toolchain
+      uses: dtolnay/rust-toolchain@v1
+      with:
+        toolchain: 1.66.0 # MSRV
+        targets: ${{ matrix.target }}
+    - name: Install cross
+      if: ${{ matrix.use-cross }}
+      uses: taiki-e/install-action@v2.15.5
+      with:
+        tool: cross
+    - name: Cache build artifacts
+      uses: Swatinem/rust-cache@v2.6.1
+      with:
+        key: ${{ matrix.target }}
+    - name: Setup Ruby
+      if: matrix.os != 'windows-2022' && !matrix.use-cross
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.2
+    - name: Install Asciidoctor
+      if: matrix.os != 'windows-2022' && !matrix.use-cross
+      run: |
+        gem install asciidoctor
+        asciidoctor -V
+    - name: Build a package
+      if: ${{ !matrix.use-cross }}
+      run: cargo build -p abcrypt-cli --release --target ${{ matrix.target }}
+    - name: Build a package with cross
+      if: ${{ matrix.use-cross }}
+      run: cross build -p abcrypt-cli --release --target ${{ matrix.target }}
+    - name: Install lzip
+      if: matrix.os != 'windows-2022'
+      run: |
+        if [ "${{ matrix.os }}" == "ubuntu-22.04" ] ; then
+          sudo apt-get update
+          sudo apt-get install lzip
+        else
+          brew update
+          brew install lzip
+        fi
+        lzip -V
+    - name: Get version
+      id: get_version
+      uses: battila7/get-version-action@v2.3.0
+    - name: Extract version
+      id: extracted_version
+      shell: bash
+      run: |
+        version="${{ steps.get_version.outputs.version }}"
+        if [[ "${version}" =~ ^abcrypt-cli-v.* ]] ; then
+          version="${version##*-}"
+        fi
+        echo "version=${version}" >> "$GITHUB_OUTPUT"
+    - name: Create a package
+      shell: bash
+      run: |
+        if [ "${{ matrix.os }}" != "windows-2022" ] ; then
+          bin="target/${{ matrix.target }}/release/abcrypt"
+        else
+          bin="target/${{ matrix.target }}/release/abcrypt.exe"
+        fi
+        package="abcrypt-${{ steps.extracted_version.outputs.version }}-${{ matrix.target }}"
+
+        mkdir -p "${package}"/doc
+        cp crate/cli/README.md COPYING "${bin}" "${package}"
+        cp -r LICENSES "${package}"
+        cp crate/cli/{AUTHORS,BUILD,CHANGELOG,CONTRIBUTING}.adoc "${package}"/doc
+        if [ "${{ matrix.os }}" != "windows-2022" ] ; then
+          mkdir -p "${package}"/man
+          cp "$(find ./target -path '*/abcrypt-cli-*/out' -type d)"/* "${package}"/man
+        fi
+
+        if [ "${{ matrix.os }}" != "windows-2022" ] ; then
+          tar -cvf "${package}.tar" "${package}"
+          zstd -19 -v "${package}.tar"
+          gzip -k -v -9 "${package}.tar"
+          lzip -v -9 "${package}.tar"
+        else
+          7z a -bb -mx=9 -m0=LZMA "${package}.7z" "${package}"
+          7z a -bb -mx=9 -mm=Deflate "${package}.zip" "${package}"
+        fi
+        rm -rv abcrypt-*/
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: "abcrypt-${{ steps.extracted_version.outputs.version }}-${{ matrix.target }}"
+        path: 'abcrypt-*.*'
+
+  release:
+    name: Release
+    needs: build
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v3
+    - name: Calculate checksums
+      run: |
+        mv abcrypt-*/* .
+        rmdir -v abcrypt-*/
+        sha256sum abcrypt-* | tee sha256sums.txt
+        b2sum abcrypt-* | tee b2sums.txt
+    - name: Release
+      uses: softprops/action-gh-release@v0.1.15
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        draft: true
+        files: |
+          abcrypt-*
+          sha256sums.txt
+          b2sums.txt
+        name: "Release abcrypt-cli ${{ needs.build.outputs.extracted_version }}"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

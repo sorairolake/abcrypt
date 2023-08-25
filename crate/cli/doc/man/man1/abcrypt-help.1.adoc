@@ -1,0 +1,46 @@
+// SPDX-FileCopyrightText: 2023 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= abcrypt-help(1)
+// Specify in UTC.
+:docdate: 2023-08-23
+:doctype: manpage
+ifdef::revnumber[:mansource: abcrypt {revnumber}]
+:manmanual: General Commands Manual
+:includedir: ../include
+
+== NAME
+
+abcrypt-help - print the help for a command
+
+== SYNOPSIS
+
+*abcrypt help* [_COMMAND_]
+
+== DESCRIPTION
+
+This command prints the help for a command.
+
+This command is identical to any of the following:{blank}::
+
+  $ *abcrypt* [_COMMAND_] *-h*|*--help*
+
+== POSITIONAL ARGUMENTS
+
+_COMMAND_::
+
+  Subcommand to print the help.
+
+include::{includedir}/section-exit-status.adoc[]
+
+include::{includedir}/section-notes.adoc[]
+
+include::{includedir}/section-reporting-bugs.adoc[]
+
+include::{includedir}/section-copyright.adoc[]
+
+== SEE ALSO
+
+*abcrypt*(1), *abcrypt-decrypt*(1), *abcrypt-encrypt*(1),
+*abcrypt-information*(1)

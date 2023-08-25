@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: 2022 Shun Sakai
+#
+# SPDX-License-Identifier: Apache-2.0 OR MIT
+
+version: 2
+updates:
+  - package-ecosystem: "cargo"
+    directory: "/crate/abcrypt"
+    schedule:
+      interval: "weekly"
+    ignore:
+      - dependency-name: "clap"
+
+  - package-ecosystem: "cargo"
+    directory: "/crate/cli"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"

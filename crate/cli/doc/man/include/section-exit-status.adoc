@@ -1,0 +1,58 @@
+// SPDX-FileCopyrightText: 2022 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+== EXIT STATUS
+
+*0*::
+
+  Successful program execution.
+
+*1*::
+
+  An error occurred.
+
+*2*::
+
+  An error occurred while parsing command-line arguments.
+
+*65*::
+
+  The input data was incorrect in some way.
+
+*66*::
+
+  An input file (not a system file) did not exist or was not readable.
+
+*69*::
+
+  A service is unavailable.
+
+*70*::
+
+  An internal software error has been detected.
+
+*71*::
+
+  An operating system error has been detected.
+
+*73*::
+
+  A (user specified) output file cannot be created.
+
+*74*::
+
+  An error occurred while doing I/O on some file.
+
+*75*::
+
+  Temporary failure, indicating something that is not really an error.
+
+*76*::
+
+  The remote system returned something that was "not possible" during a
+  protocol exchange.
+
+*77*::
+
+  You did not have sufficient permission to perform the operation.
