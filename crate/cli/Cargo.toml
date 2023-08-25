@@ -5,12 +5,12 @@
 [package]
 name = "abcrypt-cli"
 version = "0.1.0"
-authors = ["Shun Sakai <sorairolake@protonmail.ch>"]
+authors.workspace = true
 edition = "2021"
 rust-version = "1.66.0"
 description = "An utility for encrypt and decrypt files"
 readme = "README.md"
-repository = "https://github.com/sorairolake/abcrypt"
+repository.workspace = true
 license = "GPL-3.0-or-later"
 keywords = ["abcrypt"]
 categories = ["command-line-utilities"]
