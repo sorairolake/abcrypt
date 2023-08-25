@@ -5,8 +5,9 @@ Files: *
 Copyright: 2022-2023 Shun Sakai
 License: Apache-2.0 or MIT
 
-Files: crate/cli/*
-       .github/workflows/CD.yaml
+Files: .github/workflows/CD.yaml
+       crate/cli/*
+       Cross.toml
 Copyright: 2022-2023 Shun Sakai
 License: GPL-3.0-or-later
 

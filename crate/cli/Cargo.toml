@@ -16,7 +16,6 @@ keywords = ["abcrypt"]
 categories = ["command-line-utilities"]
 exclude = [
   "/clippy.toml",
-  "/Cross.toml",
   "/doc",
   "/rustfmt.toml",
   "/tests",
