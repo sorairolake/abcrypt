@@ -69,7 +69,7 @@ impl Decryptor {
                 .map_err(Error::InvalidArgon2Context)?;
             let dk = DerivedKey::new(dk);
 
-            header.verify_mac(&dk.mac(), &data[76..Header::SIZE])?;
+            header.verify_mac(&dk.mac(), data[76..Header::SIZE].into())?;
 
             let ciphertext = data[Header::SIZE..].to_vec();
             Ok(Self {

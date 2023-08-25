@@ -142,10 +142,14 @@ impl Header {
     }
 
     /// Verifies a BLAKE2b-512-MAC stored in this header.
-    pub fn verify_mac(&mut self, key: &Blake2bMac512Key, tag: &[u8]) -> Result<(), Error> {
+    pub fn verify_mac(
+        &mut self,
+        key: &Blake2bMac512Key,
+        tag: &Blake2bMac512Output,
+    ) -> Result<(), Error> {
         let mut mac = Blake2bMac512::new(key);
         mac.update(&self.as_bytes()[..76]);
-        mac.verify(tag.into()).map_err(Error::InvalidHeaderMac)?;
+        mac.verify(tag).map_err(Error::InvalidHeaderMac)?;
         self.mac.copy_from_slice(tag);
         Ok(())
     }
