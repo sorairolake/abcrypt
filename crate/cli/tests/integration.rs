@@ -62,29 +62,199 @@ fn validate_aliases_for_encrypt_command() {
 }
 
 #[test]
+fn validate_m_parameter_with_unit_for_encrypt_command() {
+    command()
+        .arg("encrypt")
+        .arg("-m")
+        .arg("19922944 B")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .success()
+        .stderr(predicate::str::starts_with(
+            "Parameters used: m = 19456; t = 2; p = 1;",
+        ));
+}
+
+#[test]
+fn validate_m_parameter_without_unit_for_encrypt_command() {
+    command()
+        .arg("encrypt")
+        .arg("-m")
+        .arg("19922944")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .success()
+        .stderr(predicate::str::starts_with(
+            "Parameters used: m = 19456; t = 2; p = 1;",
+        ));
+}
+
+#[test]
+fn validate_m_parameter_with_byte_prefix_for_encrypt_command() {
+    command()
+        .arg("encrypt")
+        .arg("-m")
+        .arg("19456 KiB")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .success()
+        .stderr(predicate::str::starts_with(
+            "Parameters used: m = 19456; t = 2; p = 1;",
+        ));
+    command()
+        .arg("encrypt")
+        .arg("-m")
+        .arg("19.00 MiB")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .success()
+        .stderr(predicate::str::starts_with(
+            "Parameters used: m = 19456; t = 2; p = 1;",
+        ));
+    command()
+        .arg("encrypt")
+        .arg("-m")
+        .arg("19MiB")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .success()
+        .stderr(predicate::str::starts_with(
+            "Parameters used: m = 19456; t = 2; p = 1;",
+        ));
+}
+
+#[test]
+fn validate_m_parameter_with_invalid_unit_for_encrypt_command() {
+    command()
+        .arg("encrypt")
+        .arg("-m")
+        .arg("19922944 A")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .failure()
+        .code(2)
+        .stderr(predicate::str::contains("The character 'A' is incorrect. 'B', 'K', 'M', 'G', 'T', 'P' or no character is expected"));
+    command()
+        .arg("encrypt")
+        .arg("-m")
+        .arg("19.00LiB")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .failure()
+        .code(2)
+        .stderr(predicate::str::contains("The character 'L' is incorrect. 'B', 'K', 'M', 'G', 'T', 'P' or no character is expected"));
+}
+
+#[test]
+fn validate_m_parameter_with_nan_for_encrypt_command() {
+    command()
+        .arg("encrypt")
+        .arg("-m")
+        .arg("n B")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .failure()
+        .code(2)
+        .stderr(predicate::str::contains(
+            "The character 'n' is not a number",
+        ));
+    command()
+        .arg("encrypt")
+        .arg("-m")
+        .arg("n")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .failure()
+        .code(2)
+        .stderr(predicate::str::contains(
+            "The character 'n' is not a number",
+        ));
+    command()
+        .arg("encrypt")
+        .arg("-m")
+        .arg("nKiB")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .failure()
+        .code(2)
+        .stderr(predicate::str::contains(
+            "The character 'n' is not a number",
+        ));
+}
+
+#[test]
 fn validate_m_parameter_ranges_for_encrypt_command() {
     command()
         .arg("encrypt")
         .arg("-m")
-        .arg("7")
+        .arg("7 KiB")
         .arg("--passphrase-from-stdin")
+        .arg("-v")
         .arg("data/data.txt")
         .write_stdin("passphrase")
         .assert()
         .failure()
-        .code(65)
-        .stderr(predicate::str::contains("memory cost is too small"));
+        .code(2)
+        .stderr(predicate::str::contains(
+            "7.00 KiB is not in 8.00 KiB..=256.00 GiB",
+        ));
     command()
         .arg("encrypt")
         .arg("-m")
-        .arg("268435456")
+        .arg("8 KiB")
         .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .success()
+        .stderr(predicate::str::starts_with(
+            "Parameters used: m = 8; t = 2; p = 1;",
+        ));
+    command()
+        .arg("encrypt")
+        .arg("-m")
+        .arg("268435456 KiB")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
         .arg("data/data.txt")
         .write_stdin("passphrase")
         .assert()
         .failure()
-        .code(65)
-        .stderr(predicate::str::contains("memory cost is too large"));
+        .code(2)
+        .stderr(predicate::str::contains(
+            "256.00 GiB is not in 8.00 KiB..=256.00 GiB",
+        ));
 }
 
 #[test]
@@ -131,7 +301,7 @@ fn validate_p_parameter_ranges_for_encrypt_command() {
     command()
         .arg("encrypt")
         .arg("-m")
-        .arg("134217728")
+        .arg("134217728 KiB")
         .arg("-p")
         .arg("16777216")
         .arg("--passphrase-from-stdin")

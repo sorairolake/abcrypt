@@ -14,6 +14,13 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
 
+== {compare-url}/abcrypt-cli-v0.1.0\...HEAD[Unreleased]
+
+=== Changed
+
+* Change the value of `-m` for `encrypt` command can be specified with units of
+  bytes ({pull-request-url}/11[#11])
+
 == {project-url}/releases/tag/abcrypt-cli-v0.1.0[0.1.0] - 2023-08-25
 
 === Added

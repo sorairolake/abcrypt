@@ -54,7 +54,7 @@ pub fn run() -> anyhow::Result<()> {
                 }?;
 
                 let params =
-                    argon2::Params::new(arg.memory_size, arg.iterations, arg.parallelism, None)
+                    argon2::Params::new(*arg.memory_size, arg.iterations, arg.parallelism, None)
                         .map_err(abcrypt::Error::InvalidArgon2Params)?;
 
                 if arg.verbose {
