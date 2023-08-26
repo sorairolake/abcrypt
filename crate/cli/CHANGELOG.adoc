@@ -20,6 +20,8 @@ project adheres to https://semver.org/[Semantic Versioning].
 
 * Change the value of `-m` for `encrypt` command can be specified with units of
   bytes ({pull-request-url}/11[#11])
+* Validate the values of `-t` and `-p` for `encrypt` command
+  ({pull-request-url}/12[#12])
 
 == {project-url}/releases/tag/abcrypt-cli-v0.1.0[0.1.0] - 2023-08-25
 

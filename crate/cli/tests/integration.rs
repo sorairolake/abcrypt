@@ -268,8 +268,21 @@ fn validate_t_parameter_ranges_for_encrypt_command() {
         .write_stdin("passphrase")
         .assert()
         .failure()
-        .code(65)
-        .stderr(predicate::str::contains("time cost is too small"));
+        .code(2)
+        .stderr(predicate::str::contains("0 is not in 1..=4294967295"));
+    command()
+        .arg("encrypt")
+        .arg("-t")
+        .arg("1")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .success()
+        .stderr(predicate::str::starts_with(
+            "Parameters used: m = 19456; t = 1; p = 1;",
+        ));
     command()
         .arg("encrypt")
         .arg("-t")
@@ -281,7 +294,7 @@ fn validate_t_parameter_ranges_for_encrypt_command() {
         .failure()
         .code(2)
         .stderr(predicate::str::contains(
-            "4294967296 is not in 0..=4294967295",
+            "4294967296 is not in 1..=4294967295",
         ));
 }
 
@@ -296,12 +309,23 @@ fn validate_p_parameter_ranges_for_encrypt_command() {
         .write_stdin("passphrase")
         .assert()
         .failure()
-        .code(65)
-        .stderr(predicate::str::contains("not enough threads"));
+        .code(2)
+        .stderr(predicate::str::contains("0 is not in 1..=16777215"));
     command()
         .arg("encrypt")
-        .arg("-m")
-        .arg("134217728 KiB")
+        .arg("-p")
+        .arg("2")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .success()
+        .stderr(predicate::str::starts_with(
+            "Parameters used: m = 19456; t = 2; p = 2;",
+        ));
+    command()
+        .arg("encrypt")
         .arg("-p")
         .arg("16777216")
         .arg("--passphrase-from-stdin")
@@ -309,8 +333,8 @@ fn validate_p_parameter_ranges_for_encrypt_command() {
         .write_stdin("passphrase")
         .assert()
         .failure()
-        .code(65)
-        .stderr(predicate::str::contains("too many threads"));
+        .code(2)
+        .stderr(predicate::str::contains("16777216 is not in 1..=16777215"));
 }
 
 #[test]

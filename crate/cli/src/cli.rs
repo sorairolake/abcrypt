@@ -14,7 +14,9 @@ use std::{
 use abcrypt::argon2::Params;
 use anyhow::anyhow;
 use byte_unit::{Byte, KIBIBYTE};
-use clap::{ArgGroup, Args, CommandFactory, Parser, Subcommand, ValueEnum, ValueHint};
+use clap::{
+    value_parser, ArgGroup, Args, CommandFactory, Parser, Subcommand, ValueEnum, ValueHint,
+};
 use clap_complete::Generator;
 
 #[derive(Debug, Parser)]
@@ -73,6 +75,7 @@ pub struct Encrypt {
 
     /// Set the number of iterations.
     #[arg(
+        value_parser(value_parser!(u32).range(i64::from(Params::MIN_T_COST)..=Params::MAX_T_COST.into())),
         short('t'),
         long,
         default_value_t = Params::DEFAULT_T_COST,
@@ -82,6 +85,7 @@ pub struct Encrypt {
 
     /// Set the degree of parallelism.
     #[arg(
+        value_parser(value_parser!(u32).range(i64::from(Params::MIN_P_COST)..=Params::MAX_P_COST.into())),
         short,
         long,
         default_value_t = Params::DEFAULT_P_COST,
