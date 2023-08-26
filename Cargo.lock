@@ -22,6 +22,7 @@ dependencies = [
  "abcrypt",
  "anyhow",
  "assert_cmd",
+ "byte-unit",
  "clap 4.3.24",
  "clap_complete",
  "clap_complete_nushell",
@@ -195,6 +196,16 @@ dependencies = [
  "memchr",
  "regex-automata",
  "serde",
+]
+
+[[package]]
+name = "byte-unit"
+version = "4.0.19"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "da78b32057b8fdfc352504708feeba7216dcd65a2c9ab02978cbd288d1279b6c"
+dependencies = [
+ "serde",
+ "utf8-width",
 ]
 
 [[package]]
@@ -956,6 +967,12 @@ dependencies = [
  "crypto-common",
  "subtle",
 ]
+
+[[package]]
+name = "utf8-width"
+version = "0.1.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5190c9442dcdaf0ddd50f37420417d219ae5261bbf5db120d0f9bab996c9cba1"
 
 [[package]]
 name = "utf8parse"

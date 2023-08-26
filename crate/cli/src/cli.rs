@@ -4,11 +4,16 @@
 
 use std::{
     ffi::OsString,
+    fmt,
     io::{self, Write},
+    ops::Deref,
     path::PathBuf,
+    str::FromStr,
 };
 
 use abcrypt::argon2::Params;
+use anyhow::anyhow;
+use byte_unit::{Byte, KIBIBYTE};
 use clap::{ArgGroup, Args, CommandFactory, Parser, Subcommand, ValueEnum, ValueHint};
 use clap_complete::Generator;
 
@@ -56,14 +61,15 @@ pub struct Encrypt {
     #[arg(short, long, value_name("FILE"), value_hint(ValueHint::FilePath))]
     pub output: Option<PathBuf>,
 
-    /// Set the memory size in KiB.
-    #[arg(
-        short,
-        long,
-        default_value_t = Params::DEFAULT_M_COST,
-        value_name("NUM")
-    )]
-    pub memory_size: u32,
+    /// Set the memory size in bytes.
+    ///
+    /// <BYTE> can be suffixed with the symbol (B) and the byte prefix (such as
+    /// Ki and M). If only a numeric value is specified for <BYTE>, it is the
+    /// same as specifying the symbol without the byte prefix. Note that <BYTE>
+    /// that is not multiples of 1 KiB is truncated toward zero to the nearest
+    /// it.
+    #[arg(short, long, default_value_t, value_name("BYTE"))]
+    pub memory_size: MemorySize,
 
     /// Set the number of iterations.
     #[arg(
@@ -245,6 +251,61 @@ impl Generator for Shell {
     }
 }
 
+/// Memory size in 1 KiB memory blocks.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct MemorySize(u32);
+
+impl MemorySize {
+    /// Minimum number of 1 KiB memory blocks.
+    const MIN: Self = Self(Params::MIN_M_COST);
+
+    /// Maximum number of 1 KiB memory blocks.
+    const MAX: Self = Self(Params::MAX_M_COST);
+}
+
+impl Default for MemorySize {
+    fn default() -> Self {
+        Self(Params::DEFAULT_M_COST)
+    }
+}
+
+impl Deref for MemorySize {
+    type Target = u32;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl fmt::Display for MemorySize {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        Byte::from_bytes(u64::from(self.0) * KIBIBYTE)
+            .get_appropriate_unit(true)
+            .fmt(f)
+    }
+}
+
+impl FromStr for MemorySize {
+    type Err = anyhow::Error;
+
+    fn from_str(byte: &str) -> anyhow::Result<Self> {
+        let byte = Byte::from_str(byte)
+            .map(|b| b.get_bytes())
+            .map_err(anyhow::Error::from)?;
+        match u32::try_from(byte / KIBIBYTE) {
+            Ok(kibibyte) if (Params::MIN_M_COST..=Params::MAX_M_COST).contains(&kibibyte) => {
+                Ok(Self(kibibyte))
+            }
+            _ => Err(anyhow!(
+                "{} is not in {}..={}",
+                Byte::from_bytes(byte).get_appropriate_unit(true),
+                Self::MIN,
+                Self::MAX
+            )),
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -252,5 +313,125 @@ mod tests {
     #[test]
     fn verify_app() {
         Opt::command().debug_assert();
+    }
+
+    #[test]
+    fn file_name_shell() {
+        assert_eq!(Shell::Bash.file_name("abcrypt"), "abcrypt.bash");
+        assert_eq!(Shell::Elvish.file_name("abcrypt"), "abcrypt.elv");
+        assert_eq!(Shell::Fish.file_name("abcrypt"), "abcrypt.fish");
+        assert_eq!(Shell::Nushell.file_name("abcrypt"), "abcrypt.nu");
+        assert_eq!(Shell::PowerShell.file_name("abcrypt"), "_abcrypt.ps1");
+        assert_eq!(Shell::Zsh.file_name("abcrypt"), "_abcrypt");
+    }
+
+    #[test]
+    fn default_memory_size() {
+        assert_eq!(MemorySize::default(), MemorySize(Params::DEFAULT_M_COST));
+    }
+
+    #[test]
+    fn deref_memory_size() {
+        assert_eq!(*MemorySize::MIN, Params::MIN_M_COST);
+        assert_eq!(*MemorySize::default(), Params::DEFAULT_M_COST);
+        assert_eq!(*MemorySize::MAX, Params::MAX_M_COST);
+    }
+
+    #[test]
+    fn display_memory_size() {
+        assert_eq!(format!("{}", MemorySize::MIN), "8.00 KiB");
+        assert_eq!(format!("{}", MemorySize::default()), "19.00 MiB");
+        assert_eq!(format!("{}", MemorySize::MAX), "256.00 GiB");
+    }
+
+    #[test]
+    fn from_str_memory_size() {
+        assert_eq!(
+            MemorySize::from_str("19922944 B").unwrap(),
+            MemorySize::default()
+        );
+        assert_eq!(
+            MemorySize::from_str("19922944").unwrap(),
+            MemorySize::default()
+        );
+        assert_eq!(
+            MemorySize::from_str("19456 KiB").unwrap(),
+            MemorySize::default()
+        );
+        assert_eq!(
+            MemorySize::from_str("19.00 MiB").unwrap(),
+            MemorySize::default()
+        );
+        assert_eq!(
+            MemorySize::from_str("19MiB").unwrap(),
+            MemorySize::default()
+        );
+
+        assert_eq!(MemorySize::from_str("128 kB").unwrap(), MemorySize(125));
+        assert_eq!(MemorySize::from_str("256kB").unwrap(), MemorySize(250));
+
+        assert_eq!(MemorySize::from_str("8 KiB").unwrap(), MemorySize::MIN);
+        assert_eq!(
+            MemorySize::from_str("268435455 KiB").unwrap(),
+            MemorySize::MAX
+        );
+    }
+
+    #[test]
+    fn from_str_memory_size_with_invalid_unit() {
+        use byte_unit::ByteError;
+
+        assert!(matches!(
+            MemorySize::from_str("19922944 A")
+                .unwrap_err()
+                .downcast_ref::<ByteError>()
+                .unwrap(),
+            ByteError::UnitIncorrect(_)
+        ));
+        assert!(matches!(
+            MemorySize::from_str("19.00LiB")
+                .unwrap_err()
+                .downcast_ref::<ByteError>()
+                .unwrap(),
+            ByteError::UnitIncorrect(_)
+        ));
+    }
+
+    #[test]
+    fn from_str_memory_size_with_nan() {
+        use byte_unit::ByteError;
+
+        assert!(matches!(
+            MemorySize::from_str("n B")
+                .unwrap_err()
+                .downcast_ref::<ByteError>()
+                .unwrap(),
+            ByteError::ValueIncorrect(_)
+        ));
+        assert!(matches!(
+            MemorySize::from_str("n")
+                .unwrap_err()
+                .downcast_ref::<ByteError>()
+                .unwrap(),
+            ByteError::ValueIncorrect(_)
+        ));
+        assert!(matches!(
+            MemorySize::from_str("nKiB")
+                .unwrap_err()
+                .downcast_ref::<ByteError>()
+                .unwrap(),
+            ByteError::ValueIncorrect(_)
+        ));
+    }
+
+    #[test]
+    fn from_str_memory_size_if_out_of_range() {
+        assert!(MemorySize::from_str("7 KiB").is_err());
+        assert_eq!(MemorySize::from_str("8 KiB").unwrap(), MemorySize::MIN);
+        assert_eq!(
+            MemorySize::from_str("268435455 KiB").unwrap(),
+            MemorySize::MAX
+        );
+        assert!(MemorySize::from_str("268435456 KiB").is_err());
     }
 }
