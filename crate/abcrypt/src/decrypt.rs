@@ -12,9 +12,8 @@ use chacha20poly1305::{
 };
 
 use crate::{
-    error::Error,
     format::{DerivedKey, Header},
-    ARGON2_ALGORITHM, ARGON2_VERSION,
+    Error, Result, ARGON2_ALGORITHM, ARGON2_VERSION,
 };
 
 /// Decryptor for the abcrypt encrypted data format.
@@ -57,8 +56,8 @@ impl Decryptor {
     /// let plaintext = cipher.decrypt_to_vec().unwrap();
     /// # assert_eq!(plaintext, data);
     /// ```
-    pub fn new(data: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Self, Error> {
-        let inner = |data: &[u8], passphrase: &[u8]| -> Result<Self, Error> {
+    pub fn new(data: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Self> {
+        let inner = |data: &[u8], passphrase: &[u8]| -> Result<Self> {
             let mut header = Header::parse(data)?;
 
             // The derived key size is 96 bytes. The first 256 bits are for
@@ -111,8 +110,8 @@ impl Decryptor {
     /// cipher.decrypt(&mut buf).unwrap();
     /// # assert_eq!(buf, data.as_slice());
     /// ```
-    pub fn decrypt(self, mut buf: impl AsMut<[u8]>) -> Result<(), Error> {
-        let inner = |decryptor: Self, buf: &mut [u8]| -> Result<(), Error> {
+    pub fn decrypt(self, mut buf: impl AsMut<[u8]>) -> Result<()> {
+        let inner = |decryptor: Self, buf: &mut [u8]| -> Result<()> {
             let cipher = XChaCha20Poly1305::new(&decryptor.dk.encrypt());
             let plaintext = cipher
                 .decrypt(&decryptor.header.nonce(), decryptor.ciphertext.as_slice())
@@ -149,7 +148,7 @@ impl Decryptor {
     /// let plaintext = cipher.decrypt_to_vec().unwrap();
     /// # assert_eq!(plaintext, data);
     /// ```
-    pub fn decrypt_to_vec(self) -> Result<Vec<u8>, Error> {
+    pub fn decrypt_to_vec(self) -> Result<Vec<u8>> {
         let mut buf = vec![u8::default(); self.out_len()];
         self.decrypt(&mut buf)?;
         Ok(buf)

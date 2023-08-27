@@ -12,9 +12,8 @@ use chacha20poly1305::{
 };
 
 use crate::{
-    error::Error,
     format::{DerivedKey, Header},
-    ARGON2_ALGORITHM, ARGON2_VERSION,
+    Error, Result, ARGON2_ALGORITHM, ARGON2_VERSION,
 };
 
 /// Encryptor for the abcrypt encrypted data format.
@@ -51,7 +50,7 @@ impl Encryptor {
     /// # assert_eq!(params.t_cost(), argon2::Params::DEFAULT_T_COST);
     /// # assert_eq!(params.p_cost(), argon2::Params::DEFAULT_P_COST);
     /// ```
-    pub fn new(data: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Self, Error> {
+    pub fn new(data: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Self> {
         Self::with_params(data, passphrase, Params::default())
     }
 
@@ -78,8 +77,8 @@ impl Encryptor {
         data: impl AsRef<[u8]>,
         passphrase: impl AsRef<[u8]>,
         params: Params,
-    ) -> Result<Self, Error> {
-        let inner = |data: &[u8], passphrase: &[u8], params: Params| -> Result<Self, Error> {
+    ) -> Result<Self> {
+        let inner = |data: &[u8], passphrase: &[u8], params: Params| -> Result<Self> {
             let mut header = Header::new(params);
 
             // The derived key size is 96 bytes. The first 256 bits are for

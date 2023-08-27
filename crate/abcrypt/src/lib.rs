@@ -75,7 +75,12 @@ pub use argon2;
 pub use blake2;
 pub use chacha20poly1305;
 
-pub use crate::{decrypt::Decryptor, encrypt::Encryptor, error::Error, params::Params};
+pub use crate::{
+    decrypt::Decryptor,
+    encrypt::Encryptor,
+    error::{Error, Result},
+    params::Params,
+};
 
 const ARGON2_ALGORITHM: argon2::Algorithm = argon2::Algorithm::Argon2id;
 const ARGON2_VERSION: argon2::Version = argon2::Version::V0x13;

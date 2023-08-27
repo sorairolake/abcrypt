@@ -4,7 +4,7 @@
 
 //! The Argon2 parameters.
 
-use crate::{error::Error, format::Header};
+use crate::{format::Header, Result};
 
 /// The Argon2 parameters used for the encrypted data.
 #[derive(Clone, Debug)]
@@ -37,7 +37,7 @@ impl Params {
     ///
     /// assert!(Params::new(ciphertext).is_ok());
     /// ```
-    pub fn new(data: impl AsRef<[u8]>) -> Result<Self, Error> {
+    pub fn new(data: impl AsRef<[u8]>) -> Result<Self> {
         let params = Header::parse(data.as_ref()).map(|h| h.params())?;
         Ok(Self(params))
     }

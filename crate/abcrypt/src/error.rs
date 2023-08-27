@@ -4,7 +4,7 @@
 
 //! Error types for this crate.
 
-use core::fmt;
+use core::{fmt, result};
 
 use blake2::digest::MacError;
 
@@ -60,6 +60,33 @@ impl std::error::Error for Error {
         }
     }
 }
+
+/// A specialized [`Result`](result::Result) type for read and write operations
+/// for the abcrypt encrypted data format.
+///
+/// # Examples
+///
+/// ```
+/// use abcrypt::{Decryptor, Encryptor};
+///
+/// fn encrypt(data: &[u8], passphrase: &[u8]) -> abcrypt::Result<Vec<u8>> {
+///     Encryptor::new(data, passphrase).map(Encryptor::encrypt_to_vec)
+/// }
+///
+/// fn decrypt(data: &[u8], passphrase: &[u8]) -> abcrypt::Result<Vec<u8>> {
+///     Decryptor::new(data, passphrase).and_then(Decryptor::decrypt_to_vec)
+/// }
+///
+/// let data = b"Hello, world!";
+/// let passphrase = b"passphrase";
+///
+/// let ciphertext = encrypt(data, passphrase).unwrap();
+/// assert_ne!(ciphertext, data);
+///
+/// let plaintext = decrypt(&ciphertext, passphrase).unwrap();
+/// assert_eq!(plaintext, data);
+/// ```
+pub type Result<T> = result::Result<T, Error>;
 
 #[cfg(test)]
 mod tests {
@@ -389,5 +416,19 @@ mod tests {
             .source()
             .unwrap()
             .is::<chacha20poly1305::Error>());
+    }
+
+    #[test]
+    fn result_type() {
+        use core::any;
+
+        assert_eq!(
+            any::type_name::<Result<()>>(),
+            any::type_name::<result::Result<(), Error>>()
+        );
+        assert_eq!(
+            any::type_name::<Result<u8>>(),
+            any::type_name::<result::Result<u8, Error>>()
+        );
     }
 }
