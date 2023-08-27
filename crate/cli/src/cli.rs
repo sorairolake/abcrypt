@@ -20,13 +20,29 @@ use clap::{
 };
 use clap_complete::Generator;
 
+const LONG_VERSION: &str = concat!(
+    env!("CARGO_PKG_VERSION"),
+    "\n",
+    include_str!("static/long-version.md")
+);
+
+const AFTER_LONG_HELP: &str = include_str!("static/after-long-help.md");
+
+const ENCRYPT_AFTER_LONG_HELP: &str = include_str!("static/encrypt-after-long-help.md");
+
+const DECRYPT_AFTER_LONG_HELP: &str = include_str!("static/decrypt-after-long-help.md");
+
+const INFORMATION_AFTER_LONG_HELP: &str = include_str!("static/information-after-long-help.md");
+
 #[derive(Debug, Parser)]
 #[command(
     name("abcrypt"),
     version,
+    long_version(LONG_VERSION),
     about,
     max_term_width(100),
     propagate_version(true),
+    after_long_help(AFTER_LONG_HELP),
     arg_required_else_help(true),
     args_conflicts_with_subcommands(true)
 )]
@@ -44,15 +60,27 @@ pub struct Opt {
 #[derive(Debug, Subcommand)]
 pub enum Command {
     /// Encrypt files.
-    #[command(visible_aliases(["enc", "e"]))]
+    #[command(
+        after_long_help(ENCRYPT_AFTER_LONG_HELP),
+        visible_alias("enc"),
+        visible_alias("e")
+    )]
     Encrypt(Encrypt),
 
     /// Decrypt files.
-    #[command(visible_aliases(["dec", "d"]))]
+    #[command(
+        after_long_help(DECRYPT_AFTER_LONG_HELP),
+        visible_alias("dec"),
+        visible_alias("d")
+    )]
     Decrypt(Decrypt),
 
     /// Provides information about the encryption parameters.
-    #[command(visible_aliases(["info", "i"]))]
+    #[command(
+        after_long_help(INFORMATION_AFTER_LONG_HELP),
+        visible_alias("info"),
+        visible_alias("i")
+    )]
     Information(Information),
 }
 

@@ -45,6 +45,28 @@ fn generate_completion_conflicts_with_subcommands() {
 }
 
 #[test]
+fn long_version() {
+    command()
+        .arg("--version")
+        .assert()
+        .success()
+        .stdout(predicate::str::contains(include_str!(
+            "../src/static/long-version.md"
+        )));
+}
+
+#[test]
+fn after_long_help() {
+    command()
+        .arg("--help")
+        .assert()
+        .success()
+        .stdout(predicate::str::contains(include_str!(
+            "../src/static/after-long-help.md"
+        )));
+}
+
+#[test]
 fn basic_encrypt() {
     command()
         .arg("encrypt")
@@ -396,6 +418,30 @@ fn encrypt_verbose() {
 }
 
 #[test]
+fn long_version_for_encrypt_command() {
+    command()
+        .arg("encrypt")
+        .arg("--version")
+        .assert()
+        .success()
+        .stdout(predicate::str::contains(include_str!(
+            "../src/static/long-version.md"
+        )));
+}
+
+#[test]
+fn after_long_help_for_encrypt_command() {
+    command()
+        .arg("encrypt")
+        .arg("--help")
+        .assert()
+        .success()
+        .stdout(predicate::str::contains(include_str!(
+            "../src/static/encrypt-after-long-help.md"
+        )));
+}
+
+#[test]
 fn basic_decrypt() {
     command()
         .arg("decrypt")
@@ -443,6 +489,30 @@ fn decrypt_verbose() {
 }
 
 #[test]
+fn long_version_for_decrypt_command() {
+    command()
+        .arg("decrypt")
+        .arg("--version")
+        .assert()
+        .success()
+        .stdout(predicate::str::contains(include_str!(
+            "../src/static/long-version.md"
+        )));
+}
+
+#[test]
+fn after_long_help_for_decrypt_command() {
+    command()
+        .arg("decrypt")
+        .arg("--help")
+        .assert()
+        .success()
+        .stdout(predicate::str::contains(include_str!(
+            "../src/static/decrypt-after-long-help.md"
+        )));
+}
+
+#[test]
 fn basic_information() {
     command()
         .arg("information")
@@ -482,4 +552,28 @@ fn information_as_json() {
         .assert()
         .success()
         .stdout(predicate::eq(concat!(r#"{"m":32,"t":3,"p":4}"#, '\n')));
+}
+
+#[test]
+fn long_version_for_information_command() {
+    command()
+        .arg("information")
+        .arg("--version")
+        .assert()
+        .success()
+        .stdout(predicate::str::contains(include_str!(
+            "../src/static/long-version.md"
+        )));
+}
+
+#[test]
+fn after_long_help_for_information_command() {
+    command()
+        .arg("information")
+        .arg("--help")
+        .assert()
+        .success()
+        .stdout(predicate::str::contains(include_str!(
+            "../src/static/information-after-long-help.md"
+        )));
 }
