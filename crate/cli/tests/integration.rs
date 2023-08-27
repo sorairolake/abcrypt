@@ -258,6 +258,21 @@ fn validate_m_parameter_ranges_for_encrypt_command() {
 }
 
 #[test]
+fn validate_t_parameter_with_nan_for_encrypt_command() {
+    command()
+        .arg("encrypt")
+        .arg("-t")
+        .arg("n")
+        .arg("--passphrase-from-stdin")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .failure()
+        .code(2)
+        .stderr(predicate::str::contains("invalid digit found in string"));
+}
+
+#[test]
 fn validate_t_parameter_ranges_for_encrypt_command() {
     command()
         .arg("encrypt")
@@ -296,6 +311,21 @@ fn validate_t_parameter_ranges_for_encrypt_command() {
         .stderr(predicate::str::contains(
             "4294967296 is not in 1..=4294967295",
         ));
+}
+
+#[test]
+fn validate_p_parameter_with_nan_for_encrypt_command() {
+    command()
+        .arg("encrypt")
+        .arg("-p")
+        .arg("n")
+        .arg("--passphrase-from-stdin")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .failure()
+        .code(2)
+        .stderr(predicate::str::contains("invalid digit found in string"));
 }
 
 #[test]

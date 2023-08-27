@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 use std::{
-    ffi::OsString,
+    ffi::{OsStr, OsString},
     fmt,
     io::{self, Write},
     ops::Deref,
@@ -15,6 +15,7 @@ use abcrypt::argon2::Params;
 use anyhow::anyhow;
 use byte_unit::{Byte, KIBIBYTE};
 use clap::{
+    builder::{TypedValueParser, ValueParserFactory},
     value_parser, ArgGroup, Args, CommandFactory, Parser, Subcommand, ValueEnum, ValueHint,
 };
 use clap_complete::Generator;
@@ -74,24 +75,12 @@ pub struct Encrypt {
     pub memory_size: MemorySize,
 
     /// Set the number of iterations.
-    #[arg(
-        value_parser(value_parser!(u32).range(i64::from(Params::MIN_T_COST)..=Params::MAX_T_COST.into())),
-        short('t'),
-        long,
-        default_value_t = Params::DEFAULT_T_COST,
-        value_name("NUM")
-    )]
-    pub iterations: u32,
+    #[arg(short('t'), long, default_value_t, value_name("NUM"))]
+    pub iterations: Iterations,
 
     /// Set the degree of parallelism.
-    #[arg(
-        value_parser(value_parser!(u32).range(i64::from(Params::MIN_P_COST)..=Params::MAX_P_COST.into())),
-        short,
-        long,
-        default_value_t = Params::DEFAULT_P_COST,
-        value_name("NUM")
-    )]
-    pub parallelism: u32,
+    #[arg(short, long, default_value_t, value_name("NUM"))]
+    pub parallelism: Parallelism,
 
     /// Read the passphrase from /dev/tty.
     ///
@@ -310,6 +299,108 @@ impl FromStr for MemorySize {
     }
 }
 
+/// Number of iterations.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct Iterations(u32);
+
+impl Default for Iterations {
+    fn default() -> Self {
+        Self(Params::DEFAULT_T_COST)
+    }
+}
+
+impl Deref for Iterations {
+    type Target = u32;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl fmt::Display for Iterations {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        self.0.fmt(f)
+    }
+}
+
+impl ValueParserFactory for Iterations {
+    type Parser = IterationsValueParser;
+
+    fn value_parser() -> Self::Parser {
+        IterationsValueParser
+    }
+}
+
+/// Parse [`Iterations`].
+#[derive(Clone, Copy, Debug)]
+pub struct IterationsValueParser;
+
+impl TypedValueParser for IterationsValueParser {
+    type Value = Iterations;
+
+    fn parse_ref(
+        &self,
+        cmd: &clap::Command,
+        arg: Option<&clap::Arg>,
+        value: &OsStr,
+    ) -> Result<Self::Value, clap::Error> {
+        let inner =
+            value_parser!(u32).range(i64::from(Params::MIN_T_COST)..=Params::MAX_T_COST.into());
+        inner.parse_ref(cmd, arg, value).map(Iterations)
+    }
+}
+
+/// Degree of parallelism.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct Parallelism(u32);
+
+impl Default for Parallelism {
+    fn default() -> Self {
+        Self(Params::DEFAULT_P_COST)
+    }
+}
+
+impl Deref for Parallelism {
+    type Target = u32;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl fmt::Display for Parallelism {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        self.0.fmt(f)
+    }
+}
+
+impl ValueParserFactory for Parallelism {
+    type Parser = ParallelismValueParser;
+
+    fn value_parser() -> Self::Parser {
+        ParallelismValueParser
+    }
+}
+
+/// Parse [`Parallelism`].
+#[derive(Clone, Copy, Debug)]
+pub struct ParallelismValueParser;
+
+impl TypedValueParser for ParallelismValueParser {
+    type Value = Parallelism;
+
+    fn parse_ref(
+        &self,
+        cmd: &clap::Command,
+        arg: Option<&clap::Arg>,
+        value: &OsStr,
+    ) -> Result<Self::Value, clap::Error> {
+        let inner =
+            value_parser!(u32).range(i64::from(Params::MIN_P_COST)..=Params::MAX_P_COST.into());
+        inner.parse_ref(cmd, arg, value).map(Parallelism)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -437,5 +528,253 @@ mod tests {
             MemorySize::MAX
         );
         assert!(MemorySize::from_str("268435456 KiB").is_err());
+    }
+
+    impl Iterations {
+        /// Minimum number of passes.
+        const MIN: Self = Self(Params::MIN_T_COST);
+
+        /// Maximum number of passes.
+        const MAX: Self = Self(Params::MAX_T_COST);
+    }
+
+    #[test]
+    fn default_iterations() {
+        assert_eq!(Iterations::default(), Iterations(Params::DEFAULT_T_COST));
+    }
+
+    #[test]
+    fn deref_iterations() {
+        assert_eq!(*Iterations::MIN, Params::MIN_T_COST);
+        assert_eq!(*Iterations::default(), Params::DEFAULT_T_COST);
+        assert_eq!(*Iterations::MAX, Params::MAX_T_COST);
+    }
+
+    #[test]
+    fn display_iterations() {
+        assert_eq!(format!("{}", Iterations::MIN), "1");
+        assert_eq!(format!("{}", Iterations::default()), "2");
+        assert_eq!(format!("{}", Iterations::MAX), "4294967295");
+    }
+
+    #[test]
+    fn value_parser_iterations() {
+        #[derive(Debug, Eq, Parser, PartialEq)]
+        pub struct Opt {
+            #[arg(short('t'), long, default_value_t, value_name("NUM"))]
+            pub iterations: Iterations,
+        }
+
+        assert_eq!(
+            Opt::try_parse_from(["test", "-t1"]).unwrap(),
+            Opt {
+                iterations: Iterations::MIN
+            }
+        );
+        assert_eq!(
+            Opt::try_parse_from(["test", "-t4294967295"]).unwrap(),
+            Opt {
+                iterations: Iterations::MAX
+            }
+        );
+
+        assert_eq!(
+            Opt::try_parse_from(["test"]).unwrap(),
+            Opt {
+                iterations: Iterations::default()
+            }
+        );
+
+        assert!(Opt::try_parse_from(["test", "-tn"])
+            .unwrap_err()
+            .to_string()
+            .contains("invalid digit found in string"));
+
+        assert!(Opt::try_parse_from(["test", "-t0"])
+            .unwrap_err()
+            .to_string()
+            .contains("0 is not in 1..=4294967295"));
+        assert!(Opt::try_parse_from(["test", "-t4294967296"])
+            .unwrap_err()
+            .to_string()
+            .contains("4294967296 is not in 1..=4294967295"));
+    }
+
+    #[test]
+    fn parse_ref_iterations_value_parser() {
+        assert_eq!(Iterations::default(), Iterations(Params::DEFAULT_T_COST));
+
+        assert_eq!(
+            TypedValueParser::parse_ref(
+                &IterationsValueParser,
+                &clap::Command::new("test"),
+                None,
+                OsStr::new("1")
+            )
+            .unwrap(),
+            Iterations::MIN
+        );
+        assert_eq!(
+            TypedValueParser::parse_ref(
+                &IterationsValueParser,
+                &clap::Command::new("test"),
+                None,
+                OsStr::new("4294967295")
+            )
+            .unwrap(),
+            Iterations::MAX
+        );
+
+        assert!(TypedValueParser::parse_ref(
+            &IterationsValueParser,
+            &clap::Command::new("test"),
+            None,
+            OsStr::new("n")
+        )
+        .unwrap_err()
+        .to_string()
+        .contains("invalid digit found in string"));
+
+        assert!(TypedValueParser::parse_ref(
+            &IterationsValueParser,
+            &clap::Command::new("test"),
+            None,
+            OsStr::new("0")
+        )
+        .unwrap_err()
+        .to_string()
+        .contains("0 is not in 1..=4294967295"));
+        assert!(TypedValueParser::parse_ref(
+            &IterationsValueParser,
+            &clap::Command::new("test"),
+            None,
+            OsStr::new("4294967296")
+        )
+        .unwrap_err()
+        .to_string()
+        .contains("4294967296 is not in 1..=4294967295"));
+    }
+
+    impl Parallelism {
+        /// Minimum number of threads.
+        const MIN: Self = Self(Params::MIN_P_COST);
+
+        /// Maximum number of threads.
+        const MAX: Self = Self(Params::MAX_P_COST);
+    }
+
+    #[test]
+    fn default_parallelism() {
+        assert_eq!(Parallelism::default(), Parallelism(Params::DEFAULT_P_COST));
+    }
+
+    #[test]
+    fn deref_parallelism() {
+        assert_eq!(*Parallelism::MIN, Params::MIN_P_COST);
+        assert_eq!(*Parallelism::default(), Params::DEFAULT_P_COST);
+        assert_eq!(*Parallelism::MAX, Params::MAX_P_COST);
+    }
+
+    #[test]
+    fn display_parallelism() {
+        assert_eq!(format!("{}", Parallelism::MIN), "1");
+        assert_eq!(format!("{}", Parallelism::default()), "1");
+        assert_eq!(format!("{}", Parallelism::MAX), "16777215");
+    }
+
+    #[test]
+    fn value_parser_parallelism() {
+        #[derive(Debug, Eq, Parser, PartialEq)]
+        pub struct Opt {
+            #[arg(short, long, default_value_t, value_name("NUM"))]
+            pub parallelism: Parallelism,
+        }
+
+        assert_eq!(
+            Opt::try_parse_from(["test", "-p1"]).unwrap(),
+            Opt {
+                parallelism: Parallelism::MIN
+            }
+        );
+        assert_eq!(
+            Opt::try_parse_from(["test", "-p16777215"]).unwrap(),
+            Opt {
+                parallelism: Parallelism::MAX
+            }
+        );
+
+        assert_eq!(
+            Opt::try_parse_from(["test"]).unwrap(),
+            Opt {
+                parallelism: Parallelism::default()
+            }
+        );
+
+        assert!(Opt::try_parse_from(["test", "-pn"])
+            .unwrap_err()
+            .to_string()
+            .contains("invalid digit found in string"));
+
+        assert!(Opt::try_parse_from(["test", "-p0"])
+            .unwrap_err()
+            .to_string()
+            .contains("0 is not in 1..=16777215"));
+        assert!(Opt::try_parse_from(["test", "-p16777216"])
+            .unwrap_err()
+            .to_string()
+            .contains("16777216 is not in 1..=16777215"));
+    }
+
+    #[test]
+    fn parse_ref_parallelism_value_parser() {
+        assert_eq!(
+            TypedValueParser::parse_ref(
+                &ParallelismValueParser,
+                &clap::Command::new("test"),
+                None,
+                OsStr::new("1")
+            )
+            .unwrap(),
+            Parallelism::MIN
+        );
+        assert_eq!(
+            TypedValueParser::parse_ref(
+                &ParallelismValueParser,
+                &clap::Command::new("test"),
+                None,
+                OsStr::new("16777215")
+            )
+            .unwrap(),
+            Parallelism::MAX
+        );
+
+        assert!(TypedValueParser::parse_ref(
+            &ParallelismValueParser,
+            &clap::Command::new("test"),
+            None,
+            OsStr::new("n")
+        )
+        .unwrap_err()
+        .to_string()
+        .contains("invalid digit found in string"));
+
+        assert!(TypedValueParser::parse_ref(
+            &ParallelismValueParser,
+            &clap::Command::new("test"),
+            None,
+            OsStr::new("0")
+        )
+        .unwrap_err()
+        .to_string()
+        .contains("0 is not in 1..=16777215"));
+        assert!(TypedValueParser::parse_ref(
+            &ParallelismValueParser,
+            &clap::Command::new("test"),
+            None,
+            OsStr::new("16777216")
+        )
+        .unwrap_err()
+        .to_string()
+        .contains("16777216 is not in 1..=16777215"));
     }
 }
