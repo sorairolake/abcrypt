@@ -123,7 +123,7 @@ impl Decryptor {
         inner(self, buf.as_mut())
     }
 
-    /// Decrypts data and into a newly allocated `Vec`.
+    /// Decrypts data and into a newly allocated [`Vec`].
     ///
     /// # Errors
     ///
@@ -178,4 +178,40 @@ impl Decryptor {
     pub fn out_len(&self) -> usize {
         self.ciphertext.len() - <XChaCha20Poly1305 as AeadCore>::TagSize::USIZE
     }
+}
+
+/// Decrypts data and into a newly allocated [`Vec`].
+///
+/// This is a convenience function for using [`Decryptor::new`] and
+/// [`Decryptor::decrypt_to_vec`].
+///
+/// # Errors
+///
+/// Returns [`Err`] if any of the following are true:
+///
+/// - `data` is shorter than 156 bytes.
+/// - The magic number is invalid.
+/// - The version number is the unrecognized abcrypt version number.
+/// - The Argon2 parameters are invalid.
+/// - The Argon2 context is invalid.
+/// - The MAC (authentication tag) of the header is invalid.
+/// - The MAC (authentication tag) of the ciphertext is invalid.
+///
+/// # Examples
+///
+/// ```
+/// # use abcrypt::argon2::Params;
+/// #
+/// let data = b"Hello, world!";
+/// let passphrase = "passphrase";
+///
+/// let params = Params::new(32, 3, 4, None).unwrap();
+/// let ciphertext = abcrypt::encrypt_with_params(data, passphrase, params).unwrap();
+/// # assert_ne!(ciphertext, data);
+///
+/// let plaintext = abcrypt::decrypt(ciphertext, passphrase).unwrap();
+/// # assert_eq!(plaintext, data);
+/// ```
+pub fn decrypt(data: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Vec<u8>> {
+    Decryptor::new(data, passphrase).and_then(Decryptor::decrypt_to_vec)
 }

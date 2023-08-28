@@ -136,7 +136,7 @@ impl Encryptor {
         inner(self, buf.as_mut());
     }
 
-    /// Encrypts data and into a newly allocated `Vec`.
+    /// Encrypts data and into a newly allocated [`Vec`].
     ///
     /// # Examples
     ///
@@ -177,4 +177,64 @@ impl Encryptor {
     pub fn out_len(&self) -> usize {
         Header::SIZE + self.data.len() + <XChaCha20Poly1305 as AeadCore>::TagSize::USIZE
     }
+}
+
+/// Encrypts data and into a newly allocated [`Vec`].
+///
+/// This uses the default Argon2 parameters created by [`Params::default`].
+///
+/// This is a convenience function for using [`Encryptor::new`] and
+/// [`Encryptor::encrypt_to_vec`].
+///
+/// # Errors
+///
+/// Returns [`Err`] if the Argon2 context is invalid.
+///
+/// # Examples
+///
+/// ```
+/// let data = b"Hello, world!";
+/// let passphrase = "passphrase";
+///
+/// let ciphertext = abcrypt::encrypt(data, passphrase).unwrap();
+/// # assert_ne!(ciphertext, data);
+/// #
+/// # let params = abcrypt::Params::new(ciphertext).unwrap();
+/// # assert_eq!(params.m_cost(), argon2::Params::DEFAULT_M_COST);
+/// # assert_eq!(params.t_cost(), argon2::Params::DEFAULT_T_COST);
+/// # assert_eq!(params.p_cost(), argon2::Params::DEFAULT_P_COST);
+/// ```
+pub fn encrypt(data: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Vec<u8>> {
+    Encryptor::new(data, passphrase).map(Encryptor::encrypt_to_vec)
+}
+
+#[allow(clippy::module_name_repetitions)]
+/// Encrypts data with the specified [`Params`] and into a newly allocated
+/// [`Vec`].
+///
+/// This is a convenience function for using [`Encryptor::with_params`] and
+/// [`Encryptor::encrypt_to_vec`].
+///
+/// # Errors
+///
+/// Returns [`Err`] if the Argon2 context is invalid.
+///
+/// # Examples
+///
+/// ```
+/// # use abcrypt::argon2::Params;
+/// #
+/// let data = b"Hello, world!";
+/// let passphrase = "passphrase";
+///
+/// let params = Params::new(32, 3, 4, None).unwrap();
+/// let ciphertext = abcrypt::encrypt_with_params(data, passphrase, params).unwrap();
+/// # assert_ne!(ciphertext, data);
+/// ```
+pub fn encrypt_with_params(
+    data: impl AsRef<[u8]>,
+    passphrase: impl AsRef<[u8]>,
+    params: Params,
+) -> Result<Vec<u8>> {
+    Encryptor::with_params(data, passphrase, params).map(Encryptor::encrypt_to_vec)
 }

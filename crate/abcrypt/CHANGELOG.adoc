@@ -20,6 +20,8 @@ project adheres to https://semver.org/[Semantic Versioning].
 
 * Add a specialized `Result` type for read and write operations for the abcrypt
   encrypted data format ({pull-request-url}/21[#21])
+* Add convenience functions for using `Encryptor` and `Decryptor`
+  ({pull-request-url}/22[#22])
 
 == {project-url}/releases/tag/abcrypt-v0.1.0[0.1.0] - 2023-08-25
 

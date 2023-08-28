@@ -76,8 +76,8 @@ pub use blake2;
 pub use chacha20poly1305;
 
 pub use crate::{
-    decrypt::Decryptor,
-    encrypt::Encryptor,
+    decrypt::{decrypt, Decryptor},
+    encrypt::{encrypt, encrypt_with_params, Encryptor},
     error::{Error, Result},
     params::Params,
 };
