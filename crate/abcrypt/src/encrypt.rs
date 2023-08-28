@@ -21,7 +21,7 @@ use crate::{
 pub struct Encryptor {
     header: Header,
     dk: DerivedKey,
-    data: Vec<u8>,
+    plaintext: Vec<u8>,
 }
 
 impl Encryptor {
@@ -91,8 +91,12 @@ impl Encryptor {
 
             header.compute_mac(&dk.mac());
 
-            let data = data.to_vec();
-            Ok(Self { header, dk, data })
+            let plaintext = data.to_vec();
+            Ok(Self {
+                header,
+                dk,
+                plaintext,
+            })
         };
         inner(data.as_ref(), passphrase.as_ref(), params)
     }
@@ -125,7 +129,7 @@ impl Encryptor {
         let inner = |encryptor: Self, buf: &mut [u8]| {
             let cipher = XChaCha20Poly1305::new(&encryptor.dk.encrypt());
             let ciphertext = cipher
-                .encrypt(&encryptor.header.nonce(), encryptor.data.as_slice())
+                .encrypt(&encryptor.header.nonce(), encryptor.plaintext.as_slice())
                 .expect(
                     "the buffer should have sufficient capacity to store the resulting ciphertext",
                 );
@@ -175,7 +179,7 @@ impl Encryptor {
     #[must_use]
     #[inline]
     pub fn out_len(&self) -> usize {
-        Header::SIZE + self.data.len() + <XChaCha20Poly1305 as AeadCore>::TagSize::USIZE
+        Header::SIZE + self.plaintext.len() + <XChaCha20Poly1305 as AeadCore>::TagSize::USIZE
     }
 }
 

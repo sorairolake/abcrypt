@@ -4,7 +4,7 @@
 
 use std::path::Path;
 
-use abcrypt::{argon2, Decryptor, Encryptor};
+use abcrypt::{argon2, Decryptor};
 use anyhow::{bail, Context};
 use clap::Parser;
 
@@ -61,13 +61,12 @@ pub fn run() -> anyhow::Result<()> {
                     params::displayln(params.m_cost(), params.t_cost(), params.p_cost());
                 }
 
-                let cipher = Encryptor::with_params(input, passphrase, params)?;
-                let encrypted = cipher.encrypt_to_vec();
+                let ciphertext = abcrypt::encrypt_with_params(input, passphrase, params)?;
 
                 if let Some(file) = arg.output {
-                    output::write_to_file(&file, &encrypted)?;
+                    output::write_to_file(&file, &ciphertext)?;
                 } else {
-                    output::write_to_stdout(&encrypted)?;
+                    output::write_to_stdout(&ciphertext)?;
                 }
             }
             Command::Decrypt(arg) => {
@@ -99,14 +98,14 @@ pub fn run() -> anyhow::Result<()> {
                     }
                     c => c.context("the header in the encrypted data is invalid"),
                 }?;
-                let decrypted = cipher
+                let plaintext = cipher
                     .decrypt_to_vec()
                     .context("the encrypted data is corrupted")?;
 
                 if let Some(file) = arg.output {
-                    output::write_to_file(&file, &decrypted)?;
+                    output::write_to_file(&file, &plaintext)?;
                 } else {
-                    output::write_to_stdout(&decrypted)?;
+                    output::write_to_stdout(&plaintext)?;
                 }
             }
             Command::Information(arg) => {
