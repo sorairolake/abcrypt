@@ -69,12 +69,12 @@ impl std::error::Error for Error {
 /// ```
 /// use abcrypt::{Decryptor, Encryptor};
 ///
-/// fn encrypt(data: &[u8], passphrase: &[u8]) -> abcrypt::Result<Vec<u8>> {
-///     Encryptor::new(data, passphrase).map(Encryptor::encrypt_to_vec)
+/// fn encrypt(plaintext: &[u8], passphrase: &[u8]) -> abcrypt::Result<Vec<u8>> {
+///     Encryptor::new(&plaintext, passphrase).map(Encryptor::encrypt_to_vec)
 /// }
 ///
-/// fn decrypt(data: &[u8], passphrase: &[u8]) -> abcrypt::Result<Vec<u8>> {
-///     Decryptor::new(data, passphrase).and_then(Decryptor::decrypt_to_vec)
+/// fn decrypt(ciphertext: &[u8], passphrase: &[u8]) -> abcrypt::Result<Vec<u8>> {
+///     Decryptor::new(&ciphertext, passphrase).and_then(Decryptor::decrypt_to_vec)
 /// }
 ///
 /// let data = b"Hello, world!";

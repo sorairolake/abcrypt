@@ -18,20 +18,20 @@ use crate::{
 
 /// Decryptor for the abcrypt encrypted data format.
 #[derive(Clone, Debug)]
-pub struct Decryptor {
+pub struct Decryptor<'c> {
     header: Header,
     dk: DerivedKey,
-    ciphertext: Vec<u8>,
+    ciphertext: &'c [u8],
 }
 
-impl Decryptor {
+impl<'c> Decryptor<'c> {
     /// Creates a new `Decryptor`.
     ///
     /// # Errors
     ///
     /// Returns [`Err`] if any of the following are true:
     ///
-    /// - `data` is shorter than 156 bytes.
+    /// - `ciphertext` is shorter than 156 bytes.
     /// - The magic number is invalid.
     /// - The version number is the unrecognized abcrypt version number.
     /// - The Argon2 parameters are invalid.
@@ -52,13 +52,13 @@ impl Decryptor {
     ///     .unwrap();
     /// # assert_ne!(ciphertext, data);
     ///
-    /// let cipher = Decryptor::new(ciphertext, passphrase).unwrap();
+    /// let cipher = Decryptor::new(&ciphertext, passphrase).unwrap();
     /// let plaintext = cipher.decrypt_to_vec().unwrap();
     /// # assert_eq!(plaintext, data);
     /// ```
-    pub fn new(data: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Self> {
-        let inner = |data: &[u8], passphrase: &[u8]| -> Result<Self> {
-            let mut header = Header::parse(data)?;
+    pub fn new(ciphertext: &'c impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Self> {
+        let inner = |ciphertext: &'c [u8], passphrase: &[u8]| -> Result<Self> {
+            let mut header = Header::parse(ciphertext)?;
 
             // The derived key size is 96 bytes. The first 256 bits are for
             // XChaCha20-Poly1305 key, and the last 512 bits are for BLAKE2b-512-MAC key.
@@ -68,19 +68,19 @@ impl Decryptor {
                 .map_err(Error::InvalidArgon2Context)?;
             let dk = DerivedKey::new(dk);
 
-            header.verify_mac(&dk.mac(), data[76..Header::SIZE].into())?;
+            header.verify_mac(&dk.mac(), ciphertext[76..Header::SIZE].into())?;
 
-            let ciphertext = data[Header::SIZE..].to_vec();
+            let ciphertext = &ciphertext[Header::SIZE..];
             Ok(Self {
                 header,
                 dk,
                 ciphertext,
             })
         };
-        inner(data.as_ref(), passphrase.as_ref())
+        inner(ciphertext.as_ref(), passphrase.as_ref())
     }
 
-    /// Decrypts data into `buf`.
+    /// Decrypts the ciphertext into `buf`.
     ///
     /// # Errors
     ///
@@ -105,7 +105,7 @@ impl Decryptor {
     ///     .unwrap();
     /// # assert_ne!(ciphertext, data);
     ///
-    /// let cipher = Decryptor::new(ciphertext, passphrase).unwrap();
+    /// let cipher = Decryptor::new(&ciphertext, passphrase).unwrap();
     /// let mut buf = [u8::default(); 13];
     /// cipher.decrypt(&mut buf).unwrap();
     /// # assert_eq!(buf, data.as_slice());
@@ -114,7 +114,7 @@ impl Decryptor {
         let inner = |decryptor: Self, buf: &mut [u8]| -> Result<()> {
             let cipher = XChaCha20Poly1305::new(&decryptor.dk.encrypt());
             let plaintext = cipher
-                .decrypt(&decryptor.header.nonce(), decryptor.ciphertext.as_slice())
+                .decrypt(&decryptor.header.nonce(), decryptor.ciphertext)
                 .map_err(Error::InvalidMac)?;
 
             buf.copy_from_slice(&plaintext);
@@ -123,7 +123,7 @@ impl Decryptor {
         inner(self, buf.as_mut())
     }
 
-    /// Decrypts data and into a newly allocated [`Vec`].
+    /// Decrypts the ciphertext and into a newly allocated [`Vec`].
     ///
     /// # Errors
     ///
@@ -144,7 +144,7 @@ impl Decryptor {
     ///     .unwrap();
     /// # assert_ne!(ciphertext, data);
     ///
-    /// let cipher = Decryptor::new(ciphertext, passphrase).unwrap();
+    /// let cipher = Decryptor::new(&ciphertext, passphrase).unwrap();
     /// let plaintext = cipher.decrypt_to_vec().unwrap();
     /// # assert_eq!(plaintext, data);
     /// ```
@@ -170,17 +170,17 @@ impl Decryptor {
     ///     .unwrap();
     /// # assert_ne!(ciphertext, data);
     ///
-    /// let cipher = Decryptor::new(ciphertext, passphrase).unwrap();
+    /// let cipher = Decryptor::new(&ciphertext, passphrase).unwrap();
     /// assert_eq!(cipher.out_len(), 13);
     /// ```
     #[must_use]
     #[inline]
-    pub fn out_len(&self) -> usize {
+    pub const fn out_len(&self) -> usize {
         self.ciphertext.len() - <XChaCha20Poly1305 as AeadCore>::TagSize::USIZE
     }
 }
 
-/// Decrypts data and into a newly allocated [`Vec`].
+/// Decrypts `ciphertext` and into a newly allocated [`Vec`].
 ///
 /// This is a convenience function for using [`Decryptor::new`] and
 /// [`Decryptor::decrypt_to_vec`].
@@ -189,7 +189,7 @@ impl Decryptor {
 ///
 /// Returns [`Err`] if any of the following are true:
 ///
-/// - `data` is shorter than 156 bytes.
+/// - `ciphertext` is shorter than 156 bytes.
 /// - The magic number is invalid.
 /// - The version number is the unrecognized abcrypt version number.
 /// - The Argon2 parameters are invalid.
@@ -212,6 +212,6 @@ impl Decryptor {
 /// let plaintext = abcrypt::decrypt(ciphertext, passphrase).unwrap();
 /// # assert_eq!(plaintext, data);
 /// ```
-pub fn decrypt(data: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Vec<u8>> {
-    Decryptor::new(data, passphrase).and_then(Decryptor::decrypt_to_vec)
+pub fn decrypt(ciphertext: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Vec<u8>> {
+    Decryptor::new(&ciphertext, passphrase).and_then(Decryptor::decrypt_to_vec)
 }

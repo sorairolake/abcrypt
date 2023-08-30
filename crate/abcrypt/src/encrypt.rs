@@ -18,13 +18,13 @@ use crate::{
 
 /// Encryptor for the abcrypt encrypted data format.
 #[derive(Clone, Debug)]
-pub struct Encryptor {
+pub struct Encryptor<'m> {
     header: Header,
     dk: DerivedKey,
-    plaintext: Vec<u8>,
+    plaintext: &'m [u8],
 }
 
-impl Encryptor {
+impl<'m> Encryptor<'m> {
     /// Creates a new `Encryptor`.
     ///
     /// This uses the default Argon2 parameters created by [`Params::default`].
@@ -50,8 +50,8 @@ impl Encryptor {
     /// # assert_eq!(params.t_cost(), argon2::Params::DEFAULT_T_COST);
     /// # assert_eq!(params.p_cost(), argon2::Params::DEFAULT_P_COST);
     /// ```
-    pub fn new(data: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Self> {
-        Self::with_params(data, passphrase, Params::default())
+    pub fn new(plaintext: &'m impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Self> {
+        Self::with_params(plaintext, passphrase, Params::default())
     }
 
     /// Creates a new `Encryptor` with the specified [`Params`].
@@ -74,11 +74,11 @@ impl Encryptor {
     /// # assert_ne!(ciphertext, data);
     /// ```
     pub fn with_params(
-        data: impl AsRef<[u8]>,
+        plaintext: &'m impl AsRef<[u8]>,
         passphrase: impl AsRef<[u8]>,
         params: Params,
     ) -> Result<Self> {
-        let inner = |data: &[u8], passphrase: &[u8], params: Params| -> Result<Self> {
+        let inner = |plaintext: &'m [u8], passphrase: &[u8], params: Params| -> Result<Self> {
             let mut header = Header::new(params);
 
             // The derived key size is 96 bytes. The first 256 bits are for
@@ -91,17 +91,16 @@ impl Encryptor {
 
             header.compute_mac(&dk.mac());
 
-            let plaintext = data.to_vec();
             Ok(Self {
                 header,
                 dk,
                 plaintext,
             })
         };
-        inner(data.as_ref(), passphrase.as_ref(), params)
+        inner(plaintext.as_ref(), passphrase.as_ref(), params)
     }
 
-    /// Encrypts data into `buf`.
+    /// Encrypts the plaintext into `buf`.
     ///
     /// # Panics
     ///
@@ -129,7 +128,7 @@ impl Encryptor {
         let inner = |encryptor: Self, buf: &mut [u8]| {
             let cipher = XChaCha20Poly1305::new(&encryptor.dk.encrypt());
             let ciphertext = cipher
-                .encrypt(&encryptor.header.nonce(), encryptor.plaintext.as_slice())
+                .encrypt(&encryptor.header.nonce(), encryptor.plaintext)
                 .expect(
                     "the buffer should have sufficient capacity to store the resulting ciphertext",
                 );
@@ -140,7 +139,7 @@ impl Encryptor {
         inner(self, buf.as_mut());
     }
 
-    /// Encrypts data and into a newly allocated [`Vec`].
+    /// Encrypts the plaintext and into a newly allocated [`Vec`].
     ///
     /// # Examples
     ///
@@ -178,12 +177,12 @@ impl Encryptor {
     /// ```
     #[must_use]
     #[inline]
-    pub fn out_len(&self) -> usize {
+    pub const fn out_len(&self) -> usize {
         Header::SIZE + self.plaintext.len() + <XChaCha20Poly1305 as AeadCore>::TagSize::USIZE
     }
 }
 
-/// Encrypts data and into a newly allocated [`Vec`].
+/// Encrypts `plaintext` and into a newly allocated [`Vec`].
 ///
 /// This uses the default Argon2 parameters created by [`Params::default`].
 ///
@@ -208,13 +207,13 @@ impl Encryptor {
 /// # assert_eq!(params.t_cost(), argon2::Params::DEFAULT_T_COST);
 /// # assert_eq!(params.p_cost(), argon2::Params::DEFAULT_P_COST);
 /// ```
-pub fn encrypt(data: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Vec<u8>> {
-    Encryptor::new(data, passphrase).map(Encryptor::encrypt_to_vec)
+pub fn encrypt(plaintext: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Vec<u8>> {
+    Encryptor::new(&plaintext, passphrase).map(Encryptor::encrypt_to_vec)
 }
 
 #[allow(clippy::module_name_repetitions)]
-/// Encrypts data with the specified [`Params`] and into a newly allocated
-/// [`Vec`].
+/// Encrypts `plaintext` with the specified [`Params`] and into a newly
+/// allocated [`Vec`].
 ///
 /// This is a convenience function for using [`Encryptor::with_params`] and
 /// [`Encryptor::encrypt_to_vec`].
@@ -236,9 +235,9 @@ pub fn encrypt(data: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<V
 /// # assert_ne!(ciphertext, data);
 /// ```
 pub fn encrypt_with_params(
-    data: impl AsRef<[u8]>,
+    plaintext: impl AsRef<[u8]>,
     passphrase: impl AsRef<[u8]>,
     params: Params,
 ) -> Result<Vec<u8>> {
-    Encryptor::with_params(data, passphrase, params).map(Encryptor::encrypt_to_vec)
+    Encryptor::with_params(&plaintext, passphrase, params).map(Encryptor::encrypt_to_vec)
 }

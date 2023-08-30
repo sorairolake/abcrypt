@@ -92,7 +92,7 @@ pub fn run() -> anyhow::Result<()> {
                     params::displayln(params.m_cost(), params.t_cost(), params.p_cost());
                 }
 
-                let cipher = match Decryptor::new(input, passphrase) {
+                let cipher = match Decryptor::new(&input, passphrase) {
                     c @ Err(abcrypt::Error::InvalidHeaderMac(_)) => {
                         c.context("passphrase is incorrect")
                     }

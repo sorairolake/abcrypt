@@ -23,6 +23,11 @@ project adheres to https://semver.org/[Semantic Versioning].
 * Add convenience functions for using `Encryptor` and `Decryptor`
   ({pull-request-url}/22[#22])
 
+=== Changed
+
+* Change to store the plaintext and the ciphertext as `slice` in `Encryptor`
+  and `Decryptor` ({pull-request-url}/25[#25])
+
 == {project-url}/releases/tag/abcrypt-v0.1.0[0.1.0] - 2023-08-25
 
 === Added

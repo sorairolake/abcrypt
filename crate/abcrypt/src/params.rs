@@ -11,13 +11,13 @@ use crate::{format::Header, Result};
 pub struct Params(argon2::Params);
 
 impl Params {
-    /// Creates a new instance of the Argon2 parameters from `data`.
+    /// Creates a new instance of the Argon2 parameters from `ciphertext`.
     ///
     /// # Errors
     ///
     /// Returns [`Err`] if any of the following are true:
     ///
-    /// - `data` is shorter than 156 bytes.
+    /// - `ciphertext` is shorter than 156 bytes.
     /// - The magic number is invalid.
     /// - The version number is the unrecognized abcrypt version number.
     /// - The Argon2 parameters are invalid.
@@ -37,8 +37,8 @@ impl Params {
     ///
     /// assert!(Params::new(ciphertext).is_ok());
     /// ```
-    pub fn new(data: impl AsRef<[u8]>) -> Result<Self> {
-        let params = Header::parse(data.as_ref()).map(|h| h.params())?;
+    pub fn new(ciphertext: impl AsRef<[u8]>) -> Result<Self> {
+        let params = Header::parse(ciphertext.as_ref()).map(|h| h.params())?;
         Ok(Self(params))
     }
 

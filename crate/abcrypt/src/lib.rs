@@ -23,7 +23,7 @@
 //! assert_ne!(ciphertext, data);
 //!
 //! // And decrypt it back.
-//! let plaintext = Decryptor::new(ciphertext, passphrase)
+//! let plaintext = Decryptor::new(&ciphertext, passphrase)
 //!     .and_then(Decryptor::decrypt_to_vec)
 //!     .unwrap();
 //! assert_eq!(plaintext, data);
