@@ -14,45 +14,48 @@ use abcrypt::{argon2::Params, Decryptor, Encryptor};
 const PASSPHRASE: &str = "passphrase";
 const TEST_DATA: &[u8] = include_bytes!("data/data.txt");
 
+const HEADER_SIZE: usize = 140;
+const TAG_SIZE: usize = 16;
+
 #[test]
 fn success() {
-    {
-        let cipher =
-            Encryptor::with_params(&TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())
-                .unwrap();
-        let mut buf = vec![u8::default(); cipher.out_len()];
-        cipher.encrypt(&mut buf);
-        assert_ne!(buf, TEST_DATA);
-        assert_eq!(buf.len(), TEST_DATA.len() + 156);
-
-        let plaintext = Decryptor::new(&buf, PASSPHRASE)
-            .and_then(Decryptor::decrypt_to_vec)
+    let cipher =
+        Encryptor::with_params(&TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())
             .unwrap();
-        assert_eq!(plaintext, TEST_DATA);
-    }
+    let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
+    cipher.encrypt(&mut buf);
+    assert_ne!(buf, TEST_DATA);
+    assert_eq!(buf.len(), TEST_DATA.len() + HEADER_SIZE + TAG_SIZE);
 
-    {
-        let ciphertext =
-            Encryptor::with_params(&TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())
-                .map(Encryptor::encrypt_to_vec)
-                .unwrap();
-        assert_ne!(ciphertext, TEST_DATA);
-        assert_eq!(ciphertext.len(), TEST_DATA.len() + 156);
+    let cipher = Decryptor::new(&buf, PASSPHRASE).unwrap();
+    let mut buf = [u8::default(); TEST_DATA.len()];
+    cipher.decrypt(&mut buf).unwrap();
+    assert_eq!(buf, TEST_DATA);
+}
 
-        let plaintext = Decryptor::new(&ciphertext, PASSPHRASE)
-            .and_then(Decryptor::decrypt_to_vec)
+#[cfg(feature = "alloc")]
+#[test]
+fn success_to_vec() {
+    let ciphertext =
+        Encryptor::with_params(&TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())
+            .map(|c| c.encrypt_to_vec())
             .unwrap();
-        assert_eq!(plaintext, TEST_DATA);
-    }
+    assert_ne!(ciphertext, TEST_DATA);
+    assert_eq!(ciphertext.len(), TEST_DATA.len() + HEADER_SIZE + TAG_SIZE);
+
+    let plaintext = Decryptor::new(&ciphertext, PASSPHRASE)
+        .and_then(|c| c.decrypt_to_vec())
+        .unwrap();
+    assert_eq!(plaintext, TEST_DATA);
 }
 
 #[test]
-#[should_panic(expected = "source slice length (30) does not match destination slice length (29)")]
+#[should_panic(expected = "source slice length (16) does not match destination slice length (15)")]
 fn invalid_output_length() {
     let cipher =
         Encryptor::with_params(&TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())
             .unwrap();
-    let mut buf = vec![u8::default(); cipher.out_len() - 1];
+    let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE - 1];
     cipher.encrypt(&mut buf);
 }
 
@@ -60,54 +63,81 @@ fn invalid_output_length() {
 fn minimum_output_length() {
     let cipher =
         Encryptor::with_params(&[], PASSPHRASE, Params::new(32, 3, 4, None).unwrap()).unwrap();
-    assert_eq!(cipher.out_len(), 156);
-    let ciphertext = cipher.encrypt_to_vec();
-    assert_eq!(ciphertext.len(), 156);
+    assert_eq!(cipher.out_len(), HEADER_SIZE + TAG_SIZE);
+    let mut buf = [u8::default(); HEADER_SIZE + TAG_SIZE];
+    cipher.encrypt(&mut buf);
+    assert_eq!(buf.len(), HEADER_SIZE + TAG_SIZE);
 }
 
 #[test]
 fn magic_number() {
-    let ciphertext =
+    let cipher =
         Encryptor::with_params(&TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())
-            .map(Encryptor::encrypt_to_vec)
             .unwrap();
-    assert_eq!(&ciphertext[..7], b"abcrypt");
+    let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
+    cipher.encrypt(&mut buf);
+    assert_eq!(&buf[..7], b"abcrypt");
 }
 
 #[test]
 fn version() {
-    let ciphertext =
+    let cipher =
         Encryptor::with_params(&TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())
-            .map(Encryptor::encrypt_to_vec)
             .unwrap();
-    assert_eq!(ciphertext[7], 0);
+    let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
+    cipher.encrypt(&mut buf);
+    assert_eq!(buf[7], 0);
 }
 
 #[test]
 fn m_cost() {
-    let ciphertext =
+    let cipher =
         Encryptor::with_params(&TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())
-            .map(Encryptor::encrypt_to_vec)
             .unwrap();
-    assert_eq!(&ciphertext[8..12], u32::to_le_bytes(32));
+    let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
+    cipher.encrypt(&mut buf);
+    assert_eq!(&buf[8..12], u32::to_le_bytes(32));
 }
 
 #[test]
 fn t_cost() {
-    let ciphertext =
+    let cipher =
         Encryptor::with_params(&TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())
-            .map(Encryptor::encrypt_to_vec)
             .unwrap();
-    assert_eq!(&ciphertext[12..16], u32::to_le_bytes(3));
+    let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
+    cipher.encrypt(&mut buf);
+    assert_eq!(&buf[12..16], u32::to_le_bytes(3));
 }
 
 #[test]
 fn p_cost() {
-    let ciphertext =
+    let cipher =
         Encryptor::with_params(&TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())
-            .map(Encryptor::encrypt_to_vec)
             .unwrap();
-    assert_eq!(&ciphertext[16..20], u32::to_le_bytes(4));
+    let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
+    cipher.encrypt(&mut buf);
+    assert_eq!(&buf[16..20], u32::to_le_bytes(4));
+}
+
+#[cfg(not(feature = "alloc"))]
+#[test]
+fn too_large_memory_blocks() {
+    let err = Encryptor::with_params(
+        &TEST_DATA,
+        PASSPHRASE,
+        Params::new(
+            Params::DEFAULT_M_COST,
+            Params::DEFAULT_T_COST,
+            Params::DEFAULT_P_COST,
+            None,
+        )
+        .unwrap(),
+    )
+    .unwrap_err();
+    assert_eq!(
+        err,
+        abcrypt::Error::InvalidArgon2Context(argon2::Error::MemoryTooLittle)
+    );
 }
 
 #[test]
@@ -115,5 +145,5 @@ fn out_len() {
     let cipher =
         Encryptor::with_params(&TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())
             .unwrap();
-    assert_eq!(cipher.out_len(), 170);
+    assert_eq!(cipher.out_len(), TEST_DATA.len() + HEADER_SIZE + TAG_SIZE);
 }

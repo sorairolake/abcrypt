@@ -25,15 +25,9 @@ impl Params {
     /// # Examples
     ///
     /// ```
-    /// # use abcrypt::{Encryptor, Params};
+    /// # use abcrypt::Params;
     /// #
-    /// let data = b"Hello, world!";
-    /// let passphrase = "passphrase";
-    ///
-    /// let params = argon2::Params::new(32, 3, 4, None).unwrap();
-    /// let ciphertext = Encryptor::with_params(data, passphrase, params)
-    ///     .map(Encryptor::encrypt_to_vec)
-    ///     .unwrap();
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
     ///
     /// assert!(Params::new(ciphertext).is_ok());
     /// ```
@@ -47,15 +41,9 @@ impl Params {
     /// # Examples
     ///
     /// ```
-    /// # use abcrypt::{Encryptor, Params};
+    /// # use abcrypt::Params;
     /// #
-    /// let data = b"Hello, world!";
-    /// let passphrase = "passphrase";
-    ///
-    /// let params = argon2::Params::new(32, 3, 4, None).unwrap();
-    /// let ciphertext = Encryptor::with_params(data, passphrase, params)
-    ///     .map(Encryptor::encrypt_to_vec)
-    ///     .unwrap();
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
     ///
     /// let params = Params::new(ciphertext).unwrap();
     /// assert_eq!(params.m_cost(), 32);
@@ -71,15 +59,9 @@ impl Params {
     /// # Examples
     ///
     /// ```
-    /// # use abcrypt::{Encryptor, Params};
+    /// # use abcrypt::Params;
     /// #
-    /// let data = b"Hello, world!";
-    /// let passphrase = "passphrase";
-    ///
-    /// let params = argon2::Params::new(32, 3, 4, None).unwrap();
-    /// let ciphertext = Encryptor::with_params(data, passphrase, params)
-    ///     .map(Encryptor::encrypt_to_vec)
-    ///     .unwrap();
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
     ///
     /// let params = Params::new(ciphertext).unwrap();
     /// assert_eq!(params.t_cost(), 3);
@@ -95,15 +77,9 @@ impl Params {
     /// # Examples
     ///
     /// ```
-    /// # use abcrypt::{Encryptor, Params};
+    /// # use abcrypt::Params;
     /// #
-    /// let data = b"Hello, world!";
-    /// let passphrase = "passphrase";
-    ///
-    /// let params = argon2::Params::new(32, 3, 4, None).unwrap();
-    /// let ciphertext = Encryptor::with_params(data, passphrase, params)
-    ///     .map(Encryptor::encrypt_to_vec)
-    ///     .unwrap();
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
     ///
     /// let params = Params::new(ciphertext).unwrap();
     /// assert_eq!(params.p_cost(), 4);

@@ -60,6 +60,9 @@ jobs:
       run: cargo test -p ${{ matrix.crate }} --target ${{ matrix.target }} --all-features
     - name: Run tests (no default features)
       run: cargo test -p ${{ matrix.crate }} --target ${{ matrix.target }} --no-default-features
+    - name: Run tests (`alloc` feature)
+      if: matrix.crate == 'abcrypt'
+      run: cargo test -p ${{ matrix.crate }} --target ${{ matrix.target }} --no-default-features -F alloc
 
   workspace-test:
     name: Workspace Test
@@ -151,7 +154,3 @@ jobs:
       uses: Swatinem/rust-cache@v2.6.2
     - name: Run benchmarks
       run: cargo bench -p abcrypt
-    - name: Run benchmarks (all features)
-      run: cargo bench -p abcrypt --all-features
-    - name: Run benchmarks (no default features)
-      run: cargo bench -p abcrypt --no-default-features

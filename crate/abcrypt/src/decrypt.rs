@@ -4,11 +4,9 @@
 
 //! Decrypts from the abcrypt encrypted data format.
 
-use alloc::vec::Vec;
-
 use argon2::Argon2;
 use chacha20poly1305::{
-    aead::generic_array::typenum::Unsigned, aead::Aead, AeadCore, KeyInit, XChaCha20Poly1305,
+    aead::generic_array::typenum::Unsigned, AeadCore, AeadInPlace, KeyInit, XChaCha20Poly1305,
 };
 
 use crate::{
@@ -41,20 +39,12 @@ impl<'c> Decryptor<'c> {
     /// # Examples
     ///
     /// ```
-    /// # use abcrypt::{argon2::Params, Decryptor, Encryptor};
+    /// # use abcrypt::Decryptor;
     /// #
-    /// let data = b"Hello, world!";
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
     /// let passphrase = "passphrase";
     ///
-    /// let params = Params::new(32, 3, 4, None).unwrap();
-    /// let ciphertext = Encryptor::with_params(data, passphrase, params)
-    ///     .map(Encryptor::encrypt_to_vec)
-    ///     .unwrap();
-    /// # assert_ne!(ciphertext, data);
-    ///
     /// let cipher = Decryptor::new(&ciphertext, passphrase).unwrap();
-    /// let plaintext = cipher.decrypt_to_vec().unwrap();
-    /// # assert_eq!(plaintext, data);
     /// ```
     pub fn new(ciphertext: &'c impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Self> {
         let inner = |ciphertext: &'c [u8], passphrase: &[u8]| -> Result<Self> {
@@ -63,9 +53,23 @@ impl<'c> Decryptor<'c> {
             // The derived key size is 96 bytes. The first 256 bits are for
             // XChaCha20-Poly1305 key, and the last 512 bits are for BLAKE2b-512-MAC key.
             let mut dk = [u8::default(); DerivedKey::SIZE];
-            Argon2::new(ARGON2_ALGORITHM, ARGON2_VERSION, header.params())
+            let argon2 = Argon2::new(ARGON2_ALGORITHM, ARGON2_VERSION, header.params());
+            #[cfg(feature = "alloc")]
+            argon2
                 .hash_password_into(passphrase, &header.salt(), &mut dk)
                 .map_err(Error::InvalidArgon2Context)?;
+            #[cfg(not(feature = "alloc"))]
+            {
+                let mut memory_blocks = crate::MEMORY_BLOCKS;
+                argon2
+                    .hash_password_into_with_memory(
+                        passphrase,
+                        &header.salt(),
+                        &mut dk,
+                        &mut memory_blocks,
+                    )
+                    .map_err(Error::InvalidArgon2Context)?;
+            }
             let dk = DerivedKey::new(dk);
 
             header.verify_mac(&dk.mac(), ciphertext[76..Header::SIZE].into())?;
@@ -94,36 +98,35 @@ impl<'c> Decryptor<'c> {
     /// # Examples
     ///
     /// ```
-    /// # use abcrypt::{argon2::Params, Decryptor, Encryptor};
+    /// # use abcrypt::Decryptor;
     /// #
-    /// let data = b"Hello, world!";
+    /// let data = b"Hello, world!\n";
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
     /// let passphrase = "passphrase";
     ///
-    /// let params = Params::new(32, 3, 4, None).unwrap();
-    /// let ciphertext = Encryptor::with_params(data, passphrase, params)
-    ///     .map(Encryptor::encrypt_to_vec)
-    ///     .unwrap();
-    /// # assert_ne!(ciphertext, data);
-    ///
     /// let cipher = Decryptor::new(&ciphertext, passphrase).unwrap();
-    /// let mut buf = [u8::default(); 13];
+    /// let mut buf = [u8::default(); 14];
     /// cipher.decrypt(&mut buf).unwrap();
     /// # assert_eq!(buf, data.as_slice());
     /// ```
-    pub fn decrypt(self, mut buf: impl AsMut<[u8]>) -> Result<()> {
-        let inner = |decryptor: Self, buf: &mut [u8]| -> Result<()> {
-            let cipher = XChaCha20Poly1305::new(&decryptor.dk.encrypt());
-            let plaintext = cipher
-                .decrypt(&decryptor.header.nonce(), decryptor.ciphertext)
-                .map_err(Error::InvalidMac)?;
+    pub fn decrypt(&self, mut buf: impl AsMut<[u8]>) -> Result<()> {
+        let inner = |decryptor: &Self, buf: &mut [u8]| -> Result<()> {
+            let (plaintext, tag) = decryptor.ciphertext.split_at(
+                decryptor.ciphertext.len() - <XChaCha20Poly1305 as AeadCore>::TagSize::USIZE,
+            );
+            buf.copy_from_slice(plaintext);
 
-            buf.copy_from_slice(&plaintext);
+            let cipher = XChaCha20Poly1305::new(&decryptor.dk.encrypt());
+            cipher
+                .decrypt_in_place_detached(&decryptor.header.nonce(), b"", buf, tag.into())
+                .map_err(Error::InvalidMac)?;
             Ok(())
         };
         inner(self, buf.as_mut())
     }
 
-    /// Decrypts the ciphertext and into a newly allocated [`Vec`].
+    /// Decrypts the ciphertext and into a newly allocated
+    /// [`Vec`](alloc::vec::Vec).
     ///
     /// # Errors
     ///
@@ -133,22 +136,18 @@ impl<'c> Decryptor<'c> {
     /// # Examples
     ///
     /// ```
-    /// # use abcrypt::{argon2::Params, Decryptor, Encryptor};
+    /// # use abcrypt::Decryptor;
     /// #
-    /// let data = b"Hello, world!";
+    /// let data = b"Hello, world!\n";
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
     /// let passphrase = "passphrase";
-    ///
-    /// let params = Params::new(32, 3, 4, None).unwrap();
-    /// let ciphertext = Encryptor::with_params(data, passphrase, params)
-    ///     .map(Encryptor::encrypt_to_vec)
-    ///     .unwrap();
-    /// # assert_ne!(ciphertext, data);
     ///
     /// let cipher = Decryptor::new(&ciphertext, passphrase).unwrap();
     /// let plaintext = cipher.decrypt_to_vec().unwrap();
     /// # assert_eq!(plaintext, data);
     /// ```
-    pub fn decrypt_to_vec(self) -> Result<Vec<u8>> {
+    #[cfg(feature = "alloc")]
+    pub fn decrypt_to_vec(&self) -> Result<alloc::vec::Vec<u8>> {
         let mut buf = vec![u8::default(); self.out_len()];
         self.decrypt(&mut buf)?;
         Ok(buf)
@@ -159,19 +158,13 @@ impl<'c> Decryptor<'c> {
     /// # Examples
     ///
     /// ```
-    /// # use abcrypt::{argon2::Params, Decryptor, Encryptor};
+    /// # use abcrypt::Decryptor;
     /// #
-    /// let data = b"Hello, world!";
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
     /// let passphrase = "passphrase";
     ///
-    /// let params = Params::new(32, 3, 4, None).unwrap();
-    /// let ciphertext = Encryptor::with_params(data, passphrase, params)
-    ///     .map(Encryptor::encrypt_to_vec)
-    ///     .unwrap();
-    /// # assert_ne!(ciphertext, data);
-    ///
     /// let cipher = Decryptor::new(&ciphertext, passphrase).unwrap();
-    /// assert_eq!(cipher.out_len(), 13);
+    /// assert_eq!(cipher.out_len(), 14);
     /// ```
     #[must_use]
     #[inline]
@@ -180,7 +173,7 @@ impl<'c> Decryptor<'c> {
     }
 }
 
-/// Decrypts `ciphertext` and into a newly allocated [`Vec`].
+/// Decrypts `ciphertext` and into a newly allocated [`Vec`](alloc::vec::Vec).
 ///
 /// This is a convenience function for using [`Decryptor::new`] and
 /// [`Decryptor::decrypt_to_vec`].
@@ -200,18 +193,17 @@ impl<'c> Decryptor<'c> {
 /// # Examples
 ///
 /// ```
-/// # use abcrypt::argon2::Params;
-/// #
-/// let data = b"Hello, world!";
+/// let data = b"Hello, world!\n";
+/// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
 /// let passphrase = "passphrase";
-///
-/// let params = Params::new(32, 3, 4, None).unwrap();
-/// let ciphertext = abcrypt::encrypt_with_params(data, passphrase, params).unwrap();
-/// # assert_ne!(ciphertext, data);
 ///
 /// let plaintext = abcrypt::decrypt(ciphertext, passphrase).unwrap();
 /// # assert_eq!(plaintext, data);
 /// ```
-pub fn decrypt(ciphertext: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Vec<u8>> {
-    Decryptor::new(&ciphertext, passphrase).and_then(Decryptor::decrypt_to_vec)
+#[cfg(feature = "alloc")]
+pub fn decrypt(
+    ciphertext: impl AsRef<[u8]>,
+    passphrase: impl AsRef<[u8]>,
+) -> Result<alloc::vec::Vec<u8>> {
+    Decryptor::new(&ciphertext, passphrase).and_then(|c| c.decrypt_to_vec())
 }

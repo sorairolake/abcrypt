@@ -67,17 +67,19 @@ impl std::error::Error for Error {
 /// # Examples
 ///
 /// ```
+/// # #[cfg(feature = "alloc")]
+/// # {
 /// use abcrypt::{Decryptor, Encryptor};
 ///
 /// fn encrypt(plaintext: &[u8], passphrase: &[u8]) -> abcrypt::Result<Vec<u8>> {
-///     Encryptor::new(&plaintext, passphrase).map(Encryptor::encrypt_to_vec)
+///     Encryptor::new(&plaintext, passphrase).map(|c| c.encrypt_to_vec())
 /// }
 ///
 /// fn decrypt(ciphertext: &[u8], passphrase: &[u8]) -> abcrypt::Result<Vec<u8>> {
-///     Decryptor::new(&ciphertext, passphrase).and_then(Decryptor::decrypt_to_vec)
+///     Decryptor::new(&ciphertext, passphrase).and_then(|c| c.decrypt_to_vec())
 /// }
 ///
-/// let data = b"Hello, world!";
+/// let data = b"Hello, world!\n";
 /// let passphrase = b"passphrase";
 ///
 /// let ciphertext = encrypt(data, passphrase).unwrap();
@@ -85,6 +87,7 @@ impl std::error::Error for Error {
 ///
 /// let plaintext = decrypt(&ciphertext, passphrase).unwrap();
 /// assert_eq!(plaintext, data);
+/// # }
 /// ```
 pub type Result<T> = result::Result<T, Error>;
 
@@ -163,6 +166,7 @@ mod tests {
         }
     }
 
+    #[cfg(feature = "alloc")]
     #[test]
     fn debug() {
         assert_eq!(format!("{:?}", Error::InvalidLength), "InvalidLength");
@@ -360,6 +364,7 @@ mod tests {
         );
     }
 
+    #[cfg(feature = "alloc")]
     #[test]
     fn display() {
         assert_eq!(

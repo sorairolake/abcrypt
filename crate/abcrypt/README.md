@@ -24,6 +24,11 @@ abcrypt = "0.1.0"
 
 ### Crate features
 
+#### `alloc`
+
+Enables features that require an allocator. This is enabled by default (implied
+by `std`).
+
 #### `std`
 
 Enables features that depend on the standard library. This is enabled by
@@ -32,6 +37,8 @@ default.
 ### `no_std` support
 
 This supports `no_std` mode. Disables the `default` feature to enable this.
+
+Note that the memory blocks is limited to 256 KiB when `alloc` is disabled.
 
 ### Documentation
 
