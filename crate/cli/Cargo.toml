@@ -32,7 +32,7 @@ abcrypt = { version = "0.2.0", path = "../abcrypt" }
 anyhow = "1.0.75"
 byte-unit = { version = "4.0.19", default-features = false, features = ["std"] }
 clap = { version = "4.3.24", features = ["derive", "wrap_help"] }
-clap_complete = "4.3.2"
+clap_complete = "4.4.0"
 clap_complete_nushell = "4.3.2"
 dialoguer = { version = "0.10.4", default-features = false, features = ["password"] }
 serde = { version = "1.0.188", features = ["derive"], optional = true }
