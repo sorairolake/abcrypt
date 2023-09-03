@@ -140,6 +140,21 @@ jobs:
     - name: Check no lint warnings (no default features)
       run: cargo clippy --workspace --no-default-features -- -D warnings
 
+  doc:
+    name: Documentation
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Setup Rust toolchain
+      uses: dtolnay/rust-toolchain@v1
+      with:
+        toolchain: stable
+    - name: Cache build artifacts
+      uses: Swatinem/rust-cache@v2.6.2
+    - name: Check no `rustdoc` lint warnings
+      run: RUSTDOCFLAGS="-D warnings" cargo doc -p abcrypt --no-deps --document-private-items --all-features
+
   benchmark:
     name: Benchmark
     runs-on: ubuntu-22.04
