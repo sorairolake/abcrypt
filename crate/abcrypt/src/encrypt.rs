@@ -34,16 +34,14 @@ impl<'m> Encryptor<'m> {
     /// # Examples
     ///
     /// ```
-    /// # #[cfg(feature = "alloc")]
-    /// # {
     /// # use abcrypt::Encryptor;
-    ///
+    /// #
     /// let data = b"Hello, world!\n";
     /// let passphrase = "passphrase";
     ///
     /// let cipher = Encryptor::new(data, passphrase).unwrap();
-    /// # }
     /// ```
+    #[cfg(feature = "alloc")]
     pub fn new(plaintext: &'m impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Self> {
         Self::with_params(plaintext, passphrase, Params::default())
     }
