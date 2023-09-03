@@ -4,7 +4,7 @@
 
 = abcrypt-information(1)
 // Specify in UTC.
-:docdate: 2023-08-23
+:docdate: 2023-08-27
 :doctype: manpage
 ifdef::revnumber[:mansource: abcrypt {revnumber}]
 :manmanual: General Commands Manual
@@ -20,7 +20,8 @@ abcrypt-information - provides information about the encryption parameters
 
 == DESCRIPTION
 
-This command provides information about the encryption parameters.
+This command provides information about the encryption parameters. The result
+will be write to stdout.
 
 *abcrypt info* and *abcrypt i* are aliases for this command.
 

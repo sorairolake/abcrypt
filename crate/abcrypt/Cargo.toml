@@ -4,14 +4,14 @@
 
 [package]
 name = "abcrypt"
-version = "0.1.0"
-authors = ["Shun Sakai <sorairolake@protonmail.ch>"]
+version = "0.2.0"
+authors.workspace = true
 edition = "2021"
 rust-version = "1.65.0"
 description = "An implementation of the abcrypt encrypted data format"
 documentation = "https://docs.rs/abcrypt"
 readme = "README.md"
-repository = "https://github.com/sorairolake/abcrypt"
+repository.workspace = true
 license = "Apache-2.0 OR MIT"
 keywords = ["abcrypt", "crypto"]
 categories = ["cryptography", "no-std"]
@@ -26,9 +26,9 @@ exclude = [
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-argon2 = { version = "0.5.1", default-features = false, features = ["alloc"] }
+argon2 = { version = "0.5.1", default-features = false }
 blake2 = { version = "0.10.6", default-features = false }
-chacha20poly1305 = "0.10.1"
+chacha20poly1305 = { version = "0.10.1", default-features = false, features = ["getrandom"] }
 rand = { version = "0.8.5", default-features = false, features = ["getrandom", "std_rng"] }
 
 [dev-dependencies]
@@ -38,7 +38,8 @@ dialoguer = { version = "0.10.4", default-features = false, features = ["passwor
 
 [features]
 default = ["std"]
-std = ["argon2/std", "blake2/std", "chacha20poly1305/std"]
+alloc = ["argon2/alloc"]
+std = ["alloc", "argon2/std", "blake2/std", "chacha20poly1305/std"]
 
 [package.metadata.docs.rs]
 all-features = true

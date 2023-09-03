@@ -45,6 +45,28 @@ fn generate_completion_conflicts_with_subcommands() {
 }
 
 #[test]
+fn long_version() {
+    command()
+        .arg("--version")
+        .assert()
+        .success()
+        .stdout(predicate::str::contains(include_str!(
+            "../src/static/long-version.md"
+        )));
+}
+
+#[test]
+fn after_long_help() {
+    command()
+        .arg("--help")
+        .assert()
+        .success()
+        .stdout(predicate::str::contains(include_str!(
+            "../src/static/after-long-help.md"
+        )));
+}
+
+#[test]
 fn basic_encrypt() {
     command()
         .arg("encrypt")
@@ -62,29 +84,214 @@ fn validate_aliases_for_encrypt_command() {
 }
 
 #[test]
+fn validate_m_parameter_with_unit_for_encrypt_command() {
+    command()
+        .arg("encrypt")
+        .arg("-m")
+        .arg("19922944 B")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .success()
+        .stderr(predicate::str::starts_with(
+            "Parameters used: m = 19456; t = 2; p = 1;",
+        ));
+}
+
+#[test]
+fn validate_m_parameter_without_unit_for_encrypt_command() {
+    command()
+        .arg("encrypt")
+        .arg("-m")
+        .arg("19922944")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .success()
+        .stderr(predicate::str::starts_with(
+            "Parameters used: m = 19456; t = 2; p = 1;",
+        ));
+}
+
+#[test]
+fn validate_m_parameter_with_byte_prefix_for_encrypt_command() {
+    command()
+        .arg("encrypt")
+        .arg("-m")
+        .arg("19456 KiB")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .success()
+        .stderr(predicate::str::starts_with(
+            "Parameters used: m = 19456; t = 2; p = 1;",
+        ));
+    command()
+        .arg("encrypt")
+        .arg("-m")
+        .arg("19.00 MiB")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .success()
+        .stderr(predicate::str::starts_with(
+            "Parameters used: m = 19456; t = 2; p = 1;",
+        ));
+    command()
+        .arg("encrypt")
+        .arg("-m")
+        .arg("19MiB")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .success()
+        .stderr(predicate::str::starts_with(
+            "Parameters used: m = 19456; t = 2; p = 1;",
+        ));
+}
+
+#[test]
+fn validate_m_parameter_with_invalid_unit_for_encrypt_command() {
+    command()
+        .arg("encrypt")
+        .arg("-m")
+        .arg("19922944 A")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .failure()
+        .code(2)
+        .stderr(predicate::str::contains("The character 'A' is incorrect. 'B', 'K', 'M', 'G', 'T', 'P' or no character is expected"));
+    command()
+        .arg("encrypt")
+        .arg("-m")
+        .arg("19.00LiB")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .failure()
+        .code(2)
+        .stderr(predicate::str::contains("The character 'L' is incorrect. 'B', 'K', 'M', 'G', 'T', 'P' or no character is expected"));
+}
+
+#[test]
+fn validate_m_parameter_with_nan_for_encrypt_command() {
+    command()
+        .arg("encrypt")
+        .arg("-m")
+        .arg("n B")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .failure()
+        .code(2)
+        .stderr(predicate::str::contains(
+            "The character 'n' is not a number",
+        ));
+    command()
+        .arg("encrypt")
+        .arg("-m")
+        .arg("n")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .failure()
+        .code(2)
+        .stderr(predicate::str::contains(
+            "The character 'n' is not a number",
+        ));
+    command()
+        .arg("encrypt")
+        .arg("-m")
+        .arg("nKiB")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .failure()
+        .code(2)
+        .stderr(predicate::str::contains(
+            "The character 'n' is not a number",
+        ));
+}
+
+#[test]
 fn validate_m_parameter_ranges_for_encrypt_command() {
     command()
         .arg("encrypt")
         .arg("-m")
-        .arg("7")
+        .arg("7 KiB")
         .arg("--passphrase-from-stdin")
+        .arg("-v")
         .arg("data/data.txt")
         .write_stdin("passphrase")
         .assert()
         .failure()
-        .code(65)
-        .stderr(predicate::str::contains("memory cost is too small"));
+        .code(2)
+        .stderr(predicate::str::contains(
+            "7.00 KiB is not in 8.00 KiB..=256.00 GiB",
+        ));
     command()
         .arg("encrypt")
         .arg("-m")
-        .arg("268435456")
+        .arg("8 KiB")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .success()
+        .stderr(predicate::str::starts_with(
+            "Parameters used: m = 8; t = 2; p = 1;",
+        ));
+    command()
+        .arg("encrypt")
+        .arg("-m")
+        .arg("268435456 KiB")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .failure()
+        .code(2)
+        .stderr(predicate::str::contains(
+            "256.00 GiB is not in 8.00 KiB..=256.00 GiB",
+        ));
+}
+
+#[test]
+fn validate_t_parameter_with_nan_for_encrypt_command() {
+    command()
+        .arg("encrypt")
+        .arg("-t")
+        .arg("n")
         .arg("--passphrase-from-stdin")
         .arg("data/data.txt")
         .write_stdin("passphrase")
         .assert()
         .failure()
-        .code(65)
-        .stderr(predicate::str::contains("memory cost is too large"));
+        .code(2)
+        .stderr(predicate::str::contains("invalid digit found in string"));
 }
 
 #[test]
@@ -98,8 +305,21 @@ fn validate_t_parameter_ranges_for_encrypt_command() {
         .write_stdin("passphrase")
         .assert()
         .failure()
-        .code(65)
-        .stderr(predicate::str::contains("time cost is too small"));
+        .code(2)
+        .stderr(predicate::str::contains("0 is not in 1..=4294967295"));
+    command()
+        .arg("encrypt")
+        .arg("-t")
+        .arg("1")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .success()
+        .stderr(predicate::str::starts_with(
+            "Parameters used: m = 19456; t = 1; p = 1;",
+        ));
     command()
         .arg("encrypt")
         .arg("-t")
@@ -111,8 +331,23 @@ fn validate_t_parameter_ranges_for_encrypt_command() {
         .failure()
         .code(2)
         .stderr(predicate::str::contains(
-            "4294967296 is not in 0..=4294967295",
+            "4294967296 is not in 1..=4294967295",
         ));
+}
+
+#[test]
+fn validate_p_parameter_with_nan_for_encrypt_command() {
+    command()
+        .arg("encrypt")
+        .arg("-p")
+        .arg("n")
+        .arg("--passphrase-from-stdin")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .failure()
+        .code(2)
+        .stderr(predicate::str::contains("invalid digit found in string"));
 }
 
 #[test]
@@ -126,12 +361,23 @@ fn validate_p_parameter_ranges_for_encrypt_command() {
         .write_stdin("passphrase")
         .assert()
         .failure()
-        .code(65)
-        .stderr(predicate::str::contains("not enough threads"));
+        .code(2)
+        .stderr(predicate::str::contains("0 is not in 1..=16777215"));
     command()
         .arg("encrypt")
-        .arg("-m")
-        .arg("134217728")
+        .arg("-p")
+        .arg("2")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .success()
+        .stderr(predicate::str::starts_with(
+            "Parameters used: m = 19456; t = 2; p = 2;",
+        ));
+    command()
+        .arg("encrypt")
         .arg("-p")
         .arg("16777216")
         .arg("--passphrase-from-stdin")
@@ -139,8 +385,8 @@ fn validate_p_parameter_ranges_for_encrypt_command() {
         .write_stdin("passphrase")
         .assert()
         .failure()
-        .code(65)
-        .stderr(predicate::str::contains("too many threads"));
+        .code(2)
+        .stderr(predicate::str::contains("16777216 is not in 1..=16777215"));
 }
 
 #[test]
@@ -169,6 +415,30 @@ fn encrypt_verbose() {
         .stderr(predicate::str::starts_with(
             "Parameters used: m = 19456; t = 2; p = 1;",
         ));
+}
+
+#[test]
+fn long_version_for_encrypt_command() {
+    command()
+        .arg("encrypt")
+        .arg("--version")
+        .assert()
+        .success()
+        .stdout(predicate::str::contains(include_str!(
+            "../src/static/long-version.md"
+        )));
+}
+
+#[test]
+fn after_long_help_for_encrypt_command() {
+    command()
+        .arg("encrypt")
+        .arg("--help")
+        .assert()
+        .success()
+        .stdout(predicate::str::contains(include_str!(
+            "../src/static/encrypt-after-long-help.md"
+        )));
 }
 
 #[test]
@@ -219,6 +489,30 @@ fn decrypt_verbose() {
 }
 
 #[test]
+fn long_version_for_decrypt_command() {
+    command()
+        .arg("decrypt")
+        .arg("--version")
+        .assert()
+        .success()
+        .stdout(predicate::str::contains(include_str!(
+            "../src/static/long-version.md"
+        )));
+}
+
+#[test]
+fn after_long_help_for_decrypt_command() {
+    command()
+        .arg("decrypt")
+        .arg("--help")
+        .assert()
+        .success()
+        .stdout(predicate::str::contains(include_str!(
+            "../src/static/decrypt-after-long-help.md"
+        )));
+}
+
+#[test]
 fn basic_information() {
     command()
         .arg("information")
@@ -258,4 +552,28 @@ fn information_as_json() {
         .assert()
         .success()
         .stdout(predicate::eq(concat!(r#"{"m":32,"t":3,"p":4}"#, '\n')));
+}
+
+#[test]
+fn long_version_for_information_command() {
+    command()
+        .arg("information")
+        .arg("--version")
+        .assert()
+        .success()
+        .stdout(predicate::str::contains(include_str!(
+            "../src/static/long-version.md"
+        )));
+}
+
+#[test]
+fn after_long_help_for_information_command() {
+    command()
+        .arg("information")
+        .arg("--help")
+        .assert()
+        .success()
+        .stdout(predicate::str::contains(include_str!(
+            "../src/static/information-after-long-help.md"
+        )));
 }

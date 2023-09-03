@@ -22,8 +22,8 @@ const TEST_DATA: &[u8] = include_bytes!("../tests/data/data.txt");
 #[bench]
 fn encrypt(b: &mut Bencher) {
     b.iter(|| {
-        Encryptor::with_params(TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())
-            .map(Encryptor::encrypt_to_vec)
+        Encryptor::with_params(&TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())
+            .map(|c| c.encrypt_to_vec())
             .unwrap()
     });
 }

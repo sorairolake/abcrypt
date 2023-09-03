@@ -51,7 +51,7 @@ jobs:
         toolchain: ${{ matrix.msrv }} # MSRV
         targets: ${{ matrix.target }}
     - name: Cache build artifacts
-      uses: Swatinem/rust-cache@v2.6.1
+      uses: Swatinem/rust-cache@v2.6.2
       with:
         key: ${{ matrix.target }}
     - name: Run tests
@@ -60,6 +60,9 @@ jobs:
       run: cargo test -p ${{ matrix.crate }} --target ${{ matrix.target }} --all-features
     - name: Run tests (no default features)
       run: cargo test -p ${{ matrix.crate }} --target ${{ matrix.target }} --no-default-features
+    - name: Run tests (`alloc` feature)
+      if: matrix.crate == 'abcrypt'
+      run: cargo test -p ${{ matrix.crate }} --target ${{ matrix.target }} --no-default-features -F alloc
 
   workspace-test:
     name: Workspace Test
@@ -91,7 +94,7 @@ jobs:
         toolchain: 1.66.0 # MSRV
         targets: ${{ matrix.target }}
     - name: Cache build artifacts
-      uses: Swatinem/rust-cache@v2.6.1
+      uses: Swatinem/rust-cache@v2.6.2
       with:
         key: ${{ matrix.target }}
     - name: Run tests
@@ -113,7 +116,7 @@ jobs:
         toolchain: stable
         components: rustfmt
     - name: Cache build artifacts
-      uses: Swatinem/rust-cache@v2.6.1
+      uses: Swatinem/rust-cache@v2.6.2
     - name: Check code formatted
       run: cargo fmt --all -- --check
 
@@ -129,13 +132,28 @@ jobs:
         toolchain: stable
         components: clippy
     - name: Cache build artifacts
-      uses: Swatinem/rust-cache@v2.6.1
+      uses: Swatinem/rust-cache@v2.6.2
     - name: Check no lint warnings
       run: cargo clippy --workspace -- -D warnings
     - name: Check no lint warnings (all features)
       run: cargo clippy --workspace --all-features -- -D warnings
     - name: Check no lint warnings (no default features)
       run: cargo clippy --workspace --no-default-features -- -D warnings
+
+  doc:
+    name: Documentation
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Setup Rust toolchain
+      uses: dtolnay/rust-toolchain@v1
+      with:
+        toolchain: stable
+    - name: Cache build artifacts
+      uses: Swatinem/rust-cache@v2.6.2
+    - name: Check no `rustdoc` lint warnings
+      run: RUSTDOCFLAGS="-D warnings" cargo doc -p abcrypt --no-deps --document-private-items --all-features
 
   benchmark:
     name: Benchmark
@@ -148,10 +166,6 @@ jobs:
       with:
         toolchain: nightly
     - name: Cache build artifacts
-      uses: Swatinem/rust-cache@v2.6.1
+      uses: Swatinem/rust-cache@v2.6.2
     - name: Run benchmarks
       run: cargo bench -p abcrypt
-    - name: Run benchmarks (all features)
-      run: cargo bench -p abcrypt --all-features
-    - name: Run benchmarks (no default features)
-      run: cargo bench -p abcrypt --no-default-features

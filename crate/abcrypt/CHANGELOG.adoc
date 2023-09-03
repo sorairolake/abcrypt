@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
 = Changelog
-:toc: macro
+:toc: preamble
 :project-url: https://github.com/sorairolake/abcrypt
 :compare-url: {project-url}/compare
 :issue-url: {project-url}/issues
@@ -14,7 +14,21 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
 
-toc::[]
+== {compare-url}/abcrypt-v0.1.0\...abcrypt-v0.2.0[0.2.0] - 2023-09-03
+
+=== Added
+
+* Add a specialized `Result` type for read and write operations for the abcrypt
+  encrypted data format ({pull-request-url}/21[#21])
+* Add convenience functions for using `Encryptor` and `Decryptor`
+  ({pull-request-url}/22[#22])
+
+=== Changed
+
+* Change to store the plaintext and the ciphertext as `slice` in `Encryptor`
+  and `Decryptor` ({pull-request-url}/25[#25])
+* Make `alloc` optional and add `alloc` feature for enables functionality
+  requiring an allocator ({pull-request-url}/26[#26])
 
 == {project-url}/releases/tag/abcrypt-v0.1.0[0.1.0] - 2023-08-25
 

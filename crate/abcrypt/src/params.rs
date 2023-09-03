@@ -4,20 +4,20 @@
 
 //! The Argon2 parameters.
 
-use crate::{error::Error, format::Header};
+use crate::{format::Header, Result};
 
 /// The Argon2 parameters used for the encrypted data.
 #[derive(Clone, Debug)]
 pub struct Params(argon2::Params);
 
 impl Params {
-    /// Creates a new instance of the Argon2 parameters from `data`.
+    /// Creates a new instance of the Argon2 parameters from `ciphertext`.
     ///
     /// # Errors
     ///
     /// Returns [`Err`] if any of the following are true:
     ///
-    /// - `data` is shorter than 156 bytes.
+    /// - `ciphertext` is shorter than 156 bytes.
     /// - The magic number is invalid.
     /// - The version number is the unrecognized abcrypt version number.
     /// - The Argon2 parameters are invalid.
@@ -25,20 +25,14 @@ impl Params {
     /// # Examples
     ///
     /// ```
-    /// # use abcrypt::{Encryptor, Params};
+    /// # use abcrypt::Params;
     /// #
-    /// let data = b"Hello, world!";
-    /// let passphrase = "passphrase";
-    ///
-    /// let params = argon2::Params::new(32, 3, 4, None).unwrap();
-    /// let ciphertext = Encryptor::with_params(data, passphrase, params)
-    ///     .map(Encryptor::encrypt_to_vec)
-    ///     .unwrap();
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
     ///
     /// assert!(Params::new(ciphertext).is_ok());
     /// ```
-    pub fn new(data: impl AsRef<[u8]>) -> Result<Self, Error> {
-        let params = Header::parse(data.as_ref()).map(|h| h.params())?;
+    pub fn new(ciphertext: impl AsRef<[u8]>) -> Result<Self> {
+        let params = Header::parse(ciphertext.as_ref()).map(|h| h.params())?;
         Ok(Self(params))
     }
 
@@ -47,15 +41,9 @@ impl Params {
     /// # Examples
     ///
     /// ```
-    /// # use abcrypt::{Encryptor, Params};
+    /// # use abcrypt::Params;
     /// #
-    /// let data = b"Hello, world!";
-    /// let passphrase = "passphrase";
-    ///
-    /// let params = argon2::Params::new(32, 3, 4, None).unwrap();
-    /// let ciphertext = Encryptor::with_params(data, passphrase, params)
-    ///     .map(Encryptor::encrypt_to_vec)
-    ///     .unwrap();
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
     ///
     /// let params = Params::new(ciphertext).unwrap();
     /// assert_eq!(params.m_cost(), 32);
@@ -71,15 +59,9 @@ impl Params {
     /// # Examples
     ///
     /// ```
-    /// # use abcrypt::{Encryptor, Params};
+    /// # use abcrypt::Params;
     /// #
-    /// let data = b"Hello, world!";
-    /// let passphrase = "passphrase";
-    ///
-    /// let params = argon2::Params::new(32, 3, 4, None).unwrap();
-    /// let ciphertext = Encryptor::with_params(data, passphrase, params)
-    ///     .map(Encryptor::encrypt_to_vec)
-    ///     .unwrap();
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
     ///
     /// let params = Params::new(ciphertext).unwrap();
     /// assert_eq!(params.t_cost(), 3);
@@ -95,15 +77,9 @@ impl Params {
     /// # Examples
     ///
     /// ```
-    /// # use abcrypt::{Encryptor, Params};
+    /// # use abcrypt::Params;
     /// #
-    /// let data = b"Hello, world!";
-    /// let passphrase = "passphrase";
-    ///
-    /// let params = argon2::Params::new(32, 3, 4, None).unwrap();
-    /// let ciphertext = Encryptor::with_params(data, passphrase, params)
-    ///     .map(Encryptor::encrypt_to_vec)
-    ///     .unwrap();
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
     ///
     /// let params = Params::new(ciphertext).unwrap();
     /// assert_eq!(params.p_cost(), 4);

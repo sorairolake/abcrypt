@@ -13,16 +13,24 @@ SPDX-License-Identifier: Apache-2.0 OR MIT
 
 **abcrypt** is an implementation of the abcrypt encrypted data format.
 
+This crate implements version 0 of the abcrypt encrypted data format. The
+format specification is at [here][specification-url].
+
 ## Usage
 
 Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-abcrypt = "0.1.0"
+abcrypt = "0.2.0"
 ```
 
 ### Crate features
+
+#### `alloc`
+
+Enables features that require an allocator. This is enabled by default (implied
+by `std`).
 
 #### `std`
 
@@ -32,6 +40,9 @@ default.
 ### `no_std` support
 
 This supports `no_std` mode. Disables the `default` feature to enable this.
+
+Note that the memory blocks used by Argon2 when calculating a derived key is
+limited to 256 KiB when the `alloc` feature is disabled.
 
 ### Documentation
 
@@ -56,7 +67,10 @@ Copyright &copy; 2022&ndash;2023 Shun Sakai (see [AUTHORS.adoc](AUTHORS.adoc))
 This library is distributed under the terms of either the _Apache License 2.0_
 or the _MIT License_.
 
-See [COPYING](COPYING) for more details.
+This project is compliant with version 3.0 of the
+[_REUSE Specification_](https://reuse.software/spec/). See [COPYING](COPYING)
+and copyright notices of individual files for more details on copyright and
+licensing information.
 
 [ci-badge]: https://img.shields.io/github/actions/workflow/status/sorairolake/abcrypt/CI.yaml?branch=develop&label=CI&logo=github&style=for-the-badge
 [ci-url]: https://github.com/sorairolake/abcrypt/actions?query=branch%3Adevelop+workflow%3ACI++
@@ -65,3 +79,4 @@ See [COPYING](COPYING) for more details.
 [docs-badge]: https://img.shields.io/docsrs/abcrypt?label=Docs.rs&logo=docsdotrs&style=for-the-badge
 [docs-url]: https://docs.rs/abcrypt
 [license-badge]: https://img.shields.io/crates/l/abcrypt?style=for-the-badge
+[specification-url]: https://github.com/sorairolake/abcrypt/blob/develop/doc/FORMAT.adoc

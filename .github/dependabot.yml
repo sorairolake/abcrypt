@@ -5,18 +5,13 @@
 version: 2
 updates:
   - package-ecosystem: "cargo"
-    directory: "/crate/abcrypt"
+    directory: "/"
     schedule:
       interval: "weekly"
-    ignore:
-      - dependency-name: "clap"
-
-  - package-ecosystem: "cargo"
-    directory: "/crate/cli"
-    schedule:
-      interval: "weekly"
+    open-pull-requests-limit: 20
 
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 15
