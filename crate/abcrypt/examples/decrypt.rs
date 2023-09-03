@@ -18,14 +18,14 @@ use clap::Parser;
 
 #[cfg(feature = "std")]
 #[derive(Debug, Parser)]
-#[clap(version, about)]
+#[command(version, about)]
 struct Opt {
     /// File to decrypt.
-    #[clap(value_name("INFILE"))]
+    #[arg(value_name("INFILE"))]
     input: std::path::PathBuf,
 
     /// File to write the result to.
-    #[clap(value_name("OUTFILE"))]
+    #[arg(value_name("OUTFILE"))]
     output: std::path::PathBuf,
 }
 

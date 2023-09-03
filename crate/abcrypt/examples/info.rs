@@ -18,10 +18,10 @@ use clap::Parser;
 
 #[cfg(feature = "std")]
 #[derive(Debug, Parser)]
-#[clap(version, about)]
+#[command(version, about)]
 struct Opt {
     /// File to print the Argon2 parameters.
-    #[clap(value_name("FILE"))]
+    #[arg(value_name("FILE"))]
     input: std::path::PathBuf,
 }
 

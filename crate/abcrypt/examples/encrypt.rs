@@ -18,26 +18,26 @@ use clap::Parser;
 
 #[cfg(feature = "std")]
 #[derive(Debug, Parser)]
-#[clap(version, about)]
+#[command(version, about)]
 struct Opt {
     /// Set the memory size in KiB.
-    #[clap(short, long, default_value("19456"), value_name("NUM"))]
+    #[arg(short, long, default_value("19456"), value_name("NUM"))]
     memory_size: u32,
 
     /// Set the number of iterations.
-    #[clap(short('t'), long, default_value("2"), value_name("NUM"))]
+    #[arg(short('t'), long, default_value("2"), value_name("NUM"))]
     iterations: u32,
 
     /// Set the degree of parallelism.
-    #[clap(short, long, default_value("1"), value_name("NUM"))]
+    #[arg(short, long, default_value("1"), value_name("NUM"))]
     parallelism: u32,
 
     /// File to encrypt.
-    #[clap(value_name("INFILE"))]
+    #[arg(value_name("INFILE"))]
     input: std::path::PathBuf,
 
     /// File to write the result to.
-    #[clap(value_name("OUTFILE"))]
+    #[arg(value_name("OUTFILE"))]
     output: std::path::PathBuf,
 }
 
