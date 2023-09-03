@@ -5,6 +5,9 @@
 //! The `abcrypt` crate is an implementation of the abcrypt encrypted data
 //! format.
 //!
+//! This crate implements version 0 of the abcrypt encrypted data format. The
+//! format specification is at [here][specification-url].
+//!
 //! # Examples
 //!
 //! ## Encrypt and decrypt
@@ -32,6 +35,34 @@
 //! # }
 //! ```
 //!
+//! ### `no_std` support
+//!
+//! This crate supports `no_std` mode and can be used without the `alloc` crate
+//! and the `std` crate. Disables the `default` feature to enable this.
+//!
+//! Note that the memory blocks used by Argon2 when calculating a derived key is
+//! limited to 256 KiB when the `alloc` feature is disabled.
+//!
+//! ```
+//! use abcrypt::{argon2::Params, Decryptor, Encryptor};
+//!
+//! let data = b"Hello, world!\n";
+//! let passphrase = "passphrase";
+//!
+//! // Encrypt `data` using `passphrase`.
+//! let params = Params::new(32, 3, 4, None).unwrap();
+//! let cipher = Encryptor::with_params(data, passphrase, params).unwrap();
+//! let mut buf = [u8::default(); 170];
+//! cipher.encrypt(&mut buf);
+//! assert_ne!(buf, data.as_slice());
+//!
+//! // And decrypt it back.
+//! let cipher = Decryptor::new(&buf, passphrase).unwrap();
+//! let mut buf = [u8::default(); 14];
+//! cipher.decrypt(&mut buf).unwrap();
+//! assert_eq!(buf, data.as_slice());
+//! ```
+//!
 //! ## Extract the Argon2 parameters in the encrypted data
 //!
 //! ```
@@ -54,6 +85,8 @@
 //! assert_eq!(params.p_cost(), argon2::Params::DEFAULT_P_COST);
 //! # }
 //! ```
+//!
+//! [specification-url]: https://github.com/sorairolake/abcrypt/blob/develop/doc/FORMAT.adoc
 
 #![doc(html_root_url = "https://docs.rs/abcrypt/0.1.0/")]
 #![no_std]

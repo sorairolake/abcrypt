@@ -13,6 +13,9 @@ SPDX-License-Identifier: Apache-2.0 OR MIT
 
 **abcrypt** is an implementation of the abcrypt encrypted data format.
 
+This crate implements version 0 of the abcrypt encrypted data format. The
+format specification is at [here][specification-url].
+
 ## Usage
 
 Add this to your `Cargo.toml`:
@@ -38,7 +41,8 @@ default.
 
 This supports `no_std` mode. Disables the `default` feature to enable this.
 
-Note that the memory blocks is limited to 256 KiB when `alloc` is disabled.
+Note that the memory blocks used by Argon2 when calculating a derived key is
+limited to 256 KiB when the `alloc` feature is disabled.
 
 ### Documentation
 
@@ -75,3 +79,4 @@ licensing information.
 [docs-badge]: https://img.shields.io/docsrs/abcrypt?label=Docs.rs&logo=docsdotrs&style=for-the-badge
 [docs-url]: https://docs.rs/abcrypt
 [license-badge]: https://img.shields.io/crates/l/abcrypt?style=for-the-badge
+[specification-url]: https://github.com/sorairolake/abcrypt/blob/develop/doc/FORMAT.adoc
