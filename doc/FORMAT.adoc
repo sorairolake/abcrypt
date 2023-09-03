@@ -5,7 +5,7 @@
 = Abcrypt Encrypted Data Format
 Shun Sakai <sorairolake@protonmail.ch>
 // Specify in UTC.
-v0.1.0, 2023-08-25
+v0.1.0, 2023-09-03
 ifndef::env-github[:icons: font]
 ifdef::env-github[]
 :caution-caption: :fire:
@@ -179,6 +179,8 @@ mac = BLAKE2b(
 )
 ----
 
+The size of `salt` and `person` (personalization string) is zero (empty).
+
 == File body
 
 The file body is encrypted with XChaCha20-Poly1305.
@@ -189,8 +191,11 @@ ciphertext = XChaCha20-Poly1305(
     key = derived_key[..32],
     nonce = header[20..52],
     plaintext = plaintext,
+    aad = [],
 )
 ----
+
+The size of `aad` (additional authenticated data) is zero (empty).
 
 IMPORTANT: The abcrypt format uses a postfix tag.
 
