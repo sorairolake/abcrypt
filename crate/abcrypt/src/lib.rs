@@ -88,7 +88,7 @@
 //!
 //! [specification-url]: https://github.com/sorairolake/abcrypt/blob/develop/doc/FORMAT.adoc
 
-#![doc(html_root_url = "https://docs.rs/abcrypt/0.1.0/")]
+#![doc(html_root_url = "https://docs.rs/abcrypt/0.2.0/")]
 #![no_std]
 #![cfg_attr(doc_cfg, feature(doc_auto_cfg, doc_cfg))]
 // Lint levels of rustc.
