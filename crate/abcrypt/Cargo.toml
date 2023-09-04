@@ -26,7 +26,7 @@ exclude = [
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-argon2 = { version = "0.5.1", default-features = false }
+argon2 = { version = "0.5.2", default-features = false }
 blake2 = { version = "0.10.6", default-features = false }
 chacha20poly1305 = { version = "0.10.1", default-features = false, features = ["getrandom"] }
 rand = { version = "0.8.5", default-features = false, features = ["getrandom", "std_rng"] }
