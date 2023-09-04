@@ -9,7 +9,7 @@ members = ["crate/*"]
 [workspace.package]
 authors = ["Shun Sakai <sorairolake@protonmail.ch>"]
 edition = "2021"
-rust-version = "1.70.0"
+rust-version = "1.65.0"
 repository = "https://github.com/sorairolake/abcrypt"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

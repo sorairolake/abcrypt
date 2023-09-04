@@ -16,10 +16,6 @@ project adheres to https://semver.org/[Semantic Versioning].
 
 == {compare-url}/abcrypt-v0.2.0\...HEAD[Unreleased]
 
-=== Changed
-
-* Bump MSRV to 1.70.0 ({pull-request-url}/37[#37])
-
 === Removed
 
 * Remove links to the format specification ({pull-request-url}/38[#38])
