@@ -14,6 +14,12 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
 
+== {compare-url}/abcrypt-cli-v0.2.0\...HEAD[Unreleased]
+
+=== Changed
+
+* Bump MSRV to 1.70.0 ({pull-request-url}/37[#37])
+
 == {compare-url}/abcrypt-cli-v0.1.0\...abcrypt-cli-v0.2.0[0.2.0] - 2023-09-03
 
 === Changed
