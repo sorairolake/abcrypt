@@ -5,8 +5,7 @@
 //! The `abcrypt` crate is an implementation of the abcrypt encrypted data
 //! format.
 //!
-//! This crate implements version 0 of the abcrypt encrypted data format. The
-//! format specification is at [here][specification-url].
+//! This crate implements version 0 of the abcrypt encrypted data format.
 //!
 //! # Examples
 //!
@@ -85,8 +84,6 @@
 //! assert_eq!(params.p_cost(), argon2::Params::DEFAULT_P_COST);
 //! # }
 //! ```
-//!
-//! [specification-url]: https://github.com/sorairolake/abcrypt/blob/develop/doc/FORMAT.adoc
 
 #![doc(html_root_url = "https://docs.rs/abcrypt/0.2.0/")]
 #![no_std]

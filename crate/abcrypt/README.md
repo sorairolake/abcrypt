@@ -13,8 +13,7 @@ SPDX-License-Identifier: Apache-2.0 OR MIT
 
 **abcrypt** is an implementation of the abcrypt encrypted data format.
 
-This crate implements version 0 of the abcrypt encrypted data format. The
-format specification is at [here][specification-url].
+This crate implements version 0 of the abcrypt encrypted data format.
 
 ## Usage
 
