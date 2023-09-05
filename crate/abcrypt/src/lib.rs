@@ -85,9 +85,9 @@
 //! # }
 //! ```
 //!
-//! [abcrypt encrypted data format]: https://github.com/sorairolake/abcrypt/blob/abcrypt-v0.2.0/doc/FORMAT.adoc
+//! [abcrypt encrypted data format]: https://github.com/sorairolake/abcrypt/blob/abcrypt-v0.2.1/doc/FORMAT.adoc
 
-#![doc(html_root_url = "https://docs.rs/abcrypt/0.2.0/")]
+#![doc(html_root_url = "https://docs.rs/abcrypt/0.2.1/")]
 #![no_std]
 #![cfg_attr(doc_cfg, feature(doc_auto_cfg, doc_cfg))]
 // Lint levels of rustc.
