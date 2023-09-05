@@ -11,9 +11,9 @@ SPDX-License-Identifier: Apache-2.0 OR MIT
 [![Docs][docs-badge]][docs-url]
 ![License][license-badge]
 
-**abcrypt** is an implementation of the abcrypt encrypted data format.
+**abcrypt** is an implementation of the [abcrypt encrypted data format].
 
-This crate implements version 0 of the abcrypt encrypted data format.
+This crate implements version 0 of the format.
 
 ## Usage
 
@@ -77,6 +77,7 @@ copyright and licensing information.
 [docs-badge]: https://img.shields.io/docsrs/abcrypt?label=Docs.rs&logo=docsdotrs&style=for-the-badge
 [docs-url]: https://docs.rs/abcrypt
 [license-badge]: https://img.shields.io/crates/l/abcrypt?style=for-the-badge
+[abcrypt encrypted data format]: ../../doc/FORMAT.adoc
 [CHANGELOG.adoc]: CHANGELOG.adoc
 [CONTRIBUTING.adoc]: ../../CONTRIBUTING.adoc
 [AUTHORS.adoc]: ../../AUTHORS.adoc

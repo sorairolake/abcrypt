@@ -11,7 +11,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 ![License][license-badge]
 
 **abcrypt** ([`abcrypt-cli`][version-url]) is a command-line utility for
-encrypt and decrypt files using the abcrypt format.
+encrypt and decrypt files using the [abcrypt format].
 
 ## Installation
 
@@ -100,6 +100,7 @@ copyright and licensing information.
 [version-badge]: https://img.shields.io/crates/v/abcrypt-cli?style=for-the-badge
 [version-url]: https://crates.io/crates/abcrypt-cli
 [license-badge]: https://img.shields.io/crates/l/abcrypt-cli?style=for-the-badge
+[abcrypt format]: ../../doc/FORMAT.adoc
 [release page]: https://github.com/sorairolake/abcrypt/releases
 [BUILD.adoc]: BUILD.adoc
 [`abcrypt(1)`]: doc/man/man1/abcrypt.1.adoc
