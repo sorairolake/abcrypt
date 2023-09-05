@@ -13,7 +13,7 @@ use std::{
 
 use abcrypt::argon2::Params;
 use anyhow::anyhow;
-use byte_unit::{Byte, KIBIBYTE};
+use byte_unit::{Byte, ByteUnit, KIBIBYTE};
 use clap::{
     builder::{TypedValueParser, ValueParserFactory},
     value_parser, ArgGroup, Args, CommandFactory, Parser, Subcommand, ValueEnum, ValueHint,
@@ -301,7 +301,7 @@ impl Deref for MemorySize {
 impl fmt::Display for MemorySize {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         Byte::from_bytes(u64::from(self.0) * KIBIBYTE)
-            .get_appropriate_unit(true)
+            .get_adjusted_unit(ByteUnit::KiB)
             .fmt(f)
     }
 }
@@ -319,7 +319,7 @@ impl FromStr for MemorySize {
             }
             _ => Err(anyhow!(
                 "{} is not in {}..={}",
-                Byte::from_bytes(byte).get_appropriate_unit(true),
+                Byte::from_bytes(byte).get_adjusted_unit(ByteUnit::KiB),
                 Self::MIN,
                 Self::MAX
             )),
@@ -463,8 +463,8 @@ mod tests {
     #[test]
     fn display_memory_size() {
         assert_eq!(format!("{}", MemorySize::MIN), "8.00 KiB");
-        assert_eq!(format!("{}", MemorySize::default()), "19.00 MiB");
-        assert_eq!(format!("{}", MemorySize::MAX), "256.00 GiB");
+        assert_eq!(format!("{}", MemorySize::default()), "19456.00 KiB");
+        assert_eq!(format!("{}", MemorySize::MAX), "4294967295.00 KiB");
     }
 
     #[test]
@@ -495,7 +495,7 @@ mod tests {
 
         assert_eq!(MemorySize::from_str("8 KiB").unwrap(), MemorySize::MIN);
         assert_eq!(
-            MemorySize::from_str("268435455 KiB").unwrap(),
+            MemorySize::from_str("4294967295 KiB").unwrap(),
             MemorySize::MAX
         );
     }
@@ -552,10 +552,10 @@ mod tests {
         assert!(MemorySize::from_str("7 KiB").is_err());
         assert_eq!(MemorySize::from_str("8 KiB").unwrap(), MemorySize::MIN);
         assert_eq!(
-            MemorySize::from_str("268435455 KiB").unwrap(),
+            MemorySize::from_str("4294967295 KiB").unwrap(),
             MemorySize::MAX
         );
-        assert!(MemorySize::from_str("268435456 KiB").is_err());
+        assert!(MemorySize::from_str("4294967296 KiB").is_err());
     }
 
     impl Iterations {

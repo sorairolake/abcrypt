@@ -16,9 +16,10 @@ project adheres to https://semver.org/[Semantic Versioning].
 
 == {compare-url}/abcrypt-v0.2.0\...HEAD[Unreleased]
 
-=== Removed
+=== Changed
 
-* Remove links to the format specification ({pull-request-url}/38[#38])
+* Change `Params::m_cost`, `Params::t_cost` and `Params::p_cost` to `const fn`
+  ({pull-request-url}/44[#44])
 
 == {compare-url}/abcrypt-v0.1.0\...abcrypt-v0.2.0[0.2.0] - 2023-09-03
 

@@ -4,7 +4,7 @@
 
 = abcrypt-encrypt(1)
 // Specify in UTC.
-:docdate: 2023-08-26
+:docdate: 2023-09-05
 :doctype: manpage
 ifdef::revnumber[:mansource: abcrypt {revnumber}]
 :manmanual: General Commands Manual
@@ -42,7 +42,8 @@ _FILE_::
   the byte prefix (such as Ki and M). If only a numeric value is specified for
   _BYTE_, it is the same as specifying the symbol without the byte prefix. Note
   that _BYTE_ that is not multiples of 1 KiB is truncated toward zero to the
-  nearest it. _BYTE_ should be between *8 KiB* and *256 GiB*. Default is 19 MiB.
+  nearest it. _BYTE_ should be between *8 KiB* and *4294967295 KiB* (4 TiB).
+  Default is 19456 KiB (19 MiB).
 
 *-t*, *--iterations* _NUM_::
 

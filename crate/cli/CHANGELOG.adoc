@@ -19,6 +19,8 @@ project adheres to https://semver.org/[Semantic Versioning].
 === Changed
 
 * Change MSRV to 1.65.0 ({pull-request-url}/39[#39])
+* Change the maximum value of `--memory-size` to 4 TiB
+  ({pull-request-url}/44[#44])
 
 == {compare-url}/abcrypt-cli-v0.1.0\...abcrypt-cli-v0.2.0[0.2.0] - 2023-09-03
 

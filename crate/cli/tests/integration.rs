@@ -248,7 +248,7 @@ fn validate_m_parameter_ranges_for_encrypt_command() {
         .failure()
         .code(2)
         .stderr(predicate::str::contains(
-            "7.00 KiB is not in 8.00 KiB..=256.00 GiB",
+            "7.00 KiB is not in 8.00 KiB..=4294967295.00 KiB",
         ));
     command()
         .arg("encrypt")
@@ -266,7 +266,7 @@ fn validate_m_parameter_ranges_for_encrypt_command() {
     command()
         .arg("encrypt")
         .arg("-m")
-        .arg("268435456 KiB")
+        .arg("4294967296 KiB")
         .arg("--passphrase-from-stdin")
         .arg("-v")
         .arg("data/data.txt")
@@ -275,7 +275,7 @@ fn validate_m_parameter_ranges_for_encrypt_command() {
         .failure()
         .code(2)
         .stderr(predicate::str::contains(
-            "256.00 GiB is not in 8.00 KiB..=256.00 GiB",
+            "4294967296.00 KiB is not in 8.00 KiB..=4294967295.00 KiB",
         ));
 }
 
