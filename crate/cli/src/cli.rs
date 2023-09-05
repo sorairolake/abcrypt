@@ -302,6 +302,7 @@ impl fmt::Display for MemorySize {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         Byte::from_bytes(u64::from(self.0) * KIBIBYTE)
             .get_adjusted_unit(ByteUnit::KiB)
+            .format(0)
             .fmt(f)
     }
 }
@@ -319,7 +320,9 @@ impl FromStr for MemorySize {
             }
             _ => Err(anyhow!(
                 "{} is not in {}..={}",
-                Byte::from_bytes(byte).get_adjusted_unit(ByteUnit::KiB),
+                Byte::from_bytes(byte)
+                    .get_adjusted_unit(ByteUnit::KiB)
+                    .format(0),
                 Self::MIN,
                 Self::MAX
             )),
@@ -462,9 +465,9 @@ mod tests {
 
     #[test]
     fn display_memory_size() {
-        assert_eq!(format!("{}", MemorySize::MIN), "8.00 KiB");
-        assert_eq!(format!("{}", MemorySize::default()), "19456.00 KiB");
-        assert_eq!(format!("{}", MemorySize::MAX), "4294967295.00 KiB");
+        assert_eq!(format!("{}", MemorySize::MIN), "8 KiB");
+        assert_eq!(format!("{}", MemorySize::default()), "19456 KiB");
+        assert_eq!(format!("{}", MemorySize::MAX), "4294967295 KiB");
     }
 
     #[test]

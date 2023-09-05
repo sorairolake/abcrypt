@@ -248,7 +248,7 @@ fn validate_m_parameter_ranges_for_encrypt_command() {
         .failure()
         .code(2)
         .stderr(predicate::str::contains(
-            "7.00 KiB is not in 8.00 KiB..=4294967295.00 KiB",
+            "7 KiB is not in 8 KiB..=4294967295 KiB",
         ));
     command()
         .arg("encrypt")
@@ -275,7 +275,7 @@ fn validate_m_parameter_ranges_for_encrypt_command() {
         .failure()
         .code(2)
         .stderr(predicate::str::contains(
-            "4294967296.00 KiB is not in 8.00 KiB..=4294967295.00 KiB",
+            "4294967296 KiB is not in 8 KiB..=4294967295 KiB",
         ));
 }
 
