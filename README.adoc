@@ -9,6 +9,13 @@
 :crates-io-crates: {crates-io-url}/crates
 :ci-badge: {shields-url}/github/actions/workflow/status/sorairolake/abcrypt/CI.yaml?branch=develop&label=CI&logo=github&style=for-the-badge
 :ci-url: {project-url}/actions?query=branch%3Adevelop+workflow%3ACI++
+:abcrypt-repo-url: {project-url}/tree/develop/crate/abcrypt
+:abcrypt-badge: {shields-url}/crates/v/abcrypt?style=for-the-badge
+:abcrypt-crates-io: {crates-io-crates}/abcrypt
+:abcrypt-cli-repo-url: {project-url}/tree/develop/crate/cli
+:abcrypt-cli-badge: {shields-url}/crates/v/abcrypt-cli?style=for-the-badge
+:abcrypt-cli-crates-io: {crates-io-crates}/abcrypt-cli
+:reuse-spec-url: https://reuse.software/spec/
 
 image:{ci-badge}[CI,link={ci-url}]
 
@@ -20,12 +27,12 @@ Rust library.
 |===
 |Name |Version |Description
 
-|{project-url}/tree/develop/crate/abcrypt[`abcrypt`]
-|image:{shields-url}/crates/v/abcrypt?style=for-the-badge[Version,link={crates-io-crates}/abcrypt]
+|{abcrypt-repo-url}[`abcrypt`]
+|image:{abcrypt-badge}[Version,link={abcrypt-crates-io}]
 |The abcrypt format reference implementation.
 
-|{project-url}/tree/develop/crate/cli[`abcrypt-cli`]
-|image:{shields-url}/crates/v/abcrypt-cli?style=for-the-badge[Version,link={crates-io-crates}/abcrypt-cli]
+|{abcrypt-cli-repo-url}[`abcrypt-cli`]
+|image:{abcrypt-cli-badge}[Version,link={abcrypt-cli-crates-io}]
 |File encryption tool using the abcrypt format.
 |===
 
@@ -49,6 +56,6 @@ Copyright (C) 2022&ndash;2023 Shun Sakai (see link:AUTHORS.adoc[])
   Attribution 4.0 International Public License_.
 
 This project is compliant with version 3.0 of the
-https://reuse.software/spec/[_REUSE Specification_]. See link:COPYING[] and
-copyright notices of individual files for more details on copyright and
-licensing information.
+{reuse-spec-url}[_REUSE Specification_]. See link:COPYING[] and copyright
+notices of individual files for more details on copyright and licensing
+information.

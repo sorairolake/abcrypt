@@ -50,7 +50,7 @@ impl Params {
     /// ```
     #[must_use]
     #[inline]
-    pub fn m_cost(&self) -> u32 {
+    pub const fn m_cost(&self) -> u32 {
         self.0.m_cost()
     }
 
@@ -68,7 +68,7 @@ impl Params {
     /// ```
     #[must_use]
     #[inline]
-    pub fn t_cost(&self) -> u32 {
+    pub const fn t_cost(&self) -> u32 {
         self.0.t_cost()
     }
 
@@ -86,7 +86,7 @@ impl Params {
     /// ```
     #[must_use]
     #[inline]
-    pub fn p_cost(&self) -> u32 {
+    pub const fn p_cost(&self) -> u32 {
         self.0.p_cost()
     }
 }

@@ -6,8 +6,8 @@
 name = "abcrypt-cli"
 version = "0.2.0"
 authors.workspace = true
-edition = "2021"
-rust-version = "1.66.0"
+edition.workspace = true
+rust-version.workspace = true
 description = "An utility for encrypt and decrypt files"
 readme = "README.md"
 repository.workspace = true
@@ -28,19 +28,19 @@ name = "abcrypt"
 path = "src/main.rs"
 
 [dependencies]
-abcrypt = { version = "0.2.0", path = "../abcrypt" }
-anyhow = "1.0.75"
+abcrypt = { version = "0.2.1", path = "../abcrypt" }
+anyhow.workspace = true
 byte-unit = { version = "4.0.19", default-features = false, features = ["std"] }
-clap = { version = "4.3.24", features = ["derive", "wrap_help"] }
+clap = { workspace = true, features = ["wrap_help"] }
 clap_complete = "4.3.2"
 clap_complete_nushell = "4.3.2"
-dialoguer = { version = "0.10.4", default-features = false, features = ["password"] }
+dialoguer.workspace = true
 serde = { version = "1.0.188", features = ["derive"], optional = true }
 serde_json = { version = "1.0.105", optional = true }
-sysexits = "0.6.3"
+sysexits = "0.7.1"
 
 [dev-dependencies]
-assert_cmd = "2.0.12"
+assert_cmd = "2.0.11"
 predicates = "3.0.3"
 
 [features]

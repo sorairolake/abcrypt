@@ -8,11 +8,19 @@
 :compare-url: {project-url}/compare
 :issue-url: {project-url}/issues
 :pull-request-url: {project-url}/pull
+:keepachangelog: https://keepachangelog.com/[Keep a Changelog]
+:semver: https://semver.org/[Semantic Versioning]
 
 All notable changes to this project will be documented in this file.
 
-The format is based on https://keepachangelog.com/[Keep a Changelog], and this
-project adheres to https://semver.org/[Semantic Versioning].
+The format is based on {keepachangelog}, and this project adheres to {semver}.
+
+== {compare-url}/abcrypt-v0.2.0\...abcrypt-v0.2.1[0.2.1] - 2023-09-05
+
+=== Changed
+
+* Change `Params::m_cost`, `Params::t_cost` and `Params::p_cost` to `const fn`
+  ({pull-request-url}/44[#44])
 
 == {compare-url}/abcrypt-v0.1.0\...abcrypt-v0.2.0[0.2.0] - 2023-09-03
 

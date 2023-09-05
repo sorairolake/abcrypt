@@ -8,9 +8,16 @@ members = ["crate/*"]
 
 [workspace.package]
 authors = ["Shun Sakai <sorairolake@protonmail.ch>"]
+edition = "2021"
+rust-version = "1.65.0"
 repository = "https://github.com/sorairolake/abcrypt"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[workspace.dependencies]
+anyhow = "1.0.75"
+clap = { version = "4.3.24", features = ["derive"] }
+dialoguer = { version = "0.10.4", default-features = false, features = ["password"] }
 
 [profile.release.package.abcrypt-cli]
 # The `lto` setting cannot be specified yet, see https://github.com/rust-lang/cargo/issues/9330

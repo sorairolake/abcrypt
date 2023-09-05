@@ -5,7 +5,7 @@
 = Abcrypt Encrypted Data Format
 Shun Sakai <sorairolake@protonmail.ch>
 // Specify in UTC.
-v0.2.0, 2023-09-03
+v0.2.1, 2023-09-05
 ifndef::env-github[:icons: font]
 ifdef::env-github[]
 :caution-caption: :fire:
@@ -18,6 +18,11 @@ endif::[]
 :idseparator: -
 :sectanchors:
 :toc: preamble
+:ietf-datatracker: https://datatracker.ietf.org
+:datatracker-html-doc: {ietf-datatracker}/doc/html
+:rfc9106: {datatracker-html-doc}/rfc9106[RFC 9106]
+:rfc7693: {datatracker-html-doc}/rfc7693[RFC 7693]
+:draft-arciszewski-xchacha-03: {datatracker-html-doc}/draft-arciszewski-xchacha-03[draft-arciszewski-xchacha-03]
 
 abcrypt is a modern file encryption format with the data authenticity. This
 document describes the abcrypt encrypted data format.
@@ -25,17 +30,14 @@ document describes the abcrypt encrypted data format.
 == Conventions used in this document
 
 [#argon2,reftext=Argon2]
-Argon2 is the key derivation function from
-https://datatracker.ietf.org/doc/html/rfc9106[RFC 9106].
+Argon2 is the key derivation function from {rfc9106}.
 
 [#blake2b-512-mac,reftext=BLAKE2b-512-MAC]
 BLAKE2b-512-MAC is the keyed hash function based on BLAKE2 standardized in
-https://datatracker.ietf.org/doc/html/rfc7693[RFC 7693]. This uses BLAKE2b and
-always outputs a 64-byte MAC.
+{rfc7693}. This uses BLAKE2b and always outputs a 64-byte MAC.
 
 [#xchacha20-poly1305,reftext=XChaCha20-Poly1305]
-XChaCha20-Poly1305 is the AEAD algorithm from
-https://datatracker.ietf.org/doc/html/draft-arciszewski-xchacha-03[draft-arciszewski-xchacha-03].
+XChaCha20-Poly1305 is the AEAD algorithm from {draft-arciszewski-xchacha-03}.
 
 == Format overview
 

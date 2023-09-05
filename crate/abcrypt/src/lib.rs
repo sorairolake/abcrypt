@@ -2,11 +2,10 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-//! The `abcrypt` crate is an implementation of the abcrypt encrypted data
-//! format.
+//! The `abcrypt` crate is an implementation of the [abcrypt encrypted data
+//! format].
 //!
-//! This crate implements version 0 of the abcrypt encrypted data format. The
-//! format specification is at [here][specification-url].
+//! This crate implements version 0 of the format.
 //!
 //! # Examples
 //!
@@ -86,9 +85,9 @@
 //! # }
 //! ```
 //!
-//! [specification-url]: https://github.com/sorairolake/abcrypt/blob/develop/doc/FORMAT.adoc
+//! [abcrypt encrypted data format]: https://github.com/sorairolake/abcrypt/blob/abcrypt-v0.2.1/doc/FORMAT.adoc
 
-#![doc(html_root_url = "https://docs.rs/abcrypt/0.2.0/")]
+#![doc(html_root_url = "https://docs.rs/abcrypt/0.2.1/")]
 #![no_std]
 #![cfg_attr(doc_cfg, feature(doc_auto_cfg, doc_cfg))]
 // Lint levels of rustc.

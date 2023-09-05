@@ -8,11 +8,20 @@
 :compare-url: {project-url}/compare
 :issue-url: {project-url}/issues
 :pull-request-url: {project-url}/pull
+:keepachangelog: https://keepachangelog.com/[Keep a Changelog]
+:semver: https://semver.org/[Semantic Versioning]
 
 All notable changes to this project will be documented in this file.
 
-The format is based on https://keepachangelog.com/[Keep a Changelog], and this
-project adheres to https://semver.org/[Semantic Versioning].
+The format is based on {keepachangelog}, and this project adheres to {semver}.
+
+== {compare-url}/abcrypt-cli-v0.2.0\...HEAD[Unreleased]
+
+=== Changed
+
+* Change MSRV to 1.65.0 ({pull-request-url}/39[#39])
+* Change the maximum value of `--memory-size` to 4 TiB
+  ({pull-request-url}/44[#44])
 
 == {compare-url}/abcrypt-cli-v0.1.0\...abcrypt-cli-v0.2.0[0.2.0] - 2023-09-03
 

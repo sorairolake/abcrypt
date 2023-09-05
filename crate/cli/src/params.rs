@@ -32,7 +32,7 @@ pub struct Params {
 #[cfg(feature = "json")]
 impl Params {
     /// Creates a new `Params`.
-    pub fn new(params: &abcrypt::Params) -> Self {
+    pub const fn new(params: &abcrypt::Params) -> Self {
         Self {
             m: params.m_cost(),
             t: params.t_cost(),
