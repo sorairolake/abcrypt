@@ -446,7 +446,7 @@ fn basic_decrypt() {
     command()
         .arg("decrypt")
         .arg("--passphrase-from-stdin")
-        .arg("data/data.txt.enc")
+        .arg("data/data.txt.abcrypt")
         .write_stdin("passphrase")
         .assert()
         .success()
@@ -478,7 +478,7 @@ fn decrypt_verbose() {
         .arg("decrypt")
         .arg("--passphrase-from-stdin")
         .arg("-v")
-        .arg("data/data.txt.enc")
+        .arg("data/data.txt.abcrypt")
         .write_stdin("passphrase")
         .assert()
         .success()
@@ -516,7 +516,7 @@ fn after_long_help_for_decrypt_command() {
 fn basic_information() {
     command()
         .arg("information")
-        .arg("data/data.txt.enc")
+        .arg("data/data.txt.abcrypt")
         .assert()
         .success()
         .stderr(predicate::str::starts_with(
@@ -536,7 +536,7 @@ fn information_command_without_default_feature() {
     command()
         .arg("information")
         .arg("-j")
-        .arg("data/data.txt.enc")
+        .arg("data/data.txt.abcrypt")
         .assert()
         .failure()
         .code(2);
@@ -548,7 +548,7 @@ fn information_as_json() {
     command()
         .arg("information")
         .arg("-j")
-        .arg("data/data.txt.enc")
+        .arg("data/data.txt.abcrypt")
         .assert()
         .success()
         .stdout(predicate::eq(concat!(r#"{"m":32,"t":3,"p":4}"#, '\n')));

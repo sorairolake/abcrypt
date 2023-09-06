@@ -18,7 +18,7 @@ use abcrypt::Decryptor;
 
 const PASSPHRASE: &str = "passphrase";
 // Generated using `abcrypt` crate version 0.1.0.
-const TEST_DATA_ENC: &[u8] = include_bytes!("../tests/data/data.txt.enc");
+const TEST_DATA_ENC: &[u8] = include_bytes!("../tests/data/data.txt.abcrypt");
 
 #[bench]
 fn decrypt(b: &mut Bencher) {

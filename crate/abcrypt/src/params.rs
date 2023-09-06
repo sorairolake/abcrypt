@@ -27,7 +27,7 @@ impl Params {
     /// ```
     /// # use abcrypt::Params;
     /// #
-    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.abcrypt");
     ///
     /// assert!(Params::new(ciphertext).is_ok());
     /// ```
@@ -43,7 +43,7 @@ impl Params {
     /// ```
     /// # use abcrypt::Params;
     /// #
-    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.abcrypt");
     ///
     /// let params = Params::new(ciphertext).unwrap();
     /// assert_eq!(params.m_cost(), 32);
@@ -61,7 +61,7 @@ impl Params {
     /// ```
     /// # use abcrypt::Params;
     /// #
-    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.abcrypt");
     ///
     /// let params = Params::new(ciphertext).unwrap();
     /// assert_eq!(params.t_cost(), 3);
@@ -79,7 +79,7 @@ impl Params {
     /// ```
     /// # use abcrypt::Params;
     /// #
-    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.abcrypt");
     ///
     /// let params = Params::new(ciphertext).unwrap();
     /// assert_eq!(params.p_cost(), 4);

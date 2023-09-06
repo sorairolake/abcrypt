@@ -41,7 +41,7 @@ impl<'c> Decryptor<'c> {
     /// ```
     /// # use abcrypt::Decryptor;
     /// #
-    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.abcrypt");
     /// let passphrase = "passphrase";
     ///
     /// let cipher = Decryptor::new(&ciphertext, passphrase).unwrap();
@@ -101,7 +101,7 @@ impl<'c> Decryptor<'c> {
     /// # use abcrypt::Decryptor;
     /// #
     /// let data = b"Hello, world!\n";
-    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.abcrypt");
     /// let passphrase = "passphrase";
     ///
     /// let cipher = Decryptor::new(&ciphertext, passphrase).unwrap();
@@ -139,7 +139,7 @@ impl<'c> Decryptor<'c> {
     /// # use abcrypt::Decryptor;
     /// #
     /// let data = b"Hello, world!\n";
-    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.abcrypt");
     /// let passphrase = "passphrase";
     ///
     /// let cipher = Decryptor::new(&ciphertext, passphrase).unwrap();
@@ -160,7 +160,7 @@ impl<'c> Decryptor<'c> {
     /// ```
     /// # use abcrypt::Decryptor;
     /// #
-    /// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
+    /// let ciphertext = include_bytes!("../tests/data/data.txt.abcrypt");
     /// let passphrase = "passphrase";
     ///
     /// let cipher = Decryptor::new(&ciphertext, passphrase).unwrap();
@@ -194,7 +194,7 @@ impl<'c> Decryptor<'c> {
 ///
 /// ```
 /// let data = b"Hello, world!\n";
-/// let ciphertext = include_bytes!("../tests/data/data.txt.enc");
+/// let ciphertext = include_bytes!("../tests/data/data.txt.abcrypt");
 /// let passphrase = "passphrase";
 ///
 /// let plaintext = abcrypt::decrypt(ciphertext, passphrase).unwrap();
