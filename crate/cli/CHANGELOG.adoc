@@ -15,12 +15,6 @@ All notable changes to this project will be documented in this file.
 
 The format is based on {keepachangelog}, and this project adheres to {semver}.
 
-== {compare-url}/abcrypt-cli-v0.2.1\...HEAD[Unreleased]
-
-=== Added
-
-* Add the `homepage` field to `Cargo.toml` ({pull-request-url}/50[#50])
-
 == {compare-url}/abcrypt-cli-v0.2.0\...abcrypt-cli-v0.2.1[0.2.1] - 2023-09-05
 
 === Changed
