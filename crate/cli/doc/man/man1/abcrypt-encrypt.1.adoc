@@ -4,7 +4,7 @@
 
 = abcrypt-encrypt(1)
 // Specify in UTC.
-:docdate: 2023-09-05
+:docdate: 2023-09-07
 :doctype: manpage
 ifdef::revnumber[:mansource: abcrypt {revnumber}]
 :manmanual: General Commands Manual
@@ -61,7 +61,8 @@ _FILE_::
 
 *--passphrase-from-stdin*::
 
-  Read the passphrase from stdin.
+  Read the passphrase from stdin. This option cannot be used if _FILE_ is also
+  stdin.
 
 *--passphrase-from-tty-once*::
 
@@ -97,7 +98,7 @@ include::{includedir}/section-notes.adoc[]
 
 Encrypt a file:{blank}::
 
-  $ *abcrypt encrypt file*
+  $ *abcrypt encrypt data.txt > data.txt.abcrypt*
 
 include::{includedir}/section-reporting-bugs.adoc[]
 

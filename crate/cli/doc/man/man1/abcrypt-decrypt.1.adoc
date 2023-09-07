@@ -4,7 +4,7 @@
 
 = abcrypt-decrypt(1)
 // Specify in UTC.
-:docdate: 2023-08-24
+:docdate: 2023-09-07
 :doctype: manpage
 ifdef::revnumber[:mansource: abcrypt {revnumber}]
 :manmanual: General Commands Manual
@@ -42,7 +42,8 @@ _FILE_::
 
 *--passphrase-from-stdin*::
 
-  Read the passphrase from stdin.
+  Read the passphrase from stdin. This option cannot be used if _FILE_ is also
+  stdin.
 
 *--passphrase-from-env* _VAR_::
 
@@ -74,7 +75,7 @@ include::{includedir}/section-notes.adoc[]
 
 Decrypt a file:{blank}::
 
-  $ *abcrypt decrypt file.abcrypt*
+  $ *abcrypt decrypt data.txt.abcrypt > data.txt*
 
 include::{includedir}/section-reporting-bugs.adoc[]
 
