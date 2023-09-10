@@ -37,7 +37,7 @@ clap_complete = "4.3.2"
 clap_complete_nushell = "4.3.2"
 dialoguer.workspace = true
 serde = { version = "1.0.188", features = ["derive"], optional = true }
-serde_json = { version = "1.0.105", optional = true }
+serde_json = { version = "1.0.106", optional = true }
 sysexits = "0.7.2"
 
 [dev-dependencies]
