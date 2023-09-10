@@ -1,0 +1,31 @@
+// SPDX-FileCopyrightText: 2023 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= Usage
+
+.Add this to your `Cargo.toml`
+[source,toml]
+----
+[dependencies]
+abcrypt = "0.2.1"
+----
+
+== Crate features
+
+`alloc`::
+
+  Enables features that require an allocator. This is enabled by default
+  (implied by `std`).
+
+`std`::
+
+  Enables features that depend on the standard library. This is enabled by
+  default.
+
+== `no_std` support
+
+This supports `no_std` mode. Disables the `default` feature to enable this.
+
+Note that the memory blocks used by Argon2 when calculating a derived key is
+limited to 256 KiB when the `alloc` feature is disabled.

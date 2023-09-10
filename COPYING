@@ -11,7 +11,8 @@ Files: .github/workflows/CD.yaml
 Copyright: 2022-2023 Shun Sakai
 License: GPL-3.0-or-later
 
-Files: doc/*
-       crate/cli/doc/*
+Files: crate/cli/doc/*
+       doc/book/modules/*
+       doc/FORMAT.adoc
 Copyright: 2022-2023 Shun Sakai
 License: CC-BY-4.0

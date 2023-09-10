@@ -17,6 +17,10 @@ The format is based on {keepachangelog}, and this project adheres to {semver}.
 
 == {compare-url}/abcrypt-v0.2.1\...HEAD[Unreleased]
 
+=== Added
+
+* Add the `homepage` field to `Cargo.toml` ({pull-request-url}/50[#50])
+
 === Changed
 
 * Rename test file ({pull-request-url}/52[#52])

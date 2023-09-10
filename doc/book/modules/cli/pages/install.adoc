@@ -1,0 +1,18 @@
+// SPDX-FileCopyrightText: 2023 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= Installation
+:release-page-url: https://github.com/sorairolake/abcrypt/releases
+
+== From source
+
+[source,shell]
+----
+cargo install abcrypt-cli
+----
+
+== From binaries
+
+The {release-page-url}[release page] contains pre-built binaries for Linux,
+macOS and Windows.

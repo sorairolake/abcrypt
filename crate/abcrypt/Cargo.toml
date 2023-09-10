@@ -11,6 +11,7 @@ rust-version.workspace = true
 description = "An implementation of the abcrypt encrypted data format"
 documentation = "https://docs.rs/abcrypt"
 readme = "README.md"
+homepage.workspace = true
 repository.workspace = true
 license = "Apache-2.0 OR MIT"
 keywords = ["abcrypt", "crypto"]

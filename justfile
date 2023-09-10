@@ -48,7 +48,16 @@ default: build
 @fmt-readme:
     npx prettier -w README.md crate/*/README.md
 
-# Increment the version
-@bump part:
-    bump2version {{part}}
+# Build the book
+@build-book:
+    npx antora antora-playbook.yml
+
+# Increment the version of the library
+@bump-lib part:
+    bump2version --config-file .bumpversion-lib.cfg {{part}}
     cargo set-version --bump {{part}} -p abcrypt
+
+# Increment the version of the command-line utility
+@bump-cli part:
+    bump2version --config-file .bumpversion-cli.cfg {{part}}
+    cargo set-version --bump {{part}} -p abcrypt-cli

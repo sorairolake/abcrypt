@@ -1,0 +1,19 @@
+// SPDX-FileCopyrightText: 2023 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= abcrypt
+:project-url: https://github.com/sorairolake/abcrypt
+:shields-url: https://img.shields.io
+:ci-badge: {shields-url}/github/actions/workflow/status/sorairolake/abcrypt/CI.yaml?branch=develop&label=CI&logo=github&style=for-the-badge
+:ci-url: {project-url}/actions?query=branch%3Adevelop+workflow%3ACI++
+:version-badge: {shields-url}/crates/v/abcrypt-cli?style=for-the-badge
+:version-url: https://crates.io/crates/abcrypt-cli
+:license-badge: {shields-url}/crates/l/abcrypt-cli?style=for-the-badge
+
+image:{ci-badge}[CI, link={ci-url}]
+image:{version-badge}[Version, link={version-url}]
+image:{license-badge}[License]
+
+*abcrypt* ({version-url}[`abcrypt-cli`]) is a command-line utility for encrypt
+and decrypt files using the abcrypt format.

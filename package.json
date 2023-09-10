@@ -1,0 +1,28 @@
+{
+  "private": true,
+  "name": "abcrypt",
+  "version": "1.0.0",
+  "description": "An utility for encrypt and decrypt files",
+  "license": "CC-BY-4.0",
+  "author": "Shun Sakai <sorairolake@protonmail.ch>",
+  "homepage": "https://github.com/sorairolake/abcrypt#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sorairolake/abcrypt.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sorairolake/abcrypt/issues"
+  },
+  "main": "index.js",
+  "directories": {
+    "doc": "doc",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@antora/cli": "^3.1.4",
+    "@antora/site-generator": "^3.1.4"
+  }
+}
