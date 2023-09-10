@@ -81,10 +81,10 @@ jobs:
           asciidoctor -V
       - name: Build a package
         if: ${{ !matrix.use-cross }}
-        run: cargo build -p abcrypt-cli --release --target ${{ matrix.target }}
+        run: CARGO_PROFILE_RELEASE_LTO=true cargo build -p abcrypt-cli --release --target ${{ matrix.target }}
       - name: Build a package with cross
         if: ${{ matrix.use-cross }}
-        run: cross build -p abcrypt-cli --release --target ${{ matrix.target }}
+        run: CARGO_PROFILE_RELEASE_LTO=true cross build -p abcrypt-cli --release --target ${{ matrix.target }}
       - name: Install lzip
         if: matrix.os != 'windows-2022'
         run: |
