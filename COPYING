@@ -5,6 +5,12 @@ Files: *
 Copyright: 2022-2023 Shun Sakai
 License: Apache-2.0 or MIT
 
+Files: .github/workflows/actionlint.yaml
+Copyright: 2023 Kevin Matthes
+           2023 Shun Sakai
+License: Apache-2.0 or MIT
+Comment: From the sysexits-rs repository (https://github.com/sorairolake/sysexits-rs)
+
 Files: .github/workflows/CD.yaml
        crate/cli/*
        Cross.toml
