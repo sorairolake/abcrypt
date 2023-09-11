@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Abcrypt Encrypted Data Format :: abcrypt Documentation</title>
+    <link rel="canonical" href="https://sorairolake.github.io/abcrypt/book/0.2.2/format.html">
+    <meta name="generator" content="Antora 3.1.4">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://sorairolake.github.io/abcrypt">abcrypt Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="book" data-version="0.2.2">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html">abcrypt</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Library</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="lib/index.html">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="lib/usage.html">Usage</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="https://docs.rs/abcrypt">API Reference</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="lib/changelog.html">Changelog</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Command-line Utility</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="cli/index.html">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="cli/install.html">Installation</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="cli/build.html">How to Build</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="cli/usage.html">Usage</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Manual pages</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="cli/man/man1/abcrypt.1.html"><code>abcrypt(1)</code></a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="cli/man/man1/abcrypt-encrypt.1.html"><code>abcrypt-encrypt(1)</code></a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="cli/man/man1/abcrypt-decrypt.1.html"><code>abcrypt-decrypt(1)</code></a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="cli/man/man1/abcrypt-information.1.html"><code>abcrypt-information(1)</code></a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="cli/man/man1/abcrypt-help.1.html"><code>abcrypt-help(1)</code></a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="cli/changelog.html">Changelog</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Format Specification</span>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="format.html">Abcrypt Encrypted Data Format</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Resources</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="contributing.html">Contribution Guide</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="authors.html">List of Authors</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="license.html">License</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">abcrypt</span>
+    <span class="version">0.2.2</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="index.html">abcrypt</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">0.2.2</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">abcrypt</a></li>
+    <li>Format Specification</li>
+    <li><a href="format.html">Abcrypt Encrypted Data Format</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/sorairolake/abcrypt/edit/HEAD/doc/book/modules/ROOT/pages/format.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Abcrypt Encrypted Data Format</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>abcrypt is a modern file encryption format with the data authenticity. This
+document describes the abcrypt encrypted data format.</p>
+</div>
+</div>
+<div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#conventions-used-in-this-document">Conventions used in this document</a></li>
+<li><a href="#format-overview">Format overview</a></li>
+<li><a href="#key-derivation">Key derivation</a></li>
+<li><a href="#header-format">Header format</a>
+<ul class="sectlevel2">
+<li><a href="#magic-number">Magic number</a></li>
+<li><a href="#version-number">Version number</a></li>
+<li><a href="#argon2-parameters">Argon2 parameters</a></li>
+<li><a href="#salt">Salt</a></li>
+<li><a href="#nonce">Nonce</a></li>
+<li><a href="#header-mac">Header MAC</a></li>
+</ul>
+</li>
+<li><a href="#file-body">File body</a></li>
+<li><a href="#format-changelog">Format changelog</a></li>
+</ul>
+</div>
+</div>
+<div class="sect1">
+<h2 id="introduction"><a class="anchor" href="#introduction"></a>Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>abcrypt is a modern file encryption format inspired by the
+<a href="https://www.tarsnap.com/scrypt.html">scrypt encrypted data format</a>. abcrypt uses <a href="#argon2">Argon2id</a> for key
+derivation, <a href="#blake2b-512-mac">BLAKE2b-512-MAC</a> for header integrity checking and
+<a href="#xchacha20-poly1305">XChaCha20-Poly1305</a> for encryption.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="conventions-used-in-this-document"><a class="anchor" href="#conventions-used-in-this-document"></a>Conventions used in this document</h2>
+<div class="sectionbody">
+<div id="argon2" class="paragraph">
+<p>Argon2 is the key derivation function from <a href="https://datatracker.ietf.org/doc/html/rfc9106">RFC 9106</a>.</p>
+</div>
+<div id="blake2b-512-mac" class="paragraph">
+<p>BLAKE2b-512-MAC is the keyed hash function based on BLAKE2 standardized in
+<a href="https://datatracker.ietf.org/doc/html/rfc7693">RFC 7693</a>. This uses BLAKE2b and always outputs a 64-byte MAC.</p>
+</div>
+<div id="xchacha20-poly1305" class="paragraph">
+<p>XChaCha20-Poly1305 is the AEAD algorithm from <a href="https://datatracker.ietf.org/doc/html/draft-arciszewski-xchacha-03">draft-arciszewski-xchacha-03</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="format-overview"><a class="anchor" href="#format-overview"></a>Format overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>An abcrypt file is composed of two parts: a <a href="#header-format">header</a> containing
+the required data and a <a href="#file-body">file body</a> encrypted with the derived key.</p>
+</div>
+<div class="paragraph">
+<p>abcrypt files may use the extension <code>.abc</code> or <code>.abcrypt</code>.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. The structure of the abcrypt format</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Offset</th>
+<th class="tableblock halign-left valign-top">Size</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Magic number ("abcrypt").</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#header-format">Header format</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Version number.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#version-number">Version number</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Memory size <code>m</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#argon2-parameters">Argon2 parameters</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of iterations <code>t</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#argon2-parameters">Argon2 parameters</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Degree of parallelism <code>p</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#argon2-parameters">Argon2 parameters</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">20</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Salt.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#salt">Salt</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">52</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">24</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Nonce.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#nonce">Nonce</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">76</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">64</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MAC of the header.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#header-mac">Header MAC</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">140</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ciphertext.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#file-body">File body</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">140+X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MAC of the ciphertext.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#file-body">File body</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>All multibyte values are stored in little-endian.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="key-derivation"><a class="anchor" href="#key-derivation"></a>Key derivation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The derived key for computing the header MAC and the derived key for encryption
+are produced by <a href="#argon2">Argon2</a>. The abcrypt format uses Argon2id as the type and
+0x13 (19) as the version.</p>
+</div>
+<div class="listingblock">
+<div class="title">The derived key is produced as follows</div>
+<div class="content">
+<pre>derived_key = Argon2(
+    m_cost = header[8..12],
+    t_cost = header[12..16],
+    p_cost = header[16..20],
+    output_len = 96,
+    algorithm = Argon2id,
+    version = 0x13,
+    pwd = password,
+    salt = header[20..52],
+)</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The resulting derived key (<code>derived_key</code>) length is 96 bytes. The first 32
+bytes of <code>derived_key</code> are for encryption (<a href="#xchacha20-poly1305">XChaCha20-Poly1305</a> key), and the
+last 64 bytes are for computing the header MAC (<a href="#blake2b-512-mac">BLAKE2b-512-MAC</a> key).</p>
+</div>
+<div class="paragraph">
+<p><a href="#argon2-parameters"><code>m_cost</code></a>, <a href="#argon2-parameters"><code>t_cost</code></a>,
+<a href="#argon2-parameters"><code>p_cost</code></a>, and <a href="#argon2-parameters"><code>salt</code></a> used when
+encrypting are stored in the header, and these stored values are used when
+decrypting.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="header-format"><a class="anchor" href="#header-format"></a>Header format</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="magic-number"><a class="anchor" href="#magic-number"></a>Magic number</h3>
+<div class="paragraph">
+<p>A 7-byte string for identifying the abcrypt format. The value is "abcrypt"
+(<code>61 62 63 72 79 70 74</code> in hex).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="version-number"><a class="anchor" href="#version-number"></a>Version number</h3>
+<div class="paragraph">
+<p>A 1-byte version number of the abcrypt format. The current value is 0.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="argon2-parameters"><a class="anchor" href="#argon2-parameters"></a>Argon2 parameters</h3>
+<div class="olist arabic">
+<div class="title">Argon2 has the following parameters that control</div>
+<ol class="arabic">
+<li>
+<p>Memory size in KiB (<code>m</code>).</p>
+</li>
+<li>
+<p>Number of iterations (<code>t</code>).</p>
+</li>
+<li>
+<p>Degree of parallelism (<code>p</code>).</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Each parameter is represented as 4 bytes in little-endian.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="salt"><a class="anchor" href="#salt"></a>Salt</h3>
+<div class="paragraph">
+<p>A 32-byte salt for <a href="#argon2">Argon2</a>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The salt should be generated from a CSPRNG.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nonce"><a class="anchor" href="#nonce"></a>Nonce</h3>
+<div class="paragraph">
+<p>A 24-byte nonce for <a href="#xchacha20-poly1305">XChaCha20-Poly1305</a>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The nonce should be generated from a CSPRNG.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="header-mac"><a class="anchor" href="#header-mac"></a>Header MAC</h3>
+<div class="paragraph">
+<p>The MAC (authentication tag) of the header. The MAC is computed with
+<a href="#blake2b-512-mac">BLAKE2b-512-MAC</a> over the whole header up to and including the nonce (first
+76 bytes of the header).</p>
+</div>
+<div class="listingblock">
+<div class="title">The MAC is computed as follows</div>
+<div class="content">
+<pre>mac = BLAKE2b(
+    data = header[..76],
+    output_size = 64,
+    key = derived_key[32..],
+    salt = [],
+    person = [],
+)</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The size of <code>salt</code> and <code>person</code> (personalization string) is zero (empty).</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="file-body"><a class="anchor" href="#file-body"></a>File body</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The file body is encrypted with XChaCha20-Poly1305.</p>
+</div>
+<div class="listingblock">
+<div class="title">The ciphertext is computed as follows</div>
+<div class="content">
+<pre>ciphertext = XChaCha20-Poly1305(
+    key = derived_key[..32],
+    nonce = header[20..52],
+    plaintext = plaintext,
+    aad = [],
+)</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The size of <code>aad</code> (additional authenticated data) is zero (empty).</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+The abcrypt format uses a postfix tag.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="format-changelog"><a class="anchor" href="#format-changelog"></a>Format changelog</h2>
+<div class="sectionbody">
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Version 0</dt>
+<dd>
+<p>Initial release.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
