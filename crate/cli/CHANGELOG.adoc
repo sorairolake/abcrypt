@@ -20,6 +20,7 @@ The format is based on {keepachangelog}, and this project adheres to {semver}.
 === Added
 
 * Add the `homepage` field to `Cargo.toml` ({pull-request-url}/50[#50])
+* Add the book ({pull-request-url}/56[#56])
 
 === Changed
 
