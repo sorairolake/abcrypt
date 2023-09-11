@@ -1,0 +1,37 @@
+// SPDX-FileCopyrightText: 2023 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= Usage
+
+== Basic usage
+
+.Encrypt a file
+[source,shell]
+----
+abcrypt encrypt data.txt > data.txt.abcrypt
+----
+
+.Decrypt a file
+[source,shell]
+----
+abcrypt decrypt data.txt.abcrypt > data.txt
+----
+
+== Generate shell completion
+
+`--generate-completion` option generates shell completions to stdout.
+
+.The following shells are supported
+* `bash`
+* `elvish`
+* `fish`
+* `nushell`
+* `powershell`
+* `zsh`
+
+.Example
+[source,shell]
+----
+abcrypt --generate-completion bash > abcrypt.bash
+----

@@ -10,6 +10,7 @@ edition.workspace = true
 rust-version.workspace = true
 description = "An utility for encrypt and decrypt files"
 readme = "README.md"
+homepage.workspace = true
 repository.workspace = true
 license = "GPL-3.0-or-later"
 keywords = ["abcrypt"]
@@ -28,7 +29,7 @@ name = "abcrypt"
 path = "src/main.rs"
 
 [dependencies]
-abcrypt = { version = "0.2.1", path = "../abcrypt" }
+abcrypt = { version = "0.2.2", path = "../abcrypt" }
 anyhow.workspace = true
 byte-unit = { version = "4.0.19", default-features = false, features = ["std"] }
 clap = { workspace = true, features = ["wrap_help"] }
@@ -36,8 +37,8 @@ clap_complete = "4.3.2"
 clap_complete_nushell = "4.3.2"
 dialoguer.workspace = true
 serde = { version = "1.0.188", features = ["derive"], optional = true }
-serde_json = { version = "1.0.105", optional = true }
-sysexits = "0.7.1"
+serde_json = { version = "1.0.106", optional = true }
+sysexits = "0.7.2"
 
 [dev-dependencies]
 assert_cmd = "2.0.11"

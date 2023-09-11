@@ -36,13 +36,13 @@ Please see [BUILD.adoc].
 Encrypt a file:
 
 ```sh
-abcrypt encrypt file > file.abcrypt
+abcrypt encrypt data.txt > data.txt.abcrypt
 ```
 
 Decrypt a file:
 
 ```sh
-abcrypt decrypt file.abcrypt > file
+abcrypt decrypt data.txt.abcrypt > data.txt
 ```
 
 ### Generate shell completion

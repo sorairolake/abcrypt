@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: 2023 Shun Sakai
+#
+# SPDX-License-Identifier: Apache-2.0 OR MIT
+
+name: book
+title: abcrypt
+version: "0.2.1"
+nav:
+  - modules/lib/nav.adoc
+  - modules/cli/nav.adoc
+  - modules/ROOT/nav.adoc

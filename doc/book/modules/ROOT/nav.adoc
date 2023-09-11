@@ -1,0 +1,11 @@
+// SPDX-FileCopyrightText: 2023 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+.Format Specification
+* xref:format.adoc[]
+
+.Resources
+* xref:contributing.adoc[]
+* xref:authors.adoc[]
+* xref:license.adoc[]

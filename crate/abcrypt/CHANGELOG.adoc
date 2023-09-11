@@ -15,6 +15,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on {keepachangelog}, and this project adheres to {semver}.
 
+== {compare-url}/abcrypt-v0.2.1\...abcrypt-v0.2.2[0.2.2] - 2023-09-11
+
+=== Added
+
+* Add the `homepage` field to `Cargo.toml` ({pull-request-url}/50[#50])
+* Add the book ({pull-request-url}/56[#56])
+
+=== Changed
+
+* Rename test file ({pull-request-url}/52[#52])
+
 == {compare-url}/abcrypt-v0.2.0\...abcrypt-v0.2.1[0.2.1] - 2023-09-05
 
 === Changed

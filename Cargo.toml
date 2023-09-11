@@ -10,6 +10,7 @@ members = ["crate/*"]
 authors = ["Shun Sakai <sorairolake@protonmail.ch>"]
 edition = "2021"
 rust-version = "1.65.0"
+homepage = "https://sorairolake.github.io/abcrypt/"
 repository = "https://github.com/sorairolake/abcrypt"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
