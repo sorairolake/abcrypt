@@ -5,5 +5,6 @@
 .Library
 * xref:index.adoc[Introduction]
 * xref:usage.adoc[]
+* xref:examples.adoc[]
 * https://docs.rs/abcrypt[API Reference]
 * xref:changelog.adoc[]

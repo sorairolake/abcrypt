@@ -9,7 +9,7 @@
 //!
 //! # Examples
 //!
-//! ## Encrypt and decrypt
+//! ## Encryption and decryption
 //!
 //! ```
 //! # #[cfg(feature = "alloc")]
@@ -62,7 +62,7 @@
 //! assert_eq!(buf, data.as_slice());
 //! ```
 //!
-//! ## Extract the Argon2 parameters in the encrypted data
+//! ## Extracting the Argon2 parameters in the encrypted data
 //!
 //! ```
 //! # #[cfg(feature = "alloc")]

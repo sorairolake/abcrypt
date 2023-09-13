@@ -1,0 +1,72 @@
+// SPDX-FileCopyrightText: 2023 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= Examples
+
+== Encryption and decryption
+
+.When the `alloc` feature is enabled
+[source,rust]
+----
+use abcrypt::{argon2::Params, Decryptor, Encryptor};
+
+let data = b"Hello, world!\n";
+let passphrase = "passphrase";
+
+// Encrypt `data` using `passphrase`.
+let params = Params::new(32, 3, 4, None).unwrap();
+let ciphertext = Encryptor::with_params(data, passphrase, params)
+    .map(|c| c.encrypt_to_vec())
+    .unwrap();
+assert_ne!(ciphertext, data);
+
+// And decrypt it back.
+let plaintext = Decryptor::new(&ciphertext, passphrase)
+    .and_then(|c| c.decrypt_to_vec())
+    .unwrap();
+assert_eq!(plaintext, data);
+----
+
+.When the `alloc` feature is disabled
+[source,rust]
+----
+use abcrypt::{argon2::Params, Decryptor, Encryptor};
+
+let data = b"Hello, world!\n";
+let passphrase = "passphrase";
+
+// Encrypt `data` using `passphrase`.
+let params = Params::new(32, 3, 4, None).unwrap();
+let cipher = Encryptor::with_params(data, passphrase, params).unwrap();
+let mut buf = [u8::default(); 170];
+cipher.encrypt(&mut buf);
+assert_ne!(buf, data.as_slice());
+
+// And decrypt it back.
+let cipher = Decryptor::new(&buf, passphrase).unwrap();
+let mut buf = [u8::default(); 14];
+cipher.decrypt(&mut buf).unwrap();
+assert_eq!(buf, data.as_slice());
+----
+
+== Extracting the Argon2 parameters in the encrypted data
+
+[source,rust]
+----
+use abcrypt::{argon2, Encryptor};
+
+let data = b"Hello, world!\n";
+let passphrase = "passphrase";
+
+// Encrypt `data` using `passphrase`.
+let ciphertext = Encryptor::new(data, passphrase)
+    .map(|c| c.encrypt_to_vec())
+    .unwrap();
+
+// And extract the Argon2 parameters from it.
+let params = abcrypt::Params::new(ciphertext).unwrap();
+assert_eq!(params.m_cost(), argon2::Params::DEFAULT_M_COST);
+assert_eq!(params.t_cost(), argon2::Params::DEFAULT_T_COST);
+assert_eq!(params.p_cost(), argon2::Params::DEFAULT_P_COST);
+----
