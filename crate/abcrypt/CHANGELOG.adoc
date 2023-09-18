@@ -15,6 +15,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on {keepachangelog}, and this project adheres to {semver}.
 
+== {compare-url}/abcrypt-v0.2.2\...HEAD[Unreleased]
+
+=== Changed
+
+* Change the structure of `Params` ({pull-request-url}/70[#70])
+
 == {compare-url}/abcrypt-v0.2.1\...abcrypt-v0.2.2[0.2.2] - 2023-09-11
 
 === Added

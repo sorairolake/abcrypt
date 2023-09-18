@@ -6,7 +6,6 @@
 
 use core::mem;
 
-use argon2::Params;
 use blake2::{
     digest::{self, typenum::Unsigned, Mac, Output, OutputSizeUser},
     Blake2bMac512,
@@ -16,7 +15,7 @@ use chacha20poly1305::{
 };
 use rand::{rngs::StdRng, Rng, SeedableRng};
 
-use crate::{Error, Result};
+use crate::{Error, Params, Result};
 
 /// A type alias for magic number of the abcrypt encrypted data format.
 type MagicNumber = [u8; 7];
@@ -64,15 +63,16 @@ impl Header {
     /// The number of bytes of the header.
     pub const SIZE: usize = mem::size_of::<MagicNumber>()
         + mem::size_of::<Version>()
-        + (mem::size_of::<u32>() * 3)
+        + mem::size_of::<Params>()
         + mem::size_of::<Salt>()
         + <XChaCha20Poly1305 as AeadCore>::NonceSize::USIZE
         + <Blake2bMac512 as OutputSizeUser>::OutputSize::USIZE;
 
     /// Creates a new `Header`.
-    pub fn new(params: Params) -> Self {
+    pub fn new(params: argon2::Params) -> Self {
         let magic_number = Self::MAGIC_NUMBER;
         let version = Version::V0;
+        let params = params.into();
         let salt = StdRng::from_entropy().gen();
         let nonce = XChaCha20Poly1305::generate_nonce(&mut StdRng::from_entropy());
         let mac = Blake2bMac512Output::default();
@@ -117,8 +117,9 @@ impl Header {
                 .try_into()
                 .expect("size of `p_cost` should be 4 bytes"),
         );
-        let params =
-            Params::new(m_cost, t_cost, p_cost, None).map_err(Error::InvalidArgon2Params)?;
+        let params = argon2::Params::new(m_cost, t_cost, p_cost, None)
+            .map(Params::from)
+            .map_err(Error::InvalidArgon2Params)?;
         let salt = data[20..52]
             .try_into()
             .expect("size of salt should be 32 bytes");
@@ -165,8 +166,8 @@ impl Header {
     }
 
     /// Returns the Argon2 parameters stored in this header.
-    pub fn params(&self) -> Params {
-        self.params.clone()
+    pub const fn params(&self) -> Params {
+        self.params
     }
 
     /// Returns a salt stored in this header.

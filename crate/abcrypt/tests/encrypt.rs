@@ -25,7 +25,6 @@ fn success() {
     let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
     cipher.encrypt(&mut buf);
     assert_ne!(buf, TEST_DATA);
-    assert_eq!(buf.len(), TEST_DATA.len() + HEADER_SIZE + TAG_SIZE);
 
     let cipher = Decryptor::new(&buf, PASSPHRASE).unwrap();
     let mut buf = [u8::default(); TEST_DATA.len()];
@@ -66,7 +65,6 @@ fn minimum_output_length() {
     assert_eq!(cipher.out_len(), HEADER_SIZE + TAG_SIZE);
     let mut buf = [u8::default(); HEADER_SIZE + TAG_SIZE];
     cipher.encrypt(&mut buf);
-    assert_eq!(buf.len(), HEADER_SIZE + TAG_SIZE);
 }
 
 #[test]

@@ -61,3 +61,8 @@ default: build
 @bump-cli part:
     bump2version --config-file .bumpversion-cli.cfg {{part}}
     cargo set-version --bump {{part}} -p abcrypt-cli
+
+# Increment the version of the C API
+@bump-capi part:
+    bump2version --config-file .bumpversion-capi.cfg {{part}}
+    cargo set-version --bump {{part}} -p abcrypt-capi

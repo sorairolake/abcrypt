@@ -7,8 +7,12 @@
 use crate::{format::Header, Result};
 
 /// The Argon2 parameters used for the encrypted data.
-#[derive(Clone, Debug)]
-pub struct Params(argon2::Params);
+#[derive(Clone, Copy, Debug)]
+pub struct Params {
+    m_cost: u32,
+    t_cost: u32,
+    p_cost: u32,
+}
 
 impl Params {
     /// Creates a new instance of the Argon2 parameters from `ciphertext`.
@@ -33,7 +37,7 @@ impl Params {
     /// ```
     pub fn new(ciphertext: impl AsRef<[u8]>) -> Result<Self> {
         let params = Header::parse(ciphertext.as_ref()).map(|h| h.params())?;
-        Ok(Self(params))
+        Ok(params)
     }
 
     /// Gets memory size in KiB.
@@ -51,7 +55,7 @@ impl Params {
     #[must_use]
     #[inline]
     pub const fn m_cost(&self) -> u32 {
-        self.0.m_cost()
+        self.m_cost
     }
 
     /// Gets number of iterations.
@@ -69,7 +73,7 @@ impl Params {
     #[must_use]
     #[inline]
     pub const fn t_cost(&self) -> u32 {
-        self.0.t_cost()
+        self.t_cost
     }
 
     /// Gets degree of parallelism.
@@ -87,6 +91,39 @@ impl Params {
     #[must_use]
     #[inline]
     pub const fn p_cost(&self) -> u32 {
-        self.0.p_cost()
+        self.p_cost
+    }
+}
+
+impl Default for Params {
+    fn default() -> Self {
+        let (m_cost, t_cost, p_cost) = (
+            argon2::Params::DEFAULT_M_COST,
+            argon2::Params::DEFAULT_T_COST,
+            argon2::Params::DEFAULT_P_COST,
+        );
+        Self {
+            m_cost,
+            t_cost,
+            p_cost,
+        }
+    }
+}
+
+impl From<Params> for argon2::Params {
+    fn from(params: Params) -> Self {
+        Self::new(params.m_cost(), params.t_cost(), params.p_cost(), None)
+            .expect("`Params` should be valid as `argon2::Params`")
+    }
+}
+
+impl From<argon2::Params> for Params {
+    fn from(params: argon2::Params) -> Self {
+        let (m_cost, t_cost, p_cost) = (params.m_cost(), params.t_cost(), params.p_cost());
+        Self {
+            m_cost,
+            t_cost,
+            p_cost,
+        }
     }
 }

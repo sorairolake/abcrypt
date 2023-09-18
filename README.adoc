@@ -15,6 +15,9 @@
 :abcrypt-cli-repo-url: {project-url}/tree/develop/crate/cli
 :abcrypt-cli-badge: {shields-url}/crates/v/abcrypt-cli?style=for-the-badge
 :abcrypt-cli-crates-io: {crates-io-crates}/abcrypt-cli
+:abcrypt-capi-repo-url: {project-url}/tree/develop/crate/capi
+:abcrypt-capi-badge: {shields-url}/crates/v/abcrypt-capi?style=for-the-badge
+:abcrypt-capi-crates-io: {crates-io-crates}/abcrypt-capi
 :reuse-spec-url: https://reuse.software/spec/
 
 image:{ci-badge}[CI,link={ci-url}]
@@ -34,6 +37,10 @@ Rust library.
 |{abcrypt-cli-repo-url}[`abcrypt-cli`]
 |image:{abcrypt-cli-badge}[Version,link={abcrypt-cli-crates-io}]
 |File encryption tool using the abcrypt format.
+
+|{abcrypt-capi-repo-url}[`abcrypt-capi`]
+|image:{abcrypt-capi-badge}[Version,link={abcrypt-capi-crates-io}]
+|C API for abcrypt.
 |===
 
 == Format specification

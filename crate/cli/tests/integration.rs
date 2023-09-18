@@ -96,7 +96,7 @@ fn validate_m_parameter_with_unit_for_encrypt_command() {
         .assert()
         .success()
         .stderr(predicate::str::starts_with(
-            "Parameters used: m = 19456; t = 2; p = 1;",
+            "Parameters used: m_cost = 19456; t_cost = 2; p_cost = 1;",
         ));
 }
 
@@ -113,7 +113,7 @@ fn validate_m_parameter_without_unit_for_encrypt_command() {
         .assert()
         .success()
         .stderr(predicate::str::starts_with(
-            "Parameters used: m = 19456; t = 2; p = 1;",
+            "Parameters used: m_cost = 19456; t_cost = 2; p_cost = 1;",
         ));
 }
 
@@ -130,7 +130,7 @@ fn validate_m_parameter_with_byte_prefix_for_encrypt_command() {
         .assert()
         .success()
         .stderr(predicate::str::starts_with(
-            "Parameters used: m = 19456; t = 2; p = 1;",
+            "Parameters used: m_cost = 19456; t_cost = 2; p_cost = 1;",
         ));
     command()
         .arg("encrypt")
@@ -143,7 +143,7 @@ fn validate_m_parameter_with_byte_prefix_for_encrypt_command() {
         .assert()
         .success()
         .stderr(predicate::str::starts_with(
-            "Parameters used: m = 19456; t = 2; p = 1;",
+            "Parameters used: m_cost = 19456; t_cost = 2; p_cost = 1;",
         ));
     command()
         .arg("encrypt")
@@ -156,7 +156,7 @@ fn validate_m_parameter_with_byte_prefix_for_encrypt_command() {
         .assert()
         .success()
         .stderr(predicate::str::starts_with(
-            "Parameters used: m = 19456; t = 2; p = 1;",
+            "Parameters used: m_cost = 19456; t_cost = 2; p_cost = 1;",
         ));
 }
 
@@ -261,7 +261,7 @@ fn validate_m_parameter_ranges_for_encrypt_command() {
         .assert()
         .success()
         .stderr(predicate::str::starts_with(
-            "Parameters used: m = 8; t = 2; p = 1;",
+            "Parameters used: m_cost = 8; t_cost = 2; p_cost = 1;",
         ));
     command()
         .arg("encrypt")
@@ -318,7 +318,7 @@ fn validate_t_parameter_ranges_for_encrypt_command() {
         .assert()
         .success()
         .stderr(predicate::str::starts_with(
-            "Parameters used: m = 19456; t = 1; p = 1;",
+            "Parameters used: m_cost = 19456; t_cost = 1; p_cost = 1;",
         ));
     command()
         .arg("encrypt")
@@ -374,7 +374,7 @@ fn validate_p_parameter_ranges_for_encrypt_command() {
         .assert()
         .success()
         .stderr(predicate::str::starts_with(
-            "Parameters used: m = 19456; t = 2; p = 2;",
+            "Parameters used: m_cost = 19456; t_cost = 2; p_cost = 2;",
         ));
     command()
         .arg("encrypt")
@@ -413,7 +413,7 @@ fn encrypt_verbose() {
         .assert()
         .success()
         .stderr(predicate::str::starts_with(
-            "Parameters used: m = 19456; t = 2; p = 1;",
+            "Parameters used: m_cost = 19456; t_cost = 2; p_cost = 1;",
         ));
 }
 
@@ -484,7 +484,7 @@ fn decrypt_verbose() {
         .success()
         .stdout(predicate::eq("Hello, world!\n"))
         .stderr(predicate::str::starts_with(
-            "Parameters used: m = 32; t = 3; p = 4;",
+            "Parameters used: m_cost = 32; t_cost = 3; p_cost = 4;",
         ));
 }
 
@@ -520,7 +520,7 @@ fn basic_information() {
         .assert()
         .success()
         .stderr(predicate::str::starts_with(
-            "Parameters used: m = 32; t = 3; p = 4;",
+            "Parameters used: m_cost = 32; t_cost = 3; p_cost = 4;",
         ));
 }
 
@@ -551,7 +551,10 @@ fn information_as_json() {
         .arg("data/data.txt.abcrypt")
         .assert()
         .success()
-        .stdout(predicate::eq(concat!(r#"{"m":32,"t":3,"p":4}"#, '\n')));
+        .stdout(predicate::eq(concat!(
+            r#"{"m_cost":32,"t_cost":3,"p_cost":4}"#,
+            '\n'
+        )));
 }
 
 #[test]
