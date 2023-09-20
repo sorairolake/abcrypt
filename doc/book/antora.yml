@@ -7,5 +7,6 @@ title: abcrypt
 version: "0.2.2"
 nav:
   - modules/lib/nav.adoc
+  - modules/capi/nav.adoc
   - modules/cli/nav.adoc
   - modules/ROOT/nav.adoc

@@ -13,9 +13,9 @@
 :docs-url: https://docs.rs/abcrypt
 :license-badge: {shields-url}/crates/l/abcrypt?style=for-the-badge
 
-image:{ci-badge}[CI, link={ci-url}]
-image:{version-badge}[Version, link={version-url}]
-image:{docs-badge}[Docs, link={docs-url}]
+image:{ci-badge}[CI,link={ci-url}]
+image:{version-badge}[Version,link={version-url}]
+image:{docs-badge}[Docs,link={docs-url}]
 image:{license-badge}[License]
 
 *abcrypt* is an implementation of the abcrypt encrypted data format.

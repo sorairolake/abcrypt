@@ -1,0 +1,33 @@
+# SPDX-FileCopyrightText: 2022 Shun Sakai
+#
+# SPDX-License-Identifier: Apache-2.0 OR MIT
+
+[package]
+name = "abcrypt-capi"
+version = "0.1.0"
+authors.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+description = "C API for abcrypt"
+documentation = "https://docs.rs/abcrypt-capi"
+readme = "README.md"
+homepage.workspace = true
+repository.workspace = true
+license = "Apache-2.0 OR MIT"
+keywords = ["abcrypt", "crypto"]
+categories = ["cryptography"]
+exclude = [
+  "/examples",
+  "/tests",
+]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+crate-type = ["staticlib", "cdylib"]
+
+[dependencies]
+abcrypt = { version = "0.2.3", path = "../abcrypt" }
+
+[build-dependencies]
+cbindgen = { version = "0.26.0", default-features = false }

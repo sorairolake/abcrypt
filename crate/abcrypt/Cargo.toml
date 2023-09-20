@@ -4,7 +4,7 @@
 
 [package]
 name = "abcrypt"
-version = "0.2.2"
+version = "0.2.3"
 authors.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -18,9 +18,7 @@ keywords = ["abcrypt", "crypto"]
 categories = ["cryptography", "no-std"]
 exclude = [
   "/benches",
-  "/clippy.toml",
   "/examples",
-  "/rustfmt.toml",
   "/tests",
 ]
 

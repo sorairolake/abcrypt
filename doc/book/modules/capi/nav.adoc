@@ -1,0 +1,11 @@
+// SPDX-FileCopyrightText: 2023 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+.C API
+* xref:index.adoc[Introduction]
+* xref:usage.adoc[]
+* API Reference
+** xref:capi.adoc[]
+** https://docs.rs/abcrypt-capi[Rust API]
+* xref:changelog.adoc[]

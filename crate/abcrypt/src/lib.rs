@@ -9,7 +9,7 @@
 //!
 //! # Examples
 //!
-//! ## Encrypt and decrypt
+//! ## Encryption and decryption
 //!
 //! ```
 //! # #[cfg(feature = "alloc")]
@@ -62,7 +62,7 @@
 //! assert_eq!(buf, data.as_slice());
 //! ```
 //!
-//! ## Extract the Argon2 parameters in the encrypted data
+//! ## Extracting the Argon2 parameters in the encrypted data
 //!
 //! ```
 //! # #[cfg(feature = "alloc")]
@@ -85,9 +85,9 @@
 //! # }
 //! ```
 //!
-//! [abcrypt encrypted data format]: https://github.com/sorairolake/abcrypt/blob/abcrypt-v0.2.2/doc/FORMAT.adoc
+//! [abcrypt encrypted data format]: https://github.com/sorairolake/abcrypt/blob/abcrypt-v0.2.3/doc/FORMAT.adoc
 
-#![doc(html_root_url = "https://docs.rs/abcrypt/0.2.2/")]
+#![doc(html_root_url = "https://docs.rs/abcrypt/0.2.3/")]
 #![no_std]
 #![cfg_attr(doc_cfg, feature(doc_auto_cfg, doc_cfg))]
 // Lint levels of rustc.
@@ -117,6 +117,7 @@ pub use crate::{
     decrypt::Decryptor,
     encrypt::Encryptor,
     error::{Error, Result},
+    format::{HEADER_SIZE, TAG_SIZE},
     params::Params,
 };
 

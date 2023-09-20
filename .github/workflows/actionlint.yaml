@@ -6,10 +6,10 @@
 name: actionlint
 
 on:
-  push:
+  pull_request:
     paths:
       - .github/workflows/*.yaml
-  pull_request:
+  push:
     paths:
       - .github/workflows/*.yaml
 

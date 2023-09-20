@@ -21,7 +21,29 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-abcrypt = "0.2.2"
+abcrypt = "0.2.3"
+```
+
+### Example
+
+```rust
+use abcrypt::{argon2::Params, Decryptor, Encryptor};
+
+let data = b"Hello, world!\n";
+let passphrase = "passphrase";
+
+// Encrypt `data` using `passphrase`.
+let params = Params::new(32, 3, 4, None).unwrap();
+let ciphertext = Encryptor::with_params(data, passphrase, params)
+    .map(|c| c.encrypt_to_vec())
+    .unwrap();
+assert_ne!(ciphertext, data);
+
+// And decrypt it back.
+let plaintext = Decryptor::new(&ciphertext, passphrase)
+    .and_then(|c| c.decrypt_to_vec())
+    .unwrap();
+assert_eq!(plaintext, data);
 ```
 
 ### Crate features
