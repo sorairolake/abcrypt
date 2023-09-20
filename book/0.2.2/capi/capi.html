@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Usage :: abcrypt Documentation</title>
-    <link rel="canonical" href="https://sorairolake.github.io/abcrypt/book/0.2.2/lib/usage.html">
+    <title>C API :: abcrypt Documentation</title>
+    <link rel="canonical" href="https://sorairolake.github.io/abcrypt/book/0.2.2/capi/capi.html">
     <meta name="generator" content="Antora 3.1.4">
     <link rel="stylesheet" href="../../../_/css/site.css">
   </head>
@@ -60,19 +60,19 @@
     <span class="nav-text">Library</span>
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="index.html">Introduction</a>
-  </li>
-  <li class="nav-item is-current-page" data-depth="1">
-    <a class="nav-link" href="usage.html">Usage</a>
+    <a class="nav-link" href="../lib/index.html">Introduction</a>
   </li>
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="examples.html">Examples</a>
+    <a class="nav-link" href="../lib/usage.html">Usage</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../lib/examples.html">Examples</a>
   </li>
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="https://docs.rs/abcrypt">API Reference</a>
   </li>
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="changelog.html">Changelog</a>
+    <a class="nav-link" href="../lib/changelog.html">Changelog</a>
   </li>
 </ul>
   </li>
@@ -81,17 +81,17 @@
     <span class="nav-text">C API</span>
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../capi/index.html">Introduction</a>
+    <a class="nav-link" href="index.html">Introduction</a>
   </li>
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../capi/usage.html">Usage</a>
+    <a class="nav-link" href="usage.html">Usage</a>
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <span class="nav-text">API Reference</span>
 <ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="../capi/capi.html">C API</a>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="capi.html">C API</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="https://docs.rs/abcrypt-capi">Rust API</a>
@@ -99,7 +99,7 @@
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../capi/changelog.html">Changelog</a>
+    <a class="nav-link" href="changelog.html">Changelog</a>
   </li>
 </ul>
   </li>
@@ -198,58 +198,178 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="../index.html">abcrypt</a></li>
-    <li>Library</li>
-    <li><a href="usage.html">Usage</a></li>
+    <li>C API</li>
+    <li>API Reference</li>
+    <li><a href="capi.html">C API</a></li>
   </ul>
 </nav>
-<div class="edit-this-page"><a href="https://github.com/sorairolake/abcrypt/edit/HEAD/doc/book/modules/lib/pages/usage.adoc">Edit this Page</a></div>
+<div class="edit-this-page"><a href="https://github.com/sorairolake/abcrypt/edit/HEAD/doc/book/modules/capi/pages/capi.adoc">Edit this Page</a></div>
 </div>
   <div class="content">
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
   <div class="toc-menu"></div>
 </aside>
 <article class="doc">
-<h1 class="page">Usage</h1>
-<div id="preamble">
-<div class="sectionbody">
+<h1 class="page">C API</h1>
 <div class="listingblock">
-<div class="title">Add this to your <code>Cargo.toml</code></div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[dependencies]
-abcrypt = "0.2.3"</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_crate_features"><a class="anchor" href="#_crate_features"></a>Crate features</h2>
-<div class="sectionbody">
-<div class="dlist">
-<dl>
-<dt class="hdlist1"><code>alloc</code></dt>
-<dd>
-<p>Enables features that require an allocator. This is enabled by default
-(implied by <code>std</code>).</p>
-</dd>
-<dt class="hdlist1"><code>std</code></dt>
-<dd>
-<p>Enables features that depend on the standard library. This is enabled by
-default.</p>
-</dd>
-</dl>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_no_std_support"><a class="anchor" href="#_no_std_support"></a><code>no_std</code> support</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>This supports <code>no_std</code> mode. Disables the <code>default</code> feature to enable this.</p>
-</div>
-<div class="paragraph">
-<p>Note that the memory blocks used by Argon2 when calculating a derived key is
-limited to 256 KiB when the <code>alloc</code> feature is disabled.</p>
-</div>
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">// SPDX-FileCopyrightText: 2023 Shun Sakai
+//
+// SPDX-License-Identifier: Apache-2.0 OR MIT
+
+#pragma once
+
+// This file is automatically generated by cbindgen.
+
+#include &lt;stdint.h&gt;
+
+// The number of bytes of the header.
+#define ABCRYPT_HEADER_SIZE 140
+
+// The number of bytes of the MAC (authentication tag) of the ciphertext.
+#define ABCRYPT_TAG_SIZE 16
+
+// The error code for the abcrypt encrypted data format.
+typedef enum abcrypt_error_code {
+  // Everything is ok.
+  ABCRYPT_ERROR_CODE_OK,
+  // General error.
+  ABCRYPT_ERROR_CODE_ERROR,
+  // The encrypted data was shorter than 156 bytes.
+  ABCRYPT_ERROR_CODE_INVALID_LENGTH,
+  // The magic number (file signature) was invalid.
+  ABCRYPT_ERROR_CODE_INVALID_MAGIC_NUMBER,
+  // The version was the unrecognized abcrypt version number.
+  ABCRYPT_ERROR_CODE_UNKNOWN_VERSION,
+  // The Argon2 parameters were invalid.
+  ABCRYPT_ERROR_CODE_INVALID_ARGON2_PARAMS,
+  // The Argon2 context was invalid.
+  ABCRYPT_ERROR_CODE_INVALID_ARGON2_CONTEXT,
+  // The MAC (authentication tag) of the header was invalid.
+  ABCRYPT_ERROR_CODE_INVALID_HEADER_MAC,
+  // The MAC (authentication tag) of the ciphertext was invalid.
+  ABCRYPT_ERROR_CODE_INVALID_MAC,
+} abcrypt_error_code;
+
+// The Argon2 parameters used for the encrypted data.
+typedef struct abcrypt_params {
+  uint32_t m_cost;
+  uint32_t t_cost;
+  uint32_t p_cost;
+} abcrypt_params;
+
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
+// Decrypts `ciphertext` and write to `out`.
+//
+// # Errors
+//
+// Returns an error if any of the following are true:
+//
+// - `ciphertext` is shorter than 156 bytes.
+// - The magic number is invalid.
+// - The version number is the unrecognized abcrypt version number.
+// - The Argon2 parameters are invalid.
+// - The Argon2 context is invalid.
+// - The MAC (authentication tag) of the header is invalid.
+// - The MAC (authentication tag) of the ciphertext is invalid.
+// - One of the parameters is null.
+enum abcrypt_error_code abcrypt_decrypt(uint8_t *ciphertext,
+                                        uintptr_t ciphertext_len,
+                                        uint8_t *passphrase,
+                                        uintptr_t passphrase_len,
+                                        uint8_t *out,
+                                        uintptr_t out_len);
+
+// Encrypts `plaintext` and write to `out`.
+//
+// This uses the default Argon2 parameters.
+//
+// # Errors
+//
+// Returns an error if any of the following are true:
+//
+// - The Argon2 context is invalid.
+// - One of the parameters is null.
+enum abcrypt_error_code abcrypt_encrypt(uint8_t *plaintext,
+                                        uintptr_t plaintext_len,
+                                        uint8_t *passphrase,
+                                        uintptr_t passphrase_len,
+                                        uint8_t *out,
+                                        uintptr_t out_len);
+
+// Encrypts `plaintext` with the specified Argon2 parameters and write to
+// `out`.
+//
+// # Errors
+//
+// Returns an error if any of the following are true:
+//
+// - The Argon2 context is invalid.
+// - One of the parameters is null.
+enum abcrypt_error_code abcrypt_encrypt_with_params(uint8_t *plaintext,
+                                                    uintptr_t plaintext_len,
+                                                    uint8_t *passphrase,
+                                                    uintptr_t passphrase_len,
+                                                    uint8_t *out,
+                                                    uintptr_t out_len,
+                                                    uint32_t m_cost,
+                                                    uint32_t t_cost,
+                                                    uint32_t p_cost);
+
+// Gets a detailed error message.
+//
+// # Errors
+//
+// Returns an error if `buf` is null.
+enum abcrypt_error_code abcrypt_error_message(enum abcrypt_error_code error_code,
+                                              uint8_t *buf,
+                                              uintptr_t buf_len);
+
+// Returns the number of output bytes of the error message.
+uintptr_t abcrypt_error_message_out_len(enum abcrypt_error_code error_code);
+
+// Creates a new Argon2 parameters.
+struct abcrypt_params *abcrypt_params_new(void);
+
+// Free a Argon2 parameters.
+void abcrypt_params_free(struct abcrypt_params *params);
+
+// Reads the Argon2 parameters from `ciphertext`.
+//
+// # Errors
+//
+// Returns an error if any of the following are true:
+//
+// - `ciphertext` is shorter than 156 bytes.
+// - The magic number is invalid.
+// - The version number is the unrecognized abcrypt version number.
+// - The Argon2 parameters are invalid.
+// - One of the parameters is null.
+enum abcrypt_error_code abcrypt_params_read(uint8_t *ciphertext,
+                                            uintptr_t ciphertext_len,
+                                            struct abcrypt_params *params);
+
+// Gets memory size in KiB.
+//
+// Returns `0` if `params` is null.
+uint32_t abcrypt_params_m_cost(struct abcrypt_params *params);
+
+// Gets number of iterations.
+//
+// Returns `0` if `params` is null.
+uint32_t abcrypt_params_t_cost(struct abcrypt_params *params);
+
+// Gets degree of parallelism.
+//
+// Returns `0` if `params` is null.
+uint32_t abcrypt_params_p_cost(struct abcrypt_params *params);
+
+#ifdef __cplusplus
+} // extern "C"
+#endif // __cplusplus</code></pre>
 </div>
 </div>
 </article>
