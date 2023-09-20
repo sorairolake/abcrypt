@@ -16,9 +16,7 @@ license = "GPL-3.0-or-later"
 keywords = ["abcrypt"]
 categories = ["command-line-utilities"]
 exclude = [
-  "/clippy.toml",
   "/doc",
-  "/rustfmt.toml",
   "/tests",
 ]
 

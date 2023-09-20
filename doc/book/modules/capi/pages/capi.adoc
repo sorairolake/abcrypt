@@ -1,0 +1,10 @@
+// SPDX-FileCopyrightText: 2023 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= C API
+
+[source,c]
+----
+include::example$abcrypt.h[]
+----

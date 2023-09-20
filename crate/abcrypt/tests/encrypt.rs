@@ -9,13 +9,10 @@
 // Lint levels of Clippy.
 #![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
 
-use abcrypt::{argon2::Params, Decryptor, Encryptor};
+use abcrypt::{argon2::Params, Decryptor, Encryptor, HEADER_SIZE, TAG_SIZE};
 
 const PASSPHRASE: &str = "passphrase";
 const TEST_DATA: &[u8] = include_bytes!("data/data.txt");
-
-const HEADER_SIZE: usize = 140;
-const TAG_SIZE: usize = 16;
 
 #[test]
 fn success() {
@@ -25,7 +22,6 @@ fn success() {
     let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
     cipher.encrypt(&mut buf);
     assert_ne!(buf, TEST_DATA);
-    assert_eq!(buf.len(), TEST_DATA.len() + HEADER_SIZE + TAG_SIZE);
 
     let cipher = Decryptor::new(&buf, PASSPHRASE).unwrap();
     let mut buf = [u8::default(); TEST_DATA.len()];
@@ -66,7 +62,6 @@ fn minimum_output_length() {
     assert_eq!(cipher.out_len(), HEADER_SIZE + TAG_SIZE);
     let mut buf = [u8::default(); HEADER_SIZE + TAG_SIZE];
     cipher.encrypt(&mut buf);
-    assert_eq!(buf.len(), HEADER_SIZE + TAG_SIZE);
 }
 
 #[test]

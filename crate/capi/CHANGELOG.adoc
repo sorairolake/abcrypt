@@ -1,0 +1,22 @@
+// SPDX-FileCopyrightText: 2022 Shun Sakai
+//
+// SPDX-License-Identifier: Apache-2.0 OR MIT
+
+= Changelog
+:toc: preamble
+:project-url: https://github.com/sorairolake/abcrypt
+:compare-url: {project-url}/compare
+:issue-url: {project-url}/issues
+:pull-request-url: {project-url}/pull
+:keepachangelog: https://keepachangelog.com/[Keep a Changelog]
+:semver: https://semver.org/[Semantic Versioning]
+
+All notable changes to this project will be documented in this file.
+
+The format is based on {keepachangelog}, and this project adheres to {semver}.
+
+== {project-url}[Unreleased]
+
+=== Added
+
+* Initial release

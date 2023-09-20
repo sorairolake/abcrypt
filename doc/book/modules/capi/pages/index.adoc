@@ -1,0 +1,22 @@
+// SPDX-FileCopyrightText: 2023 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= C API for abcrypt
+:project-url: https://github.com/sorairolake/abcrypt
+:shields-url: https://img.shields.io
+:ci-badge: {shields-url}/github/actions/workflow/status/sorairolake/abcrypt/CI.yaml?branch=develop&label=CI&logo=github&style=for-the-badge
+:ci-url: {project-url}/actions?query=branch%3Adevelop+workflow%3ACI++
+:version-badge: {shields-url}/crates/v/abcrypt-capi?style=for-the-badge
+:version-url: https://crates.io/crates/abcrypt-capi
+:docs-badge: {shields-url}/docsrs/abcrypt-capi?label=Docs.rs&logo=docsdotrs&style=for-the-badge
+:docs-url: https://docs.rs/abcrypt-capi
+:license-badge: {shields-url}/crates/l/abcrypt-capi?style=for-the-badge
+
+image:{ci-badge}[CI,link={ci-url}]
+image:{version-badge}[Version,link={version-url}]
+image:{docs-badge}[Docs,link={docs-url}]
+image:{license-badge}[License]
+
+This crate ({version-url}[`abcrypt-capi`]) exposes a C API for the
+xref:lib:index.adoc[`abcrypt`] crate.

@@ -6,7 +6,6 @@
 
 use core::mem;
 
-use argon2::Params;
 use blake2::{
     digest::{self, typenum::Unsigned, Mac, Output, OutputSizeUser},
     Blake2bMac512,
@@ -16,7 +15,7 @@ use chacha20poly1305::{
 };
 use rand::{rngs::StdRng, Rng, SeedableRng};
 
-use crate::{Error, Result};
+use crate::{Error, Params, Result};
 
 /// A type alias for magic number of the abcrypt encrypted data format.
 type MagicNumber = [u8; 7];
@@ -29,6 +28,12 @@ type Blake2bMac512Output = Output<Blake2bMac512>;
 
 /// A type alias for key of BLAKE2b-512-MAC.
 type Blake2bMac512Key = digest::Key<Blake2bMac512>;
+
+/// The number of bytes of the header.
+pub const HEADER_SIZE: usize = Header::SIZE;
+
+/// The number of bytes of the MAC (authentication tag) of the ciphertext.
+pub const TAG_SIZE: usize = <XChaCha20Poly1305 as AeadCore>::TagSize::USIZE;
 
 /// Version of the abcrypt encrypted data format.
 #[derive(Clone, Copy, Debug)]
@@ -62,17 +67,18 @@ impl Header {
     const MAGIC_NUMBER: MagicNumber = *b"abcrypt";
 
     /// The number of bytes of the header.
-    pub const SIZE: usize = mem::size_of::<MagicNumber>()
+    const SIZE: usize = mem::size_of::<MagicNumber>()
         + mem::size_of::<Version>()
-        + (mem::size_of::<u32>() * 3)
+        + mem::size_of::<Params>()
         + mem::size_of::<Salt>()
         + <XChaCha20Poly1305 as AeadCore>::NonceSize::USIZE
         + <Blake2bMac512 as OutputSizeUser>::OutputSize::USIZE;
 
     /// Creates a new `Header`.
-    pub fn new(params: Params) -> Self {
+    pub fn new(params: argon2::Params) -> Self {
         let magic_number = Self::MAGIC_NUMBER;
         let version = Version::V0;
+        let params = params.into();
         let salt = StdRng::from_entropy().gen();
         let nonce = XChaCha20Poly1305::generate_nonce(&mut StdRng::from_entropy());
         let mac = Blake2bMac512Output::default();
@@ -88,7 +94,7 @@ impl Header {
 
     /// Parses `data` into the header.
     pub fn parse(data: &[u8]) -> Result<Self> {
-        if data.len() < Self::SIZE + <XChaCha20Poly1305 as AeadCore>::TagSize::USIZE {
+        if data.len() < Self::SIZE + TAG_SIZE {
             return Err(Error::InvalidLength);
         }
 
@@ -117,8 +123,9 @@ impl Header {
                 .try_into()
                 .expect("size of `p_cost` should be 4 bytes"),
         );
-        let params =
-            Params::new(m_cost, t_cost, p_cost, None).map_err(Error::InvalidArgon2Params)?;
+        let params = argon2::Params::new(m_cost, t_cost, p_cost, None)
+            .map(Params::from)
+            .map_err(Error::InvalidArgon2Params)?;
         let salt = data[20..52]
             .try_into()
             .expect("size of salt should be 32 bytes");
@@ -165,8 +172,8 @@ impl Header {
     }
 
     /// Returns the Argon2 parameters stored in this header.
-    pub fn params(&self) -> Params {
-        self.params.clone()
+    pub const fn params(&self) -> Params {
+        self.params
     }
 
     /// Returns a salt stored in this header.
@@ -217,6 +224,18 @@ mod tests {
     use super::*;
 
     #[test]
+    fn header_size() {
+        assert_eq!(HEADER_SIZE, 140);
+        assert_eq!(HEADER_SIZE, Header::SIZE);
+    }
+
+    #[test]
+    fn tag_size() {
+        assert_eq!(TAG_SIZE, 16);
+        assert_eq!(TAG_SIZE, <XChaCha20Poly1305 as AeadCore>::TagSize::USIZE);
+    }
+
+    #[test]
     fn version() {
         assert_eq!(Version::V0 as u8, 0);
     }
@@ -229,11 +248,6 @@ mod tests {
     #[test]
     fn magic_number() {
         assert_eq!(str::from_utf8(&Header::MAGIC_NUMBER).unwrap(), "abcrypt");
-    }
-
-    #[test]
-    fn header_size() {
-        assert_eq!(Header::SIZE, 140);
     }
 
     #[test]

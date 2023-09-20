@@ -5,13 +5,11 @@
 //! Decrypts from the abcrypt encrypted data format.
 
 use argon2::Argon2;
-use chacha20poly1305::{
-    aead::generic_array::typenum::Unsigned, AeadCore, AeadInPlace, KeyInit, XChaCha20Poly1305,
-};
+use chacha20poly1305::{AeadInPlace, KeyInit, XChaCha20Poly1305};
 
 use crate::{
     format::{DerivedKey, Header},
-    Error, Result, ARGON2_ALGORITHM, ARGON2_VERSION,
+    Error, Result, ARGON2_ALGORITHM, ARGON2_VERSION, HEADER_SIZE, TAG_SIZE,
 };
 
 /// Decryptor for the abcrypt encrypted data format.
@@ -53,7 +51,7 @@ impl<'c> Decryptor<'c> {
             // The derived key size is 96 bytes. The first 256 bits are for
             // XChaCha20-Poly1305 key, and the last 512 bits are for BLAKE2b-512-MAC key.
             let mut dk = [u8::default(); DerivedKey::SIZE];
-            let argon2 = Argon2::new(ARGON2_ALGORITHM, ARGON2_VERSION, header.params());
+            let argon2 = Argon2::new(ARGON2_ALGORITHM, ARGON2_VERSION, header.params().into());
             #[cfg(feature = "alloc")]
             argon2
                 .hash_password_into(passphrase, &header.salt(), &mut dk)
@@ -72,9 +70,9 @@ impl<'c> Decryptor<'c> {
             }
             let dk = DerivedKey::new(dk);
 
-            header.verify_mac(&dk.mac(), ciphertext[76..Header::SIZE].into())?;
+            header.verify_mac(&dk.mac(), ciphertext[76..HEADER_SIZE].into())?;
 
-            let ciphertext = &ciphertext[Header::SIZE..];
+            let ciphertext = &ciphertext[HEADER_SIZE..];
             Ok(Self {
                 header,
                 dk,
@@ -111,9 +109,9 @@ impl<'c> Decryptor<'c> {
     /// ```
     pub fn decrypt(&self, mut buf: impl AsMut<[u8]>) -> Result<()> {
         let inner = |decryptor: &Self, buf: &mut [u8]| -> Result<()> {
-            let (plaintext, tag) = decryptor.ciphertext.split_at(
-                decryptor.ciphertext.len() - <XChaCha20Poly1305 as AeadCore>::TagSize::USIZE,
-            );
+            let (plaintext, tag) = decryptor
+                .ciphertext
+                .split_at(decryptor.ciphertext.len() - TAG_SIZE);
             buf.copy_from_slice(plaintext);
 
             let cipher = XChaCha20Poly1305::new(&decryptor.dk.encrypt());
@@ -169,7 +167,7 @@ impl<'c> Decryptor<'c> {
     #[must_use]
     #[inline]
     pub const fn out_len(&self) -> usize {
-        self.ciphertext.len() - <XChaCha20Poly1305 as AeadCore>::TagSize::USIZE
+        self.ciphertext.len() - TAG_SIZE
     }
 }
 
