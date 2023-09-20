@@ -9,12 +9,13 @@
 
 #include <cstdint>
 #include <cstdlib>
-#include <format>
 #include <fstream>
 #include <iostream>
 #include <iterator>
 #include <string>
 #include <vector>
+
+#include <fmt/core.h>
 
 #include "abcrypt.h"
 
@@ -80,7 +81,7 @@ int main(int argc, char *argv[]) {
     output_filename = argv[optind + 1];
     break;
   default:
-    std::clog << std::format("Error: unexpected argument '{}' found\n\n",
+    std::clog << fmt::format("Error: unexpected argument '{}' found\n\n",
                              argv[optind + 2]);
     std::clog << "Usage: encrypt [OPTIONS] <INFILE> <OUTFILE>\n\n";
     std::clog << "For more information, try '-h'." << std::endl;
@@ -89,7 +90,7 @@ int main(int argc, char *argv[]) {
 
   std::ifstream input_file(input_filename);
   if (!input_file) {
-    std::clog << std::format("Error: could not open {}", input_filename)
+    std::clog << fmt::format("Error: could not open {}", input_filename)
               << std::endl;
     return EXIT_FAILURE;
   }
@@ -97,7 +98,7 @@ int main(int argc, char *argv[]) {
       (std::istreambuf_iterator<char>(input_file)),
       std::istreambuf_iterator<char>());
   if (!input_file) {
-    std::clog << std::format("Error: could not read data from {}",
+    std::clog << fmt::format("Error: could not read data from {}",
                              input_filename)
               << std::endl;
     return EXIT_FAILURE;
@@ -135,20 +136,20 @@ int main(int argc, char *argv[]) {
     std::vector<std::uint8_t> buf(abcrypt_error_message_out_len(error_code));
     abcrypt_error_message(error_code, buf.data(), buf.size());
     std::string error_message(std::cbegin(buf), std::cend(buf));
-    std::clog << std::format("Error: {}", error_message) << std::endl;
+    std::clog << fmt::format("Error: {}", error_message) << std::endl;
     return EXIT_FAILURE;
   }
 
   std::ofstream output_file(output_filename);
   if (!input_file) {
-    std::clog << std::format("Error: could not open {}", output_filename)
+    std::clog << fmt::format("Error: could not open {}", output_filename)
               << std::endl;
     return EXIT_FAILURE;
   }
   std::ostreambuf_iterator<char> output_file_iter(output_file);
   std::copy(std::cbegin(ciphertext), std::cend(ciphertext), output_file_iter);
   if (!input_file) {
-    std::clog << std::format("Error: could not write the result to {}",
+    std::clog << fmt::format("Error: could not write the result to {}",
                              output_filename)
               << std::endl;
     return EXIT_FAILURE;

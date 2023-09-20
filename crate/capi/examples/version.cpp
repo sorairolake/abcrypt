@@ -2,11 +2,12 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-#include <format>
 #include <iostream>
+
+#include <fmt/core.h>
 
 constexpr auto VERSION = "0.1.0";
 
 void print_version(void) {
-  std::cout << std::format("abcrypt-capi {}", VERSION) << std::endl;
+  std::cout << fmt::format("abcrypt-capi {}", VERSION) << std::endl;
 }

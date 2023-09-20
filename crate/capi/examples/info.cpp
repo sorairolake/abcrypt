@@ -8,12 +8,13 @@
 
 #include <cstdint>
 #include <cstdlib>
-#include <format>
 #include <fstream>
 #include <iostream>
 #include <iterator>
 #include <string>
 #include <vector>
+
+#include <fmt/core.h>
 
 #include "abcrypt.h"
 
@@ -56,7 +57,7 @@ int main(int argc, char *argv[]) {
     input_filename = argv[optind];
     break;
   default:
-    std::clog << std::format("Error: unexpected argument '{}' found\n\n",
+    std::clog << fmt::format("Error: unexpected argument '{}' found\n\n",
                              argv[optind + 1]);
     std::clog << "Usage: info <FILE>\n\n";
     std::clog << "For more information, try '-h'." << std::endl;
@@ -65,7 +66,7 @@ int main(int argc, char *argv[]) {
 
   std::ifstream input_file(input_filename);
   if (!input_file) {
-    std::clog << std::format("Error: could not open {}", input_filename)
+    std::clog << fmt::format("Error: could not open {}", input_filename)
               << std::endl;
     return EXIT_FAILURE;
   }
@@ -73,7 +74,7 @@ int main(int argc, char *argv[]) {
       (std::istreambuf_iterator<char>(input_file)),
       std::istreambuf_iterator<char>()};
   if (!input_file) {
-    std::clog << std::format("Error: could not read data from {}",
+    std::clog << fmt::format("Error: could not read data from {}",
                              input_filename)
               << std::endl;
     return EXIT_FAILURE;
@@ -86,7 +87,7 @@ int main(int argc, char *argv[]) {
     std::vector<std::uint8_t> buf(abcrypt_error_message_out_len(error_code));
     abcrypt_error_message(error_code, buf.data(), buf.size());
     std::string error_message(std::cbegin(buf), std::cend(buf));
-    std::clog << std::format(
+    std::clog << fmt::format(
         "Error: {} is not a valid Argon2 encrypted file\n\n", input_filename);
     std::clog << "Caused by:\n";
     std::clog << "    " << error_message << std::endl;
@@ -98,7 +99,7 @@ int main(int argc, char *argv[]) {
   auto p_cost = abcrypt_params_p_cost(params);
   abcrypt_params_free(params);
 
-  std::cout << std::format("Parameters used: m = {}; t = {}; p = {};", m_cost,
+  std::cout << fmt::format("Parameters used: m = {}; t = {}; p = {};", m_cost,
                            t_cost, p_cost)
             << std::endl;
 }
