@@ -40,6 +40,18 @@ default: build
 @clippy-fix:
     cargo clippy --workspace --fix --allow-dirty --allow-staged --lib --tests --examples -- -D warnings
 
+# Build examples for the C API
+build-capi-examples:
+    #!/usr/bin/env bash
+    cargo build -p abcrypt-capi
+    cd crate/capi/examples
+    meson setup builddir
+    meson compile -C builddir
+
+# Run clang-format
+@clang-format:
+    clang-format -i crate/capi/examples/*.{cpp,hpp}
+
 # Run the linter for GitHub Actions workflow files
 @lint-github-actions:
     actionlint -verbose

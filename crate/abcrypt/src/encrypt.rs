@@ -5,13 +5,11 @@
 //! Encrypts to the abcrypt encrypted data format.
 
 use argon2::{Argon2, Params};
-use chacha20poly1305::{
-    aead::generic_array::typenum::Unsigned, AeadCore, AeadInPlace, KeyInit, XChaCha20Poly1305,
-};
+use chacha20poly1305::{AeadInPlace, KeyInit, XChaCha20Poly1305};
 
 use crate::{
     format::{DerivedKey, Header},
-    Error, Result, ARGON2_ALGORITHM, ARGON2_VERSION,
+    Error, Result, ARGON2_ALGORITHM, ARGON2_VERSION, HEADER_SIZE, TAG_SIZE,
 };
 
 /// Encryptor for the abcrypt encrypted data format.
@@ -130,23 +128,20 @@ impl<'m> Encryptor<'m> {
     /// ```
     pub fn encrypt(&self, mut buf: impl AsMut<[u8]>) {
         let inner = |encryptor: &Self, buf: &mut [u8]| {
-            buf[..Header::SIZE].copy_from_slice(&encryptor.header.as_bytes());
-            buf[Header::SIZE..(self.out_len() - <XChaCha20Poly1305 as AeadCore>::TagSize::USIZE)]
-                .copy_from_slice(encryptor.plaintext);
+            buf[..HEADER_SIZE].copy_from_slice(&encryptor.header.as_bytes());
+            buf[HEADER_SIZE..(self.out_len() - TAG_SIZE)].copy_from_slice(encryptor.plaintext);
 
             let cipher = XChaCha20Poly1305::new(&encryptor.dk.encrypt());
             let tag = cipher
                 .encrypt_in_place_detached(
                     &encryptor.header.nonce(),
                     b"",
-                    &mut buf[Header::SIZE
-                        ..(self.out_len() - <XChaCha20Poly1305 as AeadCore>::TagSize::USIZE)],
+                    &mut buf[HEADER_SIZE..(self.out_len() - TAG_SIZE)],
                 )
                 .expect(
                     "the buffer should have sufficient capacity to store the resulting ciphertext",
                 );
-            buf[(self.out_len() - <XChaCha20Poly1305 as AeadCore>::TagSize::USIZE)..]
-                .copy_from_slice(&tag);
+            buf[(self.out_len() - TAG_SIZE)..].copy_from_slice(&tag);
         };
         inner(self, buf.as_mut());
     }
@@ -192,7 +187,7 @@ impl<'m> Encryptor<'m> {
     #[must_use]
     #[inline]
     pub const fn out_len(&self) -> usize {
-        Header::SIZE + self.plaintext.len() + <XChaCha20Poly1305 as AeadCore>::TagSize::USIZE
+        HEADER_SIZE + self.plaintext.len() + TAG_SIZE
     }
 }
 

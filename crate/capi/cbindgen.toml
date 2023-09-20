@@ -11,12 +11,11 @@ no_includes = true
 cpp_compat = true
 documentation_style = "c99"
 
-[export]
-prefix = "abcrypt_"
-
 [export.rename]
-"ErrorCode" = "error_code"
-"Params" = "params"
+"Params" = "abcrypt_params"
+"ErrorCode" = "abcrypt_error_code"
+"HEADER_SIZE" = "ABCRYPT_HEADER_SIZE"
+"TAG_SIZE" = "ABCRYPT_TAG_SIZE"
 
 [enum]
 rename_variants = "QualifiedScreamingSnakeCase"

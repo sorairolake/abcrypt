@@ -1,0 +1,41 @@
+# SPDX-FileCopyrightText: 2023 Shun Sakai
+#
+# SPDX-License-Identifier: Apache-2.0 OR MIT
+
+project('abcrypt_capi_examples',
+  'cpp',
+  default_options: ['warning_level=3', 'cpp_std=c++20'],
+  license: 'Apache-2.0 OR MIT',
+  meson_version: '>=0.53.0',
+  version: '0.1.0',
+)
+
+fs = import('fs')
+
+cpp = meson.get_compiler('cpp')
+cpp.check_header('termios.h', required: true)
+cpp.check_header('unistd.h', required: true)
+
+libdir = meson.current_source_dir() / '../../../target'
+if fs.exists(libdir / 'release')
+  libdir = libdir / 'release'
+else
+  libdir = libdir / 'debug'
+endif
+libabcrypt_capi = cpp.find_library('libabcrypt_capi', dirs: libdir, static: true)
+
+executable('encrypt',
+  'encrypt.cpp',
+  'version.cpp',
+  dependencies: libabcrypt_capi,
+)
+executable('decrypt',
+  'decrypt.cpp',
+  'version.cpp',
+  dependencies: libabcrypt_capi,
+)
+executable('info',
+  'info.cpp',
+  'version.cpp',
+  dependencies: libabcrypt_capi,
+)

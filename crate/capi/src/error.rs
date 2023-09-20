@@ -49,19 +49,22 @@ impl ErrorCode {
     ///
     /// Returns an error if `buf` is null.
     #[must_use]
-    #[no_mangle]
-    pub extern "C" fn abcrypt_error_message(
-        error_code: Self,
-        buf: Option<NonNull<u8>>,
-        buf_len: usize,
-    ) -> Self {
-        let message = CString::new(error_code.to_string())
+    fn error_message(self, buf: Option<NonNull<u8>>, buf_len: usize) -> Self {
+        let message = CString::new(self.to_string())
             .expect("error message should not contain the null character");
         let message = message.as_bytes_with_nul();
         let Some(buf) = buf else { return Self::Error };
         let buf = unsafe { slice::from_raw_parts_mut(buf.as_ptr(), buf_len) };
         buf.copy_from_slice(message);
         Self::Ok
+    }
+
+    /// Returns the number of output bytes of the error message.
+    fn error_message_out_len(self) -> usize {
+        CString::new(self.to_string())
+            .expect("error message should not contain the null character")
+            .as_bytes_with_nul()
+            .len()
     }
 }
 
@@ -95,6 +98,28 @@ impl From<Error> for ErrorCode {
             Error::InvalidMac(_) => Self::InvalidMac,
         }
     }
+}
+
+#[allow(clippy::missing_panics_doc)]
+/// Gets a detailed error message.
+///
+/// # Errors
+///
+/// Returns an error if `buf` is null.
+#[must_use]
+#[no_mangle]
+pub extern "C" fn abcrypt_error_message(
+    error_code: ErrorCode,
+    buf: Option<NonNull<u8>>,
+    buf_len: usize,
+) -> ErrorCode {
+    ErrorCode::error_message(error_code, buf, buf_len)
+}
+
+/// Returns the number of output bytes of the error message.
+#[no_mangle]
+pub extern "C" fn abcrypt_error_message_out_len(error_code: ErrorCode) -> usize {
+    error_code.error_message_out_len()
 }
 
 #[cfg(test)]
@@ -374,11 +399,8 @@ mod tests {
             let expected = CString::new("everything is ok").unwrap();
             let expected = expected.as_bytes_with_nul();
             let mut buf = vec![u8::default(); expected.len()];
-            let code = ErrorCode::abcrypt_error_message(
-                ErrorCode::Ok,
-                NonNull::new(buf.as_mut_ptr()),
-                buf.len(),
-            );
+            let code =
+                abcrypt_error_message(ErrorCode::Ok, NonNull::new(buf.as_mut_ptr()), buf.len());
             assert_eq!(code, ErrorCode::Ok);
             assert_eq!(buf, expected);
         }
@@ -387,11 +409,8 @@ mod tests {
             let expected = CString::new("general error").unwrap();
             let expected = expected.as_bytes_with_nul();
             let mut buf = vec![u8::default(); expected.len()];
-            let code = ErrorCode::abcrypt_error_message(
-                ErrorCode::Error,
-                NonNull::new(buf.as_mut_ptr()),
-                buf.len(),
-            );
+            let code =
+                abcrypt_error_message(ErrorCode::Error, NonNull::new(buf.as_mut_ptr()), buf.len());
             assert_eq!(code, ErrorCode::Ok);
             assert_eq!(buf, expected);
         }
@@ -400,7 +419,7 @@ mod tests {
             let expected = CString::new("encrypted data is shorter than 156 bytes").unwrap();
             let expected = expected.as_bytes_with_nul();
             let mut buf = vec![u8::default(); expected.len()];
-            let code = ErrorCode::abcrypt_error_message(
+            let code = abcrypt_error_message(
                 ErrorCode::InvalidLength,
                 NonNull::new(buf.as_mut_ptr()),
                 buf.len(),
@@ -413,7 +432,7 @@ mod tests {
             let expected = CString::new("invalid magic number").unwrap();
             let expected = expected.as_bytes_with_nul();
             let mut buf = vec![u8::default(); expected.len()];
-            let code = ErrorCode::abcrypt_error_message(
+            let code = abcrypt_error_message(
                 ErrorCode::InvalidMagicNumber,
                 NonNull::new(buf.as_mut_ptr()),
                 buf.len(),
@@ -426,7 +445,7 @@ mod tests {
             let expected = CString::new("unknown version number").unwrap();
             let expected = expected.as_bytes_with_nul();
             let mut buf = vec![u8::default(); expected.len()];
-            let code = ErrorCode::abcrypt_error_message(
+            let code = abcrypt_error_message(
                 ErrorCode::UnknownVersion,
                 NonNull::new(buf.as_mut_ptr()),
                 buf.len(),
@@ -439,7 +458,7 @@ mod tests {
             let expected = CString::new("invalid Argon2 parameters").unwrap();
             let expected = expected.as_bytes_with_nul();
             let mut buf = vec![u8::default(); expected.len()];
-            let code = ErrorCode::abcrypt_error_message(
+            let code = abcrypt_error_message(
                 ErrorCode::InvalidArgon2Params,
                 NonNull::new(buf.as_mut_ptr()),
                 buf.len(),
@@ -452,7 +471,7 @@ mod tests {
             let expected = CString::new("invalid Argon2 context").unwrap();
             let expected = expected.as_bytes_with_nul();
             let mut buf = vec![u8::default(); expected.len()];
-            let code = ErrorCode::abcrypt_error_message(
+            let code = abcrypt_error_message(
                 ErrorCode::InvalidArgon2Context,
                 NonNull::new(buf.as_mut_ptr()),
                 buf.len(),
@@ -465,7 +484,7 @@ mod tests {
             let expected = CString::new("invalid header MAC").unwrap();
             let expected = expected.as_bytes_with_nul();
             let mut buf = vec![u8::default(); expected.len()];
-            let code = ErrorCode::abcrypt_error_message(
+            let code = abcrypt_error_message(
                 ErrorCode::InvalidHeaderMac,
                 NonNull::new(buf.as_mut_ptr()),
                 buf.len(),
@@ -478,7 +497,7 @@ mod tests {
             let expected = CString::new("invalid ciphertext MAC").unwrap();
             let expected = expected.as_bytes_with_nul();
             let mut buf = vec![u8::default(); expected.len()];
-            let code = ErrorCode::abcrypt_error_message(
+            let code = abcrypt_error_message(
                 ErrorCode::InvalidMac,
                 NonNull::new(buf.as_mut_ptr()),
                 buf.len(),
@@ -486,6 +505,31 @@ mod tests {
             assert_eq!(code, ErrorCode::Ok);
             assert_eq!(buf, expected);
         }
+    }
+
+    #[test]
+    fn error_message_out_len() {
+        assert_eq!(abcrypt_error_message_out_len(ErrorCode::Ok), 17);
+        assert_eq!(abcrypt_error_message_out_len(ErrorCode::Error), 14);
+        assert_eq!(abcrypt_error_message_out_len(ErrorCode::InvalidLength), 41);
+        assert_eq!(
+            abcrypt_error_message_out_len(ErrorCode::InvalidMagicNumber),
+            21
+        );
+        assert_eq!(abcrypt_error_message_out_len(ErrorCode::UnknownVersion), 23);
+        assert_eq!(
+            abcrypt_error_message_out_len(ErrorCode::InvalidArgon2Params),
+            26
+        );
+        assert_eq!(
+            abcrypt_error_message_out_len(ErrorCode::InvalidArgon2Context),
+            23
+        );
+        assert_eq!(
+            abcrypt_error_message_out_len(ErrorCode::InvalidHeaderMac),
+            19
+        );
+        assert_eq!(abcrypt_error_message_out_len(ErrorCode::InvalidMac), 23);
     }
 
     #[test]

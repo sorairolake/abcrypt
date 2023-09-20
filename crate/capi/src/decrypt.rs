@@ -60,6 +60,8 @@ pub extern "C" fn abcrypt_decrypt(
 
 #[cfg(test)]
 mod tests {
+    use crate::{HEADER_SIZE, TAG_SIZE};
+
     use super::*;
 
     const PASSPHRASE: &str = "passphrase";
@@ -125,7 +127,7 @@ mod tests {
     #[test]
     fn invalid_input_length() {
         {
-            let mut ciphertext = [u8::default(); 155];
+            let mut ciphertext = [u8::default(); (HEADER_SIZE + TAG_SIZE) - 1];
             let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
             let mut plaintext = [u8::default(); TEST_DATA.len()];
             assert_ne!(plaintext, TEST_DATA);
@@ -141,7 +143,7 @@ mod tests {
         }
 
         {
-            let mut ciphertext = [u8::default(); 156];
+            let mut ciphertext = [u8::default(); HEADER_SIZE + TAG_SIZE];
             let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
             let mut plaintext = [u8::default(); TEST_DATA.len()];
             assert_ne!(plaintext, TEST_DATA);
@@ -272,8 +274,8 @@ mod tests {
         let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
         let mut plaintext = [u8::default(); TEST_DATA.len()];
         assert_ne!(plaintext, TEST_DATA);
-        let start_mac = ciphertext.len() - 16;
-        let mut mac: [u8; 16] = ciphertext[start_mac..].try_into().unwrap();
+        let start_mac = ciphertext.len() - TAG_SIZE;
+        let mut mac: [u8; TAG_SIZE] = ciphertext[start_mac..].try_into().unwrap();
         mac.reverse();
         ciphertext[start_mac..].copy_from_slice(&mac);
         let code = abcrypt_decrypt(

@@ -29,6 +29,12 @@ type Blake2bMac512Output = Output<Blake2bMac512>;
 /// A type alias for key of BLAKE2b-512-MAC.
 type Blake2bMac512Key = digest::Key<Blake2bMac512>;
 
+/// The number of bytes of the header.
+pub const HEADER_SIZE: usize = Header::SIZE;
+
+/// The number of bytes of the MAC (authentication tag) of the ciphertext.
+pub const TAG_SIZE: usize = <XChaCha20Poly1305 as AeadCore>::TagSize::USIZE;
+
 /// Version of the abcrypt encrypted data format.
 #[derive(Clone, Copy, Debug)]
 #[repr(u8)]
@@ -61,7 +67,7 @@ impl Header {
     const MAGIC_NUMBER: MagicNumber = *b"abcrypt";
 
     /// The number of bytes of the header.
-    pub const SIZE: usize = mem::size_of::<MagicNumber>()
+    const SIZE: usize = mem::size_of::<MagicNumber>()
         + mem::size_of::<Version>()
         + mem::size_of::<Params>()
         + mem::size_of::<Salt>()
@@ -88,7 +94,7 @@ impl Header {
 
     /// Parses `data` into the header.
     pub fn parse(data: &[u8]) -> Result<Self> {
-        if data.len() < Self::SIZE + <XChaCha20Poly1305 as AeadCore>::TagSize::USIZE {
+        if data.len() < Self::SIZE + TAG_SIZE {
             return Err(Error::InvalidLength);
         }
 
@@ -218,6 +224,18 @@ mod tests {
     use super::*;
 
     #[test]
+    fn header_size() {
+        assert_eq!(HEADER_SIZE, 140);
+        assert_eq!(HEADER_SIZE, Header::SIZE);
+    }
+
+    #[test]
+    fn tag_size() {
+        assert_eq!(TAG_SIZE, 16);
+        assert_eq!(TAG_SIZE, <XChaCha20Poly1305 as AeadCore>::TagSize::USIZE);
+    }
+
+    #[test]
     fn version() {
         assert_eq!(Version::V0 as u8, 0);
     }
@@ -230,11 +248,6 @@ mod tests {
     #[test]
     fn magic_number() {
         assert_eq!(str::from_utf8(&Header::MAGIC_NUMBER).unwrap(), "abcrypt");
-    }
-
-    #[test]
-    fn header_size() {
-        assert_eq!(Header::SIZE, 140);
     }
 
     #[test]

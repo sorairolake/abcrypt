@@ -103,15 +103,12 @@ pub extern "C" fn abcrypt_encrypt_with_params(
 
 #[cfg(test)]
 mod tests {
-    use crate::abcrypt_decrypt;
+    use crate::{abcrypt_decrypt, HEADER_SIZE, TAG_SIZE};
 
     use super::*;
 
     const PASSPHRASE: &str = "passphrase";
     const TEST_DATA: &[u8] = include_bytes!("../tests/data/data.txt");
-
-    const HEADER_SIZE: usize = 140;
-    const TAG_SIZE: usize = 16;
 
     #[test]
     fn success() {

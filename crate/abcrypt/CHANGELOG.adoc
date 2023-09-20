@@ -17,6 +17,10 @@ The format is based on {keepachangelog}, and this project adheres to {semver}.
 
 == {compare-url}/abcrypt-v0.2.2\...HEAD[Unreleased]
 
+=== Added
+
+* Add constants to represent header and tag sizes ({pull-request-url}/70[#70])
+
 === Changed
 
 * Change the structure of `Params` ({pull-request-url}/70[#70])

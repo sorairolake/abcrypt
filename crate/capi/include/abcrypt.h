@@ -8,6 +8,12 @@
 
 #include <stdint.h>
 
+// The number of bytes of the header.
+#define ABCRYPT_HEADER_SIZE 140
+
+// The number of bytes of the MAC (authentication tag) of the ciphertext.
+#define ABCRYPT_TAG_SIZE 16
+
 // The error code for the abcrypt encrypted data format.
 typedef enum abcrypt_error_code {
   // Everything is ok.
@@ -32,7 +38,9 @@ typedef enum abcrypt_error_code {
 
 // The Argon2 parameters used for the encrypted data.
 typedef struct abcrypt_params {
-  struct abcrypt_params inner;
+  uint32_t m_cost;
+  uint32_t t_cost;
+  uint32_t p_cost;
 } abcrypt_params;
 
 #ifdef __cplusplus
@@ -104,6 +112,9 @@ enum abcrypt_error_code abcrypt_encrypt_with_params(uint8_t *plaintext,
 enum abcrypt_error_code abcrypt_error_message(enum abcrypt_error_code error_code,
                                               uint8_t *buf,
                                               uintptr_t buf_len);
+
+// Returns the number of output bytes of the error message.
+uintptr_t abcrypt_error_message_out_len(enum abcrypt_error_code error_code);
 
 // Creates a new Argon2 parameters.
 struct abcrypt_params *abcrypt_params_new(void);

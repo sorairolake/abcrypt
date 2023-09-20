@@ -117,6 +117,7 @@ pub use crate::{
     decrypt::Decryptor,
     encrypt::Encryptor,
     error::{Error, Result},
+    format::{HEADER_SIZE, TAG_SIZE},
     params::Params,
 };
 

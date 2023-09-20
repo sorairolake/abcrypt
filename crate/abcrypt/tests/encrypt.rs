@@ -9,13 +9,10 @@
 // Lint levels of Clippy.
 #![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
 
-use abcrypt::{argon2::Params, Decryptor, Encryptor};
+use abcrypt::{argon2::Params, Decryptor, Encryptor, HEADER_SIZE, TAG_SIZE};
 
 const PASSPHRASE: &str = "passphrase";
 const TEST_DATA: &[u8] = include_bytes!("data/data.txt");
-
-const HEADER_SIZE: usize = 140;
-const TAG_SIZE: usize = 16;
 
 #[test]
 fn success() {
