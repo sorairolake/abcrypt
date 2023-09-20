@@ -64,7 +64,7 @@ jobs:
         run: cargo test -p ${{ matrix.crate }} --target ${{ matrix.target }} --no-default-features -F alloc
       - name: Check if the header file is up-to-date
         if: matrix.crate == 'abcrypt-capi'
-        run: git diff --exit-code crate/capi/include/abcrypt.h
+        run: git diff --exit-code
 
   workspace-test:
     name: Workspace Test
@@ -189,3 +189,9 @@ jobs:
         uses: Swatinem/rust-cache@v2.7.0
       - name: Build examples for the C API
         run: just build-capi-examples
+      - name: Check code formatted
+        run: |
+          just clang-format
+          git diff --exit-code
+      - name: Check no lint warnings
+        run: just clang-tidy

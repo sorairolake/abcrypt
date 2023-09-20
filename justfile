@@ -49,12 +49,19 @@ build-capi-examples:
     meson compile -C builddir
 
 # Run clang-format
-@clang-format:
-    clang-format -i --style=Google crate/capi/examples/*.{cpp,hpp}
+clang-format:
+    #!/usr/bin/env bash
+    cd crate/capi/examples
+    meson setup builddir
+    ninja -C builddir clang-format
+    git restore abcrypt.h
 
 # Run clang-tidy
-@clang-tidy:
-    clang-tidy crate/capi/examples/*.{cpp,hpp}
+clang-tidy:
+    #!/usr/bin/env bash
+    cd crate/capi/examples
+    meson setup builddir
+    ninja -C builddir clang-tidy
 
 # Run the linter for GitHub Actions workflow files
 @lint-github-actions:
