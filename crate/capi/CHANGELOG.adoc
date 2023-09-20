@@ -15,7 +15,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on {keepachangelog}, and this project adheres to {semver}.
 
-== {project-url}[Unreleased]
+== {project-url}/releases/tag/abcrypt-capi-v0.1.0[0.1.0] - 2023-09-20
 
 === Added
 
