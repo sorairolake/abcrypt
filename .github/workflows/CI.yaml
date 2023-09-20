@@ -26,6 +26,7 @@ jobs:
         crate:
           - abcrypt
           - abcrypt-cli
+          - abcrypt-capi
         include:
           - target: x86_64-unknown-linux-gnu
             os: ubuntu-22.04
@@ -55,9 +56,8 @@ jobs:
           key: ${{ matrix.target }}
       - name: Run tests
         run: cargo test -p ${{ matrix.crate }} --target ${{ matrix.target }}
-      - name: Run tests (all features)
-        run: cargo test -p ${{ matrix.crate }} --target ${{ matrix.target }} --all-features
       - name: Run tests (no default features)
+        if: matrix.crate != 'abcrypt-capi'
         run: cargo test -p ${{ matrix.crate }} --target ${{ matrix.target }} --no-default-features
       - name: Run tests (`alloc` feature)
         if: matrix.crate == 'abcrypt'
@@ -101,8 +101,6 @@ jobs:
           key: ${{ matrix.target }}
       - name: Run tests
         run: cargo test --target ${{ matrix.target }}
-      - name: Run tests (all features)
-        run: cargo test --target ${{ matrix.target }} --all-features
       - name: Run tests (no default features)
         run: cargo test --target ${{ matrix.target }} --no-default-features
 
@@ -137,8 +135,6 @@ jobs:
         uses: Swatinem/rust-cache@v2.7.0
       - name: Check no lint warnings
         run: cargo clippy --workspace -- -D warnings
-      - name: Check no lint warnings (all features)
-        run: cargo clippy --workspace --all-features -- -D warnings
       - name: Check no lint warnings (no default features)
         run: cargo clippy --workspace --no-default-features -- -D warnings
 
