@@ -170,6 +170,7 @@ impl<'m> Encryptor<'m> {
         buf
     }
 
+    #[allow(clippy::missing_panics_doc)]
     /// Returns the number of output bytes of the encrypted data.
     ///
     /// # Examples
@@ -187,6 +188,7 @@ impl<'m> Encryptor<'m> {
     #[must_use]
     #[inline]
     pub const fn out_len(&self) -> usize {
+        assert!(self.plaintext.len() <= (usize::MAX - HEADER_SIZE - TAG_SIZE));
         HEADER_SIZE + self.plaintext.len() + TAG_SIZE
     }
 }
