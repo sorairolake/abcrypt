@@ -2,9 +2,9 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-#include <iostream>
-
 #include <fmt/core.h>
+
+#include <iostream>
 
 constexpr auto VERSION = "0.1.0";
 

@@ -4,6 +4,7 @@
 
 // An example of reading the Argon2 parameters from a file.
 
+#include <fmt/core.h>
 #include <unistd.h>
 
 #include <cstdint>
@@ -14,10 +15,7 @@
 #include <string>
 #include <vector>
 
-#include <fmt/core.h>
-
 #include "abcrypt.h"
-
 #include "version.hpp"
 
 static void print_help(void) {
@@ -33,35 +31,36 @@ int main(int argc, char *argv[]) {
   int opt;
   while ((opt = getopt(argc, argv, "hV")) != -1) {
     switch (opt) {
-    case 'h':
-      print_help();
-      return EXIT_SUCCESS;
-    case 'V':
-      print_version();
-      return EXIT_SUCCESS;
-    default:
-      print_help();
-      return EXIT_FAILURE;
+      case 'h':
+        print_help();
+        return EXIT_SUCCESS;
+      case 'V':
+        print_version();
+        return EXIT_SUCCESS;
+      default:
+        print_help();
+        return EXIT_FAILURE;
     }
   }
 
   char *input_filename;
   switch (argc - optind) {
-  case 0:
-    std::clog << "Error: the following required arguments were not provided:\n";
-    std::clog << "  <FILE>\n\n";
-    std::clog << "Usage: info <FILE>\n\n";
-    std::clog << "For more information, try '-h'." << std::endl;
-    return EXIT_FAILURE;
-  case 1:
-    input_filename = argv[optind];
-    break;
-  default:
-    std::clog << fmt::format("Error: unexpected argument '{}' found\n\n",
-                             argv[optind + 1]);
-    std::clog << "Usage: info <FILE>\n\n";
-    std::clog << "For more information, try '-h'." << std::endl;
-    return EXIT_FAILURE;
+    case 0:
+      std::clog
+          << "Error: the following required arguments were not provided:\n";
+      std::clog << "  <FILE>\n\n";
+      std::clog << "Usage: info <FILE>\n\n";
+      std::clog << "For more information, try '-h'." << std::endl;
+      return EXIT_FAILURE;
+    case 1:
+      input_filename = argv[optind];
+      break;
+    default:
+      std::clog << fmt::format("Error: unexpected argument '{}' found\n\n",
+                               argv[optind + 1]);
+      std::clog << "Usage: info <FILE>\n\n";
+      std::clog << "For more information, try '-h'." << std::endl;
+      return EXIT_FAILURE;
   }
 
   std::ifstream input_file(input_filename);

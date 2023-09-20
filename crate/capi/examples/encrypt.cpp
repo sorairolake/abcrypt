@@ -4,6 +4,7 @@
 
 // An example of encrypting a file to the abcrypt encrypted data format.
 
+#include <fmt/core.h>
 #include <termios.h>
 #include <unistd.h>
 
@@ -15,10 +16,7 @@
 #include <string>
 #include <vector>
 
-#include <fmt/core.h>
-
 #include "abcrypt.h"
-
 #include "version.hpp"
 
 static void print_help(void) {
@@ -42,50 +40,51 @@ int main(int argc, char *argv[]) {
   int opt;
   while ((opt = getopt(argc, argv, "m:t:p:hV")) != -1) {
     switch (opt) {
-    case 'm':
-      memory_size = std::atoi(optarg);
-      break;
-    case 't':
-      iterations = std::atoi(optarg);
-      break;
-    case 'p':
-      parallelism = std::atoi(optarg);
-      break;
-    case 'h':
-      print_help();
-      return EXIT_SUCCESS;
-    case 'V':
-      print_version();
-      return EXIT_SUCCESS;
-    default:
-      print_help();
-      return EXIT_FAILURE;
+      case 'm':
+        memory_size = std::atoi(optarg);
+        break;
+      case 't':
+        iterations = std::atoi(optarg);
+        break;
+      case 'p':
+        parallelism = std::atoi(optarg);
+        break;
+      case 'h':
+        print_help();
+        return EXIT_SUCCESS;
+      case 'V':
+        print_version();
+        return EXIT_SUCCESS;
+      default:
+        print_help();
+        return EXIT_FAILURE;
     }
   }
 
   char *input_filename;
   char *output_filename;
   switch (argc - optind) {
-  case 0:
-  case 1:
-    std::clog << "Error: the following required arguments were not provided:\n";
-    if ((argc - optind) == 0) {
-      std::clog << "  <INFILE>\n";
-    }
-    std::clog << "  <OUTFILE>\n\n";
-    std::clog << "Usage: encrypt [OPTIONS] <INFILE> <OUTFILE>\n\n";
-    std::clog << "For more information, try '-h'." << std::endl;
-    return EXIT_FAILURE;
-  case 2:
-    input_filename = argv[optind];
-    output_filename = argv[optind + 1];
-    break;
-  default:
-    std::clog << fmt::format("Error: unexpected argument '{}' found\n\n",
-                             argv[optind + 2]);
-    std::clog << "Usage: encrypt [OPTIONS] <INFILE> <OUTFILE>\n\n";
-    std::clog << "For more information, try '-h'." << std::endl;
-    return EXIT_FAILURE;
+    case 0:
+    case 1:
+      std::clog
+          << "Error: the following required arguments were not provided:\n";
+      if ((argc - optind) == 0) {
+        std::clog << "  <INFILE>\n";
+      }
+      std::clog << "  <OUTFILE>\n\n";
+      std::clog << "Usage: encrypt [OPTIONS] <INFILE> <OUTFILE>\n\n";
+      std::clog << "For more information, try '-h'." << std::endl;
+      return EXIT_FAILURE;
+    case 2:
+      input_filename = argv[optind];
+      output_filename = argv[optind + 1];
+      break;
+    default:
+      std::clog << fmt::format("Error: unexpected argument '{}' found\n\n",
+                               argv[optind + 2]);
+      std::clog << "Usage: encrypt [OPTIONS] <INFILE> <OUTFILE>\n\n";
+      std::clog << "For more information, try '-h'." << std::endl;
+      return EXIT_FAILURE;
   }
 
   std::ifstream input_file(input_filename);
