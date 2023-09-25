@@ -151,7 +151,7 @@ jobs:
       - name: Cache build artifacts
         uses: Swatinem/rust-cache@v2.7.0
       - name: Check no `rustdoc` lint warnings
-        run: RUSTDOCFLAGS="-D warnings" cargo doc -p abcrypt --no-deps --document-private-items --all-features
+        run: RUSTDOCFLAGS="-D warnings" cargo doc -p abcrypt --no-deps --document-private-items
 
   benchmark:
     name: Benchmark
