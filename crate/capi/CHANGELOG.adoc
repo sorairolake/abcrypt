@@ -21,7 +21,7 @@ The format is based on {keepachangelog}, and this project adheres to {semver}.
 
 * Fix the issue where the package validation fails ({pull-request-url}/80[#80])
 
-== {project-url}/releases/tag/abcrypt-capi-v0.1.0[0.1.0] - 2023-09-20
+== {project-url}/releases/tag/abcrypt-capi-v0.1.0[0.1.0] - 2023-09-20 [YANKED]
 
 === Added
 
