@@ -15,7 +15,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on {keepachangelog}, and this project adheres to {semver}.
 
-== {compare-url}/abcrypt-capi-v0.1.0\...HEAD[Unreleased]
+== {compare-url}/abcrypt-capi-v0.1.0\...abcrypt-capi-v0.1.1[0.1.1] - 2023-09-29
 
 === Fixed
 
