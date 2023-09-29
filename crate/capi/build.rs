@@ -9,9 +9,16 @@
 // Lint levels of Clippy.
 #![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
 
+use std::{fs, path::Path};
+
 fn main() {
-    let crate_dir = env!("CARGO_MANIFEST_DIR");
+    let crate_dir = Path::new(env!("CARGO_MANIFEST_DIR"));
     cbindgen::generate(crate_dir)
         .expect("failed to generate bindings")
         .write_to_file("include/abcrypt.h");
+
+    let lock_file = crate_dir.join("Cargo.lock");
+    if lock_file.exists() {
+        fs::remove_file(lock_file).expect("failed to remove `Cargo.lock`");
+    }
 }

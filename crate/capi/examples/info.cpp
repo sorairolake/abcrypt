@@ -4,20 +4,20 @@
 
 // An example of reading the Argon2 parameters from a file.
 
+#include <fmt/core.h>
 #include <unistd.h>
 
+#include <cerrno>
 #include <cstdint>
 #include <cstdlib>
+#include <cstring>
 #include <fstream>
 #include <iostream>
 #include <iterator>
 #include <string>
 #include <vector>
 
-#include <fmt/core.h>
-
 #include "abcrypt.h"
-
 #include "version.hpp"
 
 static void print_help(void) {
@@ -33,52 +33,36 @@ int main(int argc, char *argv[]) {
   int opt;
   while ((opt = getopt(argc, argv, "hV")) != -1) {
     switch (opt) {
-    case 'h':
-      print_help();
-      return EXIT_SUCCESS;
-    case 'V':
-      print_version();
-      return EXIT_SUCCESS;
-    default:
-      print_help();
-      return EXIT_FAILURE;
+      case 'h':
+        print_help();
+        return EXIT_SUCCESS;
+      case 'V':
+        print_version();
+        return EXIT_SUCCESS;
+      default:
+        print_help();
+        return EXIT_FAILURE;
     }
   }
 
   char *input_filename;
-  switch (argc - optind) {
-  case 0:
-    std::clog << "Error: the following required arguments were not provided:\n";
-    std::clog << "  <FILE>\n\n";
-    std::clog << "Usage: info <FILE>\n\n";
-    std::clog << "For more information, try '-h'." << std::endl;
-    return EXIT_FAILURE;
-  case 1:
+  if ((argc - optind) == 1) {
     input_filename = argv[optind];
-    break;
-  default:
-    std::clog << fmt::format("Error: unexpected argument '{}' found\n\n",
-                             argv[optind + 1]);
-    std::clog << "Usage: info <FILE>\n\n";
-    std::clog << "For more information, try '-h'." << std::endl;
+  } else {
+    print_help();
     return EXIT_FAILURE;
   }
 
   std::ifstream input_file(input_filename);
   if (!input_file) {
-    std::clog << fmt::format("Error: could not open {}", input_filename)
+    std::clog << fmt::format("Error: could not open {}: {}", input_filename,
+                             std::strerror(errno))
               << std::endl;
     return EXIT_FAILURE;
   }
   std::vector<std::uint8_t> contents{
       (std::istreambuf_iterator<char>(input_file)),
       std::istreambuf_iterator<char>()};
-  if (!input_file) {
-    std::clog << fmt::format("Error: could not read data from {}",
-                             input_filename)
-              << std::endl;
-    return EXIT_FAILURE;
-  }
 
   auto params = abcrypt_params_new();
   auto error_code =
@@ -88,9 +72,9 @@ int main(int argc, char *argv[]) {
     abcrypt_error_message(error_code, buf.data(), buf.size());
     std::string error_message(std::cbegin(buf), std::cend(buf));
     std::clog << fmt::format(
-        "Error: {} is not a valid Argon2 encrypted file\n\n", input_filename);
-    std::clog << "Caused by:\n";
-    std::clog << "    " << error_message << std::endl;
+                     "Error: {} is not a valid Argon2 encrypted file: {}",
+                     input_filename, error_message)
+              << std::endl;
     abcrypt_params_free(params);
     return EXIT_FAILURE;
   }

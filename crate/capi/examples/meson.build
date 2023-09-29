@@ -25,19 +25,14 @@ else
   libdir = libdir / 'debug'
 endif
 libabcrypt_capi = cpp.find_library('libabcrypt_capi', dirs: libdir, static: true)
+incdir = include_directories('../include')
 
-executable('encrypt',
-  'encrypt.cpp',
-  'version.cpp',
-  dependencies: [fmtdep, libabcrypt_capi],
-)
-executable('decrypt',
-  'decrypt.cpp',
-  'version.cpp',
-  dependencies: [fmtdep, libabcrypt_capi],
-)
-executable('info',
-  'info.cpp',
-  'version.cpp',
-  dependencies: [fmtdep, libabcrypt_capi],
-)
+example_names = ['encrypt', 'decrypt', 'info']
+foreach example_name : example_names
+  executable(example_name,
+    example_name + '.cpp',
+    'version.cpp',
+    dependencies: [fmtdep, libabcrypt_capi],
+    include_directories: incdir,
+  )
+endforeach

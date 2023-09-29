@@ -6,6 +6,8 @@
 
 use std::{ptr::NonNull, slice};
 
+use abcrypt::argon2;
+
 use crate::ErrorCode;
 
 /// The Argon2 parameters used for the encrypted data.
@@ -106,7 +108,16 @@ impl Params {
 
 impl Default for Params {
     fn default() -> Self {
-        abcrypt::Params::default().into()
+        let (m_cost, t_cost, p_cost) = (
+            argon2::Params::DEFAULT_M_COST,
+            argon2::Params::DEFAULT_T_COST,
+            argon2::Params::DEFAULT_P_COST,
+        );
+        Self {
+            m_cost,
+            t_cost,
+            p_cost,
+        }
     }
 }
 

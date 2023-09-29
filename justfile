@@ -40,17 +40,30 @@ default: build
 @clippy-fix:
     cargo clippy --workspace --fix --allow-dirty --allow-staged --lib --tests --examples -- -D warnings
 
-# Build examples for the C API
-build-capi-examples:
+# Configure the Meson project
+setup-meson:
     #!/usr/bin/env bash
     cargo build -p abcrypt-capi
     cd crate/capi/examples
     meson setup builddir
+
+# Build examples for the C API
+build-capi-examples: setup-meson
+    #!/usr/bin/env bash
+    cd crate/capi/examples
     meson compile -C builddir
 
 # Run clang-format
-@clang-format:
-    clang-format -i crate/capi/examples/*.{cpp,hpp}
+clang-format: setup-meson
+    #!/usr/bin/env bash
+    cd crate/capi/examples
+    ninja -C builddir clang-format
+
+# Run clang-tidy
+clang-tidy: setup-meson
+    #!/usr/bin/env bash
+    cd crate/capi/examples
+    ninja -C builddir clang-tidy
 
 # Run the linter for GitHub Actions workflow files
 @lint-github-actions:
