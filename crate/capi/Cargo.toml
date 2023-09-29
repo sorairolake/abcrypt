@@ -27,7 +27,7 @@ exclude = [
 crate-type = ["staticlib", "cdylib"]
 
 [dependencies]
-abcrypt = { version = "0.2.3", path = "../abcrypt" }
+abcrypt = { version = "0.2.4", path = "../abcrypt" }
 
 [build-dependencies]
 cbindgen = { version = "0.26.0", default-features = false }
