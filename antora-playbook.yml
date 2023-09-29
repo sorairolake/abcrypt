@@ -12,6 +12,10 @@ content:
     - url: .
       start_path: doc/book
 
+asciidoc:
+  extensions:
+    - "@djencks/asciidoctor-mathjax"
+
 ui:
   bundle:
     url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/HEAD/raw/build/ui-bundle.zip?job=bundle-stable
