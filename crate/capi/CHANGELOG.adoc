@@ -15,7 +15,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on {keepachangelog}, and this project adheres to {semver}.
 
-== {compare-url}/abcrypt-capi-v0.1.0\...abcrypt-capi-v0.1.1[0.1.1] - 2023-09-29
+== {compare-url}/abcrypt-capi-v0.1.1\...abcrypt-capi-v0.1.2[0.1.2] - 2023-09-29
+
+=== Fixed
+
+* Fix `build.rs` ({pull-request-url}/87[#87])
+
+== {compare-url}/abcrypt-capi-v0.1.0\...abcrypt-capi-v0.1.1[0.1.1] - 2023-09-29 [YANKED]
 
 === Fixed
 
