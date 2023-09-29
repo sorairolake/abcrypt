@@ -19,6 +19,7 @@ fn main() {
 
     let lock_file = crate_dir.join("Cargo.lock");
     if lock_file.exists() {
-        fs::remove_file(lock_file).expect("failed to remove `Cargo.lock`");
+        fs::remove_file(lock_file)
+            .unwrap_or_else(|err| println!("cargo:warning=failed to remove `Cargo.lock`: {err}"));
     }
 }
