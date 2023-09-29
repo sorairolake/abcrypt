@@ -8,8 +8,10 @@
 #include <termios.h>
 #include <unistd.h>
 
+#include <cerrno>
 #include <cstdint>
 #include <cstdlib>
+#include <cstring>
 #include <fstream>
 #include <iostream>
 #include <iterator>
@@ -63,45 +65,24 @@ int main(int argc, char *argv[]) {
 
   char *input_filename;
   char *output_filename;
-  switch (argc - optind) {
-    case 0:
-    case 1:
-      std::clog
-          << "Error: the following required arguments were not provided:\n";
-      if ((argc - optind) == 0) {
-        std::clog << "  <INFILE>\n";
-      }
-      std::clog << "  <OUTFILE>\n\n";
-      std::clog << "Usage: encrypt [OPTIONS] <INFILE> <OUTFILE>\n\n";
-      std::clog << "For more information, try '-h'." << std::endl;
-      return EXIT_FAILURE;
-    case 2:
-      input_filename = argv[optind];
-      output_filename = argv[optind + 1];
-      break;
-    default:
-      std::clog << fmt::format("Error: unexpected argument '{}' found\n\n",
-                               argv[optind + 2]);
-      std::clog << "Usage: encrypt [OPTIONS] <INFILE> <OUTFILE>\n\n";
-      std::clog << "For more information, try '-h'." << std::endl;
-      return EXIT_FAILURE;
+  if ((argc - optind) == 2) {
+    input_filename = argv[optind];
+    output_filename = argv[optind + 1];
+  } else {
+    print_help();
+    return EXIT_FAILURE;
   }
 
   std::ifstream input_file(input_filename);
   if (!input_file) {
-    std::clog << fmt::format("Error: could not open {}", input_filename)
+    std::clog << fmt::format("Error: could not open {}: {}", input_filename,
+                             std::strerror(errno))
               << std::endl;
     return EXIT_FAILURE;
   }
   std::vector<std::uint8_t> plaintext(
       (std::istreambuf_iterator<char>(input_file)),
       std::istreambuf_iterator<char>());
-  if (!input_file) {
-    std::clog << fmt::format("Error: could not read data from {}",
-                             input_filename)
-              << std::endl;
-    return EXIT_FAILURE;
-  }
 
   struct termios term;
   struct termios old_term;
@@ -141,16 +122,11 @@ int main(int argc, char *argv[]) {
 
   std::ofstream output_file(output_filename);
   if (!input_file) {
-    std::clog << fmt::format("Error: could not open {}", output_filename)
+    std::clog << fmt::format("Error: could not open {}: {}", output_filename,
+                             std::strerror(errno))
               << std::endl;
     return EXIT_FAILURE;
   }
   std::ostreambuf_iterator<char> output_file_iter(output_file);
   std::copy(std::cbegin(ciphertext), std::cend(ciphertext), output_file_iter);
-  if (!input_file) {
-    std::clog << fmt::format("Error: could not write the result to {}",
-                             output_filename)
-              << std::endl;
-    return EXIT_FAILURE;
-  }
 }
