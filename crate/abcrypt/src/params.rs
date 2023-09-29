@@ -95,21 +95,6 @@ impl Params {
     }
 }
 
-impl Default for Params {
-    fn default() -> Self {
-        let (m_cost, t_cost, p_cost) = (
-            argon2::Params::DEFAULT_M_COST,
-            argon2::Params::DEFAULT_T_COST,
-            argon2::Params::DEFAULT_P_COST,
-        );
-        Self {
-            m_cost,
-            t_cost,
-            p_cost,
-        }
-    }
-}
-
 impl From<Params> for argon2::Params {
     fn from(params: Params) -> Self {
         Self::new(params.m_cost(), params.t_cost(), params.p_cost(), None)

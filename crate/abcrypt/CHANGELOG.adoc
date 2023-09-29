@@ -15,7 +15,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on {keepachangelog}, and this project adheres to {semver}.
 
-== {compare-url}/abcrypt-v0.2.2\...abcrypt-v0.2.3[0.2.3] - 2023-09-20
+== {compare-url}/abcrypt-v0.2.3\...HEAD[Unreleased]
+
+=== Removed
+
+* Remove `Params::default` ({pull-request-url}/81[#81])
+
+== {compare-url}/abcrypt-v0.2.2\...abcrypt-v0.2.3[0.2.3] - 2023-09-20 [YANKED]
 
 === Added
 
