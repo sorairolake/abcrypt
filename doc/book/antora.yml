@@ -4,7 +4,7 @@
 
 name: book
 title: abcrypt
-version: "0.2.2"
+version: "0.2.3"
 nav:
   - modules/lib/nav.adoc
   - modules/capi/nav.adoc

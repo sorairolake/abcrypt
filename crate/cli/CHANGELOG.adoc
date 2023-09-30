@@ -15,7 +15,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on {keepachangelog}, and this project adheres to {semver}.
 
-== {compare-url}/abcrypt-cli-v0.2.2\...HEAD[Unreleased]
+== {compare-url}/abcrypt-cli-v0.2.2\...abcrypt-cli-v0.2.3[0.2.3] - 2023-09-30
 
 === Changed
 
