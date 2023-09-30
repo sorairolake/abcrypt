@@ -5,20 +5,13 @@
 = Abcrypt Encrypted Data Format
 Shun Sakai <sorairolake@protonmail.ch>
 // Specify in UTC.
-v0.2.4, 2023-09-29
-ifndef::env-github[:icons: font]
-ifdef::env-github[]
-:caution-caption: :fire:
-:important-caption: :exclamation:
-:note-caption: :paperclip:
-:tip-caption: :bulb:
-:warning-caption: :warning:
-endif::[]
+v0.2.4, 2023-09-30
+:icons: font
 :idprefix:
 :idseparator: -
 :sectanchors:
 :toc: preamble
-ifndef::env-github[:stem:]
+:stem:
 :scrypt-encrypted-data-format: https://www.tarsnap.com/scrypt.html[scrypt encrypted data format]
 :ietf-datatracker: https://datatracker.ietf.org
 :datatracker-html-doc: {ietf-datatracker}/doc/html
@@ -53,59 +46,59 @@ XChaCha20-Poly1305 is the AEAD algorithm from {draft-arciszewski-xchacha-03}.
 An abcrypt file is composed of two parts: a <<header-format,header>> containing
 the required data and a <<file-body,file body>> encrypted with the derived key.
 
-abcrypt files may use the extension `.abc` or `.abcrypt`.
+abcrypt files may use the extension `.abcrypt`.
 
 .The structure of the abcrypt format
 |===
-|Offset |Size |Description |Detail
+|Offset |Bytes |Description |Detail
 
-|0
-|7
+|stem:[0]
+|stem:[7]
 |Magic number ("abcrypt").
 |<<header-format>>
 
-|7
-|1
+|stem:[7]
+|stem:[1]
 |Version number.
 |<<version-number>>
 
-|8
-|4
+|stem:[8]
+|stem:[4]
 |Memory size `m`.
 |<<argon2-parameters>>
 
-|12
-|4
+|stem:[12]
+|stem:[4]
 |Number of iterations `t`.
 |<<argon2-parameters>>
 
-|16
-|4
+|stem:[16]
+|stem:[4]
 |Degree of parallelism `p`.
 |<<argon2-parameters>>
 
-|20
-|32
+|stem:[20]
+|stem:[32]
 |Salt.
 |<<salt>>
 
-|52
-|24
+|stem:[52]
+|stem:[24]
 |Nonce.
 |<<nonce>>
 
-|76
-|64
+|stem:[76]
+|stem:[64]
 |MAC of the header.
 |<<header-mac>>
 
-|140
-|X
+|stem:[140]
+|stem:[n]
 |Ciphertext.
 |<<file-body>>
 
-|140+X
-|16
+|stem:[140 + n]
+|stem:[16]
 |MAC of the ciphertext.
 |<<file-body>>
 |===
@@ -159,36 +152,18 @@ A 1-byte version number of the abcrypt format. The current value is 0.
 |Parameter |Minimum value |Maximum value |Description
 
 |`m_cost`
-ifndef::env-github[]
 |stem:[8 xx p]
 |stem:[2^(32) - 1]
-endif::[]
-ifdef::env-github[]
-|$8 \times p$
-|$2^{32} - 1$
-endif::[]
 |Memory size in KiB.
 
 |`t_cost`
-ifndef::env-github[]
 |stem:[1]
 |stem:[2^(32) - 1]
-endif::[]
-ifdef::env-github[]
-|$1$
-|$2^{32} - 1$
-endif::[]
 |Number of iterations.
 
 |`p_cost`
-ifndef::env-github[]
 |stem:[1]
 |stem:[2^(24) - 1]
-endif::[]
-ifdef::env-github[]
-|$1$
-|$2^{24} - 1$
-endif::[]
 |Degree of parallelism.
 |===
 
