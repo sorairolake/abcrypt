@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Examples :: abcrypt Documentation</title>
+    <link rel="canonical" href="https://sorairolake.github.io/abcrypt/book/0.2.3/lib/examples.html">
+    <meta name="generator" content="Antora 3.1.4">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://sorairolake.github.io/abcrypt">abcrypt Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="book" data-version="0.2.3">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">abcrypt</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Library</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="index.html">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="usage.html">Usage</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="examples.html">Examples</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="https://docs.rs/abcrypt">API Reference</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="changelog.html">Changelog</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">C API</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../capi/index.html">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../capi/usage.html">Usage</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">API Reference</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../capi/capi.html">C API</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="https://docs.rs/abcrypt-capi">Rust API</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../capi/changelog.html">Changelog</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Command-line Utility</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../cli/index.html">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../cli/install.html">Installation</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../cli/build.html">How to Build</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../cli/usage.html">Usage</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Manual pages</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../cli/man/man1/abcrypt.1.html"><code>abcrypt(1)</code></a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../cli/man/man1/abcrypt-encrypt.1.html"><code>abcrypt-encrypt(1)</code></a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../cli/man/man1/abcrypt-decrypt.1.html"><code>abcrypt-decrypt(1)</code></a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../cli/man/man1/abcrypt-information.1.html"><code>abcrypt-information(1)</code></a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../cli/man/man1/abcrypt-help.1.html"><code>abcrypt-help(1)</code></a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../cli/changelog.html">Changelog</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Format Specification</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../format.html">Abcrypt Encrypted Data Format</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Resources</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../contributing.html">Contribution Guide</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../authors.html">List of Authors</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../license.html">License</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">abcrypt</span>
+    <span class="version">0.2.3</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">abcrypt</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">0.2.3</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">abcrypt</a></li>
+    <li>Library</li>
+    <li><a href="examples.html">Examples</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/sorairolake/abcrypt/edit/HEAD/doc/book/modules/lib/pages/examples.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Examples</h1>
+<div class="sect1">
+<h2 id="_encryption_and_decryption"><a class="anchor" href="#_encryption_and_decryption"></a>Encryption and decryption</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="title">When the <code>alloc</code> feature is enabled</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-rust hljs" data-lang="rust">use abcrypt::{argon2::Params, Decryptor, Encryptor};
+
+let data = b"Hello, world!\n";
+let passphrase = "passphrase";
+
+// Encrypt `data` using `passphrase`.
+let params = Params::new(32, 3, 4, None).unwrap();
+let ciphertext = Encryptor::with_params(data, passphrase, params)
+    .map(|c| c.encrypt_to_vec())
+    .unwrap();
+assert_ne!(ciphertext, data);
+
+// And decrypt it back.
+let plaintext = Decryptor::new(&amp;ciphertext, passphrase)
+    .and_then(|c| c.decrypt_to_vec())
+    .unwrap();
+assert_eq!(plaintext, data);</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">When the <code>alloc</code> feature is disabled</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-rust hljs" data-lang="rust">use abcrypt::{argon2::Params, Decryptor, Encryptor};
+
+let data = b"Hello, world!\n";
+let passphrase = "passphrase";
+
+// Encrypt `data` using `passphrase`.
+let params = Params::new(32, 3, 4, None).unwrap();
+let cipher = Encryptor::with_params(data, passphrase, params).unwrap();
+let mut buf = [u8::default(); 170];
+cipher.encrypt(&amp;mut buf);
+assert_ne!(buf, data.as_slice());
+
+// And decrypt it back.
+let cipher = Decryptor::new(&amp;buf, passphrase).unwrap();
+let mut buf = [u8::default(); 14];
+cipher.decrypt(&amp;mut buf).unwrap();
+assert_eq!(buf, data.as_slice());</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_extracting_the_argon2_parameters_in_the_encrypted_data"><a class="anchor" href="#_extracting_the_argon2_parameters_in_the_encrypted_data"></a>Extracting the Argon2 parameters in the encrypted data</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-rust hljs" data-lang="rust">use abcrypt::{argon2, Encryptor};
+
+let data = b"Hello, world!\n";
+let passphrase = "passphrase";
+
+// Encrypt `data` using `passphrase`.
+let ciphertext = Encryptor::new(data, passphrase)
+    .map(|c| c.encrypt_to_vec())
+    .unwrap();
+
+// And extract the Argon2 parameters from it.
+let params = abcrypt::Params::new(ciphertext).unwrap();
+assert_eq!(params.m_cost(), argon2::Params::DEFAULT_M_COST);
+assert_eq!(params.t_cost(), argon2::Params::DEFAULT_T_COST);
+assert_eq!(params.p_cost(), argon2::Params::DEFAULT_P_COST);</code></pre>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

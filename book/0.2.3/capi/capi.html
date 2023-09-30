@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>C API :: abcrypt Documentation</title>
+    <link rel="canonical" href="https://sorairolake.github.io/abcrypt/book/0.2.3/capi/capi.html">
+    <meta name="generator" content="Antora 3.1.4">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://sorairolake.github.io/abcrypt">abcrypt Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="book" data-version="0.2.3">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">abcrypt</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Library</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../lib/index.html">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../lib/usage.html">Usage</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../lib/examples.html">Examples</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="https://docs.rs/abcrypt">API Reference</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../lib/changelog.html">Changelog</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">C API</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="index.html">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="usage.html">Usage</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">API Reference</span>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="capi.html">C API</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="https://docs.rs/abcrypt-capi">Rust API</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="changelog.html">Changelog</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Command-line Utility</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../cli/index.html">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../cli/install.html">Installation</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../cli/build.html">How to Build</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../cli/usage.html">Usage</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Manual pages</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../cli/man/man1/abcrypt.1.html"><code>abcrypt(1)</code></a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../cli/man/man1/abcrypt-encrypt.1.html"><code>abcrypt-encrypt(1)</code></a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../cli/man/man1/abcrypt-decrypt.1.html"><code>abcrypt-decrypt(1)</code></a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../cli/man/man1/abcrypt-information.1.html"><code>abcrypt-information(1)</code></a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../cli/man/man1/abcrypt-help.1.html"><code>abcrypt-help(1)</code></a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../cli/changelog.html">Changelog</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Format Specification</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../format.html">Abcrypt Encrypted Data Format</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Resources</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../contributing.html">Contribution Guide</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../authors.html">List of Authors</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../license.html">License</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">abcrypt</span>
+    <span class="version">0.2.3</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">abcrypt</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">0.2.3</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">abcrypt</a></li>
+    <li>C API</li>
+    <li>API Reference</li>
+    <li><a href="capi.html">C API</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/sorairolake/abcrypt/edit/HEAD/doc/book/modules/capi/pages/capi.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">C API</h1>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">// SPDX-FileCopyrightText: 2023 Shun Sakai
+//
+// SPDX-License-Identifier: Apache-2.0 OR MIT
+
+#pragma once
+
+// This file is automatically generated by cbindgen.
+
+#include &lt;stdint.h&gt;
+
+// The number of bytes of the header.
+#define ABCRYPT_HEADER_SIZE 140
+
+// The number of bytes of the MAC (authentication tag) of the ciphertext.
+#define ABCRYPT_TAG_SIZE 16
+
+// The error code for the abcrypt encrypted data format.
+typedef enum abcrypt_error_code {
+  // Everything is ok.
+  ABCRYPT_ERROR_CODE_OK,
+  // General error.
+  ABCRYPT_ERROR_CODE_ERROR,
+  // The encrypted data was shorter than 156 bytes.
+  ABCRYPT_ERROR_CODE_INVALID_LENGTH,
+  // The magic number (file signature) was invalid.
+  ABCRYPT_ERROR_CODE_INVALID_MAGIC_NUMBER,
+  // The version was the unrecognized abcrypt version number.
+  ABCRYPT_ERROR_CODE_UNKNOWN_VERSION,
+  // The Argon2 parameters were invalid.
+  ABCRYPT_ERROR_CODE_INVALID_ARGON2_PARAMS,
+  // The Argon2 context was invalid.
+  ABCRYPT_ERROR_CODE_INVALID_ARGON2_CONTEXT,
+  // The MAC (authentication tag) of the header was invalid.
+  ABCRYPT_ERROR_CODE_INVALID_HEADER_MAC,
+  // The MAC (authentication tag) of the ciphertext was invalid.
+  ABCRYPT_ERROR_CODE_INVALID_MAC,
+} abcrypt_error_code;
+
+// The Argon2 parameters used for the encrypted data.
+typedef struct abcrypt_params {
+  uint32_t m_cost;
+  uint32_t t_cost;
+  uint32_t p_cost;
+} abcrypt_params;
+
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
+// Decrypts `ciphertext` and write to `out`.
+//
+// # Errors
+//
+// Returns an error if any of the following are true:
+//
+// - `ciphertext` is shorter than 156 bytes.
+// - The magic number is invalid.
+// - The version number is the unrecognized abcrypt version number.
+// - The Argon2 parameters are invalid.
+// - The Argon2 context is invalid.
+// - The MAC (authentication tag) of the header is invalid.
+// - The MAC (authentication tag) of the ciphertext is invalid.
+// - One of the parameters is null.
+enum abcrypt_error_code abcrypt_decrypt(uint8_t *ciphertext,
+                                        uintptr_t ciphertext_len,
+                                        uint8_t *passphrase,
+                                        uintptr_t passphrase_len,
+                                        uint8_t *out,
+                                        uintptr_t out_len);
+
+// Encrypts `plaintext` and write to `out`.
+//
+// This uses the default Argon2 parameters.
+//
+// # Errors
+//
+// Returns an error if any of the following are true:
+//
+// - The Argon2 context is invalid.
+// - One of the parameters is null.
+enum abcrypt_error_code abcrypt_encrypt(uint8_t *plaintext,
+                                        uintptr_t plaintext_len,
+                                        uint8_t *passphrase,
+                                        uintptr_t passphrase_len,
+                                        uint8_t *out,
+                                        uintptr_t out_len);
+
+// Encrypts `plaintext` with the specified Argon2 parameters and write to
+// `out`.
+//
+// # Errors
+//
+// Returns an error if any of the following are true:
+//
+// - The Argon2 context is invalid.
+// - One of the parameters is null.
+enum abcrypt_error_code abcrypt_encrypt_with_params(uint8_t *plaintext,
+                                                    uintptr_t plaintext_len,
+                                                    uint8_t *passphrase,
+                                                    uintptr_t passphrase_len,
+                                                    uint8_t *out,
+                                                    uintptr_t out_len,
+                                                    uint32_t m_cost,
+                                                    uint32_t t_cost,
+                                                    uint32_t p_cost);
+
+// Gets a detailed error message.
+//
+// # Errors
+//
+// Returns an error if `buf` is null.
+enum abcrypt_error_code abcrypt_error_message(enum abcrypt_error_code error_code,
+                                              uint8_t *buf,
+                                              uintptr_t buf_len);
+
+// Returns the number of output bytes of the error message.
+uintptr_t abcrypt_error_message_out_len(enum abcrypt_error_code error_code);
+
+// Creates a new Argon2 parameters.
+struct abcrypt_params *abcrypt_params_new(void);
+
+// Free a Argon2 parameters.
+void abcrypt_params_free(struct abcrypt_params *params);
+
+// Reads the Argon2 parameters from `ciphertext`.
+//
+// # Errors
+//
+// Returns an error if any of the following are true:
+//
+// - `ciphertext` is shorter than 156 bytes.
+// - The magic number is invalid.
+// - The version number is the unrecognized abcrypt version number.
+// - The Argon2 parameters are invalid.
+// - One of the parameters is null.
+enum abcrypt_error_code abcrypt_params_read(uint8_t *ciphertext,
+                                            uintptr_t ciphertext_len,
+                                            struct abcrypt_params *params);
+
+// Gets memory size in KiB.
+//
+// Returns `0` if `params` is null.
+uint32_t abcrypt_params_m_cost(struct abcrypt_params *params);
+
+// Gets number of iterations.
+//
+// Returns `0` if `params` is null.
+uint32_t abcrypt_params_t_cost(struct abcrypt_params *params);
+
+// Gets degree of parallelism.
+//
+// Returns `0` if `params` is null.
+uint32_t abcrypt_params_p_cost(struct abcrypt_params *params);
+
+#ifdef __cplusplus
+} // extern "C"
+#endif // __cplusplus</code></pre>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
