@@ -28,9 +28,14 @@ impl Params {
     }
 
     /// Free a Argon2 parameters.
+    ///
+    /// # Safety
+    ///
+    /// This must not violate the safety conditions of [`Box::from_raw`].
     #[inline]
-    fn free(params: Option<NonNull<Self>>) {
+    unsafe fn free(params: Option<NonNull<Self>>) {
         if let Some(p) = params {
+            // SAFETY: just checked that `p` is not a null pointer.
             let _ = unsafe { Box::from_raw(p.as_ptr()) };
         }
     }
@@ -46,8 +51,13 @@ impl Params {
     /// - The version number is the unrecognized abcrypt version number.
     /// - The Argon2 parameters are invalid.
     /// - One of the parameters is null.
+    ///
+    /// # Safety
+    ///
+    /// Behavior is undefined if `ciphertext` and `ciphertext_len` violates the
+    /// safety conditions of [`slice::from_raw_parts`].
     #[must_use]
-    fn read(
+    unsafe fn read(
         ciphertext: Option<NonNull<u8>>,
         ciphertext_len: usize,
         params: Option<NonNull<Self>>,
@@ -55,6 +65,7 @@ impl Params {
         let Some(ciphertext) = ciphertext else {
             return ErrorCode::Error;
         };
+        // SAFETY: just checked that `ciphertext` is not a null pointer.
         let ciphertext = unsafe { slice::from_raw_parts(ciphertext.as_ptr(), ciphertext_len) };
         let p = match abcrypt::Params::new(ciphertext) {
             Ok(p) => p,
@@ -66,6 +77,7 @@ impl Params {
         let Some(params) = params else {
             return ErrorCode::Error;
         };
+        // SAFETY: just checked that `params` is not a null pointer.
         unsafe {
             (*params.as_ptr()) = p.into();
         }
@@ -78,6 +90,7 @@ impl Params {
     #[must_use]
     #[inline]
     fn m_cost(params: Option<NonNull<Self>>) -> u32 {
+        // SAFETY: just checked that `params` is not a null pointer.
         params
             .map(|p| unsafe { (*p.as_ptr()).m_cost })
             .unwrap_or_default()
@@ -89,6 +102,7 @@ impl Params {
     #[must_use]
     #[inline]
     fn t_cost(params: Option<NonNull<Self>>) -> u32 {
+        // SAFETY: just checked that `params` is not a null pointer.
         params
             .map(|p| unsafe { (*p.as_ptr()).t_cost })
             .unwrap_or_default()
@@ -100,6 +114,7 @@ impl Params {
     #[must_use]
     #[inline]
     fn p_cost(params: Option<NonNull<Self>>) -> u32 {
+        // SAFETY: just checked that `params` is not a null pointer.
         params
             .map(|p| unsafe { (*p.as_ptr()).p_cost })
             .unwrap_or_default()
@@ -141,9 +156,13 @@ pub extern "C" fn abcrypt_params_new() -> Option<NonNull<Params>> {
 }
 
 /// Free a Argon2 parameters.
+///
+/// # Safety
+///
+/// This must not violate the safety conditions of [`Box::from_raw`].
 #[no_mangle]
 #[inline]
-pub extern "C" fn abcrypt_params_free(params: Option<NonNull<Params>>) {
+pub unsafe extern "C" fn abcrypt_params_free(params: Option<NonNull<Params>>) {
     Params::free(params);
 }
 
@@ -158,9 +177,14 @@ pub extern "C" fn abcrypt_params_free(params: Option<NonNull<Params>>) {
 /// - The version number is the unrecognized abcrypt version number.
 /// - The Argon2 parameters are invalid.
 /// - One of the parameters is null.
+///
+/// # Safety
+///
+/// Behavior is undefined if `ciphertext` and `ciphertext_len` violates the
+/// safety conditions of [`slice::from_raw_parts`].
 #[must_use]
 #[no_mangle]
-pub extern "C" fn abcrypt_params_read(
+pub unsafe extern "C" fn abcrypt_params_read(
     ciphertext: Option<NonNull<u8>>,
     ciphertext_len: usize,
     params: Option<NonNull<Params>>,
@@ -209,38 +233,42 @@ mod tests {
     fn success() {
         let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
         let params = abcrypt_params_new();
-        let code = abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params);
+        let code =
+            unsafe { abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params) };
         assert_eq!(code, ErrorCode::Ok);
-        abcrypt_params_free(params);
+        unsafe { abcrypt_params_free(params) };
     }
 
     #[test]
     fn m_cost() {
         let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
         let params = abcrypt_params_new();
-        let code = abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params);
+        let code =
+            unsafe { abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params) };
         assert_eq!(code, ErrorCode::Ok);
         assert_eq!(abcrypt_params_m_cost(params), 32);
-        abcrypt_params_free(params);
+        unsafe { abcrypt_params_free(params) };
     }
 
     #[test]
     fn t_cost() {
         let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
         let params = abcrypt_params_new();
-        let code = abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params);
+        let code =
+            unsafe { abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params) };
         assert_eq!(code, ErrorCode::Ok);
         assert_eq!(abcrypt_params_t_cost(params), 3);
-        abcrypt_params_free(params);
+        unsafe { abcrypt_params_free(params) };
     }
 
     #[test]
     fn p_cost() {
         let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
         let params = abcrypt_params_new();
-        let code = abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params);
+        let code =
+            unsafe { abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params) };
         assert_eq!(code, ErrorCode::Ok);
         assert_eq!(abcrypt_params_p_cost(params), 4);
-        abcrypt_params_free(params);
+        unsafe { abcrypt_params_free(params) };
     }
 }

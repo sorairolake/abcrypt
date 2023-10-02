@@ -61,6 +61,15 @@ extern "C" {
 // - The MAC (authentication tag) of the header is invalid.
 // - The MAC (authentication tag) of the ciphertext is invalid.
 // - One of the parameters is null.
+//
+// # Safety
+//
+// Behavior is undefined if any of the following violates the safety conditions
+// of [`slice::from_raw_parts`]:
+//
+// - `ciphertext` and `ciphertext_len`.
+// - `passphrase` and `passphrase_len`.
+// - `out` and `out_len`.
 enum abcrypt_error_code abcrypt_decrypt(uint8_t *ciphertext,
                                         uintptr_t ciphertext_len,
                                         uint8_t *passphrase,
@@ -78,6 +87,15 @@ enum abcrypt_error_code abcrypt_decrypt(uint8_t *ciphertext,
 //
 // - The Argon2 context is invalid.
 // - One of the parameters is null.
+//
+// # Safety
+//
+// Behavior is undefined if any of the following violates the safety conditions
+// of [`slice::from_raw_parts`]:
+//
+// - `plaintext` and `plaintext_len`.
+// - `passphrase` and `passphrase_len`.
+// - `out` and `out_len`.
 enum abcrypt_error_code abcrypt_encrypt(uint8_t *plaintext,
                                         uintptr_t plaintext_len,
                                         uint8_t *passphrase,
@@ -94,6 +112,15 @@ enum abcrypt_error_code abcrypt_encrypt(uint8_t *plaintext,
 //
 // - The Argon2 context is invalid.
 // - One of the parameters is null.
+//
+// # Safety
+//
+// Behavior is undefined if any of the following violates the safety conditions
+// of [`slice::from_raw_parts`]:
+//
+// - `plaintext` and `plaintext_len`.
+// - `passphrase` and `passphrase_len`.
+// - `out` and `out_len`.
 enum abcrypt_error_code abcrypt_encrypt_with_params(uint8_t *plaintext,
                                                     uintptr_t plaintext_len,
                                                     uint8_t *passphrase,
@@ -109,6 +136,11 @@ enum abcrypt_error_code abcrypt_encrypt_with_params(uint8_t *plaintext,
 // # Errors
 //
 // Returns an error if `buf` is null.
+//
+// # Safety
+//
+// Behavior is undefined if `buf` and `buf_len` violates the safety conditions
+// of [`slice::from_raw_parts`].
 enum abcrypt_error_code abcrypt_error_message(enum abcrypt_error_code error_code,
                                               uint8_t *buf,
                                               uintptr_t buf_len);
@@ -120,6 +152,10 @@ uintptr_t abcrypt_error_message_out_len(enum abcrypt_error_code error_code);
 struct abcrypt_params *abcrypt_params_new(void);
 
 // Free a Argon2 parameters.
+//
+// # Safety
+//
+// This must not violate the safety conditions of [`Box::from_raw`].
 void abcrypt_params_free(struct abcrypt_params *params);
 
 // Reads the Argon2 parameters from `ciphertext`.
@@ -133,6 +169,11 @@ void abcrypt_params_free(struct abcrypt_params *params);
 // - The version number is the unrecognized abcrypt version number.
 // - The Argon2 parameters are invalid.
 // - One of the parameters is null.
+//
+// # Safety
+//
+// Behavior is undefined if `ciphertext` and `ciphertext_len` violates the
+// safety conditions of [`slice::from_raw_parts`].
 enum abcrypt_error_code abcrypt_params_read(uint8_t *ciphertext,
                                             uintptr_t ciphertext_len,
                                             struct abcrypt_params *params);
