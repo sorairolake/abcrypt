@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Changelog :: abcrypt Documentation</title>
+    <link rel="canonical" href="https://sorairolake.github.io/abcrypt/book/capi/changelog.html">
+    <meta name="generator" content="Antora 3.1.4">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://sorairolake.github.io/abcrypt">abcrypt Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="book" data-version="">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">abcrypt</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Library</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../lib/index.html">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../lib/usage.html">Usage</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../lib/examples.html">Examples</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="https://docs.rs/abcrypt">API Reference</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../lib/changelog.html">Changelog</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">C API</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="index.html">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="usage.html">Usage</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">API Reference</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="capi.html">C API</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="https://docs.rs/abcrypt-capi">Rust API</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="changelog.html">Changelog</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Command-line Utility</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../cli/index.html">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../cli/install.html">Installation</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../cli/build.html">How to Build</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../cli/usage.html">Usage</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Manual pages</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../cli/man/man1/abcrypt.1.html"><code>abcrypt(1)</code></a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../cli/man/man1/abcrypt-encrypt.1.html"><code>abcrypt-encrypt(1)</code></a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../cli/man/man1/abcrypt-decrypt.1.html"><code>abcrypt-decrypt(1)</code></a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../cli/man/man1/abcrypt-information.1.html"><code>abcrypt-information(1)</code></a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../cli/man/man1/abcrypt-help.1.html"><code>abcrypt-help(1)</code></a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../cli/changelog.html">Changelog</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Format Specification</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../format.html">Abcrypt Encrypted Data Format</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Resources</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../contributing.html">Contribution Guide</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../authors.html">List of Authors</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../license.html">License</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">abcrypt</span>
+    <span class="version">default</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">abcrypt</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">default</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">abcrypt</a></li>
+    <li>C API</li>
+    <li><a href="changelog.html">Changelog</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/sorairolake/abcrypt/edit/HEAD/doc/book/modules/capi/pages/changelog.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Changelog</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>All notable changes to this project will be documented in this file.</p>
+</div>
+<div class="paragraph">
+<p>The format is based on <a href="https://keepachangelog.com/">Keep a Changelog</a>, and this project adheres to <a href="https://semver.org/">Semantic Versioning</a>.</p>
+</div>
+</div>
+<div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_unreleased">Unreleased</a>
+<ul class="sectlevel2">
+<li><a href="#_changed">Changed</a></li>
+</ul>
+</li>
+<li><a href="#_0_1_2_2023_09_29">0.1.2 - 2023-09-29</a>
+<ul class="sectlevel2">
+<li><a href="#_fixed">Fixed</a></li>
+</ul>
+</li>
+<li><a href="#_0_1_1_2023_09_29_yanked">0.1.1 - 2023-09-29 [YANKED]</a>
+<ul class="sectlevel2">
+<li><a href="#_fixed_2">Fixed</a></li>
+</ul>
+</li>
+<li><a href="#_0_1_0_2023_09_20_yanked">0.1.0 - 2023-09-20 [YANKED]</a>
+<ul class="sectlevel2">
+<li><a href="#_added">Added</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_unreleased"><a class="anchor" href="#_unreleased"></a><a href="https://github.com/sorairolake/abcrypt/compare/abcrypt-capi-v0.1.2...HEAD">Unreleased</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_changed"><a class="anchor" href="#_changed"></a>Changed</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Change functions that may causes undefined behavior or memory problems to the
+unsafe function (<a href="https://github.com/sorairolake/abcrypt/pull/95">#95</a>)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_0_1_2_2023_09_29"><a class="anchor" href="#_0_1_2_2023_09_29"></a><a href="https://github.com/sorairolake/abcrypt/compare/abcrypt-capi-v0.1.1...abcrypt-capi-v0.1.2">0.1.2</a> - 2023-09-29</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_fixed"><a class="anchor" href="#_fixed"></a>Fixed</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Fix <code>build.rs</code> (<a href="https://github.com/sorairolake/abcrypt/pull/87">#87</a>)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_0_1_1_2023_09_29_yanked"><a class="anchor" href="#_0_1_1_2023_09_29_yanked"></a><a href="https://github.com/sorairolake/abcrypt/compare/abcrypt-capi-v0.1.0...abcrypt-capi-v0.1.1">0.1.1</a> - 2023-09-29 [YANKED]</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_fixed_2"><a class="anchor" href="#_fixed_2"></a>Fixed</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Fix the issue where the package validation fails (<a href="https://github.com/sorairolake/abcrypt/pull/80">#80</a>)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_0_1_0_2023_09_20_yanked"><a class="anchor" href="#_0_1_0_2023_09_20_yanked"></a><a href="https://github.com/sorairolake/abcrypt/releases/tag/abcrypt-capi-v0.1.0">0.1.0</a> - 2023-09-20 [YANKED]</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_added"><a class="anchor" href="#_added"></a>Added</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Initial release</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
