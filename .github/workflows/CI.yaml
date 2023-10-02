@@ -189,3 +189,12 @@ jobs:
         uses: Swatinem/rust-cache@v2.7.0
       - name: Build examples for the C API
         run: just build-capi-examples
+
+  semver:
+    name: Semantic Versioning
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Check Semantic Versioning
+        uses: obi1kenobi/cargo-semver-checks-action@v2.1
