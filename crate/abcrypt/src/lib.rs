@@ -85,7 +85,7 @@
 //! # }
 //! ```
 //!
-//! [abcrypt encrypted data format]: https://github.com/sorairolake/abcrypt/blob/abcrypt-v0.2.4/doc/FORMAT.adoc
+//! [abcrypt encrypted data format]: https://sorairolake.github.io/abcrypt/book/format.html
 
 #![doc(html_root_url = "https://docs.rs/abcrypt/0.2.4/")]
 #![no_std]
