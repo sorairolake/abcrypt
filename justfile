@@ -84,7 +84,6 @@ clang-tidy: setup-meson
 
 # Increment the version of the command-line utility
 @bump-cli part:
-    bump2version --config-file .bumpversion-cli.cfg {{part}}
     cargo set-version --bump {{part}} -p abcrypt-cli
 
 # Increment the version of the C API

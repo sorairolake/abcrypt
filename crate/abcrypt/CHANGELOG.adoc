@@ -15,6 +15,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on {keepachangelog}, and this project adheres to {semver}.
 
+== {compare-url}/abcrypt-v0.2.4\...abcrypt-v0.2.5[0.2.5] - 2023-10-02
+
+=== Changed
+
+* Change link to the format specification ({pull-request-url}/94[#94])
+
 == {compare-url}/abcrypt-v0.2.3\...abcrypt-v0.2.4[0.2.4] - 2023-09-29
 
 === Removed

@@ -5,7 +5,7 @@
 = Abcrypt Encrypted Data Format
 Shun Sakai <sorairolake@protonmail.ch>
 // Specify in UTC.
-v0.2.4, 2023-09-30
+v0.2.5, 2023-09-30
 :icons: font
 :idprefix:
 :idseparator: -
@@ -130,9 +130,8 @@ bytes of `derived_key` are for encryption (<<xchacha20-poly1305>> key), and the
 last 64 bytes are for computing the header MAC (<<blake2b-512-mac>> key).
 
 <<argon2-parameters,`m_cost`>>, <<argon2-parameters,`t_cost`>>,
-<<argon2-parameters,`p_cost`>>, and <<argon2-parameters,`salt`>> used when
-encrypting are stored in the header, and these stored values are used when
-decrypting.
+<<argon2-parameters,`p_cost`>>, and <<salt,`salt`>> used when encrypting are
+stored in the header, and these stored values are used when decrypting.
 
 == Header format
 
