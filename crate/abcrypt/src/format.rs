@@ -37,7 +37,6 @@ pub const TAG_SIZE: usize = <XChaCha20Poly1305 as AeadCore>::TagSize::USIZE;
 
 /// Version of the abcrypt encrypted data format.
 #[derive(Clone, Copy, Debug)]
-#[repr(u8)]
 pub enum Version {
     /// Version 0.
     V0,
@@ -68,7 +67,7 @@ impl Header {
 
     /// The number of bytes of the header.
     const SIZE: usize = mem::size_of::<MagicNumber>()
-        + mem::size_of::<Version>()
+        + mem::size_of::<u8>()
         + mem::size_of::<Params>()
         + mem::size_of::<Salt>()
         + <XChaCha20Poly1305 as AeadCore>::NonceSize::USIZE
