@@ -3,16 +3,14 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 = How to Build
-:cargo: https://doc.rust-lang.org/stable/cargo/[Cargo]
-:asciidoctor-org: https://asciidoctor.org/[Asciidoctor]
 
 == Prerequisites
 
 .To build *abcrypt*, you will need the following dependencies
-* {cargo} (v1.65.0 or later)
+* https://doc.rust-lang.org/stable/cargo/[Cargo] (v1.65.0 or later)
 
 .To build man pages, you will need the following additional dependencies
-* {asciidoctor-org}
+* https://asciidoctor.org/[Asciidoctor]
 
 == Building from source
 
