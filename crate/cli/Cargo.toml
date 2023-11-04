@@ -27,14 +27,13 @@ name = "abcrypt"
 path = "src/main.rs"
 
 [dependencies]
-abcrypt = { version = "0.2.5", path = "../abcrypt" }
+abcrypt = { version = "0.2.5", path = "../abcrypt", features = ["serde"] }
 anyhow.workspace = true
 byte-unit = { version = "4.0.19", default-features = false, features = ["std"] }
 clap = { workspace = true, features = ["wrap_help"] }
 clap_complete = "4.3.2"
 clap_complete_nushell = "4.3.2"
 dialoguer.workspace = true
-serde = { version = "1.0.190", features = ["derive"], optional = true }
 serde_json = { version = "1.0.108", optional = true }
 sysexits = "0.7.4"
 
@@ -44,4 +43,4 @@ predicates = "3.0.3"
 
 [features]
 default = ["json"]
-json = ["dep:serde", "dep:serde_json"]
+json = ["dep:serde_json"]

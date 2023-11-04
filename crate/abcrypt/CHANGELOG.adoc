@@ -14,6 +14,12 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
 
+== {compare-url}/abcrypt-v0.2.5\...HEAD[Unreleased]
+
+=== Added
+
+* Add serialization support for `Params` ({pull-request-url}/122[#122])
+
 == {compare-url}/abcrypt-v0.2.4\...abcrypt-v0.2.5[0.2.5] - 2023-10-02
 
 === Changed

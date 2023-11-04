@@ -58,6 +58,10 @@ by `std`).
 Enables features that depend on the standard library. This is enabled by
 default.
 
+#### `serde`
+
+Enables serialization support for `Params`.
+
 ### `no_std` support
 
 This supports `no_std` mode. Disables the `default` feature to enable this.

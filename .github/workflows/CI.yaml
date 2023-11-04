@@ -62,6 +62,12 @@ jobs:
       - name: Run tests (`alloc` feature)
         if: matrix.crate == 'abcrypt'
         run: cargo test -p ${{ matrix.crate }} --target ${{ matrix.target }} --no-default-features -F alloc
+      - name: Run tests (`serde` feature)
+        if: matrix.crate == 'abcrypt'
+        run: cargo test -p ${{ matrix.crate }} --target ${{ matrix.target }} -F serde
+      - name: Run tests (`serde` feature with no default features)
+        if: matrix.crate == 'abcrypt'
+        run: cargo test -p ${{ matrix.crate }} --target ${{ matrix.target }} --no-default-features -F serde
       - name: Check if the header file is up-to-date
         if: matrix.crate == 'abcrypt-capi'
         run: git diff --exit-code
