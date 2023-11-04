@@ -7,7 +7,7 @@ project('abcrypt_capi_examples',
   default_options: ['warning_level=3', 'cpp_std=c++17'],
   license: 'Apache-2.0 OR MIT',
   meson_version: '>=0.53.0',
-  version: '0.2.0',
+  version: '0.2.1',
 )
 
 fs = import('fs')
