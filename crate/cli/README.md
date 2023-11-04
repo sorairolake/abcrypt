@@ -103,11 +103,11 @@ copyright and licensing information.
 [abcrypt format]: ../../doc/FORMAT.adoc
 [release page]: https://github.com/sorairolake/abcrypt/releases
 [BUILD.adoc]: BUILD.adoc
-[`abcrypt(1)`]: doc/man/man1/abcrypt.1.adoc
-[`abcrypt-encrypt(1)`]: doc/man/man1/abcrypt-encrypt.1.adoc
-[`abcrypt-decrypt(1)`]: doc/man/man1/abcrypt-decrypt.1.adoc
-[`abcrypt-information(1)`]: doc/man/man1/abcrypt-information.1.adoc
-[`abcrypt-help(1)`]: doc/man/man1/abcrypt-help.1.adoc
+[`abcrypt(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt.1.html
+[`abcrypt-encrypt(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt-encrypt.1.html
+[`abcrypt-decrypt(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt-decrypt.1.html
+[`abcrypt-information(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt-information.1.html
+[`abcrypt-help(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt-help.1.html
 [CHANGELOG.adoc]: CHANGELOG.adoc
 [CONTRIBUTING.adoc]: ../../CONTRIBUTING.adoc
 [AUTHORS.adoc]: ../../AUTHORS.adoc

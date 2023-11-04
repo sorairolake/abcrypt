@@ -114,10 +114,8 @@ pub fn run() -> anyhow::Result<()> {
                 let params = params::get(&input)?;
                 #[cfg(feature = "json")]
                 if arg.json {
-                    let params = params::Params::new(&params);
-                    let output = params
-                        .to_vec()
-                        .context("could not output the encryption parameters")?;
+                    let output =
+                        serde_json::to_vec(&params).context("could not serialize as JSON")?;
                     if let Ok(string) = std::str::from_utf8(&output) {
                         println!("{string}");
                     } else {

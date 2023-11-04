@@ -21,7 +21,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-abcrypt = "0.2.5"
+abcrypt = "0.2.6"
 ```
 
 ### Example
@@ -57,6 +57,10 @@ by `std`).
 
 Enables features that depend on the standard library. This is enabled by
 default.
+
+#### `serde`
+
+Enables serialization support for `Params`.
 
 ### `no_std` support
 

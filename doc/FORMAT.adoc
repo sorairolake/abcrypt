@@ -5,19 +5,19 @@
 = Abcrypt Encrypted Data Format
 Shun Sakai <sorairolake@protonmail.ch>
 // Specify in UTC.
-v0.2.5, 2023-09-30
+v0.2.6, 2023-09-30
 :icons: font
 :idprefix:
 :idseparator: -
 :sectanchors:
 :toc: preamble
 :stem:
-:scrypt-encrypted-data-format: https://www.tarsnap.com/scrypt.html[scrypt encrypted data format]
+:scrypt-encrypted-data-format: https://www.tarsnap.com/scrypt.html
 :ietf-datatracker: https://datatracker.ietf.org
 :datatracker-html-doc: {ietf-datatracker}/doc/html
-:rfc9106: {datatracker-html-doc}/rfc9106[RFC 9106]
-:rfc7693: {datatracker-html-doc}/rfc7693[RFC 7693]
-:draft-arciszewski-xchacha-03: {datatracker-html-doc}/draft-arciszewski-xchacha-03[draft-arciszewski-xchacha-03]
+:rfc9106: {datatracker-html-doc}/rfc9106
+:rfc7693: {datatracker-html-doc}/rfc7693
+:draft-arciszewski-xchacha-03: {datatracker-html-doc}/draft-arciszewski-xchacha-03
 
 abcrypt is a modern file encryption format with the data authenticity. This
 document describes the abcrypt encrypted data format.
@@ -25,21 +25,22 @@ document describes the abcrypt encrypted data format.
 == Introduction
 
 abcrypt is a modern file encryption format inspired by the
-{scrypt-encrypted-data-format}. abcrypt uses <<argon2,Argon2id>> for key
-derivation, <<blake2b-512-mac>> for header integrity checking and
-<<xchacha20-poly1305>> for encryption.
+{scrypt-encrypted-data-format}[scrypt encrypted data format]. abcrypt uses
+<<argon2,Argon2id>> for key derivation, <<blake2b-512-mac>> for header
+integrity checking and <<xchacha20-poly1305>> for encryption.
 
 == Conventions used in this document
 
 [#argon2,reftext=Argon2]
-Argon2 is the key derivation function from {rfc9106}.
+Argon2 is the key derivation function from {rfc9106}[RFC 9106].
 
 [#blake2b-512-mac,reftext=BLAKE2b-512-MAC]
 BLAKE2b-512-MAC is the keyed hash function based on BLAKE2 standardized in
-{rfc7693}. This uses BLAKE2b and always outputs a 64-byte MAC.
+{rfc7693}[RFC 7693]. This uses BLAKE2b and always outputs a 64-byte MAC.
 
 [#xchacha20-poly1305,reftext=XChaCha20-Poly1305]
-XChaCha20-Poly1305 is the AEAD algorithm from {draft-arciszewski-xchacha-03}.
+XChaCha20-Poly1305 is the AEAD algorithm from
+{draft-arciszewski-xchacha-03}[draft-arciszewski-xchacha-03].
 
 == Format overview
 

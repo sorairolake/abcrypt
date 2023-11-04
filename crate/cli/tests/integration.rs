@@ -530,7 +530,7 @@ fn validate_aliases_for_information_command() {
     command().arg("i").arg("-V").assert().success();
 }
 
-#[cfg(not(feature = "json",))]
+#[cfg(not(feature = "json"))]
 #[test]
 fn information_command_without_default_feature() {
     command()

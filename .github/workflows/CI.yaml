@@ -51,7 +51,7 @@ jobs:
           toolchain: 1.65.0 # MSRV
           targets: ${{ matrix.target }}
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.0
+        uses: Swatinem/rust-cache@v2.7.1
         with:
           key: ${{ matrix.target }}
       - name: Run tests
@@ -62,6 +62,12 @@ jobs:
       - name: Run tests (`alloc` feature)
         if: matrix.crate == 'abcrypt'
         run: cargo test -p ${{ matrix.crate }} --target ${{ matrix.target }} --no-default-features -F alloc
+      - name: Run tests (`serde` feature)
+        if: matrix.crate == 'abcrypt'
+        run: cargo test -p ${{ matrix.crate }} --target ${{ matrix.target }} -F serde
+      - name: Run tests (`serde` feature with no default features)
+        if: matrix.crate == 'abcrypt'
+        run: cargo test -p ${{ matrix.crate }} --target ${{ matrix.target }} --no-default-features -F serde
       - name: Check if the header file is up-to-date
         if: matrix.crate == 'abcrypt-capi'
         run: git diff --exit-code
@@ -96,7 +102,7 @@ jobs:
           toolchain: 1.65.0 # MSRV
           targets: ${{ matrix.target }}
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.0
+        uses: Swatinem/rust-cache@v2.7.1
         with:
           key: ${{ matrix.target }}
       - name: Run tests
@@ -116,7 +122,7 @@ jobs:
           toolchain: stable
           components: rustfmt
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.0
+        uses: Swatinem/rust-cache@v2.7.1
       - name: Check code formatted
         run: cargo fmt --all -- --check
 
@@ -132,7 +138,7 @@ jobs:
           toolchain: stable
           components: clippy
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.0
+        uses: Swatinem/rust-cache@v2.7.1
       - name: Check no lint warnings
         run: cargo clippy --workspace -- -D warnings
       - name: Check no lint warnings (no default features)
@@ -149,7 +155,7 @@ jobs:
         with:
           toolchain: stable
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.0
+        uses: Swatinem/rust-cache@v2.7.1
       - name: Check no `rustdoc` lint warnings
         run: RUSTDOCFLAGS="-D warnings" cargo doc --workspace --exclude abcrypt-cli --no-deps --document-private-items
 
@@ -164,7 +170,7 @@ jobs:
         with:
           toolchain: nightly
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.0
+        uses: Swatinem/rust-cache@v2.7.1
       - name: Run benchmarks
         run: cargo bench -p abcrypt
 
@@ -186,6 +192,15 @@ jobs:
       - name: Setup just
         uses: extractions/setup-just@v1
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.0
+        uses: Swatinem/rust-cache@v2.7.1
       - name: Build examples for the C API
         run: just build-capi-examples
+
+  semver:
+    name: Semantic Versioning
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Check Semantic Versioning
+        uses: obi1kenobi/cargo-semver-checks-action@v2.2

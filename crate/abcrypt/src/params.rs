@@ -8,6 +8,7 @@ use crate::{format::Header, Result};
 
 /// The Argon2 parameters used for the encrypted data.
 #[derive(Clone, Copy, Debug)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
 pub struct Params {
     m_cost: u32,
     t_cost: u32,
