@@ -93,8 +93,8 @@ This library is distributed under the terms of either the _Apache License 2.0_
 or the _MIT License_.
 
 This project is compliant with version 3.0 of the [_REUSE Specification_]. See
-[COPYING] and copyright notices of individual files for more details on
-copyright and licensing information.
+copyright notices of individual files for more details on copyright and
+licensing information.
 
 [ci-badge]: https://img.shields.io/github/actions/workflow/status/sorairolake/abcrypt/CI.yaml?branch=develop&label=CI&logo=github&style=for-the-badge
 [ci-url]: https://github.com/sorairolake/abcrypt/actions?query=branch%3Adevelop+workflow%3ACI++
@@ -108,4 +108,3 @@ copyright and licensing information.
 [CONTRIBUTING.adoc]: ../../CONTRIBUTING.adoc
 [AUTHORS.adoc]: ../../AUTHORS.adoc
 [_REUSE Specification_]: https://reuse.software/spec/
-[COPYING]: ../../COPYING

@@ -119,7 +119,7 @@ jobs:
           package="abcrypt-${{ steps.extracted_version.outputs.version }}-${{ matrix.target }}"
 
           mkdir -p "${package}"/doc
-          cp crate/cli/README.md COPYING "${bin}" "${package}"
+          cp crate/cli/README.md "${bin}" "${package}"
           cp -r LICENSES "${package}"
           cp crate/cli/{AUTHORS,BUILD,CHANGELOG,CONTRIBUTING}.adoc "${package}"/doc
           if [ "${{ matrix.os }}" != "windows-2022" ] ; then
