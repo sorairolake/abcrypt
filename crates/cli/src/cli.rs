@@ -23,16 +23,16 @@ use clap_complete::Generator;
 const LONG_VERSION: &str = concat!(
     env!("CARGO_PKG_VERSION"),
     "\n",
-    include_str!("static/long-version.md")
+    include_str!("assets/long-version.md")
 );
 
-const AFTER_LONG_HELP: &str = include_str!("static/after-long-help.md");
+const AFTER_LONG_HELP: &str = include_str!("assets/after-long-help.md");
 
-const ENCRYPT_AFTER_LONG_HELP: &str = include_str!("static/encrypt-after-long-help.md");
+const ENCRYPT_AFTER_LONG_HELP: &str = include_str!("assets/encrypt-after-long-help.md");
 
-const DECRYPT_AFTER_LONG_HELP: &str = include_str!("static/decrypt-after-long-help.md");
+const DECRYPT_AFTER_LONG_HELP: &str = include_str!("assets/decrypt-after-long-help.md");
 
-const INFORMATION_AFTER_LONG_HELP: &str = include_str!("static/information-after-long-help.md");
+const INFORMATION_AFTER_LONG_HELP: &str = include_str!("assets/information-after-long-help.md");
 
 #[derive(Debug, Parser)]
 #[command(

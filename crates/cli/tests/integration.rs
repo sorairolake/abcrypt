@@ -51,7 +51,7 @@ fn long_version() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/static/long-version.md"
+            "../src/assets/long-version.md"
         )));
 }
 
@@ -62,7 +62,7 @@ fn after_long_help() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/static/after-long-help.md"
+            "../src/assets/after-long-help.md"
         )));
 }
 
@@ -425,7 +425,7 @@ fn long_version_for_encrypt_command() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/static/long-version.md"
+            "../src/assets/long-version.md"
         )));
 }
 
@@ -437,7 +437,7 @@ fn after_long_help_for_encrypt_command() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/static/encrypt-after-long-help.md"
+            "../src/assets/encrypt-after-long-help.md"
         )));
 }
 
@@ -496,7 +496,7 @@ fn long_version_for_decrypt_command() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/static/long-version.md"
+            "../src/assets/long-version.md"
         )));
 }
 
@@ -508,7 +508,7 @@ fn after_long_help_for_decrypt_command() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/static/decrypt-after-long-help.md"
+            "../src/assets/decrypt-after-long-help.md"
         )));
 }
 
@@ -565,7 +565,7 @@ fn long_version_for_information_command() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/static/long-version.md"
+            "../src/assets/long-version.md"
         )));
 }
 
@@ -577,6 +577,6 @@ fn after_long_help_for_information_command() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/static/information-after-long-help.md"
+            "../src/assets/information-after-long-help.md"
         )));
 }

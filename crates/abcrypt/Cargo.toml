@@ -16,11 +16,7 @@ repository.workspace = true
 license = "Apache-2.0 OR MIT"
 keywords = ["abcrypt", "crypto"]
 categories = ["cryptography", "no-std"]
-exclude = [
-  "/benches",
-  "/examples",
-  "/tests",
-]
+exclude = ["/benches", "/examples", "/tests"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

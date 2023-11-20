@@ -15,10 +15,7 @@ repository.workspace = true
 license = "GPL-3.0-or-later"
 keywords = ["abcrypt"]
 categories = ["command-line-utilities"]
-exclude = [
-  "/doc",
-  "/tests",
-]
+exclude = ["/docs", "/tests"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

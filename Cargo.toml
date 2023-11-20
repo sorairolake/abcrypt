@@ -4,7 +4,7 @@
 
 [workspace]
 resolver = "2"
-members = ["crate/*"]
+members = ["crates/*"]
 
 [workspace.package]
 authors = ["Shun Sakai <sorairolake@protonmail.ch>"]

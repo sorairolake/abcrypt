@@ -44,25 +44,25 @@ default: build
 setup-meson:
     #!/usr/bin/env bash
     cargo build -p abcrypt-capi
-    cd crate/capi/examples
+    cd crates/capi/examples
     meson setup builddir
 
 # Build examples for the C API
 build-capi-examples: setup-meson
     #!/usr/bin/env bash
-    cd crate/capi/examples
+    cd crates/capi/examples
     meson compile -C builddir
 
 # Run clang-format
 clang-format: setup-meson
     #!/usr/bin/env bash
-    cd crate/capi/examples
+    cd crates/capi/examples
     ninja -C builddir clang-format
 
 # Run clang-tidy
 clang-tidy: setup-meson
     #!/usr/bin/env bash
-    cd crate/capi/examples
+    cd crates/capi/examples
     ninja -C builddir clang-tidy
 
 # Run the linter for GitHub Actions workflow files
@@ -71,7 +71,7 @@ clang-tidy: setup-meson
 
 # Run the formatter for the README
 @fmt-readme:
-    npx prettier -w README.md crate/*/README.md
+    npx prettier -w README.md crates/*/README.md
 
 # Build the book
 @build-book:

@@ -118,10 +118,10 @@ jobs:
           fi
           package="abcrypt-${{ steps.extracted_version.outputs.version }}-${{ matrix.target }}"
 
-          mkdir -p "${package}"/doc
-          cp crate/cli/README.md "${bin}" "${package}"
+          mkdir -p "${package}"/docs
+          cp crates/cli/README.md "${bin}" "${package}"
           cp -r LICENSES "${package}"
-          cp crate/cli/{AUTHORS,BUILD,CHANGELOG,CONTRIBUTING}.adoc "${package}"/doc
+          cp crates/cli/{AUTHORS,BUILD,CHANGELOG,CONTRIBUTING}.adoc "${package}"/docs
           if [ "${{ matrix.os }}" != "windows-2022" ] ; then
             mkdir -p "${package}"/man
             cp "$(find ./target -path '*/abcrypt-cli-*/out' -type d)"/* "${package}"/man
