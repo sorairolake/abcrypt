@@ -23,6 +23,9 @@ jobs:
           - x86_64-unknown-linux-gnu
           - x86_64-apple-darwin
           - x86_64-pc-windows-msvc
+        toolchain:
+          - 1.65.0 # MSRV
+          - stable
         crate:
           - abcrypt
           - abcrypt-cli
@@ -34,9 +37,6 @@ jobs:
             os: macos-12
           - target: x86_64-pc-windows-msvc
             os: windows-2022
-          - crate: abcrypt
-          - crate: abcrypt-cli
-          - crate: abcrypt-capi
     steps:
       - name: Set Git to use LF
         if: matrix.os == 'windows-2022'
@@ -48,7 +48,7 @@ jobs:
       - name: Setup Rust toolchain
         uses: dtolnay/rust-toolchain@v1
         with:
-          toolchain: 1.65.0 # MSRV
+          toolchain: ${{ matrix.toolchain }}
           targets: ${{ matrix.target }}
       - name: Cache build artifacts
         uses: Swatinem/rust-cache@v2.7.1
@@ -81,6 +81,9 @@ jobs:
           - x86_64-unknown-linux-gnu
           - x86_64-apple-darwin
           - x86_64-pc-windows-msvc
+        toolchain:
+          - 1.65.0 # MSRV
+          - stable
         include:
           - target: x86_64-unknown-linux-gnu
             os: ubuntu-22.04
@@ -99,7 +102,7 @@ jobs:
       - name: Setup Rust toolchain
         uses: dtolnay/rust-toolchain@v1
         with:
-          toolchain: 1.65.0 # MSRV
+          toolchain: ${{ matrix.toolchain }}
           targets: ${{ matrix.target }}
       - name: Cache build artifacts
         uses: Swatinem/rust-cache@v2.7.1
@@ -177,13 +180,18 @@ jobs:
   capi-examples:
     name: Examples for the C API
     runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        toolchain:
+          - 1.65.0 # MSRV
+          - stable
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Setup Rust toolchain
         uses: dtolnay/rust-toolchain@v1
         with:
-          toolchain: 1.65.0 # MSRV
+          toolchain: ${{ matrix.toolchain }}
       - name: Install dependencies
         run: |
           sudo apt-get update
