@@ -31,23 +31,28 @@ struct Opt {
 
 #[cfg(feature = "std")]
 fn main() -> anyhow::Result<()> {
+    use std::fs;
+
+    use abcrypt::{Decryptor, Error};
+    use dialoguer::{theme::ColorfulTheme, Password};
+
     let opt = Opt::parse();
 
-    let ciphertext = std::fs::read(&opt.input)
+    let ciphertext = fs::read(&opt.input)
         .with_context(|| format!("could not read data from {}", opt.input.display()))?;
 
-    let passphrase = dialoguer::Password::with_theme(&dialoguer::theme::ColorfulTheme::default())
+    let passphrase = Password::with_theme(&ColorfulTheme::default())
         .with_prompt("Enter passphrase")
         .interact()
         .context("could not read passphrase")?;
-    let cipher = match abcrypt::Decryptor::new(&ciphertext, passphrase) {
-        c @ Err(abcrypt::Error::InvalidHeaderMac(_)) => c.context("passphrase is incorrect"),
+    let cipher = match Decryptor::new(&ciphertext, passphrase) {
+        c @ Err(Error::InvalidHeaderMac(_)) => c.context("passphrase is incorrect"),
         c => c.with_context(|| format!("the header in {} is invalid", opt.input.display())),
     }?;
     let plaintext = cipher
         .decrypt_to_vec()
         .with_context(|| format!("{} is corrupted", opt.input.display()))?;
-    std::fs::write(opt.output, plaintext)
+    fs::write(opt.output, plaintext)
         .with_context(|| format!("could not write the result to {}", opt.input.display()))?;
     Ok(())
 }

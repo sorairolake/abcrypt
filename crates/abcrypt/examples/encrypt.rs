@@ -43,21 +43,25 @@ struct Opt {
 
 #[cfg(feature = "std")]
 fn main() -> anyhow::Result<()> {
+    use std::fs;
+
+    use abcrypt::{argon2::Params, Encryptor};
+    use dialoguer::{theme::ColorfulTheme, Password};
+
     let opt = Opt::parse();
 
-    let plaintext = std::fs::read(&opt.input)
+    let plaintext = fs::read(&opt.input)
         .with_context(|| format!("could not read data from {}", opt.input.display()))?;
 
-    let passphrase = dialoguer::Password::with_theme(&dialoguer::theme::ColorfulTheme::default())
+    let passphrase = Password::with_theme(&ColorfulTheme::default())
         .with_prompt("Enter passphrase")
         .with_confirmation("Confirm passphrase", "Passphrases mismatch, try again")
         .interact()
         .context("could not read passphrase")?;
-    let params =
-        abcrypt::argon2::Params::new(opt.memory_size, opt.iterations, opt.parallelism, None)?;
-    let cipher = abcrypt::Encryptor::with_params(&plaintext, passphrase, params)?;
+    let params = Params::new(opt.memory_size, opt.iterations, opt.parallelism, None)?;
+    let cipher = Encryptor::with_params(&plaintext, passphrase, params)?;
     let ciphertext = cipher.encrypt_to_vec();
-    std::fs::write(opt.output, ciphertext)
+    fs::write(opt.output, ciphertext)
         .with_context(|| format!("could not write the result to {}", opt.input.display()))?;
     Ok(())
 }

@@ -27,12 +27,16 @@ struct Opt {
 
 #[cfg(feature = "std")]
 fn main() -> anyhow::Result<()> {
+    use std::fs;
+
+    use abcrypt::Params;
+
     let opt = Opt::parse();
 
-    let contents = std::fs::read(&opt.input)
+    let contents = fs::read(&opt.input)
         .with_context(|| format!("could not read data from {}", opt.input.display()))?;
 
-    let params = abcrypt::Params::new(contents).with_context(|| {
+    let params = Params::new(contents).with_context(|| {
         format!(
             "{} is not a valid Argon2 encrypted file",
             opt.input.display()
