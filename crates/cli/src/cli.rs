@@ -13,7 +13,7 @@ use std::{
 
 use abcrypt::argon2::Params;
 use anyhow::anyhow;
-use byte_unit::{Byte, ByteUnit, KIBIBYTE};
+use byte_unit::{Byte, Unit};
 use clap::{
     builder::{TypedValueParser, ValueParserFactory},
     value_parser, ArgGroup, Args, CommandFactory, Parser, Subcommand, ValueEnum, ValueHint,
@@ -300,10 +300,9 @@ impl Deref for MemorySize {
 
 impl fmt::Display for MemorySize {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        Byte::from_bytes(u64::from(self.0) * KIBIBYTE)
-            .get_adjusted_unit(ByteUnit::KiB)
-            .format(0)
-            .fmt(f)
+        let byte =
+            Byte::from(u64::from(self.0) * Byte::KIBIBYTE.as_u64()).get_adjusted_unit(Unit::KiB);
+        write!(f, "{byte:.0}")
     }
 }
 
@@ -312,17 +311,15 @@ impl FromStr for MemorySize {
 
     fn from_str(byte: &str) -> anyhow::Result<Self> {
         let byte = Byte::from_str(byte)
-            .map(|b| b.get_bytes())
+            .map(u64::from)
             .map_err(anyhow::Error::from)?;
-        match u32::try_from(byte / KIBIBYTE) {
+        match u32::try_from(byte / Byte::KIBIBYTE.as_u64()) {
             Ok(kibibyte) if (Params::MIN_M_COST..=Params::MAX_M_COST).contains(&kibibyte) => {
                 Ok(Self(kibibyte))
             }
             _ => Err(anyhow!(
-                "{} is not in {}..={}",
-                Byte::from_bytes(byte)
-                    .get_adjusted_unit(ByteUnit::KiB)
-                    .format(0),
+                "{:.0} is not in {}..={}",
+                Byte::from(byte).get_adjusted_unit(Unit::KiB),
                 Self::MIN,
                 Self::MAX
             )),
@@ -505,48 +502,48 @@ mod tests {
 
     #[test]
     fn from_str_memory_size_with_invalid_unit() {
-        use byte_unit::ByteError;
+        use byte_unit::ParseError;
 
         assert!(matches!(
             MemorySize::from_str("19922944 A")
                 .unwrap_err()
-                .downcast_ref::<ByteError>()
+                .downcast_ref::<ParseError>()
                 .unwrap(),
-            ByteError::UnitIncorrect(_)
+            ParseError::Unit(_)
         ));
         assert!(matches!(
             MemorySize::from_str("19.00LiB")
                 .unwrap_err()
-                .downcast_ref::<ByteError>()
+                .downcast_ref::<ParseError>()
                 .unwrap(),
-            ByteError::UnitIncorrect(_)
+            ParseError::Unit(_)
         ));
     }
 
     #[test]
     fn from_str_memory_size_with_nan() {
-        use byte_unit::ByteError;
+        use byte_unit::ParseError;
 
         assert!(matches!(
             MemorySize::from_str("n B")
                 .unwrap_err()
-                .downcast_ref::<ByteError>()
+                .downcast_ref::<ParseError>()
                 .unwrap(),
-            ByteError::ValueIncorrect(_)
+            ParseError::Value(_)
         ));
         assert!(matches!(
             MemorySize::from_str("n")
                 .unwrap_err()
-                .downcast_ref::<ByteError>()
+                .downcast_ref::<ParseError>()
                 .unwrap(),
-            ByteError::ValueIncorrect(_)
+            ParseError::Value(_)
         ));
         assert!(matches!(
             MemorySize::from_str("nKiB")
                 .unwrap_err()
-                .downcast_ref::<ByteError>()
+                .downcast_ref::<ParseError>()
                 .unwrap(),
-            ByteError::ValueIncorrect(_)
+            ParseError::Value(_)
         ));
     }
 
