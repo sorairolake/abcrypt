@@ -300,9 +300,9 @@ impl Deref for MemorySize {
 
 impl fmt::Display for MemorySize {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let byte=Byte::from(u64::from(self.0) * Byte::KIBIBYTE.as_u64())
-            .get_adjusted_unit(Unit::KiB);
-            write!(f, "{byte:.0}")
+        let byte =
+            Byte::from(u64::from(self.0) * Byte::KIBIBYTE.as_u64()).get_adjusted_unit(Unit::KiB);
+        write!(f, "{byte:.0}")
     }
 }
 
@@ -319,8 +319,7 @@ impl FromStr for MemorySize {
             }
             _ => Err(anyhow!(
                 "{:.0} is not in {}..={}",
-                Byte::from(byte)
-                    .get_adjusted_unit(Unit::KiB),
+                Byte::from(byte).get_adjusted_unit(Unit::KiB),
                 Self::MIN,
                 Self::MAX
             )),
