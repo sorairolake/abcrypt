@@ -1,1 +1,1 @@
-../../../../../crate/cli/CHANGELOG.adoc
+../../../../../crates/cli/CHANGELOG.adoc

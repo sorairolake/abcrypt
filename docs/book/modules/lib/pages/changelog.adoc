@@ -1,1 +1,1 @@
-../../../../../crate/abcrypt/CHANGELOG.adoc
+../../../../../crates/abcrypt/CHANGELOG.adoc
