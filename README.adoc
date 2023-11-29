@@ -9,13 +9,13 @@
 :crates-io-crates: {crates-io-url}/crates
 :ci-badge: {shields-url}/github/actions/workflow/status/sorairolake/abcrypt/CI.yaml?branch=develop&label=CI&logo=github&style=for-the-badge
 :ci-url: {project-url}/actions?query=branch%3Adevelop+workflow%3ACI++
-:abcrypt-repo-url: {project-url}/tree/develop/crate/abcrypt
+:abcrypt-repo-url: {project-url}/tree/develop/crates/abcrypt
 :abcrypt-badge: {shields-url}/crates/v/abcrypt?style=for-the-badge
 :abcrypt-crates-io: {crates-io-crates}/abcrypt
-:abcrypt-cli-repo-url: {project-url}/tree/develop/crate/cli
+:abcrypt-cli-repo-url: {project-url}/tree/develop/crates/cli
 :abcrypt-cli-badge: {shields-url}/crates/v/abcrypt-cli?style=for-the-badge
 :abcrypt-cli-crates-io: {crates-io-crates}/abcrypt-cli
-:abcrypt-capi-repo-url: {project-url}/tree/develop/crate/capi
+:abcrypt-capi-repo-url: {project-url}/tree/develop/crates/capi
 :abcrypt-capi-badge: {shields-url}/crates/v/abcrypt-capi?style=for-the-badge
 :abcrypt-capi-crates-io: {crates-io-crates}/abcrypt-capi
 :reuse-spec-url: https://reuse.software/spec/
@@ -45,7 +45,7 @@ Rust library.
 
 == Format specification
 
-The format specification is at link:doc/FORMAT.adoc[FORMAT.adoc].
+The format specification is at link:docs/FORMAT.adoc[FORMAT.adoc].
 
 == Contributing
 
@@ -57,12 +57,11 @@ Copyright (C) 2022&ndash;2023 Shun Sakai (see link:AUTHORS.adoc[])
 
 . Unless otherwise noted, each file is distributed under the terms of either
   the _Apache License 2.0_ or the _MIT License_.
-. Each file in the `crate/cli` directory and some other files are distributed
+. Each file in the `crates/cli` directory and some other files are distributed
   under the terms of the _GNU General Public License v3.0 or later_.
 . Some documents are distributed under the terms of the _Creative Commons
   Attribution 4.0 International Public License_.
 
 This project is compliant with version 3.0 of the
-{reuse-spec-url}[_REUSE Specification_]. See link:COPYING[] and copyright
-notices of individual files for more details on copyright and licensing
-information.
+{reuse-spec-url}[_REUSE Specification_]. See copyright notices of individual
+files for more details on copyright and licensing information.

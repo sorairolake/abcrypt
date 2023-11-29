@@ -28,9 +28,9 @@ Please see the {commit-messages-guide-url}[Commit messages guide].
   https://github.com/fsfe/reuse-tool[`reuse`] is useful for updating the
   copyright information.
 . Please update the following applicable Changelog if possible.
-.. link:crate/abcrypt/CHANGELOG.adoc[].
-.. link:crate/cli/CHANGELOG.adoc[].
-.. link:crate/capi/CHANGELOG.adoc[].
+.. link:crates/abcrypt/CHANGELOG.adoc[].
+.. link:crates/cli/CHANGELOG.adoc[].
+.. link:crates/capi/CHANGELOG.adoc[].
 . Please read and agree to follow the link:CODE_OF_CONDUCT.md[Code of Conduct].
 
 == Development

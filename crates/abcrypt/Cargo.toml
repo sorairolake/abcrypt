@@ -1,0 +1,45 @@
+# SPDX-FileCopyrightText: 2022 Shun Sakai
+#
+# SPDX-License-Identifier: Apache-2.0 OR MIT
+
+[package]
+name = "abcrypt"
+version = "0.2.7"
+authors.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+description = "An implementation of the abcrypt encrypted data format"
+documentation = "https://docs.rs/abcrypt"
+readme = "README.md"
+homepage.workspace = true
+repository.workspace = true
+license = "Apache-2.0 OR MIT"
+keywords = ["abcrypt", "crypto"]
+categories = ["cryptography", "no-std"]
+exclude = ["/benches", "/examples", "/tests"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+argon2 = { version = "0.5.2", default-features = false }
+blake2 = { version = "0.10.6", default-features = false }
+chacha20poly1305 = { version = "0.10.1", default-features = false, features = ["getrandom"] }
+rand = { version = "0.8.5", default-features = false, features = ["getrandom", "std_rng"] }
+serde = { version = "1.0.193", default-features = false, features = ["derive"], optional = true }
+
+[dev-dependencies]
+anyhow.workspace = true
+clap.workspace = true
+dialoguer.workspace = true
+serde_json = "1.0.108"
+serde_test = "1.0.176"
+
+[features]
+default = ["std"]
+alloc = ["argon2/alloc"]
+std = ["alloc", "argon2/std", "blake2/std", "chacha20poly1305/std"]
+serde = ["dep:serde"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "doc_cfg"]

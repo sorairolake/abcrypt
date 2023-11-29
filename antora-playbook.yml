@@ -10,7 +10,7 @@ site:
 content:
   sources:
     - url: .
-      start_path: doc/book
+      start_path: docs/book
 
 asciidoc:
   extensions:
@@ -20,3 +20,7 @@ ui:
   bundle:
     url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/HEAD/raw/build/ui-bundle.zip?job=bundle-stable
     snapshot: true
+
+runtime:
+  log:
+    failure_level: warn

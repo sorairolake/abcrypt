@@ -1,0 +1,67 @@
+// SPDX-FileCopyrightText: 2022 Shun Sakai
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+= Changelog
+:toc: preamble
+:project-url: https://github.com/sorairolake/abcrypt
+:compare-url: {project-url}/compare
+:issue-url: {project-url}/issues
+:pull-request-url: {project-url}/pull
+
+All notable changes to this project will be documented in this file.
+
+The format is based on https://keepachangelog.com/[Keep a Changelog], and this
+project adheres to https://semver.org/[Semantic Versioning].
+
+== {compare-url}/abcrypt-cli-v0.2.4\...HEAD[Unreleased]
+
+=== Changed
+
+* Bump MSRV to 1.70.0 ({pull-request-url}/139[#139])
+
+== {compare-url}/abcrypt-cli-v0.2.3\...abcrypt-cli-v0.2.4[0.2.4] - 2023-11-04
+
+=== Changed
+
+* Update dependencies
+
+== {compare-url}/abcrypt-cli-v0.2.2\...abcrypt-cli-v0.2.3[0.2.3] - 2023-09-30
+
+=== Changed
+
+* Change the structure of the Argon2 parameters ({pull-request-url}/70[#70])
+
+== {compare-url}/abcrypt-cli-v0.2.1\...abcrypt-cli-v0.2.2[0.2.2] - 2023-09-11
+
+=== Added
+
+* Add the `homepage` field to `Cargo.toml` ({pull-request-url}/50[#50])
+* Add the book ({pull-request-url}/56[#56])
+
+=== Changed
+
+* Update man pages ({pull-request-url}/53[#53])
+
+== {compare-url}/abcrypt-cli-v0.2.0\...abcrypt-cli-v0.2.1[0.2.1] - 2023-09-05
+
+=== Changed
+
+* Change MSRV to 1.65.0 ({pull-request-url}/39[#39])
+* Change the maximum value of `--memory-size` to 4 TiB
+  ({pull-request-url}/44[#44])
+
+== {compare-url}/abcrypt-cli-v0.1.0\...abcrypt-cli-v0.2.0[0.2.0] - 2023-09-03
+
+=== Changed
+
+* Change the value of `-m` for `encrypt` command can be specified with units of
+  bytes ({pull-request-url}/11[#11])
+* Validate the values of `-t` and `-p` for `encrypt` command
+  ({pull-request-url}/12[#12])
+
+== {project-url}/releases/tag/abcrypt-cli-v0.1.0[0.1.0] - 2023-08-25
+
+=== Added
+
+* Initial release
