@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Changelog :: abcrypt Documentation</title>
     <link rel="canonical" href="https://sorairolake.github.io/abcrypt/book/cli/changelog.html">
-    <meta name="generator" content="Antora 3.1.4">
+    <meta name="generator" content="Antora 3.1.5">
     <link rel="stylesheet" href="../../_/css/site.css">
   </head>
   <body class="article">
@@ -13,7 +13,7 @@
   <nav class="navbar">
     <div class="navbar-brand">
       <a class="navbar-item" href="https://sorairolake.github.io/abcrypt">abcrypt Documentation</a>
-      <button class="navbar-burger" data-target="topbar-nav">
+      <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false" aria-label="Toggle main menu">
         <span></span>
         <span></span>
         <span></span>
@@ -53,6 +53,7 @@
     <div class="panels">
 <div class="nav-panel-menu is-active" data-panel="menu">
   <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
     <h3 class="title"><a href="../index.html">abcrypt</a></h3>
 <ul class="nav-list">
   <li class="nav-item" data-depth="0">
@@ -202,7 +203,7 @@
     <li><a href="changelog.html">Changelog</a></li>
   </ul>
 </nav>
-<div class="edit-this-page"><a href="https://github.com/sorairolake/abcrypt/edit/HEAD/doc/book/modules/cli/pages/changelog.adoc">Edit this Page</a></div>
+<div class="edit-this-page"><a href="https://github.com/sorairolake/abcrypt/edit/HEAD/docs/book/modules/cli/pages/changelog.adoc">Edit this Page</a></div>
 </div>
   <div class="content">
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
@@ -223,30 +224,35 @@ project adheres to <a href="https://semver.org/">Semantic Versioning</a>.</p>
 <div id="toc" class="toc">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_0_2_4_2023_11_04">0.2.4 - 2023-11-04</a>
+<li><a href="#_unreleased">Unreleased</a>
 <ul class="sectlevel2">
 <li><a href="#_changed">Changed</a></li>
 </ul>
 </li>
-<li><a href="#_0_2_3_2023_09_30">0.2.3 - 2023-09-30</a>
+<li><a href="#_0_2_4_2023_11_04">0.2.4 - 2023-11-04</a>
 <ul class="sectlevel2">
 <li><a href="#_changed_2">Changed</a></li>
+</ul>
+</li>
+<li><a href="#_0_2_3_2023_09_30">0.2.3 - 2023-09-30</a>
+<ul class="sectlevel2">
+<li><a href="#_changed_3">Changed</a></li>
 </ul>
 </li>
 <li><a href="#_0_2_2_2023_09_11">0.2.2 - 2023-09-11</a>
 <ul class="sectlevel2">
 <li><a href="#_added">Added</a></li>
-<li><a href="#_changed_3">Changed</a></li>
+<li><a href="#_changed_4">Changed</a></li>
 </ul>
 </li>
 <li><a href="#_0_2_1_2023_09_05">0.2.1 - 2023-09-05</a>
 <ul class="sectlevel2">
-<li><a href="#_changed_4">Changed</a></li>
+<li><a href="#_changed_5">Changed</a></li>
 </ul>
 </li>
 <li><a href="#_0_2_0_2023_09_03">0.2.0 - 2023-09-03</a>
 <ul class="sectlevel2">
-<li><a href="#_changed_5">Changed</a></li>
+<li><a href="#_changed_6">Changed</a></li>
 </ul>
 </li>
 <li><a href="#_0_1_0_2023_08_25">0.1.0 - 2023-08-25</a>
@@ -258,10 +264,25 @@ project adheres to <a href="https://semver.org/">Semantic Versioning</a>.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_0_2_4_2023_11_04"><a class="anchor" href="#_0_2_4_2023_11_04"></a><a href="https://github.com/sorairolake/abcrypt/compare/abcrypt-cli-v0.2.3...abcrypt-cli-v0.2.4">0.2.4</a> - 2023-11-04</h2>
+<h2 id="_unreleased"><a class="anchor" href="#_unreleased"></a><a href="https://github.com/sorairolake/abcrypt/compare/abcrypt-cli-v0.2.4...HEAD">Unreleased</a></h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_changed"><a class="anchor" href="#_changed"></a>Changed</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Bump MSRV to 1.70.0 (<a href="https://github.com/sorairolake/abcrypt/pull/139">#139</a>)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_0_2_4_2023_11_04"><a class="anchor" href="#_0_2_4_2023_11_04"></a><a href="https://github.com/sorairolake/abcrypt/compare/abcrypt-cli-v0.2.3...abcrypt-cli-v0.2.4">0.2.4</a> - 2023-11-04</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_changed_2"><a class="anchor" href="#_changed_2"></a>Changed</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -276,7 +297,7 @@ project adheres to <a href="https://semver.org/">Semantic Versioning</a>.</p>
 <h2 id="_0_2_3_2023_09_30"><a class="anchor" href="#_0_2_3_2023_09_30"></a><a href="https://github.com/sorairolake/abcrypt/compare/abcrypt-cli-v0.2.2...abcrypt-cli-v0.2.3">0.2.3</a> - 2023-09-30</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_changed_2"><a class="anchor" href="#_changed_2"></a>Changed</h3>
+<h3 id="_changed_3"><a class="anchor" href="#_changed_3"></a>Changed</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -304,7 +325,7 @@ project adheres to <a href="https://semver.org/">Semantic Versioning</a>.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_changed_3"><a class="anchor" href="#_changed_3"></a>Changed</h3>
+<h3 id="_changed_4"><a class="anchor" href="#_changed_4"></a>Changed</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -319,7 +340,7 @@ project adheres to <a href="https://semver.org/">Semantic Versioning</a>.</p>
 <h2 id="_0_2_1_2023_09_05"><a class="anchor" href="#_0_2_1_2023_09_05"></a><a href="https://github.com/sorairolake/abcrypt/compare/abcrypt-cli-v0.2.0...abcrypt-cli-v0.2.1">0.2.1</a> - 2023-09-05</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_changed_4"><a class="anchor" href="#_changed_4"></a>Changed</h3>
+<h3 id="_changed_5"><a class="anchor" href="#_changed_5"></a>Changed</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -338,7 +359,7 @@ project adheres to <a href="https://semver.org/">Semantic Versioning</a>.</p>
 <h2 id="_0_2_0_2023_09_03"><a class="anchor" href="#_0_2_0_2023_09_03"></a><a href="https://github.com/sorairolake/abcrypt/compare/abcrypt-cli-v0.1.0...abcrypt-cli-v0.2.0">0.2.0</a> - 2023-09-03</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_changed_5"><a class="anchor" href="#_changed_5"></a>Changed</h3>
+<h3 id="_changed_6"><a class="anchor" href="#_changed_6"></a>Changed</h3>
 <div class="ulist">
 <ul>
 <li>
