@@ -4,7 +4,7 @@
 
 [package]
 name = "abcrypt-capi"
-version = "0.2.1"
+version = "0.2.2"
 authors.workspace = true
 edition.workspace = true
 rust-version.workspace = true
