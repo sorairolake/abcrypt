@@ -12,28 +12,24 @@
 #![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
 
 #[cfg(feature = "std")]
-use anyhow::Context;
-#[cfg(feature = "std")]
-use clap::Parser;
-
-#[cfg(feature = "std")]
-#[derive(Debug, Parser)]
+#[derive(Debug, clap::Parser)]
 #[command(version, about)]
 struct Opt {
-    /// File to decrypt.
-    #[arg(value_name("INFILE"))]
+    /// Input file.
+    #[arg(value_name("FILE"))]
     input: std::path::PathBuf,
-
-    /// File to write the result to.
-    #[arg(value_name("OUTFILE"))]
-    output: std::path::PathBuf,
 }
 
 #[cfg(feature = "std")]
 fn main() -> anyhow::Result<()> {
-    use std::fs;
+    use std::{
+        fs,
+        io::{self, Write},
+    };
 
     use abcrypt::{Decryptor, Error};
+    use anyhow::Context;
+    use clap::Parser;
     use dialoguer::{theme::ColorfulTheme, Password};
 
     let opt = Opt::parse();
@@ -47,13 +43,15 @@ fn main() -> anyhow::Result<()> {
         .context("could not read passphrase")?;
     let cipher = match Decryptor::new(&ciphertext, passphrase) {
         c @ Err(Error::InvalidHeaderMac(_)) => c.context("passphrase is incorrect"),
-        c => c.with_context(|| format!("the header in {} is invalid", opt.input.display())),
+        c => c.context("the header in the encrypted data is invalid"),
     }?;
     let plaintext = cipher
         .decrypt_to_vec()
-        .with_context(|| format!("{} is corrupted", opt.input.display()))?;
-    fs::write(opt.output, plaintext)
-        .with_context(|| format!("could not write the result to {}", opt.input.display()))?;
+        .context("the encrypted data is corrupted")?;
+
+    io::stdout()
+        .write_all(&plaintext)
+        .context("could not write data to stdout")?;
     Ok(())
 }
 

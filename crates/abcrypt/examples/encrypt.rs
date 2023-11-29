@@ -12,12 +12,7 @@
 #![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
 
 #[cfg(feature = "std")]
-use anyhow::Context;
-#[cfg(feature = "std")]
-use clap::Parser;
-
-#[cfg(feature = "std")]
-#[derive(Debug, Parser)]
+#[derive(Debug, clap::Parser)]
 #[command(version, about)]
 struct Opt {
     /// Set the memory size in KiB.
@@ -32,20 +27,21 @@ struct Opt {
     #[arg(short, long, default_value("1"), value_name("NUM"))]
     parallelism: u32,
 
-    /// File to encrypt.
-    #[arg(value_name("INFILE"))]
+    /// Input file.
+    #[arg(value_name("FILE"))]
     input: std::path::PathBuf,
-
-    /// File to write the result to.
-    #[arg(value_name("OUTFILE"))]
-    output: std::path::PathBuf,
 }
 
 #[cfg(feature = "std")]
 fn main() -> anyhow::Result<()> {
-    use std::fs;
+    use std::{
+        fs,
+        io::{self, Write},
+    };
 
-    use abcrypt::{argon2::Params, Encryptor};
+    use abcrypt::argon2::Params;
+    use anyhow::Context;
+    use clap::Parser;
     use dialoguer::{theme::ColorfulTheme, Password};
 
     let opt = Opt::parse();
@@ -59,10 +55,11 @@ fn main() -> anyhow::Result<()> {
         .interact()
         .context("could not read passphrase")?;
     let params = Params::new(opt.memory_size, opt.iterations, opt.parallelism, None)?;
-    let cipher = Encryptor::with_params(&plaintext, passphrase, params)?;
-    let ciphertext = cipher.encrypt_to_vec();
-    fs::write(opt.output, ciphertext)
-        .with_context(|| format!("could not write the result to {}", opt.input.display()))?;
+    let ciphertext = abcrypt::encrypt_with_params(plaintext, passphrase, params)?;
+
+    io::stdout()
+        .write_all(&ciphertext)
+        .context("could not write data to stdout")?;
     Ok(())
 }
 
