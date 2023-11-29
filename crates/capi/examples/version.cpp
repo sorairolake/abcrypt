@@ -6,7 +6,7 @@
 
 #include <iostream>
 
-constexpr auto VERSION = "0.2.1";
+constexpr auto VERSION = "0.2.2";
 
 void print_version(void) {
   std::cout << fmt::format("abcrypt-capi {}", VERSION) << std::endl;
