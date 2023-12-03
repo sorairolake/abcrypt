@@ -21,6 +21,9 @@ encrypt and decrypt files using the [abcrypt format].
 cargo install abcrypt-cli
 ```
 
+If you want to enable optimizations such as LTO, set them using [environment
+variables].
+
 ### From binaries
 
 The [release page] contains pre-built binaries for Linux, macOS and Windows.
@@ -101,6 +104,7 @@ licensing information.
 [version-url]: https://crates.io/crates/abcrypt-cli
 [license-badge]: https://img.shields.io/crates/l/abcrypt-cli?style=for-the-badge
 [abcrypt format]: ../../docs/FORMAT.adoc
+[environment variables]: https://doc.rust-lang.org/cargo/reference/environment-variables.html#configuration-environment-variables
 [release page]: https://github.com/sorairolake/abcrypt/releases
 [BUILD.adoc]: BUILD.adoc
 [`abcrypt(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt.1.html
