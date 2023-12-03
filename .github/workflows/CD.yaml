@@ -16,6 +16,7 @@ permissions:
 
 env:
   CARGO_PROFILE_RELEASE_LTO: true
+  CARGO_PROFILE_RELEASE_PANIC: "abort"
 
 jobs:
   build:
