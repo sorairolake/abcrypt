@@ -14,6 +14,10 @@ on:
 permissions:
   contents: write
 
+env:
+  CARGO_PROFILE_RELEASE_LTO: true
+  CARGO_PROFILE_RELEASE_PANIC: "abort"
+
 jobs:
   build:
     name: Build
@@ -62,7 +66,7 @@ jobs:
           targets: ${{ matrix.target }}
       - name: Install cross
         if: ${{ matrix.use-cross }}
-        uses: taiki-e/install-action@v2.21.21
+        uses: taiki-e/install-action@v2.21.26
         with:
           tool: cross
       - name: Cache build artifacts
