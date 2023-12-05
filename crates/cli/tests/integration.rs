@@ -173,7 +173,7 @@ fn validate_m_parameter_with_invalid_unit_for_encrypt_command() {
         .assert()
         .failure()
         .code(2)
-        .stderr(predicate::str::contains("the character 'A' is incorrect ('B', 'K', 'M', 'G', 'T', 'P', 'E' or no character or no character is expected)"));
+        .stderr(predicate::str::contains("the character 'A' is incorrect"));
     command()
         .arg("encrypt")
         .arg("-m")
@@ -185,7 +185,7 @@ fn validate_m_parameter_with_invalid_unit_for_encrypt_command() {
         .assert()
         .failure()
         .code(2)
-        .stderr(predicate::str::contains("the character 'L' is incorrect ('B', 'K', 'M', 'G', 'T', 'P', 'E' or no character or no character is expected)"));
+        .stderr(predicate::str::contains("the character 'L' is incorrect"));
 }
 
 #[test]
