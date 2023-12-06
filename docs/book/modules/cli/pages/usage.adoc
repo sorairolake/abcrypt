@@ -18,6 +18,31 @@ abcrypt encrypt data.txt > data.txt.abcrypt
 abcrypt decrypt data.txt.abcrypt > data.txt
 ----
 
+== Provides information about the encryption parameters
+
+.Output as a human-readable string
+[source,shell]
+----
+abcrypt information data.txt.abcrypt
+----
+
+.Output
+....
+Parameters used: m_cost = 32; t_cost = 3; p_cost = 4;
+....
+
+.Output as JSON
+[source,shell]
+----
+abcrypt information -j data.txt.abcrypt
+----
+
+.Output
+[source,json]
+----
+{"m_cost":32,"t_cost":3,"p_cost":4}
+----
+
 == Generate shell completion
 
 `--generate-completion` option generates shell completions to stdout.

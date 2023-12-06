@@ -27,6 +27,12 @@ cd abcrypt
 just build
 ----
 
+.To find the directory where manual pages are generated
+[source,shell]
+----
+fd -t directory out ./target/*/build/abcrypt-cli-*
+----
+
 == Crate features
 
 `json`::
