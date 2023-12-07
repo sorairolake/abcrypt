@@ -15,7 +15,7 @@ repository.workspace = true
 license = "GPL-3.0-or-later"
 keywords = ["abcrypt"]
 categories = ["command-line-utilities"]
-exclude = ["/docs", "/tests"]
+include = ["/LICENSES", "/README.md", "/src"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -24,7 +24,7 @@ name = "abcrypt"
 path = "src/main.rs"
 
 [dependencies]
-abcrypt = { version = "0.2.7", path = "../abcrypt", features = ["serde"] }
+abcrypt = { version = "0.2.8", path = "../abcrypt", features = ["serde"] }
 anyhow.workspace = true
 byte-unit = "5.0.3"
 clap = { workspace = true, features = ["wrap_help"] }
@@ -32,7 +32,7 @@ clap_complete = "4.4.4"
 clap_complete_nushell = "4.4.2"
 dialoguer.workspace = true
 serde_json = { version = "1.0.108", optional = true }
-sysexits = "0.7.6"
+sysexits = "0.7.7"
 
 [dev-dependencies]
 assert_cmd = "2.0.12"

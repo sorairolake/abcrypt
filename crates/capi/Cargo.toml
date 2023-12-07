@@ -16,7 +16,7 @@ repository.workspace = true
 license = "Apache-2.0 OR MIT"
 keywords = ["abcrypt", "crypto"]
 categories = ["cryptography"]
-exclude = ["/examples", "/tests"]
+include = ["/LICENSES", "/README.md", "/src"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -24,7 +24,7 @@ exclude = ["/examples", "/tests"]
 crate-type = ["staticlib", "cdylib"]
 
 [dependencies]
-abcrypt = { version = "0.2.7", path = "../abcrypt" }
+abcrypt = { version = "0.2.8", path = "../abcrypt" }
 
 [build-dependencies]
 cbindgen = { version = "0.26.0", default-features = false }

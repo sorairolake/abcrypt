@@ -48,6 +48,32 @@ Decrypt a file:
 abcrypt decrypt data.txt.abcrypt > data.txt
 ```
 
+### Provides information about the encryption parameters
+
+Output as a human-readable string:
+
+```sh
+abcrypt information data.txt.abcrypt
+```
+
+Output:
+
+```text
+Parameters used: m_cost = 32; t_cost = 3; p_cost = 4;
+```
+
+Output as JSON:
+
+```sh
+abcrypt information -j data.txt.abcrypt
+```
+
+Output:
+
+```json
+{"m_cost":32,"t_cost":3,"p_cost":4}
+```
+
 ### Generate shell completion
 
 `--generate-completion` option generates shell completions to stdout.

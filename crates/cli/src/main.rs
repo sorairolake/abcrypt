@@ -25,14 +25,13 @@ fn main() -> ExitCode {
         Ok(()) => ExitCode::SUCCESS,
         Err(err) => {
             eprintln!("Error: {err:?}");
-            #[allow(clippy::option_if_let_else)]
             if let Some(e) = err.downcast_ref::<io::Error>() {
-                sysexits::ExitCode::from(e.kind()).into()
-            } else if err.is::<abcrypt::Error>() {
-                sysexits::ExitCode::DataErr.into()
-            } else {
-                ExitCode::FAILURE
+                return sysexits::ExitCode::from(e.kind()).into();
             }
+            if err.is::<abcrypt::Error>() {
+                return sysexits::ExitCode::DataErr.into();
+            }
+            ExitCode::FAILURE
         }
     }
 }
