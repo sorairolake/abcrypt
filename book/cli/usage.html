@@ -224,6 +224,35 @@
 </div>
 </div>
 <div class="sect1">
+<h2 id="_provides_information_about_the_encryption_parameters"><a class="anchor" href="#_provides_information_about_the_encryption_parameters"></a>Provides information about the encryption parameters</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="title">Output as a human-readable string</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">abcrypt information data.txt.abcrypt</code></pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="title">Output</div>
+<div class="content">
+<pre>Parameters used: m_cost = 32; t_cost = 3; p_cost = 4;</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output as JSON</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">abcrypt information -j data.txt.abcrypt</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{"m_cost":32,"t_cost":3,"p_cost":4}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_generate_shell_completion"><a class="anchor" href="#_generate_shell_completion"></a>Generate shell completion</h2>
 <div class="sectionbody">
 <div class="paragraph">
