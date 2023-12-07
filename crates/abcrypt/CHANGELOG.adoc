@@ -14,7 +14,7 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
 
-== {compare-url}/abcrypt-v0.2.7\...HEAD[Unreleased]
+== {compare-url}/abcrypt-v0.2.7\...abcrypt-v0.2.8[0.2.8] - 2023-12-07
 
 === Changed
 
