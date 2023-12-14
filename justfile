@@ -71,7 +71,7 @@ clang-tidy: setup-meson
 
 # Run the formatter for the README
 @fmt-readme:
-    npx prettier -w README.md crates/*/README.md
+    npx prettier -w crates/*/README.md
 
 # Build the book
 @build-book:
