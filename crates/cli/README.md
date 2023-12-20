@@ -67,13 +67,17 @@ Parameters used: m_cost = 32; t_cost = 3; p_cost = 4;
 Output as JSON:
 
 ```sh
-abcrypt information -j data.txt.abcrypt
+abcrypt information -j data.txt.abcrypt | jq
 ```
 
 Output:
 
 ```json
-{"m_cost":32,"t_cost":3,"p_cost":4}
+{
+  "m_cost": 32,
+  "t_cost": 3,
+  "p_cost": 4
+}
 ```
 
 ### Generate shell completion
