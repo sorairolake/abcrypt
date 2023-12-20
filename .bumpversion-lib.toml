@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: 2023 Shun Sakai
+#
+# SPDX-License-Identifier: Apache-2.0 OR MIT
+
+[tool.bumpversion]
+current_version = "0.2.8"
+
+[[tool.bumpversion.files]]
+filename = "crates/abcrypt/README.md"
+
+[[tool.bumpversion.files]]
+filename = "crates/abcrypt/src/lib.rs"
+
+[[tool.bumpversion.files]]
+filename = "docs/book/modules/lib/pages/usage.adoc"
+
+[[tool.bumpversion.files]]
+filename = "docs/FORMAT.adoc"

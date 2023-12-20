@@ -13,6 +13,8 @@ SPDX-License-Identifier: GPL-3.0-or-later
 **abcrypt** ([`abcrypt-cli`][version-url]) is a command-line utility for
 encrypt and decrypt files using the [abcrypt format].
 
+![Screenshot of abcrypt](assets/screenshot.webp)
+
 ## Installation
 
 ### From source
@@ -65,13 +67,17 @@ Parameters used: m_cost = 32; t_cost = 3; p_cost = 4;
 Output as JSON:
 
 ```sh
-abcrypt information -j data.txt.abcrypt
+abcrypt information -j data.txt.abcrypt | jq
 ```
 
 Output:
 
 ```json
-{"m_cost":32,"t_cost":3,"p_cost":4}
+{
+  "m_cost": 32,
+  "t_cost": 3,
+  "p_cost": 4
+}
 ```
 
 ### Generate shell completion

@@ -539,7 +539,8 @@ fn information_command_without_default_feature() {
         .arg("data/data.txt.abcrypt")
         .assert()
         .failure()
-        .code(2);
+        .code(2)
+        .stderr(predicate::str::contains("unexpected argument '-j' found"));
 }
 
 #[cfg(feature = "json")]
