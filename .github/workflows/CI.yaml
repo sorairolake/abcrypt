@@ -14,66 +14,8 @@ on:
     - cron: "0 0 * * 0"
 
 jobs:
-  package-test:
-    name: Package Test
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        target:
-          - x86_64-unknown-linux-gnu
-          - x86_64-apple-darwin
-          - x86_64-pc-windows-msvc
-        toolchain:
-          - 1.70.0 # MSRV
-          - stable
-        crate:
-          - abcrypt
-          - abcrypt-cli
-          - abcrypt-capi
-        include:
-          - target: x86_64-unknown-linux-gnu
-            os: ubuntu-22.04
-          - target: x86_64-apple-darwin
-            os: macos-12
-          - target: x86_64-pc-windows-msvc
-            os: windows-2022
-    steps:
-      - name: Set Git to use LF
-        if: matrix.os == 'windows-2022'
-        run: |
-          git config --global core.autocrlf false
-          git config --global core.eol lf
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Setup Rust toolchain
-        uses: dtolnay/rust-toolchain@v1
-        with:
-          toolchain: ${{ matrix.toolchain }}
-          targets: ${{ matrix.target }}
-      - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.1
-        with:
-          key: ${{ matrix.target }}
-      - name: Run tests
-        run: cargo test -p ${{ matrix.crate }} --target ${{ matrix.target }}
-      - name: Run tests (no default features)
-        if: matrix.crate != 'abcrypt-capi'
-        run: cargo test -p ${{ matrix.crate }} --target ${{ matrix.target }} --no-default-features
-      - name: Run tests (`alloc` feature)
-        if: matrix.crate == 'abcrypt'
-        run: cargo test -p ${{ matrix.crate }} --target ${{ matrix.target }} --no-default-features -F alloc
-      - name: Run tests (`serde` feature)
-        if: matrix.crate == 'abcrypt'
-        run: cargo test -p ${{ matrix.crate }} --target ${{ matrix.target }} -F serde
-      - name: Run tests (`serde` feature with no default features)
-        if: matrix.crate == 'abcrypt'
-        run: cargo test -p ${{ matrix.crate }} --target ${{ matrix.target }} --no-default-features -F serde
-      - name: Check if the header file is up-to-date
-        if: matrix.crate == 'abcrypt-capi'
-        run: git diff --exit-code
-
-  workspace-test:
-    name: Workspace Test
+  test:
+    name: Test
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -111,7 +53,15 @@ jobs:
       - name: Run tests
         run: cargo test --target ${{ matrix.target }}
       - name: Run tests (no default features)
-        run: cargo test --target ${{ matrix.target }} --no-default-features
+        run: cargo test -p abcrypt -p abcrypt-cli --target ${{ matrix.target }} --no-default-features
+      - name: Run tests (`alloc` feature)
+        run: cargo test -p abcrypt --target ${{ matrix.target }} --no-default-features -F alloc
+      - name: Run tests (`serde` feature)
+        run: cargo test -p abcrypt --target ${{ matrix.target }} -F serde
+      - name: Run tests (`serde` feature with no default features)
+        run: cargo test -p abcrypt --target ${{ matrix.target }} --no-default-features -F serde
+      - name: Check if the header file is up-to-date
+        run: git diff --exit-code
 
   rustfmt:
     name: Rustfmt
