@@ -28,7 +28,7 @@ abcrypt = { version = "0.2.8", path = "../abcrypt", features = ["serde"] }
 anyhow.workspace = true
 byte-unit = "5.1.2"
 clap = { workspace = true, features = ["wrap_help"] }
-clap_complete = "4.4.5"
+clap_complete = "4.4.6"
 clap_complete_nushell = "4.4.2"
 dialoguer.workspace = true
 serde_json = { version = "1.0.109", optional = true }
