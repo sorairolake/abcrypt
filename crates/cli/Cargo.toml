@@ -24,7 +24,7 @@ name = "abcrypt"
 path = "src/main.rs"
 
 [dependencies]
-abcrypt = { version = "0.2.8", path = "../abcrypt", features = ["serde"] }
+abcrypt = { version = "0.2.9", path = "../abcrypt", features = ["serde"] }
 anyhow.workspace = true
 byte-unit = "5.1.2"
 clap = { workspace = true, features = ["wrap_help"] }
