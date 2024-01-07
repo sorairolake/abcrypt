@@ -55,7 +55,7 @@ Please see link:CONTRIBUTING.adoc[].
 
 == License
 
-Copyright (C) 2022&ndash;2023 Shun Sakai (see link:AUTHORS.adoc[])
+Copyright (C) 2022&ndash;2024 Shun Sakai (see link:AUTHORS.adoc[])
 
 . Unless otherwise noted, each file is distributed under the terms of either
   the _Apache License 2.0_ or the _MIT License_.

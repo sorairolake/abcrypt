@@ -87,7 +87,7 @@
 //!
 //! [abcrypt encrypted data format]: https://sorairolake.github.io/abcrypt/book/format.html
 
-#![doc(html_root_url = "https://docs.rs/abcrypt/0.2.8/")]
+#![doc(html_root_url = "https://docs.rs/abcrypt/0.2.9/")]
 #![no_std]
 #![cfg_attr(doc_cfg, feature(doc_auto_cfg, doc_cfg))]
 // Lint levels of rustc.
@@ -113,18 +113,17 @@ pub use argon2;
 pub use blake2;
 pub use chacha20poly1305;
 
+#[cfg(feature = "alloc")]
+pub use crate::{
+    decrypt::decrypt,
+    encrypt::{encrypt, encrypt_with_params},
+};
 pub use crate::{
     decrypt::Decryptor,
     encrypt::Encryptor,
     error::{Error, Result},
     format::{HEADER_SIZE, TAG_SIZE},
     params::Params,
-};
-
-#[cfg(feature = "alloc")]
-pub use crate::{
-    decrypt::decrypt,
-    encrypt::{encrypt, encrypt_with_params},
 };
 
 const ARGON2_ALGORITHM: argon2::Algorithm = argon2::Algorithm::Argon2id;
