@@ -36,10 +36,14 @@ pub const HEADER_SIZE: usize = Header::SIZE;
 pub const TAG_SIZE: usize = <XChaCha20Poly1305 as AeadCore>::TagSize::USIZE;
 
 /// Version of the abcrypt encrypted data format.
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub enum Version {
     /// Version 0.
+    #[default]
     V0,
+
+    /// Version 1.
+    _V1,
 }
 
 impl From<Version> for u8 {
@@ -67,7 +71,7 @@ impl Header {
 
     /// The number of bytes of the header.
     const SIZE: usize = mem::size_of::<MagicNumber>()
-        + mem::size_of::<u8>()
+        + mem::size_of::<Version>()
         + mem::size_of::<Params>()
         + mem::size_of::<Salt>()
         + <XChaCha20Poly1305 as AeadCore>::NonceSize::USIZE
@@ -76,7 +80,7 @@ impl Header {
     /// Creates a new `Header`.
     pub fn new(params: argon2::Params) -> Self {
         let magic_number = Self::MAGIC_NUMBER;
-        let version = Version::V0;
+        let version = Version::default();
         let params = params.into();
         let salt = StdRng::from_entropy().gen();
         let nonce = XChaCha20Poly1305::generate_nonce(&mut StdRng::from_entropy());
@@ -97,16 +101,13 @@ impl Header {
             return Err(Error::InvalidLength);
         }
 
-        let magic_number = if data[..7] == Self::MAGIC_NUMBER {
-            Ok(Self::MAGIC_NUMBER)
-        } else {
-            Err(Error::InvalidMagicNumber)
-        }?;
-        let version = if data[7] == Version::V0.into() {
-            Ok(Version::V0)
-        } else {
-            Err(Error::UnknownVersion(data[7]))
-        }?;
+        let Some(magic_number) = Some(Self::MAGIC_NUMBER).filter(|mn| &data[..7] == mn) else {
+            return Err(Error::InvalidMagicNumber);
+        };
+        let version = match data[7] {
+            0 => Version::V0,
+            v => return Err(Error::UnknownVersion(v)),
+        };
         let m_cost = u32::from_le_bytes(
             data[8..12]
                 .try_into()
@@ -237,11 +238,59 @@ mod tests {
     #[test]
     fn version() {
         assert_eq!(Version::V0 as u8, 0);
+        assert_eq!(Version::_V1 as u8, 1);
+    }
+
+    #[test]
+    fn size_of_version() {
+        assert_eq!(mem::size_of::<Version>(), mem::size_of::<u8>());
+    }
+
+    #[test]
+    fn clone_version() {
+        assert_eq!(Version::V0.clone(), Version::V0);
+        assert_eq!(Version::_V1.clone(), Version::_V1);
+    }
+
+    #[test]
+    fn copy_version() {
+        {
+            let a = Version::V0;
+            let b = a;
+            assert_eq!(a, b);
+        }
+
+        {
+            let a = Version::_V1;
+            let b = a;
+            assert_eq!(a, b);
+        }
+    }
+
+    #[cfg(feature = "alloc")]
+    #[test]
+    fn debug_version() {
+        assert_eq!(format!("{:?}", Version::V0), "V0");
+        assert_eq!(format!("{:?}", Version::_V1), "_V1");
+    }
+
+    #[test]
+    fn default_version() {
+        assert_eq!(Version::default(), Version::V0);
+    }
+
+    #[test]
+    fn version_equality() {
+        assert_eq!(Version::V0, Version::V0);
+        assert_ne!(Version::V0, Version::_V1);
+        assert_ne!(Version::_V1, Version::V0);
+        assert_eq!(Version::_V1, Version::_V1);
     }
 
     #[test]
     fn from_version_to_u8() {
         assert_eq!(u8::from(Version::V0), 0);
+        assert_eq!(u8::from(Version::_V1), 1);
     }
 
     #[test]
