@@ -37,13 +37,15 @@ pub const TAG_SIZE: usize = <XChaCha20Poly1305 as AeadCore>::TagSize::USIZE;
 
 /// Version of the abcrypt encrypted data format.
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[non_exhaustive]
 pub enum Version {
     /// Version 0.
     #[default]
     V0,
 
     /// Version 1.
-    _V1,
+    #[doc(hidden)]
+    V1,
 }
 
 impl From<Version> for u8 {
@@ -238,7 +240,7 @@ mod tests {
     #[test]
     fn version() {
         assert_eq!(Version::V0 as u8, 0);
-        assert_eq!(Version::_V1 as u8, 1);
+        assert_eq!(Version::V1 as u8, 1);
     }
 
     #[test]
@@ -249,7 +251,7 @@ mod tests {
     #[test]
     fn clone_version() {
         assert_eq!(Version::V0.clone(), Version::V0);
-        assert_eq!(Version::_V1.clone(), Version::_V1);
+        assert_eq!(Version::V1.clone(), Version::V1);
     }
 
     #[test]
@@ -261,7 +263,7 @@ mod tests {
         }
 
         {
-            let a = Version::_V1;
+            let a = Version::V1;
             let b = a;
             assert_eq!(a, b);
         }
@@ -271,7 +273,7 @@ mod tests {
     #[test]
     fn debug_version() {
         assert_eq!(format!("{:?}", Version::V0), "V0");
-        assert_eq!(format!("{:?}", Version::_V1), "_V1");
+        assert_eq!(format!("{:?}", Version::V1), "V1");
     }
 
     #[test]
@@ -282,15 +284,15 @@ mod tests {
     #[test]
     fn version_equality() {
         assert_eq!(Version::V0, Version::V0);
-        assert_ne!(Version::V0, Version::_V1);
-        assert_ne!(Version::_V1, Version::V0);
-        assert_eq!(Version::_V1, Version::_V1);
+        assert_ne!(Version::V0, Version::V1);
+        assert_ne!(Version::V1, Version::V0);
+        assert_eq!(Version::V1, Version::V1);
     }
 
     #[test]
     fn from_version_to_u8() {
         assert_eq!(u8::from(Version::V0), 0);
-        assert_eq!(u8::from(Version::_V1), 1);
+        assert_eq!(u8::from(Version::V1), 1);
     }
 
     #[test]
