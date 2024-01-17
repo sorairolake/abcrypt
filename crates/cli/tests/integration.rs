@@ -51,7 +51,7 @@ fn long_version() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/assets/long-version.md"
+            "assets/long-version.md"
         )));
 }
 
@@ -62,7 +62,7 @@ fn after_long_help() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/assets/after-long-help.md"
+            "assets/after-long-help.md"
         )));
 }
 
@@ -425,7 +425,7 @@ fn long_version_for_encrypt_command() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/assets/long-version.md"
+            "assets/long-version.md"
         )));
 }
 
@@ -437,7 +437,7 @@ fn after_long_help_for_encrypt_command() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/assets/encrypt-after-long-help.md"
+            "assets/encrypt-after-long-help.md"
         )));
 }
 
@@ -496,7 +496,7 @@ fn long_version_for_decrypt_command() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/assets/long-version.md"
+            "assets/long-version.md"
         )));
 }
 
@@ -508,7 +508,7 @@ fn after_long_help_for_decrypt_command() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/assets/decrypt-after-long-help.md"
+            "assets/decrypt-after-long-help.md"
         )));
 }
 
@@ -566,7 +566,7 @@ fn long_version_for_information_command() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/assets/long-version.md"
+            "assets/long-version.md"
         )));
 }
 
@@ -578,6 +578,6 @@ fn after_long_help_for_information_command() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/assets/information-after-long-help.md"
+            "assets/information-after-long-help.md"
         )));
 }

@@ -22,17 +22,31 @@ use clap_complete::Generator;
 
 const LONG_VERSION: &str = concat!(
     env!("CARGO_PKG_VERSION"),
-    "\n",
-    include_str!("assets/long-version.md")
+    "
+Copyright (C) 2022-2024 Shun Sakai
+
+This program is distributed under the terms of the GNU General Public License
+v3.0 or later.
+
+This is free software: you are free to change and redistribute it. There is NO
+WARRANTY, to the extent permitted by law.
+
+Report bugs to <https://github.com/sorairolake/abcrypt/issues>."
 );
 
-const AFTER_LONG_HELP: &str = include_str!("assets/after-long-help.md");
+const AFTER_LONG_HELP: &str = "See `abcrypt(1)` for more details.";
 
-const ENCRYPT_AFTER_LONG_HELP: &str = include_str!("assets/encrypt-after-long-help.md");
+const ENCRYPT_AFTER_LONG_HELP: &str = "By default, the result will be write to stdout.
 
-const DECRYPT_AFTER_LONG_HELP: &str = include_str!("assets/decrypt-after-long-help.md");
+See `abcrypt-encrypt(1)` for more details.";
 
-const INFORMATION_AFTER_LONG_HELP: &str = include_str!("assets/information-after-long-help.md");
+const DECRYPT_AFTER_LONG_HELP: &str = "By default, the result will be write to stdout.
+
+See `abcrypt-decrypt(1)` for more details.";
+
+const INFORMATION_AFTER_LONG_HELP: &str = "The result will be write to stdout.
+
+See `abcrypt-information(1)` for more details.";
 
 #[derive(Debug, Parser)]
 #[command(
