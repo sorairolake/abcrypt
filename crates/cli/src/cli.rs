@@ -22,17 +22,37 @@ use clap_complete::Generator;
 
 const LONG_VERSION: &str = concat!(
     env!("CARGO_PKG_VERSION"),
-    "\n",
-    include_str!("assets/long-version.md")
+    '\n',
+    "Copyright (C) 2022-2024 Shun Sakai\n",
+    '\n',
+    "This program is distributed under the terms of the GNU General Public License\n",
+    "v3.0 or later.\n",
+    '\n',
+    "This is free software: you are free to change and redistribute it. There is NO\n",
+    "WARRANTY, to the extent permitted by law.\n",
+    '\n',
+    "Report bugs to <https://github.com/sorairolake/abcrypt/issues>."
 );
 
-const AFTER_LONG_HELP: &str = include_str!("assets/after-long-help.md");
+const AFTER_LONG_HELP: &str = "See `abcrypt(1)` for more details.";
 
-const ENCRYPT_AFTER_LONG_HELP: &str = include_str!("assets/encrypt-after-long-help.md");
+const ENCRYPT_AFTER_LONG_HELP: &str = concat!(
+    "By default, the result will be write to stdout.\n",
+    '\n',
+    "See `abcrypt-encrypt(1)` for more details."
+);
 
-const DECRYPT_AFTER_LONG_HELP: &str = include_str!("assets/decrypt-after-long-help.md");
+const DECRYPT_AFTER_LONG_HELP: &str = concat!(
+    "By default, the result will be write to stdout.\n",
+    '\n',
+    "See `abcrypt-decrypt(1)` for more details."
+);
 
-const INFORMATION_AFTER_LONG_HELP: &str = include_str!("assets/information-after-long-help.md");
+const INFORMATION_AFTER_LONG_HELP: &str = concat!(
+    "The result will be write to stdout.\n",
+    '\n',
+    "See `abcrypt-information(1)` for more details."
+);
 
 #[derive(Debug, Parser)]
 #[command(

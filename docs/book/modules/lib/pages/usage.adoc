@@ -8,7 +8,7 @@
 [source,toml]
 ----
 [dependencies]
-abcrypt = "0.2.9"
+abcrypt = "0.2.10"
 ----
 
 == Crate features
@@ -22,6 +22,10 @@ abcrypt = "0.2.9"
 
   Enables features that depend on the standard library. This is enabled by
   default.
+
+`serde`::
+
+  Enables serialization support for `Params`.
 
 == `no_std` support
 

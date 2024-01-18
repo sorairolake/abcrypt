@@ -27,21 +27,83 @@ fn generate_completion_conflicts_with_subcommands() {
         .arg("encrypt")
         .assert()
         .failure()
-        .code(2);
+        .code(2)
+        .stderr(predicate::str::contains(
+            "the subcommand 'encrypt' cannot be used with '--generate-completion <SHELL>'",
+        ));
     command()
         .arg("--generate-completion")
         .arg("bash")
         .arg("decrypt")
         .assert()
         .failure()
-        .code(2);
+        .code(2)
+        .stderr(predicate::str::contains(
+            "the subcommand 'decrypt' cannot be used with '--generate-completion <SHELL>'",
+        ));
     command()
         .arg("--generate-completion")
         .arg("bash")
         .arg("information")
         .assert()
         .failure()
-        .code(2);
+        .code(2)
+        .stderr(predicate::str::contains(
+            "the subcommand 'information' cannot be used with '--generate-completion <SHELL>'",
+        ));
+}
+
+#[test]
+fn generate_completion() {
+    command()
+        .arg("--generate-completion")
+        .arg("bash")
+        .assert()
+        .success()
+        .stdout(predicate::ne(""));
+    command()
+        .arg("--generate-completion")
+        .arg("elvish")
+        .assert()
+        .success()
+        .stdout(predicate::ne(""));
+    command()
+        .arg("--generate-completion")
+        .arg("fish")
+        .assert()
+        .success()
+        .stdout(predicate::ne(""));
+    command()
+        .arg("--generate-completion")
+        .arg("nushell")
+        .assert()
+        .success()
+        .stdout(predicate::ne(""));
+    command()
+        .arg("--generate-completion")
+        .arg("powershell")
+        .assert()
+        .success()
+        .stdout(predicate::ne(""));
+    command()
+        .arg("--generate-completion")
+        .arg("zsh")
+        .assert()
+        .success()
+        .stdout(predicate::ne(""));
+}
+
+#[test]
+fn generate_completion_with_invalid_shell() {
+    command()
+        .arg("--generate-completion")
+        .arg("a")
+        .assert()
+        .failure()
+        .code(2)
+        .stderr(predicate::str::contains(
+            "invalid value 'a' for '--generate-completion <SHELL>'",
+        ));
 }
 
 #[test]
@@ -51,7 +113,7 @@ fn long_version() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/assets/long-version.md"
+            "assets/long-version.md"
         )));
 }
 
@@ -62,7 +124,7 @@ fn after_long_help() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/assets/after-long-help.md"
+            "assets/after-long-help.md"
         )));
 }
 
@@ -81,6 +143,51 @@ fn basic_encrypt() {
 fn validate_aliases_for_encrypt_command() {
     command().arg("enc").arg("-V").assert().success();
     command().arg("e").arg("-V").assert().success();
+}
+
+#[test]
+fn encrypt_if_non_existent_input_file() {
+    let command = command()
+        .arg("encrypt")
+        .arg("--passphrase-from-stdin")
+        .arg("non_existent.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .failure()
+        .code(66)
+        .stderr(predicate::str::contains(
+            "could not read data from non_existent.txt",
+        ));
+    if cfg!(windows) {
+        command.stderr(predicate::str::contains(
+            "The system cannot find the file specified. (os error 2)",
+        ));
+    } else {
+        command.stderr(predicate::str::contains(
+            "No such file or directory (os error 2)",
+        ));
+    }
+}
+
+#[test]
+fn encrypt_if_output_is_directory() {
+    let command = command()
+        .arg("encrypt")
+        .arg("-o")
+        .arg("data/dummy")
+        .arg("--passphrase-from-stdin")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .failure()
+        .stderr(predicate::str::contains(
+            "could not write data to data/dummy",
+        ));
+    if cfg!(windows) {
+        command.stderr(predicate::str::contains("Access is denied. (os error 5)"));
+    } else {
+        command.stderr(predicate::str::contains("Is a directory (os error 21)"));
+    }
 }
 
 #[test]
@@ -425,7 +532,7 @@ fn long_version_for_encrypt_command() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/assets/long-version.md"
+            "assets/long-version.md"
         )));
 }
 
@@ -437,7 +544,7 @@ fn after_long_help_for_encrypt_command() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/assets/encrypt-after-long-help.md"
+            "assets/encrypt-after-long-help.md"
         )));
 }
 
@@ -460,6 +567,51 @@ fn validate_aliases_for_decrypt_command() {
 }
 
 #[test]
+fn decrypt_if_non_existent_input_file() {
+    let command = command()
+        .arg("decrypt")
+        .arg("--passphrase-from-stdin")
+        .arg("non_existent.txt.abcrypt")
+        .write_stdin("passphrase")
+        .assert()
+        .failure()
+        .code(66)
+        .stderr(predicate::str::contains(
+            "could not read data from non_existent.txt.abcrypt",
+        ));
+    if cfg!(windows) {
+        command.stderr(predicate::str::contains(
+            "The system cannot find the file specified. (os error 2)",
+        ));
+    } else {
+        command.stderr(predicate::str::contains(
+            "No such file or directory (os error 2)",
+        ));
+    }
+}
+
+#[test]
+fn decrypt_if_output_is_directory() {
+    let command = command()
+        .arg("decrypt")
+        .arg("-o")
+        .arg("data/dummy")
+        .arg("--passphrase-from-stdin")
+        .arg("data/data.txt.abcrypt")
+        .write_stdin("passphrase")
+        .assert()
+        .failure()
+        .stderr(predicate::str::contains(
+            "could not write data to data/dummy",
+        ));
+    if cfg!(windows) {
+        command.stderr(predicate::str::contains("Access is denied. (os error 5)"));
+    } else {
+        command.stderr(predicate::str::contains("Is a directory (os error 21)"));
+    }
+}
+
+#[test]
 fn validate_conflicts_if_reading_from_stdin_for_decrypt_command() {
     command()
         .arg("decrypt")
@@ -470,6 +622,39 @@ fn validate_conflicts_if_reading_from_stdin_for_decrypt_command() {
         .stderr(predicate::str::ends_with(
             "cannot read both passphrase and input data from stdin\n",
         ));
+}
+
+#[test]
+fn decrypt_if_input_file_is_invalid() {
+    command()
+        .arg("decrypt")
+        .arg("--passphrase-from-stdin")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .failure()
+        .code(65)
+        .stderr(predicate::str::contains(
+            "data is not a valid abcrypt encrypted file",
+        ))
+        .stderr(predicate::str::contains(
+            "encrypted data is shorter than 156 bytes",
+        ));
+}
+
+#[test]
+fn decrypt_if_passphrase_is_incorrect() {
+    command()
+        .arg("decrypt")
+        .arg("--passphrase-from-stdin")
+        .arg("data/data.txt.abcrypt")
+        .write_stdin("password")
+        .assert()
+        .failure()
+        .code(65)
+        .stderr(predicate::str::contains("passphrase is incorrect"))
+        .stderr(predicate::str::contains("invalid header MAC"))
+        .stderr(predicate::str::contains("MAC tag mismatch"));
 }
 
 #[test]
@@ -496,7 +681,7 @@ fn long_version_for_decrypt_command() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/assets/long-version.md"
+            "assets/long-version.md"
         )));
 }
 
@@ -508,7 +693,7 @@ fn after_long_help_for_decrypt_command() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/assets/decrypt-after-long-help.md"
+            "assets/decrypt-after-long-help.md"
         )));
 }
 
@@ -528,6 +713,28 @@ fn basic_information() {
 fn validate_aliases_for_information_command() {
     command().arg("info").arg("-V").assert().success();
     command().arg("i").arg("-V").assert().success();
+}
+
+#[test]
+fn information_if_non_existent_input_file() {
+    let command = command()
+        .arg("information")
+        .arg("non_existent.txt.abcrypt")
+        .assert()
+        .failure()
+        .code(66)
+        .stderr(predicate::str::contains(
+            "could not read data from non_existent.txt.abcrypt",
+        ));
+    if cfg!(windows) {
+        command.stderr(predicate::str::contains(
+            "The system cannot find the file specified. (os error 2)",
+        ));
+    } else {
+        command.stderr(predicate::str::contains(
+            "No such file or directory (os error 2)",
+        ));
+    }
 }
 
 #[cfg(not(feature = "json"))]
@@ -559,6 +766,22 @@ fn information_as_json() {
 }
 
 #[test]
+fn information_if_input_file_is_invalid() {
+    command()
+        .arg("information")
+        .arg("data/data.txt")
+        .assert()
+        .failure()
+        .code(65)
+        .stderr(predicate::str::contains(
+            "data is not a valid abcrypt encrypted file",
+        ))
+        .stderr(predicate::str::contains(
+            "encrypted data is shorter than 156 bytes",
+        ));
+}
+
+#[test]
 fn long_version_for_information_command() {
     command()
         .arg("information")
@@ -566,7 +789,7 @@ fn long_version_for_information_command() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/assets/long-version.md"
+            "assets/long-version.md"
         )));
 }
 
@@ -578,6 +801,6 @@ fn after_long_help_for_information_command() {
         .assert()
         .success()
         .stdout(predicate::str::contains(include_str!(
-            "../src/assets/information-after-long-help.md"
+            "assets/information-after-long-help.md"
         )));
 }
