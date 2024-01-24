@@ -90,3 +90,8 @@ clang-tidy: setup-meson
 @bump-capi part:
     bump-my-version bump --config-file .bumpversion-capi.toml {{part}}
     cargo set-version --bump {{part}} -p abcrypt-capi
+
+# Increment the version of the Wasm bindings
+@bump-wasm part:
+    bump-my-version bump --config-file .bumpversion-wasm.toml {{part}}
+    cargo set-version --bump {{part}} -p abcrypt-wasm
