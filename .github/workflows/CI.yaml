@@ -63,6 +63,34 @@ jobs:
       - name: Check if the header file is up-to-date
         run: git diff --exit-code
 
+  wasm-test:
+    name: Test Wasm bindings
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        toolchain:
+          - 1.70.0 # MSRV
+          - stable
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: ${{ matrix.toolchain }}
+      - name: Install wasm-pack
+        uses: jetli/wasm-pack-action@v0.4.0
+        with:
+          version: "latest"
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Cache build artifacts
+        uses: Swatinem/rust-cache@v2.7.3
+      - name: Run tests
+        run: wasm-pack test --node crates/wasm
+
   rustfmt:
     name: Rustfmt
     runs-on: ubuntu-22.04

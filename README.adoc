@@ -18,6 +18,9 @@
 :abcrypt-capi-repo-url: {project-url}/tree/develop/crates/capi
 :abcrypt-capi-badge: {shields-url}/crates/v/abcrypt-capi?style=for-the-badge
 :abcrypt-capi-crates-io: {crates-io-crates}/abcrypt-capi
+:abcrypt-wasm-repo-url: {project-url}/tree/develop/crates/wasm
+:abcrypt-wasm-badge: {shields-url}/crates/v/abcrypt-wasm?style=for-the-badge
+:abcrypt-wasm-crates-io: {crates-io-crates}/abcrypt-wasm
 :reuse-spec-url: https://reuse.software/spec/
 
 image:{ci-badge}[CI,link={ci-url}]
@@ -43,6 +46,10 @@ image::crates/cli/assets/screenshot.webp[Screenshot of abcrypt]
 |{abcrypt-capi-repo-url}[`abcrypt-capi`]
 |image:{abcrypt-capi-badge}[Version,link={abcrypt-capi-crates-io}]
 |C API for abcrypt.
+
+|{abcrypt-wasm-repo-url}[`abcrypt-wasm`]
+|image:{abcrypt-wasm-badge}[Version,link={abcrypt-wasm-crates-io}]
+|Wasm bindings for abcrypt.
 |===
 
 == Format specification

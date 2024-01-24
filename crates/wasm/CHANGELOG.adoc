@@ -1,0 +1,21 @@
+// SPDX-FileCopyrightText: 2022 Shun Sakai
+//
+// SPDX-License-Identifier: Apache-2.0 OR MIT
+
+= Changelog
+:toc: preamble
+:project-url: https://github.com/sorairolake/abcrypt
+:compare-url: {project-url}/compare
+:issue-url: {project-url}/issues
+:pull-request-url: {project-url}/pull
+
+All notable changes to this project will be documented in this file.
+
+The format is based on https://keepachangelog.com/[Keep a Changelog], and this
+project adheres to https://semver.org/[Semantic Versioning].
+
+== {project-url}/releases/tag/abcrypt-wasm-v0.1.0[0.1.0] - 2024-01-24
+
+=== Added
+
+* Initial release

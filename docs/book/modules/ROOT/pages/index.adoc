@@ -15,6 +15,8 @@
 :abcrypt-cli-crates-io: {crates-io-crates}/abcrypt-cli
 :abcrypt-capi-badge: {shields-url}/crates/v/abcrypt-capi?style=for-the-badge
 :abcrypt-capi-crates-io: {crates-io-crates}/abcrypt-capi
+:abcrypt-wasm-badge: {shields-url}/crates/v/abcrypt-wasm?style=for-the-badge
+:abcrypt-wasm-crates-io: {crates-io-crates}/abcrypt-wasm
 
 image:{ci-badge}[CI,link={ci-url}]
 
@@ -39,6 +41,10 @@ image::screenshot.webp[Screenshot of abcrypt]
 |xref:capi:index.adoc[`abcrypt-capi`]
 |image:{abcrypt-capi-badge}[Version,link={abcrypt-capi-crates-io}]
 |C API for abcrypt.
+
+|xref:wasm:index.adoc[`abcrypt-wasm`]
+|image:{abcrypt-wasm-badge}[Version,link={abcrypt-wasm-crates-io}]
+|Wasm bindings for abcrypt.
 |===
 
 == Format specification
