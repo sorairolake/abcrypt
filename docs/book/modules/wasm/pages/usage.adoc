@@ -1,0 +1,12 @@
+// SPDX-FileCopyrightText: 2023 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= Usage
+
+== Build
+
+[source,shell]
+----
+wasm-pack build
+----
