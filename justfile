@@ -65,6 +65,18 @@ clang-tidy: setup-meson
     cd crates/capi/examples
     ninja -C builddir clang-tidy
 
+# Build examples for the Wasm bindings
+@build-wasm-examples:
+    wasm-pack build -t deno crates/wasm
+
+# Run `deno fmt`
+@fmt-wasm-examples:
+    deno fmt crates/wasm/examples/*.ts
+
+# Run `deno lint`
+@lint-wasm-examples:
+    deno lint crates/wasm/examples/*.ts
+
 # Run the linter for GitHub Actions workflow files
 @lint-github-actions:
     actionlint -verbose

@@ -1,0 +1,19 @@
+// SPDX-FileCopyrightText: 2022 Shun Sakai
+//
+// SPDX-License-Identifier: Apache-2.0 OR MIT
+
+= Examples
+
+link:encrypt.ts[]::
+
+  An example of encrypting to the abcrypt encrypted data format.
+
+link:decrypt.ts[]::
+
+  An example of decrypting from the abcrypt encrypted data format.
+
+link:info.ts[]::
+
+  An example of reading the Argon2 parameters.
+
+NOTE: These programs are intended to be run using https://deno.com/[Deno].
