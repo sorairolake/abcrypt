@@ -22,6 +22,25 @@ This crate ([`abcrypt-wasm`][version-url]) is the Wasm bindings for the
 wasm-pack build
 ```
 
+### Example
+
+```ts
+import * as assert from "https://deno.land/std@0.212.0/assert/mod.ts";
+
+import * as abcrypt from "./pkg/abcrypt_wasm.js";
+
+const data = new TextEncoder().encode("Hello, world!\n");
+const passphrase = new TextEncoder().encode("passphrase");
+
+// Encrypt `data` using `passphrase`.
+const ciphertext = abcrypt.encrypt_with_params(data, passphrase, 32, 3, 4);
+assert.assertNotEquals(ciphertext, data);
+
+// And decrypt it back.
+const plaintext = abcrypt.decrypt(ciphertext, passphrase);
+assert.assertEquals(plaintext, data);
+```
+
 ### Documentation
 
 See the [documentation][docs-url] for more details.
