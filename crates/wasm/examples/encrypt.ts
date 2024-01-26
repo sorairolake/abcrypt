@@ -8,10 +8,10 @@ import * as abcrypt from "../pkg/abcrypt_wasm.js";
 
 const opt = cli.parseArgs(Deno.args);
 
-const plaintext = Deno.readFileSync(opt._[0]);
+const plaintext = Deno.readFileSync(opt._[0] as string);
 
 const passphrase = new TextEncoder().encode(
-  cli.promptSecret("Enter passphrase: "),
+  cli.promptSecret("Enter passphrase: ") as string,
 );
 const ciphertext = abcrypt.encrypt_with_params(
   plaintext,
@@ -21,4 +21,4 @@ const ciphertext = abcrypt.encrypt_with_params(
   opt.p ?? 1,
 );
 
-Deno.writeFileSync(opt._[1], ciphertext);
+Deno.writeFileSync(opt._[1] as string, ciphertext);

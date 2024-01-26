@@ -9,7 +9,7 @@ import * as abcrypt from "../pkg/abcrypt_wasm.js";
 const ciphertext = Deno.readFileSync(Deno.args[0]);
 
 const passphrase = new TextEncoder().encode(
-  cli.promptSecret("Enter passphrase: "),
+  cli.promptSecret("Enter passphrase: ") as string,
 );
 const plaintext = abcrypt.decrypt(ciphertext, passphrase);
 

@@ -77,6 +77,10 @@ clang-tidy: setup-meson
 @lint-wasm-examples:
     deno lint crates/wasm/examples/*.ts
 
+# Run `deno check`
+@type-check-wasm-examples:
+    deno check crates/wasm/examples/*.ts
+
 # Run the linter for GitHub Actions workflow files
 @lint-github-actions:
     actionlint -verbose
