@@ -6,7 +6,7 @@
 
 == Build
 
-[source,shell]
+[source,sh]
 ----
 wasm-pack build
 ----

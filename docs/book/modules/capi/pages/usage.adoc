@@ -7,7 +7,7 @@
 
 == Build
 
-[source,shell]
+[source,sh]
 ----
 cargo build
 ----
