@@ -3,13 +3,18 @@
 // SPDX-License-Identifier: CC-BY-4.0
 
 = Usage
+:wasm-pack-url: https://rustwasm.github.io/wasm-pack/
 
 == Build
+
+You will need {wasm-pack-url}[`wasm-pack`] to build this crate.
 
 [source,sh]
 ----
 wasm-pack build
 ----
+
+This will generate build artifacts in the `pkg` directory.
 
 == Example
 

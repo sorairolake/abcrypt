@@ -18,9 +18,13 @@ This crate ([`abcrypt-wasm`][version-url]) is the Wasm bindings for the
 
 ### Build
 
+You will need [`wasm-pack`] to build this crate.
+
 ```sh
 wasm-pack build
 ```
+
+This will generate build artifacts in the `pkg` directory.
 
 ### Example
 
@@ -76,6 +80,7 @@ licensing information.
 [docs-url]: https://docs.rs/abcrypt-wasm
 [license-badge]: https://img.shields.io/crates/l/abcrypt-wasm?style=for-the-badge
 [`abcrypt`]: https://crates.io/crates/abcrypt
+[`wasm-pack`]: https://rustwasm.github.io/wasm-pack/
 [CHANGELOG.adoc]: CHANGELOG.adoc
 [CONTRIBUTING.adoc]: ../../CONTRIBUTING.adoc
 [AUTHORS.adoc]: ../../AUTHORS.adoc
