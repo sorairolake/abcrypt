@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-import * as cli from "https://deno.land/std@0.212.0/cli/mod.ts";
+import * as cli from "https://deno.land/std@0.213.0/cli/mod.ts";
 
 import * as abcrypt from "../pkg/abcrypt_wasm.js";
 

@@ -25,7 +25,7 @@ wasm-pack build
 ### Example
 
 ```ts
-import * as assert from "https://deno.land/std@0.212.0/assert/mod.ts";
+import * as assert from "https://deno.land/std@0.213.0/assert/mod.ts";
 
 import * as abcrypt from "./pkg/abcrypt_wasm.js";
 
