@@ -24,6 +24,7 @@ impl Params {
     /// - The magic number is invalid.
     /// - The version number is the unrecognized abcrypt version number.
     /// - The Argon2 parameters are invalid.
+    #[wasm_bindgen(constructor)]
     pub fn new(ciphertext: &[u8]) -> Result<Params, JsError> {
         abcrypt::Params::new(ciphertext)
             .map(Self)
