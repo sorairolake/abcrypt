@@ -14,7 +14,7 @@
 <span class=nav-text>Format Specification</span><ul class=nav-list><li class=nav-item data-depth=1><a class=nav-link href=../format.html>Abcrypt Encrypted Data Format</a></ul><li class=nav-item data-depth=0><button class=nav-item-toggle></button>
 <span class=nav-text>Resources</span><ul class=nav-list><li class=nav-item data-depth=1><a class=nav-link href=../authors.html>List of Authors</a><li class=nav-item data-depth=1><a class=nav-link href=../license.html>License</a></ul></ul></nav></div><div class=nav-panel-explore data-panel=explore><div class=context><span class=title>abcrypt</span>
 <span class=version></span></div><ul class=components><li class="component is-current"><div class=title><a href=../index.html>abcrypt</a></div></ul></div></div></aside></div><main class=article><div class=toolbar role=navigation><button class=nav-toggle></button>
-<a href=../index.html class=home-link></a><nav class=breadcrumbs aria-label=breadcrumbs><ul><li><a href=../index.html>abcrypt</a><li>Library<li><a href=examples.html>Examples</a></ul></nav><div class=edit-this-page><a href=https://github.com/sorairolake/abcrypt/edit/HEAD/docs/book/modules/lib/pages/examples.adoc>Edit this Page</a></div></div><div class=content><aside class="toc sidebar" data-title=Contents data-levels=2><div class=toc-menu></div></aside><article class=doc><h1 class=page>Examples</h1><div class=sect1><h2 id=_encryption_and_decryption><a class=anchor href=#_encryption_and_decryption></a>Encryption and decryption</h2><div class=sectionbody><div class=listingblock><div class=title>When the <code>alloc</code> feature is enabled</div><div class=content><pre class="highlightjs highlight"><code class="language-rust hljs" data-lang=rust>use abcrypt::{argon2::Params, Decryptor, Encryptor};
+<a href=../index.html class=home-link></a><nav class=breadcrumbs aria-label=breadcrumbs><ul><li><a href=../index.html>abcrypt</a><li>Library<li><a href=examples.html>Examples</a></ul></nav><div class=edit-this-page><a href=https://github.com/sorairolake/abcrypt/edit/HEAD/docs/book/modules/lib/pages/examples.adoc>Edit this Page</a></div></div><div class=content><aside class="toc sidebar" data-title=Contents data-levels=2><div class=toc-menu></div></aside><article class=doc><h1 class=page>Examples</h1><div class=sect1><h2 id=_encryption_and_decryption><a class=anchor href=#_encryption_and_decryption></a>Encryption and decryption</h2><div class=sectionbody><div class=listingblock><div class=title>When the <code>alloc</code> feature is enabled</div><div class=content><pre class="highlightjs highlight"><code class="language-rs hljs" data-lang=rs>use abcrypt::{argon2::Params, Decryptor, Encryptor};
 
 let data = b"Hello, world!\n";
 let passphrase = "passphrase";
@@ -30,7 +30,7 @@ assert_ne!(ciphertext, data);
 let plaintext = Decryptor::new(&amp;ciphertext, passphrase)
     .and_then(|c| c.decrypt_to_vec())
     .unwrap();
-assert_eq!(plaintext, data);</code></pre></div></div><div class=listingblock><div class=title>When the <code>alloc</code> feature is disabled</div><div class=content><pre class="highlightjs highlight"><code class="language-rust hljs" data-lang=rust>use abcrypt::{argon2::Params, Decryptor, Encryptor};
+assert_eq!(plaintext, data);</code></pre></div></div><div class=listingblock><div class=title>When the <code>alloc</code> feature is disabled</div><div class=content><pre class="highlightjs highlight"><code class="language-rs hljs" data-lang=rs>use abcrypt::{argon2::Params, Decryptor, Encryptor};
 
 let data = b"Hello, world!\n";
 let passphrase = "passphrase";
@@ -46,7 +46,7 @@ assert_ne!(buf, data.as_slice());
 let cipher = Decryptor::new(&amp;buf, passphrase).unwrap();
 let mut buf = [u8::default(); 14];
 cipher.decrypt(&amp;mut buf).unwrap();
-assert_eq!(buf, data.as_slice());</code></pre></div></div></div></div><div class=sect1><h2 id=_extracting_the_argon2_parameters_in_the_encrypted_data><a class=anchor href=#_extracting_the_argon2_parameters_in_the_encrypted_data></a>Extracting the Argon2 parameters in the encrypted data</h2><div class=sectionbody><div class=listingblock><div class=content><pre class="highlightjs highlight"><code class="language-rust hljs" data-lang=rust>use abcrypt::{argon2, Encryptor};
+assert_eq!(buf, data.as_slice());</code></pre></div></div></div></div><div class=sect1><h2 id=_extracting_the_argon2_parameters_in_the_encrypted_data><a class=anchor href=#_extracting_the_argon2_parameters_in_the_encrypted_data></a>Extracting the Argon2 parameters in the encrypted data</h2><div class=sectionbody><div class=listingblock><div class=content><pre class="highlightjs highlight"><code class="language-rs hljs" data-lang=rs>use abcrypt::{argon2, Encryptor};
 
 let data = b"Hello, world!\n";
 let passphrase = "passphrase";
