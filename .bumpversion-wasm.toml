@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: Apache-2.0 OR MIT
 
 [tool.bumpversion]
-current_version = "0.1.0"
+current_version = "0.1.1"
 
 [[tool.bumpversion.files]]
 filename = "crates/wasm/src/lib.rs"

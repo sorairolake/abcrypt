@@ -18,8 +18,31 @@ This crate ([`abcrypt-wasm`][version-url]) is the Wasm bindings for the
 
 ### Build
 
+You will need [`wasm-pack`] to build this crate.
+
 ```sh
 wasm-pack build
+```
+
+This will generate build artifacts in the `pkg` directory.
+
+### Example
+
+```ts
+import * as assert from "https://deno.land/std@0.213.0/assert/mod.ts";
+
+import * as abcrypt from "./pkg/abcrypt_wasm.js";
+
+const data = new TextEncoder().encode("Hello, world!\n");
+const passphrase = new TextEncoder().encode("passphrase");
+
+// Encrypt `data` using `passphrase`.
+const ciphertext = abcrypt.encrypt_with_params(data, passphrase, 32, 3, 4);
+assert.assertNotEquals(ciphertext, data);
+
+// And decrypt it back.
+const plaintext = abcrypt.decrypt(ciphertext, passphrase);
+assert.assertEquals(plaintext, data);
 ```
 
 ### Documentation
@@ -57,6 +80,7 @@ licensing information.
 [docs-url]: https://docs.rs/abcrypt-wasm
 [license-badge]: https://img.shields.io/crates/l/abcrypt-wasm?style=for-the-badge
 [`abcrypt`]: https://crates.io/crates/abcrypt
+[`wasm-pack`]: https://rustwasm.github.io/wasm-pack/
 [CHANGELOG.adoc]: CHANGELOG.adoc
 [CONTRIBUTING.adoc]: ../../CONTRIBUTING.adoc
 [AUTHORS.adoc]: ../../AUTHORS.adoc

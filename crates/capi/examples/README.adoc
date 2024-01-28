@@ -15,3 +15,16 @@ link:decrypt.cpp[]::
 link:info.cpp[]::
 
   An example of reading the Argon2 parameters.
+
+== How to build the example
+
+These programs are expected to be built using https://mesonbuild.com/[Meson].
+
+[source,sh]
+----
+meson setup builddir
+meson compile -C builddir
+----
+
+IMPORTANT: You must run `cargo build -p abcrypt-capi` in the project root
+directory before building the example.

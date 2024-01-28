@@ -7,13 +7,13 @@
 == Basic usage
 
 .Encrypt a file
-[source,shell]
+[source,sh]
 ----
 abcrypt encrypt data.txt > data.txt.abcrypt
 ----
 
 .Decrypt a file
-[source,shell]
+[source,sh]
 ----
 abcrypt decrypt data.txt.abcrypt > data.txt
 ----
@@ -21,7 +21,7 @@ abcrypt decrypt data.txt.abcrypt > data.txt
 == Provides information about the encryption parameters
 
 .Output as a human-readable string
-[source,shell]
+[source,sh]
 ----
 abcrypt information data.txt.abcrypt
 ----
@@ -32,7 +32,7 @@ Parameters used: m_cost = 32; t_cost = 3; p_cost = 4;
 ....
 
 .Output as JSON
-[source,shell]
+[source,sh]
 ----
 abcrypt information -j data.txt.abcrypt | jq
 ----
@@ -60,7 +60,7 @@ abcrypt information -j data.txt.abcrypt | jq
 * `zsh`
 
 .Example
-[source,shell]
+[source,sh]
 ----
 abcrypt --generate-completion bash > abcrypt.bash
 ----
