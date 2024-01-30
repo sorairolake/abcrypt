@@ -2,15 +2,29 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-import * as cli from "https://deno.land/std@0.213.0/cli/mod.ts";
+import { abcrypt, cli, command, io } from "./deps.ts";
 
-import * as abcrypt from "../pkg/abcrypt_wasm.js";
+import { VERSION } from "./version.ts";
 
-const ciphertext = Deno.readFileSync(Deno.args[0]);
+const { args, options } = await new command.Command()
+  .name("decrypt")
+  .version(VERSION)
+  .description(
+    "An example of decrypting from the abcrypt encrypted data format.",
+  )
+  .option("-o, --output <FILE:file>", "Output the result to a file.")
+  .arguments("<FILE:file>")
+  .parse();
+
+const ciphertext = Deno.readFileSync(args[0]);
 
 const passphrase = new TextEncoder().encode(
   cli.promptSecret("Enter passphrase: ")!,
 );
 const plaintext = abcrypt.decrypt(ciphertext, passphrase);
 
-Deno.writeFileSync(Deno.args[1], plaintext);
+if (options.output === undefined) {
+  io.writeAllSync(Deno.stdout, plaintext);
+} else {
+  Deno.writeFileSync(options.output, plaintext);
+}

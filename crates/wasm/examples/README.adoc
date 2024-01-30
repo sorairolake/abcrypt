@@ -24,7 +24,7 @@ These programs are expected to be run using https://deno.com/[Deno].
 ----
 deno run --allow-read --allow-write encrypt.ts data.txt data.txt.abcrypt
 # or
-deno run --allow-read --allow-write decrypt.ts data.txt.abcrypt data.txt
+deno run --allow-read --allow-write decrypt.ts -o data.txt data.txt.abcrypt
 # or
 deno run --allow-read info.ts data.txt.abcrypt
 ----

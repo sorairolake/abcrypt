@@ -2,9 +2,20 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-import * as abcrypt from "../pkg/abcrypt_wasm.js";
+import { abcrypt, command, io } from "./deps.ts";
 
-const ciphertext = Deno.readFileSync(Deno.args[0]);
+import { VERSION } from "./version.ts";
+
+const { args } = await new command.Command()
+  .name("info")
+  .version(VERSION)
+  .description("An example of reading the Argon2 parameters.")
+  .arguments("[FILE:file]")
+  .parse();
+
+const ciphertext = args[0] === undefined
+  ? io.readAllSync(Deno.stdin)
+  : Deno.readFileSync(args[0]);
 
 const params = new abcrypt.Params(ciphertext);
 console.log(

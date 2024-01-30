@@ -6,4 +6,7 @@
 current_version = "0.1.1"
 
 [[tool.bumpversion.files]]
+filename = "crates/wasm/examples/version.ts"
+
+[[tool.bumpversion.files]]
 filename = "crates/wasm/src/lib.rs"
