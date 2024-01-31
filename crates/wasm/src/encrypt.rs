@@ -26,7 +26,7 @@ pub fn encrypt(plaintext: &[u8], passphrase: &[u8]) -> Result<Vec<u8>, JsError> 
 /// # Errors
 ///
 /// Returns [`Err`] if the Argon2 context is invalid.
-#[wasm_bindgen]
+#[wasm_bindgen(js_name = encryptWithParams)]
 pub fn encrypt_with_params(
     plaintext: &[u8],
     passphrase: &[u8],

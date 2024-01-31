@@ -28,7 +28,7 @@ pub use crate::{
 /// Returns the number of bytes of the header.
 #[must_use]
 #[inline]
-#[wasm_bindgen]
+#[wasm_bindgen(js_name = headerSize)]
 pub fn header_size() -> usize {
     abcrypt::HEADER_SIZE
 }
@@ -38,7 +38,7 @@ pub fn header_size() -> usize {
 /// ciphertext.
 #[must_use]
 #[inline]
-#[wasm_bindgen]
+#[wasm_bindgen(js_name = tagSize)]
 pub fn tag_size() -> usize {
     abcrypt::TAG_SIZE
 }

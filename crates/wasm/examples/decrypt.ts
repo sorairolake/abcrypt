@@ -18,9 +18,8 @@ const { args, options } = await new command.Command()
 
 const ciphertext = Deno.readFileSync(args[0]);
 
-const passphrase = new TextEncoder().encode(
-  cli.promptSecret("Enter passphrase: ")!,
-);
+const passphrase = new TextEncoder()
+  .encode(cli.promptSecret("Enter passphrase: ")!);
 const plaintext = abcrypt.decrypt(ciphertext, passphrase);
 
 if (options.output === undefined) {

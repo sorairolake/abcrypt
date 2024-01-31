@@ -28,7 +28,7 @@ const data = new TextEncoder().encode("Hello, world!\n");
 const passphrase = new TextEncoder().encode("passphrase");
 
 // Encrypt `data` using `passphrase`.
-const ciphertext = abcrypt.encrypt_with_params(data, passphrase, 32, 3, 4);
+const ciphertext = abcrypt.encryptWithParams(data, passphrase, 32, 3, 4);
 assert.assertNotEquals(ciphertext, data);
 
 // And decrypt it back.

@@ -19,5 +19,5 @@ const ciphertext = args[0] === undefined
 
 const params = new abcrypt.Params(ciphertext);
 console.log(
-  `Parameters used: m_cost = ${params.m_cost}; t_cost = ${params.t_cost}; p_cost = ${params.p_cost};`,
+  `Parameters used: m_cost = ${params.mCost}; t_cost = ${params.tCost}; p_cost = ${params.pCost};`,
 );

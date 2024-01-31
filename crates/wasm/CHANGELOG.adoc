@@ -19,6 +19,7 @@ project adheres to https://semver.org/[Semantic Versioning].
 === Changed
 
 * Change `Params::new` to `constructor` ({pull-request-url}/252[#252])
+* Rename exported identifiers ({pull-request-url}/256[#256])
 
 == {compare-url}/abcrypt-wasm-v0.1.0\...abcrypt-wasm-v0.1.1[0.1.1] - 2024-01-28
 

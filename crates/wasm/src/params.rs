@@ -35,7 +35,7 @@ impl Params {
     /// Gets memory size in KiB.
     #[must_use]
     #[inline]
-    #[wasm_bindgen(getter)]
+    #[wasm_bindgen(js_name = mCost, getter)]
     pub fn m_cost(&self) -> u32 {
         self.0.m_cost()
     }
@@ -44,7 +44,7 @@ impl Params {
     /// Gets number of iterations.
     #[must_use]
     #[inline]
-    #[wasm_bindgen(getter)]
+    #[wasm_bindgen(js_name = tCost, getter)]
     pub fn t_cost(&self) -> u32 {
         self.0.t_cost()
     }
@@ -53,7 +53,7 @@ impl Params {
     /// Gets degree of parallelism.
     #[must_use]
     #[inline]
-    #[wasm_bindgen(getter)]
+    #[wasm_bindgen(js_name = pCost, getter)]
     pub fn p_cost(&self) -> u32 {
         self.0.p_cost()
     }
