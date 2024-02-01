@@ -4,4 +4,4 @@
 
 #pragma once
 
-void print_version(void);
+inline constexpr auto VERSION = "0.2.5";

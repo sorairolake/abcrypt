@@ -173,7 +173,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install libfmt-dev meson
+          sudo apt-get install libcli11-dev libfmt-dev meson
           meson -v
       - name: Setup just
         uses: extractions/setup-just@v1

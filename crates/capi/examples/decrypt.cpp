@@ -8,6 +8,7 @@
 #include <termios.h>
 #include <unistd.h>
 
+#include <CLI/CLI.hpp>
 #include <cerrno>
 #include <cstdint>
 #include <cstdlib>
@@ -21,41 +22,15 @@
 #include "abcrypt.h"
 #include "version.hpp"
 
-static void print_help(void) {
-  std::cout << "Usage: decrypt <INFILE> <OUTFILE>\n\n";
-  std::cout << "Arguments:\n";
-  std::cout << "  <INFILE>   File to decrypt\n";
-  std::cout << "  <OUTFILE>  File to write the result to\n\n";
-  std::cout << "Options:\n";
-  std::cout << "  -h  Print help\n";
-  std::cout << "  -V  Print version" << std::endl;
-}
-
 int main(int argc, char *argv[]) {
-  int opt;
-  while ((opt = getopt(argc, argv, "hV")) != -1) {
-    switch (opt) {
-      case 'h':
-        print_help();
-        return EXIT_SUCCESS;
-      case 'V':
-        print_version();
-        return EXIT_SUCCESS;
-      default:
-        print_help();
-        return EXIT_FAILURE;
-    }
-  }
-
-  char *input_filename;
-  char *output_filename;
-  if ((argc - optind) == 2) {
-    input_filename = argv[optind];
-    output_filename = argv[optind + 1];
-  } else {
-    print_help();
-    return EXIT_FAILURE;
-  }
+  CLI::App app{
+      "An example of decrypting from the abcrypt encrypted data format"};
+  app.set_version_flag("-V,--version", VERSION, "Print version");
+  std::string input_filename;
+  app.add_option("<INFILE>", input_filename, "Input file")->required();
+  std::string output_filename;
+  app.add_option("<OUTFILE>", output_filename, "Output file")->required();
+  CLI11_PARSE(app, argc, argv);
 
   std::ifstream input_file(input_filename);
   if (!input_file) {
