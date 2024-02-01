@@ -14,6 +14,7 @@
 #include <fstream>
 #include <iostream>
 #include <iterator>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -23,20 +24,26 @@
 int main(int argc, char *argv[]) {
   CLI::App app{"An example of reading the Argon2 parameters"};
   app.set_version_flag("-V,--version", VERSION, "Print version");
-  std::string input_filename;
-  app.add_option("<FILE>", input_filename, "Input file")->required();
+  std::optional<std::string> input_filename;
+  app.add_option("FILE", input_filename, "Input file");
   CLI11_PARSE(app, argc, argv);
 
-  std::ifstream input_file(input_filename);
-  if (!input_file) {
-    std::clog << fmt::format("Error: could not open {}: {}", input_filename,
-                             std::strerror(errno))
-              << std::endl;
-    return EXIT_FAILURE;
+  std::vector<std::uint8_t> contents;
+  if (input_filename) {
+    auto ifn = input_filename.value();
+    std::ifstream input_file(ifn);
+    if (!input_file) {
+      std::clog << fmt::format("Error: could not open {}: {}", ifn,
+                               std::strerror(errno))
+                << std::endl;
+      return EXIT_FAILURE;
+    }
+    contents = {(std::istreambuf_iterator<char>(input_file)),
+                std::istreambuf_iterator<char>()};
+  } else {
+    contents = {(std::istreambuf_iterator<char>(std::cin)),
+                std::istreambuf_iterator<char>()};
   }
-  std::vector<std::uint8_t> contents{
-      (std::istreambuf_iterator<char>(input_file)),
-      std::istreambuf_iterator<char>()};
 
   auto params = abcrypt_params_new();
   auto error_code =
@@ -44,10 +51,10 @@ int main(int argc, char *argv[]) {
   if (error_code != ABCRYPT_ERROR_CODE_OK) {
     std::vector<std::uint8_t> buf(abcrypt_error_message_out_len(error_code));
     abcrypt_error_message(error_code, buf.data(), buf.size());
-    std::string error_message(std::cbegin(buf), std::cend(buf));
+    std::string error_message(buf.cbegin(), buf.cend());
     std::clog << fmt::format(
-                     "Error: {} is not a valid Argon2 encrypted file: {}",
-                     input_filename, error_message)
+                     "Error: data is not a valid abcrypt encrypted file: {}",
+                     error_message)
               << std::endl;
     abcrypt_params_free(params);
     return EXIT_FAILURE;

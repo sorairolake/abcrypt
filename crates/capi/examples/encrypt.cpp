@@ -36,9 +36,9 @@ int main(int argc, char *argv[]) {
       ->capture_default_str();
   app.set_version_flag("-V,--version", VERSION, "Print version");
   std::string input_filename;
-  app.add_option("<INFILE>", input_filename, "Input file")->required();
+  app.add_option("INFILE", input_filename, "Input file")->required();
   std::string output_filename;
-  app.add_option("<OUTFILE>", output_filename, "Output file")->required();
+  app.add_option("OUTFILE", output_filename, "Output file")->required();
   CLI11_PARSE(app, argc, argv);
 
   std::ifstream input_file(input_filename);
@@ -83,18 +83,18 @@ int main(int argc, char *argv[]) {
   if (error_code != ABCRYPT_ERROR_CODE_OK) {
     std::vector<std::uint8_t> buf(abcrypt_error_message_out_len(error_code));
     abcrypt_error_message(error_code, buf.data(), buf.size());
-    std::string error_message(std::cbegin(buf), std::cend(buf));
+    std::string error_message(buf.cbegin(), buf.cend());
     std::clog << fmt::format("Error: {}", error_message) << std::endl;
     return EXIT_FAILURE;
   }
 
   std::ofstream output_file(output_filename);
-  if (!input_file) {
+  if (!output_file) {
     std::clog << fmt::format("Error: could not open {}: {}", output_filename,
                              std::strerror(errno))
               << std::endl;
     return EXIT_FAILURE;
   }
-  std::ostreambuf_iterator<char> output_file_iter(output_file);
-  std::copy(std::cbegin(ciphertext), std::cend(ciphertext), output_file_iter);
+  std::copy(ciphertext.cbegin(), ciphertext.cend(),
+            std::ostreambuf_iterator<char>(output_file));
 }
