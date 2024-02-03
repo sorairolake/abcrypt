@@ -22,11 +22,11 @@ These programs are expected to be run using https://deno.com/[Deno].
 
 [source,sh]
 ----
-deno run --allow-read --allow-write encrypt.ts data.txt data.txt.abcrypt
+./encrypt.ts data.txt data.txt.abcrypt
 # or
-deno run --allow-read --allow-write decrypt.ts -o data.txt data.txt.abcrypt
+./decrypt.ts -o data.txt data.txt.abcrypt
 # or
-deno run --allow-read info.ts data.txt.abcrypt
+./info.ts data.txt.abcrypt
 ----
 
 IMPORTANT: You must run `wasm-pack build -t deno crates/wasm` in the project

@@ -1,3 +1,5 @@
+#!/usr/bin/env -S deno run --allow-read
+
 // SPDX-FileCopyrightText: 2024 Shun Sakai
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
