@@ -5,5 +5,5 @@
 #pragma once
 
 namespace {
-inline constexpr auto VERSION = "0.2.5";
+inline constexpr auto VERSION = "0.2.6";
 }
