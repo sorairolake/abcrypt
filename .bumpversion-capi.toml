@@ -9,7 +9,7 @@ current_version = "0.2.5"
 filename = "crates/capi/examples/meson.build"
 
 [[tool.bumpversion.files]]
-filename = "crates/capi/examples/version.cpp"
+filename = "crates/capi/examples/version.hpp"
 
 [[tool.bumpversion.files]]
 filename = "crates/capi/src/lib.rs"

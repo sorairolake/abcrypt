@@ -1,24 +1,39 @@
+#!/usr/bin/env -S deno run --allow-read --allow-write
+
 // SPDX-FileCopyrightText: 2024 Shun Sakai
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-import * as cli from "https://deno.land/std@0.213.0/cli/mod.ts";
+import { abcrypt, cli, command } from "./deps.ts";
 
-import * as abcrypt from "../pkg/abcrypt_wasm.js";
+import { VERSION } from "./version.ts";
 
-const opt = cli.parseArgs(Deno.args);
+const { args, options } = await new command.Command()
+  .name("encrypt")
+  .version(VERSION)
+  .description("An example of encrypting to the abcrypt encrypted data format.")
+  .option("-m, --memory-size <NUM:integer>", "Set the memory size in KiB.", {
+    default: 19456,
+  })
+  .option("-t, --iterations <NUM:integer>", "Set the number of iterations.", {
+    default: 2,
+  })
+  .option("-p, --parallelism <NUM:integer>", "Set the degree of parallelism.", {
+    default: 1,
+  })
+  .arguments("<INFILE:file> <OUTFILE:file>")
+  .parse();
 
-const plaintext = Deno.readFileSync(opt._[0].toString());
+const plaintext = Deno.readFileSync(args[0]);
 
-const passphrase = new TextEncoder().encode(
-  cli.promptSecret("Enter passphrase: ")!,
-);
-const ciphertext = abcrypt.encrypt_with_params(
+const passphrase = new TextEncoder()
+  .encode(cli.promptSecret("Enter passphrase: ")!);
+const ciphertext = abcrypt.encryptWithParams(
   plaintext,
   passphrase,
-  opt.m ?? 19456,
-  opt.t ?? 2,
-  opt.p ?? 1,
+  options.memorySize,
+  options.iterations,
+  options.parallelism,
 );
 
-Deno.writeFileSync(opt._[1].toString(), ciphertext);
+Deno.writeFileSync(args[1], ciphertext);

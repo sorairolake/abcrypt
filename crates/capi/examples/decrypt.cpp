@@ -8,6 +8,7 @@
 #include <termios.h>
 #include <unistd.h>
 
+#include <CLI/CLI.hpp>
 #include <cerrno>
 #include <cstdint>
 #include <cstdlib>
@@ -15,47 +16,22 @@
 #include <fstream>
 #include <iostream>
 #include <iterator>
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "abcrypt.h"
 #include "version.hpp"
 
-static void print_help(void) {
-  std::cout << "Usage: decrypt <INFILE> <OUTFILE>\n\n";
-  std::cout << "Arguments:\n";
-  std::cout << "  <INFILE>   File to decrypt\n";
-  std::cout << "  <OUTFILE>  File to write the result to\n\n";
-  std::cout << "Options:\n";
-  std::cout << "  -h  Print help\n";
-  std::cout << "  -V  Print version" << std::endl;
-}
-
 int main(int argc, char *argv[]) {
-  int opt;
-  while ((opt = getopt(argc, argv, "hV")) != -1) {
-    switch (opt) {
-      case 'h':
-        print_help();
-        return EXIT_SUCCESS;
-      case 'V':
-        print_version();
-        return EXIT_SUCCESS;
-      default:
-        print_help();
-        return EXIT_FAILURE;
-    }
-  }
-
-  char *input_filename;
-  char *output_filename;
-  if ((argc - optind) == 2) {
-    input_filename = argv[optind];
-    output_filename = argv[optind + 1];
-  } else {
-    print_help();
-    return EXIT_FAILURE;
-  }
+  CLI::App app{
+      "An example of decrypting from the abcrypt encrypted data format"};
+  std::optional<std::string> output_filename;
+  app.add_option("-o,--output", output_filename, "Output the result to a file");
+  app.set_version_flag("-V,--version", VERSION, "Print version");
+  std::string input_filename;
+  app.add_option("FILE", input_filename, "Input file")->required();
+  CLI11_PARSE(app, argc, argv);
 
   std::ifstream input_file(input_filename);
   if (!input_file) {
@@ -89,7 +65,7 @@ int main(int argc, char *argv[]) {
   if (error_code != ABCRYPT_ERROR_CODE_OK) {
     std::vector<std::uint8_t> buf(abcrypt_error_message_out_len(error_code));
     abcrypt_error_message(error_code, buf.data(), buf.size());
-    std::string error_message(std::cbegin(buf), std::cend(buf));
+    std::string error_message(buf.cbegin(), buf.cend());
     switch (error_code) {
       case ABCRYPT_ERROR_CODE_INVALID_HEADER_MAC:
         std::clog << fmt::format("Error: passphrase is incorrect: {}",
@@ -97,26 +73,34 @@ int main(int argc, char *argv[]) {
                   << std::endl;
         break;
       case ABCRYPT_ERROR_CODE_INVALID_MAC:
-        std::clog << fmt::format("Error: {} is corrupted: {}", input_filename,
+        std::clog << fmt::format("Error: the encrypted data is corrupted: {}",
                                  error_message)
                   << std::endl;
         break;
       default:
-        std::clog << fmt::format("Error: the header in {} is invalid: {}",
-                                 input_filename, error_message)
-                  << std::endl;
+        std::clog
+            << fmt::format(
+                   "Error: the header in the encrypted data is invalid: {}",
+                   error_message)
+            << std::endl;
         break;
     }
     return EXIT_FAILURE;
   }
 
-  std::ofstream output_file(output_filename);
-  if (!input_file) {
-    std::clog << fmt::format("Error: could not open {}: {}", output_filename,
-                             std::strerror(errno))
-              << std::endl;
-    return EXIT_FAILURE;
+  if (output_filename) {
+    auto ofn = output_filename.value();
+    std::ofstream output_file(ofn);
+    if (!output_file) {
+      std::clog << fmt::format("Error: could not open {}: {}", ofn,
+                               std::strerror(errno))
+                << std::endl;
+      return EXIT_FAILURE;
+    }
+    std::copy(plaintext.cbegin(), plaintext.cend(),
+              std::ostreambuf_iterator<char>(output_file));
+  } else {
+    std::copy(plaintext.cbegin(), plaintext.cend(),
+              std::ostreambuf_iterator<char>(std::cout));
   }
-  std::ostreambuf_iterator<char> output_file_iter(output_file);
-  std::copy(std::cbegin(plaintext), std::cend(plaintext), output_file_iter);
 }

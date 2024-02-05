@@ -14,6 +14,13 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
 
+== {compare-url}/abcrypt-wasm-v0.1.1\...abcrypt-wasm-v0.2.0[0.2.0] - 2024-02-05
+
+=== Changed
+
+* Change `Params::new` to `constructor` ({pull-request-url}/252[#252])
+* Rename exported identifiers ({pull-request-url}/256[#256])
+
 == {compare-url}/abcrypt-wasm-v0.1.0\...abcrypt-wasm-v0.1.1[0.1.1] - 2024-01-28
 
 === Added

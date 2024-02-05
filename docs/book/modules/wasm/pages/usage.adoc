@@ -20,7 +20,7 @@ This will generate build artifacts in the `pkg` directory.
 
 [source,ts]
 ----
-import * as assert from "https://deno.land/std@0.213.0/assert/mod.ts";
+import * as assert from "https://deno.land/std@0.214.0/assert/mod.ts";
 
 import * as abcrypt from "./pkg/abcrypt_wasm.js";
 
@@ -28,7 +28,7 @@ const data = new TextEncoder().encode("Hello, world!\n");
 const passphrase = new TextEncoder().encode("passphrase");
 
 // Encrypt `data` using `passphrase`.
-const ciphertext = abcrypt.encrypt_with_params(data, passphrase, 32, 3, 4);
+const ciphertext = abcrypt.encryptWithParams(data, passphrase, 32, 3, 4);
 assert.assertNotEquals(ciphertext, data);
 
 // And decrypt it back.

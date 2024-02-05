@@ -16,7 +16,7 @@ cpp = meson.get_compiler('cpp')
 cpp.check_header('termios.h', required: true)
 cpp.check_header('unistd.h', required: true)
 
-fmtdep = dependency('fmt')
+deps = [dependency('CLI11'), dependency('fmt')]
 
 libdir = meson.current_source_dir() / '../../../target'
 if fs.exists(libdir / 'release')
@@ -31,8 +31,7 @@ example_names = ['encrypt', 'decrypt', 'info']
 foreach example_name : example_names
   executable(example_name,
     example_name + '.cpp',
-    'version.cpp',
-    dependencies: [fmtdep, libabcrypt_capi],
+    dependencies: [deps, libabcrypt_capi],
     include_directories: incdir,
   )
 endforeach

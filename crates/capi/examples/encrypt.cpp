@@ -8,6 +8,7 @@
 #include <termios.h>
 #include <unistd.h>
 
+#include <CLI/CLI.hpp>
 #include <cerrno>
 #include <cstdint>
 #include <cstdlib>
@@ -21,57 +22,24 @@
 #include "abcrypt.h"
 #include "version.hpp"
 
-static void print_help(void) {
-  std::cout << "Usage: encrypt [OPTIONS] <INFILE> <OUTFILE>\n\n";
-  std::cout << "Arguments:\n";
-  std::cout << "  <INFILE>   File to encrypt\n";
-  std::cout << "  <OUTFILE>  File to write the result to\n\n";
-  std::cout << "Options:\n";
-  std::cout << "  -m <NUM>  Set the memory size in KiB [default: 19456]\n";
-  std::cout << "  -t <NUM>  Set the number of iterations [default: 2]\n";
-  std::cout << "  -p <NUM>  Set the degree of parallelism [default: 1]\n";
-  std::cout << "  -h        Print help\n";
-  std::cout << "  -V        Print version" << std::endl;
-}
-
 int main(int argc, char *argv[]) {
-  std::uint32_t memory_size = 19456;
-  std::uint32_t iterations = 2;
-  std::uint32_t parallelism = 1;
-
-  int opt;
-  while ((opt = getopt(argc, argv, "m:t:p:hV")) != -1) {
-    switch (opt) {
-      case 'm':
-        memory_size = std::atoi(optarg);
-        break;
-      case 't':
-        iterations = std::atoi(optarg);
-        break;
-      case 'p':
-        parallelism = std::atoi(optarg);
-        break;
-      case 'h':
-        print_help();
-        return EXIT_SUCCESS;
-      case 'V':
-        print_version();
-        return EXIT_SUCCESS;
-      default:
-        print_help();
-        return EXIT_FAILURE;
-    }
-  }
-
-  char *input_filename;
-  char *output_filename;
-  if ((argc - optind) == 2) {
-    input_filename = argv[optind];
-    output_filename = argv[optind + 1];
-  } else {
-    print_help();
-    return EXIT_FAILURE;
-  }
+  CLI::App app{"An example of encrypting to the abcrypt encrypted data format"};
+  std::uint32_t memory_size{19456};
+  app.add_option("-m,--memory-size", memory_size, "Set the memory size in KiB")
+      ->capture_default_str();
+  std::uint32_t iterations{2};
+  app.add_option("-t,--iterations", iterations, "Set the number of iterations")
+      ->capture_default_str();
+  std::uint32_t parallelism{1};
+  app.add_option("-p,--parallelism", parallelism,
+                 "Set the degree of parallelism")
+      ->capture_default_str();
+  app.set_version_flag("-V,--version", VERSION, "Print version");
+  std::string input_filename;
+  app.add_option("INFILE", input_filename, "Input file")->required();
+  std::string output_filename;
+  app.add_option("OUTFILE", output_filename, "Output file")->required();
+  CLI11_PARSE(app, argc, argv);
 
   std::ifstream input_file(input_filename);
   if (!input_file) {
@@ -115,18 +83,18 @@ int main(int argc, char *argv[]) {
   if (error_code != ABCRYPT_ERROR_CODE_OK) {
     std::vector<std::uint8_t> buf(abcrypt_error_message_out_len(error_code));
     abcrypt_error_message(error_code, buf.data(), buf.size());
-    std::string error_message(std::cbegin(buf), std::cend(buf));
+    std::string error_message(buf.cbegin(), buf.cend());
     std::clog << fmt::format("Error: {}", error_message) << std::endl;
     return EXIT_FAILURE;
   }
 
   std::ofstream output_file(output_filename);
-  if (!input_file) {
+  if (!output_file) {
     std::clog << fmt::format("Error: could not open {}: {}", output_filename,
                              std::strerror(errno))
               << std::endl;
     return EXIT_FAILURE;
   }
-  std::ostreambuf_iterator<char> output_file_iter(output_file);
-  std::copy(std::cbegin(ciphertext), std::cend(ciphertext), output_file_iter);
+  std::copy(ciphertext.cbegin(), ciphertext.cend(),
+            std::ostreambuf_iterator<char>(output_file));
 }
