@@ -29,7 +29,7 @@ This will generate build artifacts in the `pkg` directory.
 ### Example
 
 ```ts
-import * as assert from "https://deno.land/std@0.213.0/assert/mod.ts";
+import * as assert from "https://deno.land/std@0.214.0/assert/mod.ts";
 
 import * as abcrypt from "./pkg/abcrypt_wasm.js";
 
