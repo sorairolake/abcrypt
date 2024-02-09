@@ -14,6 +14,12 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
 
+== {compare-url}/abcrypt-wasm-v0.2.0\...HEAD[Unreleased]
+
+=== Changed
+
+* Bump MSRV to 1.74.0 ({pull-request-url}/272[#272])
+
 == {compare-url}/abcrypt-wasm-v0.1.1\...abcrypt-wasm-v0.2.0[0.2.0] - 2024-02-05
 
 === Changed
