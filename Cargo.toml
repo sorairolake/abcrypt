@@ -9,7 +9,7 @@ members = ["crates/*"]
 [workspace.package]
 authors = ["Shun Sakai <sorairolake@protonmail.ch>"]
 edition = "2021"
-rust-version = "1.70.0"
+rust-version = "1.74.0"
 homepage = "https://sorairolake.github.io/abcrypt/"
 repository = "https://github.com/sorairolake/abcrypt"
 
