@@ -54,7 +54,7 @@ image::crates/cli/assets/screenshot.webp[Screenshot of abcrypt]
 
 == Format specification
 
-The format specification is at link:docs/FORMAT.adoc[FORMAT.adoc].
+The format specification is at link:docs/spec/FORMAT.adoc[FORMAT.adoc].
 
 == Contributing
 

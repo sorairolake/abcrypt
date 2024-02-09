@@ -103,7 +103,7 @@ licensing information.
 [docs-badge]: https://img.shields.io/docsrs/abcrypt?label=Docs.rs&logo=docsdotrs&style=for-the-badge
 [docs-url]: https://docs.rs/abcrypt
 [license-badge]: https://img.shields.io/crates/l/abcrypt?style=for-the-badge
-[abcrypt encrypted data format]: ../../docs/FORMAT.adoc
+[abcrypt encrypted data format]: ../../docs/spec/FORMAT.adoc
 [CHANGELOG.adoc]: CHANGELOG.adoc
 [CONTRIBUTING.adoc]: ../../CONTRIBUTING.adoc
 [AUTHORS.adoc]: ../../AUTHORS.adoc
