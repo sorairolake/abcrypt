@@ -135,7 +135,7 @@ licensing information.
 [version-badge]: https://img.shields.io/crates/v/abcrypt-cli?style=for-the-badge
 [version-url]: https://crates.io/crates/abcrypt-cli
 [license-badge]: https://img.shields.io/crates/l/abcrypt-cli?style=for-the-badge
-[abcrypt format]: ../../docs/FORMAT.adoc
+[abcrypt format]: ../../docs/spec/FORMAT.adoc
 [environment variables]: https://doc.rust-lang.org/cargo/reference/environment-variables.html#configuration-environment-variables
 [release page]: https://github.com/sorairolake/abcrypt/releases
 [BUILD.adoc]: BUILD.adoc

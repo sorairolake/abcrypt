@@ -15,4 +15,4 @@ filename = "crates/abcrypt/src/lib.rs"
 filename = "docs/book/modules/lib/pages/usage.adoc"
 
 [[tool.bumpversion.files]]
-filename = "docs/FORMAT.adoc"
+filename = "docs/spec/FORMAT.adoc"
