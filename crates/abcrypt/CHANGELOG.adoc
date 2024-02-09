@@ -16,6 +16,10 @@ project adheres to https://semver.org/[Semantic Versioning].
 
 == {compare-url}/abcrypt-v0.2.10\...HEAD[Unreleased]
 
+=== Added
+
+* Add ABNF definition of the file format ({pull-request-url}/273[#273])
+
 === Changed
 
 * Bump MSRV to 1.74.0 ({pull-request-url}/272[#272])

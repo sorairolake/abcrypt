@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2023 Shun Sakai
 //
-// SPDX-License-Identifier: Apache-2.0 OR MIT
+// SPDX-License-Identifier: CC-BY-4.0
 
 = Abcrypt Encrypted Data Format
 Shun Sakai <sorairolake@protonmail.ch>
@@ -217,6 +217,18 @@ ciphertext = XChaCha20-Poly1305(
 The size of `aad` (additional authenticated data) is zero (empty).
 
 IMPORTANT: The abcrypt format uses a postfix tag.
+
+== ABNF definition of the file format
+
+[source,abnf]
+----
+ifdef::site-gen-antora[]
+include::example$abcrypt.abnf[lines=5..-1]
+endif::[]
+ifndef::site-gen-antora[]
+include::abcrypt.abnf[lines=5..-1]
+endif::[]
+----
 
 == Format changelog
 
