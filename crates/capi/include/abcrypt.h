@@ -38,9 +38,9 @@ typedef enum abcrypt_error_code {
 
 // The Argon2 parameters used for the encrypted data.
 typedef struct abcrypt_params {
-  uint32_t m_cost;
-  uint32_t t_cost;
-  uint32_t p_cost;
+  uint32_t memory_cost;
+  uint32_t time_cost;
+  uint32_t parallelism;
 } abcrypt_params;
 
 #ifdef __cplusplus
@@ -127,9 +127,9 @@ enum abcrypt_error_code abcrypt_encrypt_with_params(uint8_t *plaintext,
                                                     uintptr_t passphrase_len,
                                                     uint8_t *out,
                                                     uintptr_t out_len,
-                                                    uint32_t m_cost,
-                                                    uint32_t t_cost,
-                                                    uint32_t p_cost);
+                                                    uint32_t memory_cost,
+                                                    uint32_t time_cost,
+                                                    uint32_t parallelism);
 
 // Gets a detailed error message.
 //
@@ -181,17 +181,17 @@ enum abcrypt_error_code abcrypt_params_read(uint8_t *ciphertext,
 // Gets memory size in KiB.
 //
 // Returns `0` if `params` is null.
-uint32_t abcrypt_params_m_cost(struct abcrypt_params *params);
+uint32_t abcrypt_params_memory_cost(struct abcrypt_params *params);
 
 // Gets number of iterations.
 //
 // Returns `0` if `params` is null.
-uint32_t abcrypt_params_t_cost(struct abcrypt_params *params);
+uint32_t abcrypt_params_time_cost(struct abcrypt_params *params);
 
 // Gets degree of parallelism.
 //
 // Returns `0` if `params` is null.
-uint32_t abcrypt_params_p_cost(struct abcrypt_params *params);
+uint32_t abcrypt_params_parallelism(struct abcrypt_params *params);
 
 #ifdef __cplusplus
 } // extern "C"

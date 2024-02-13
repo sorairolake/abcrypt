@@ -35,26 +35,26 @@ impl Params {
     /// Gets memory size in KiB.
     #[must_use]
     #[inline]
-    #[wasm_bindgen(js_name = mCost, getter)]
-    pub fn m_cost(&self) -> u32 {
-        self.0.m_cost()
+    #[wasm_bindgen(js_name = memoryCost, getter)]
+    pub fn memory_cost(&self) -> u32 {
+        self.0.memory_cost()
     }
 
     #[allow(clippy::missing_const_for_fn)]
     /// Gets number of iterations.
     #[must_use]
     #[inline]
-    #[wasm_bindgen(js_name = tCost, getter)]
-    pub fn t_cost(&self) -> u32 {
-        self.0.t_cost()
+    #[wasm_bindgen(js_name = timeCost, getter)]
+    pub fn time_cost(&self) -> u32 {
+        self.0.time_cost()
     }
 
     #[allow(clippy::missing_const_for_fn)]
     /// Gets degree of parallelism.
     #[must_use]
     #[inline]
-    #[wasm_bindgen(js_name = pCost, getter)]
-    pub fn p_cost(&self) -> u32 {
-        self.0.p_cost()
+    #[wasm_bindgen(getter)]
+    pub fn parallelism(&self) -> u32 {
+        self.0.parallelism()
     }
 }

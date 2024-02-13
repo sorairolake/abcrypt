@@ -30,10 +30,10 @@ pub fn encrypt(plaintext: &[u8], passphrase: &[u8]) -> Result<Vec<u8>, JsError> 
 pub fn encrypt_with_params(
     plaintext: &[u8],
     passphrase: &[u8],
-    m_cost: u32,
-    t_cost: u32,
-    p_cost: u32,
+    memory_cost: u32,
+    time_cost: u32,
+    parallelism: u32,
 ) -> Result<Vec<u8>, JsError> {
-    let params = Params::new(m_cost, t_cost, p_cost, None)?;
+    let params = Params::new(memory_cost, time_cost, parallelism, None)?;
     abcrypt::encrypt_with_params(plaintext, passphrase, params).map_err(JsError::from)
 }

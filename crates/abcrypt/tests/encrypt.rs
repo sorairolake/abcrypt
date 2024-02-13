@@ -85,7 +85,7 @@ fn version() {
 }
 
 #[test]
-fn m_cost() {
+fn memory_cost() {
     let cipher =
         Encryptor::with_params(&TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())
             .unwrap();
@@ -95,7 +95,7 @@ fn m_cost() {
 }
 
 #[test]
-fn t_cost() {
+fn time_cost() {
     let cipher =
         Encryptor::with_params(&TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())
             .unwrap();
@@ -105,7 +105,7 @@ fn t_cost() {
 }
 
 #[test]
-fn p_cost() {
+fn parallelism() {
     let cipher =
         Encryptor::with_params(&TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())
             .unwrap();

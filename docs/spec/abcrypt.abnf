@@ -16,11 +16,11 @@ header-mac     = 64OCTET     ; BLAKE2b-512-MAC of the header
 
 ; Argon2 parameters
 
-argon2-parameters = m-cost t-cost p-cost
+argon2-parameters = memory-cost time-cost parallelism
 
-m-cost = %x00000008-FFFFFFFF ; memory size in KiB
-t-cost = %x00000001-FFFFFFFF ; number of iterations
-p-cost = %x00000001-00FFFFFF ; degree of parallelism
+memory-cost = %x00000008-FFFFFFFF ; memory size in KiB
+time-cost   = %x00000001-FFFFFFFF ; number of iterations
+parallelism = %x00000001-00FFFFFF ; degree of parallelism
 
 ; Payload
 

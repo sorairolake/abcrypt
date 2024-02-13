@@ -21,8 +21,8 @@ pub use crate::{
     encrypt::{abcrypt_encrypt, abcrypt_encrypt_with_params},
     error::{abcrypt_error_message, abcrypt_error_message_out_len, ErrorCode},
     params::{
-        abcrypt_params_free, abcrypt_params_m_cost, abcrypt_params_new, abcrypt_params_p_cost,
-        abcrypt_params_read, abcrypt_params_t_cost, Params,
+        abcrypt_params_free, abcrypt_params_memory_cost, abcrypt_params_new,
+        abcrypt_params_parallelism, abcrypt_params_read, abcrypt_params_time_cost, Params,
     },
 };
 

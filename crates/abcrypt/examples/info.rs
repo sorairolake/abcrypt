@@ -47,10 +47,10 @@ fn main() -> anyhow::Result<()> {
 
     let params = Params::new(ciphertext).context("data is not a valid abcrypt encrypted file")?;
     println!(
-        "Parameters used: m_cost = {}; t_cost = {}; p_cost = {};",
-        params.m_cost(),
-        params.t_cost(),
-        params.p_cost()
+        "Parameters used: memoryCost = {}; timeCost = {}; parallelism = {};",
+        params.memory_cost(),
+        params.time_cost(),
+        params.parallelism()
     );
     Ok(())
 }

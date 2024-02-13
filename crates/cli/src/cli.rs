@@ -120,11 +120,11 @@ pub struct Encrypt {
     /// that is not multiples of 1 KiB is truncated toward zero to the nearest
     /// it.
     #[arg(short, long, default_value_t, value_name("BYTE"))]
-    pub memory_size: MemorySize,
+    pub memory_cost: MemoryCost,
 
     /// Set the number of iterations.
-    #[arg(short('t'), long, default_value_t, value_name("NUM"))]
-    pub iterations: Iterations,
+    #[arg(short, long, default_value_t, value_name("NUM"))]
+    pub time_cost: TimeCost,
 
     /// Set the degree of parallelism.
     #[arg(short, long, default_value_t, value_name("NUM"))]
@@ -295,9 +295,9 @@ impl Generator for Shell {
 
 /// Memory size in 1 KiB memory blocks.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct MemorySize(u32);
+pub struct MemoryCost(u32);
 
-impl MemorySize {
+impl MemoryCost {
     /// Minimum number of 1 KiB memory blocks.
     const MIN: Self = Self(Params::MIN_M_COST);
 
@@ -305,13 +305,13 @@ impl MemorySize {
     const MAX: Self = Self(Params::MAX_M_COST);
 }
 
-impl Default for MemorySize {
+impl Default for MemoryCost {
     fn default() -> Self {
         Self(Params::DEFAULT_M_COST)
     }
 }
 
-impl Deref for MemorySize {
+impl Deref for MemoryCost {
     type Target = u32;
 
     fn deref(&self) -> &Self::Target {
@@ -319,7 +319,7 @@ impl Deref for MemorySize {
     }
 }
 
-impl fmt::Display for MemorySize {
+impl fmt::Display for MemoryCost {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let byte =
             Byte::from(u64::from(self.0) * Byte::KIBIBYTE.as_u64()).get_adjusted_unit(Unit::KiB);
@@ -327,7 +327,7 @@ impl fmt::Display for MemorySize {
     }
 }
 
-impl FromStr for MemorySize {
+impl FromStr for MemoryCost {
     type Err = anyhow::Error;
 
     fn from_str(byte: &str) -> anyhow::Result<Self> {
@@ -350,15 +350,15 @@ impl FromStr for MemorySize {
 
 /// Number of iterations.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct Iterations(u32);
+pub struct TimeCost(u32);
 
-impl Default for Iterations {
+impl Default for TimeCost {
     fn default() -> Self {
         Self(Params::DEFAULT_T_COST)
     }
 }
 
-impl Deref for Iterations {
+impl Deref for TimeCost {
     type Target = u32;
 
     fn deref(&self) -> &Self::Target {
@@ -366,26 +366,26 @@ impl Deref for Iterations {
     }
 }
 
-impl fmt::Display for Iterations {
+impl fmt::Display for TimeCost {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         self.0.fmt(f)
     }
 }
 
-impl ValueParserFactory for Iterations {
-    type Parser = IterationsValueParser;
+impl ValueParserFactory for TimeCost {
+    type Parser = TimeCostValueParser;
 
     fn value_parser() -> Self::Parser {
-        IterationsValueParser
+        TimeCostValueParser
     }
 }
 
-/// Parse [`Iterations`].
+/// Parse [`TimeCost`].
 #[derive(Clone, Copy, Debug)]
-pub struct IterationsValueParser;
+pub struct TimeCostValueParser;
 
-impl TypedValueParser for IterationsValueParser {
-    type Value = Iterations;
+impl TypedValueParser for TimeCostValueParser {
+    type Value = TimeCost;
 
     fn parse_ref(
         &self,
@@ -395,7 +395,7 @@ impl TypedValueParser for IterationsValueParser {
     ) -> Result<Self::Value, clap::Error> {
         let inner =
             value_parser!(u32).range(i64::from(Params::MIN_T_COST)..=Params::MAX_T_COST.into());
-        inner.parse_ref(cmd, arg, value).map(Iterations)
+        inner.parse_ref(cmd, arg, value).map(TimeCost)
     }
 }
 
@@ -470,70 +470,70 @@ mod tests {
     }
 
     #[test]
-    fn default_memory_size() {
-        assert_eq!(MemorySize::default(), MemorySize(Params::DEFAULT_M_COST));
+    fn default_memory_cost() {
+        assert_eq!(MemoryCost::default(), MemoryCost(Params::DEFAULT_M_COST));
     }
 
     #[test]
-    fn deref_memory_size() {
-        assert_eq!(*MemorySize::MIN, Params::MIN_M_COST);
-        assert_eq!(*MemorySize::default(), Params::DEFAULT_M_COST);
-        assert_eq!(*MemorySize::MAX, Params::MAX_M_COST);
+    fn deref_memory_cost() {
+        assert_eq!(*MemoryCost::MIN, Params::MIN_M_COST);
+        assert_eq!(*MemoryCost::default(), Params::DEFAULT_M_COST);
+        assert_eq!(*MemoryCost::MAX, Params::MAX_M_COST);
     }
 
     #[test]
-    fn display_memory_size() {
-        assert_eq!(format!("{}", MemorySize::MIN), "8 KiB");
-        assert_eq!(format!("{}", MemorySize::default()), "19456 KiB");
-        assert_eq!(format!("{}", MemorySize::MAX), "4294967295 KiB");
+    fn display_memory_cost() {
+        assert_eq!(format!("{}", MemoryCost::MIN), "8 KiB");
+        assert_eq!(format!("{}", MemoryCost::default()), "19456 KiB");
+        assert_eq!(format!("{}", MemoryCost::MAX), "4294967295 KiB");
     }
 
     #[test]
-    fn from_str_memory_size() {
+    fn from_str_memory_cost() {
         assert_eq!(
-            MemorySize::from_str("19922944 B").unwrap(),
-            MemorySize::default()
+            MemoryCost::from_str("19922944 B").unwrap(),
+            MemoryCost::default()
         );
         assert_eq!(
-            MemorySize::from_str("19922944").unwrap(),
-            MemorySize::default()
+            MemoryCost::from_str("19922944").unwrap(),
+            MemoryCost::default()
         );
         assert_eq!(
-            MemorySize::from_str("19456 KiB").unwrap(),
-            MemorySize::default()
+            MemoryCost::from_str("19456 KiB").unwrap(),
+            MemoryCost::default()
         );
         assert_eq!(
-            MemorySize::from_str("19.00 MiB").unwrap(),
-            MemorySize::default()
+            MemoryCost::from_str("19.00 MiB").unwrap(),
+            MemoryCost::default()
         );
         assert_eq!(
-            MemorySize::from_str("19MiB").unwrap(),
-            MemorySize::default()
+            MemoryCost::from_str("19MiB").unwrap(),
+            MemoryCost::default()
         );
 
-        assert_eq!(MemorySize::from_str("128 kB").unwrap(), MemorySize(125));
-        assert_eq!(MemorySize::from_str("256kB").unwrap(), MemorySize(250));
+        assert_eq!(MemoryCost::from_str("128 kB").unwrap(), MemoryCost(125));
+        assert_eq!(MemoryCost::from_str("256kB").unwrap(), MemoryCost(250));
 
-        assert_eq!(MemorySize::from_str("8 KiB").unwrap(), MemorySize::MIN);
+        assert_eq!(MemoryCost::from_str("8 KiB").unwrap(), MemoryCost::MIN);
         assert_eq!(
-            MemorySize::from_str("4294967295 KiB").unwrap(),
-            MemorySize::MAX
+            MemoryCost::from_str("4294967295 KiB").unwrap(),
+            MemoryCost::MAX
         );
     }
 
     #[test]
-    fn from_str_memory_size_with_invalid_unit() {
+    fn from_str_memory_cost_with_invalid_unit() {
         use byte_unit::ParseError;
 
         assert!(matches!(
-            MemorySize::from_str("19922944 A")
+            MemoryCost::from_str("19922944 A")
                 .unwrap_err()
                 .downcast_ref::<ParseError>()
                 .unwrap(),
             ParseError::Unit(_)
         ));
         assert!(matches!(
-            MemorySize::from_str("19.00LiB")
+            MemoryCost::from_str("19.00LiB")
                 .unwrap_err()
                 .downcast_ref::<ParseError>()
                 .unwrap(),
@@ -542,25 +542,25 @@ mod tests {
     }
 
     #[test]
-    fn from_str_memory_size_with_nan() {
+    fn from_str_memory_cost_with_nan() {
         use byte_unit::ParseError;
 
         assert!(matches!(
-            MemorySize::from_str("n B")
+            MemoryCost::from_str("n B")
                 .unwrap_err()
                 .downcast_ref::<ParseError>()
                 .unwrap(),
             ParseError::Value(_)
         ));
         assert!(matches!(
-            MemorySize::from_str("n")
+            MemoryCost::from_str("n")
                 .unwrap_err()
                 .downcast_ref::<ParseError>()
                 .unwrap(),
             ParseError::Value(_)
         ));
         assert!(matches!(
-            MemorySize::from_str("nKiB")
+            MemoryCost::from_str("nKiB")
                 .unwrap_err()
                 .downcast_ref::<ParseError>()
                 .unwrap(),
@@ -569,17 +569,17 @@ mod tests {
     }
 
     #[test]
-    fn from_str_memory_size_if_out_of_range() {
-        assert!(MemorySize::from_str("7 KiB").is_err());
-        assert_eq!(MemorySize::from_str("8 KiB").unwrap(), MemorySize::MIN);
+    fn from_str_memory_cost_if_out_of_range() {
+        assert!(MemoryCost::from_str("7 KiB").is_err());
+        assert_eq!(MemoryCost::from_str("8 KiB").unwrap(), MemoryCost::MIN);
         assert_eq!(
-            MemorySize::from_str("4294967295 KiB").unwrap(),
-            MemorySize::MAX
+            MemoryCost::from_str("4294967295 KiB").unwrap(),
+            MemoryCost::MAX
         );
-        assert!(MemorySize::from_str("4294967296 KiB").is_err());
+        assert!(MemoryCost::from_str("4294967296 KiB").is_err());
     }
 
-    impl Iterations {
+    impl TimeCost {
         /// Minimum number of passes.
         const MIN: Self = Self(Params::MIN_T_COST);
 
@@ -588,49 +588,49 @@ mod tests {
     }
 
     #[test]
-    fn default_iterations() {
-        assert_eq!(Iterations::default(), Iterations(Params::DEFAULT_T_COST));
+    fn default_time_cost() {
+        assert_eq!(TimeCost::default(), TimeCost(Params::DEFAULT_T_COST));
     }
 
     #[test]
-    fn deref_iterations() {
-        assert_eq!(*Iterations::MIN, Params::MIN_T_COST);
-        assert_eq!(*Iterations::default(), Params::DEFAULT_T_COST);
-        assert_eq!(*Iterations::MAX, Params::MAX_T_COST);
+    fn deref_time_cost() {
+        assert_eq!(*TimeCost::MIN, Params::MIN_T_COST);
+        assert_eq!(*TimeCost::default(), Params::DEFAULT_T_COST);
+        assert_eq!(*TimeCost::MAX, Params::MAX_T_COST);
     }
 
     #[test]
-    fn display_iterations() {
-        assert_eq!(format!("{}", Iterations::MIN), "1");
-        assert_eq!(format!("{}", Iterations::default()), "2");
-        assert_eq!(format!("{}", Iterations::MAX), "4294967295");
+    fn display_time_cost() {
+        assert_eq!(format!("{}", TimeCost::MIN), "1");
+        assert_eq!(format!("{}", TimeCost::default()), "2");
+        assert_eq!(format!("{}", TimeCost::MAX), "4294967295");
     }
 
     #[test]
-    fn value_parser_iterations() {
+    fn value_parser_time_cost() {
         #[derive(Debug, Eq, Parser, PartialEq)]
         pub struct Opt {
             #[arg(short('t'), long, default_value_t, value_name("NUM"))]
-            pub iterations: Iterations,
+            pub time_cost: TimeCost,
         }
 
         assert_eq!(
             Opt::try_parse_from(["test", "-t1"]).unwrap(),
             Opt {
-                iterations: Iterations::MIN
+                time_cost: TimeCost::MIN
             }
         );
         assert_eq!(
             Opt::try_parse_from(["test", "-t4294967295"]).unwrap(),
             Opt {
-                iterations: Iterations::MAX
+                time_cost: TimeCost::MAX
             }
         );
 
         assert_eq!(
             Opt::try_parse_from(["test"]).unwrap(),
             Opt {
-                iterations: Iterations::default()
+                time_cost: TimeCost::default()
             }
         );
 
@@ -650,32 +650,32 @@ mod tests {
     }
 
     #[test]
-    fn parse_ref_iterations_value_parser() {
-        assert_eq!(Iterations::default(), Iterations(Params::DEFAULT_T_COST));
+    fn parse_ref_time_cost_value_parser() {
+        assert_eq!(TimeCost::default(), TimeCost(Params::DEFAULT_T_COST));
 
         assert_eq!(
             TypedValueParser::parse_ref(
-                &IterationsValueParser,
+                &TimeCostValueParser,
                 &clap::Command::new("test"),
                 None,
                 OsStr::new("1")
             )
             .unwrap(),
-            Iterations::MIN
+            TimeCost::MIN
         );
         assert_eq!(
             TypedValueParser::parse_ref(
-                &IterationsValueParser,
+                &TimeCostValueParser,
                 &clap::Command::new("test"),
                 None,
                 OsStr::new("4294967295")
             )
             .unwrap(),
-            Iterations::MAX
+            TimeCost::MAX
         );
 
         assert!(TypedValueParser::parse_ref(
-            &IterationsValueParser,
+            &TimeCostValueParser,
             &clap::Command::new("test"),
             None,
             OsStr::new("n")
@@ -685,7 +685,7 @@ mod tests {
         .contains("invalid digit found in string"));
 
         assert!(TypedValueParser::parse_ref(
-            &IterationsValueParser,
+            &TimeCostValueParser,
             &clap::Command::new("test"),
             None,
             OsStr::new("0")
@@ -694,7 +694,7 @@ mod tests {
         .to_string()
         .contains("0 is not in 1..=4294967295"));
         assert!(TypedValueParser::parse_ref(
-            &IterationsValueParser,
+            &TimeCostValueParser,
             &clap::Command::new("test"),
             None,
             OsStr::new("4294967296")

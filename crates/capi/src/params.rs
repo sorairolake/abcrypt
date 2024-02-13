@@ -14,9 +14,9 @@ use crate::ErrorCode;
 #[derive(Clone, Copy, Debug)]
 #[repr(C)]
 pub struct Params {
-    m_cost: u32,
-    t_cost: u32,
-    p_cost: u32,
+    memory_cost: u32,
+    time_cost: u32,
+    parallelism: u32,
 }
 
 impl Params {
@@ -89,10 +89,10 @@ impl Params {
     /// Returns `0` if `params` is null.
     #[must_use]
     #[inline]
-    fn m_cost(params: Option<NonNull<Self>>) -> u32 {
+    fn memory_cost(params: Option<NonNull<Self>>) -> u32 {
         // SAFETY: just checked that `params` is not a null pointer.
         params
-            .map(|p| unsafe { (*p.as_ptr()).m_cost })
+            .map(|p| unsafe { (*p.as_ptr()).memory_cost })
             .unwrap_or_default()
     }
 
@@ -101,10 +101,10 @@ impl Params {
     /// Returns `0` if `params` is null.
     #[must_use]
     #[inline]
-    fn t_cost(params: Option<NonNull<Self>>) -> u32 {
+    fn time_cost(params: Option<NonNull<Self>>) -> u32 {
         // SAFETY: just checked that `params` is not a null pointer.
         params
-            .map(|p| unsafe { (*p.as_ptr()).t_cost })
+            .map(|p| unsafe { (*p.as_ptr()).time_cost })
             .unwrap_or_default()
     }
 
@@ -113,36 +113,40 @@ impl Params {
     /// Returns `0` if `params` is null.
     #[must_use]
     #[inline]
-    fn p_cost(params: Option<NonNull<Self>>) -> u32 {
+    fn parallelism(params: Option<NonNull<Self>>) -> u32 {
         // SAFETY: just checked that `params` is not a null pointer.
         params
-            .map(|p| unsafe { (*p.as_ptr()).p_cost })
+            .map(|p| unsafe { (*p.as_ptr()).parallelism })
             .unwrap_or_default()
     }
 }
 
 impl Default for Params {
     fn default() -> Self {
-        let (m_cost, t_cost, p_cost) = (
+        let (memory_cost, time_cost, parallelism) = (
             argon2::Params::DEFAULT_M_COST,
             argon2::Params::DEFAULT_T_COST,
             argon2::Params::DEFAULT_P_COST,
         );
         Self {
-            m_cost,
-            t_cost,
-            p_cost,
+            memory_cost,
+            time_cost,
+            parallelism,
         }
     }
 }
 
 impl From<abcrypt::Params> for Params {
     fn from(params: abcrypt::Params) -> Self {
-        let (m_cost, t_cost, p_cost) = (params.m_cost(), params.t_cost(), params.p_cost());
+        let (memory_cost, time_cost, parallelism) = (
+            params.memory_cost(),
+            params.time_cost(),
+            params.parallelism(),
+        );
         Self {
-            m_cost,
-            t_cost,
-            p_cost,
+            memory_cost,
+            time_cost,
+            parallelism,
         }
     }
 }
@@ -198,8 +202,8 @@ pub unsafe extern "C" fn abcrypt_params_read(
 #[must_use]
 #[no_mangle]
 #[inline]
-pub extern "C" fn abcrypt_params_m_cost(params: Option<NonNull<Params>>) -> u32 {
-    Params::m_cost(params)
+pub extern "C" fn abcrypt_params_memory_cost(params: Option<NonNull<Params>>) -> u32 {
+    Params::memory_cost(params)
 }
 
 /// Gets number of iterations.
@@ -208,8 +212,8 @@ pub extern "C" fn abcrypt_params_m_cost(params: Option<NonNull<Params>>) -> u32 
 #[must_use]
 #[no_mangle]
 #[inline]
-pub extern "C" fn abcrypt_params_t_cost(params: Option<NonNull<Params>>) -> u32 {
-    Params::t_cost(params)
+pub extern "C" fn abcrypt_params_time_cost(params: Option<NonNull<Params>>) -> u32 {
+    Params::time_cost(params)
 }
 
 /// Gets degree of parallelism.
@@ -218,8 +222,8 @@ pub extern "C" fn abcrypt_params_t_cost(params: Option<NonNull<Params>>) -> u32 
 #[must_use]
 #[no_mangle]
 #[inline]
-pub extern "C" fn abcrypt_params_p_cost(params: Option<NonNull<Params>>) -> u32 {
-    Params::p_cost(params)
+pub extern "C" fn abcrypt_params_parallelism(params: Option<NonNull<Params>>) -> u32 {
+    Params::parallelism(params)
 }
 
 #[cfg(test)]
@@ -240,35 +244,35 @@ mod tests {
     }
 
     #[test]
-    fn m_cost() {
+    fn memory_cost() {
         let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
         let params = abcrypt_params_new();
         let code =
             unsafe { abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params) };
         assert_eq!(code, ErrorCode::Ok);
-        assert_eq!(abcrypt_params_m_cost(params), 32);
+        assert_eq!(abcrypt_params_memory_cost(params), 32);
         unsafe { abcrypt_params_free(params) };
     }
 
     #[test]
-    fn t_cost() {
+    fn time_cost() {
         let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
         let params = abcrypt_params_new();
         let code =
             unsafe { abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params) };
         assert_eq!(code, ErrorCode::Ok);
-        assert_eq!(abcrypt_params_t_cost(params), 3);
+        assert_eq!(abcrypt_params_time_cost(params), 3);
         unsafe { abcrypt_params_free(params) };
     }
 
     #[test]
-    fn p_cost() {
+    fn parallelism() {
         let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
         let params = abcrypt_params_new();
         let code =
             unsafe { abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params) };
         assert_eq!(code, ErrorCode::Ok);
-        assert_eq!(abcrypt_params_p_cost(params), 4);
+        assert_eq!(abcrypt_params_parallelism(params), 4);
         unsafe { abcrypt_params_free(params) };
     }
 }

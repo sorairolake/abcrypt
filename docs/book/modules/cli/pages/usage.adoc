@@ -28,7 +28,7 @@ abcrypt information data.txt.abcrypt
 
 .Output
 ....
-Parameters used: m_cost = 32; t_cost = 3; p_cost = 4;
+Parameters used: memoryCost = 32; timeCost = 3; parallelism = 4;
 ....
 
 .Output as JSON
@@ -41,9 +41,9 @@ abcrypt information -j data.txt.abcrypt | jq
 [source,json]
 ----
 {
-  "m_cost": 32,
-  "t_cost": 3,
-  "p_cost": 4
+  "memoryCost": 32,
+  "timeCost": 3,
+  "parallelism": 4
 }
 ----
 

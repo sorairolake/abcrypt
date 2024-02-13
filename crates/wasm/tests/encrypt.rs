@@ -60,7 +60,7 @@ fn version() {
 }
 
 #[wasm_bindgen_test]
-fn m_cost() {
+fn memory_cost() {
     let ciphertext = abcrypt_wasm::encrypt_with_params(TEST_DATA, PASSPHRASE, 32, 3, 4)
         .map_err(JsValue::from)
         .unwrap();
@@ -68,7 +68,7 @@ fn m_cost() {
 }
 
 #[wasm_bindgen_test]
-fn t_cost() {
+fn time_cost() {
     let ciphertext = abcrypt_wasm::encrypt_with_params(TEST_DATA, PASSPHRASE, 32, 3, 4)
         .map_err(JsValue::from)
         .unwrap();
@@ -76,7 +76,7 @@ fn t_cost() {
 }
 
 #[wasm_bindgen_test]
-fn p_cost() {
+fn parallelism() {
     let ciphertext = abcrypt_wasm::encrypt_with_params(TEST_DATA, PASSPHRASE, 32, 3, 4)
         .map_err(JsValue::from)
         .unwrap();

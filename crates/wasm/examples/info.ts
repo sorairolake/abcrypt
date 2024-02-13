@@ -21,5 +21,5 @@ const ciphertext = args[0] === undefined
 
 const params = new abcrypt.Params(ciphertext);
 console.log(
-  `Parameters used: m_cost = ${params.mCost}; t_cost = ${params.tCost}; p_cost = ${params.pCost};`,
+  `Parameters used: memoryCost = ${params.memoryCost}; timeCost = ${params.timeCost}; parallelism = ${params.parallelism};`,
 );

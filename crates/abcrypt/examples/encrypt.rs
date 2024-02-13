@@ -21,11 +21,11 @@ struct Opt {
 
     /// Set the memory size in KiB.
     #[arg(short, long, default_value("19456"), value_name("NUM"))]
-    memory_size: u32,
+    memory_cost: u32,
 
     /// Set the number of iterations.
-    #[arg(short('t'), long, default_value("2"), value_name("NUM"))]
-    iterations: u32,
+    #[arg(short, long, default_value("2"), value_name("NUM"))]
+    time_cost: u32,
 
     /// Set the degree of parallelism.
     #[arg(short, long, default_value("1"), value_name("NUM"))]
@@ -67,7 +67,7 @@ fn main() -> anyhow::Result<()> {
         .with_confirmation("Confirm passphrase", "Passphrases mismatch, try again")
         .interact()
         .context("could not read passphrase")?;
-    let params = Params::new(opt.memory_size, opt.iterations, opt.parallelism, None)?;
+    let params = Params::new(opt.memory_cost, opt.time_cost, opt.parallelism, None)?;
     let ciphertext = abcrypt::encrypt_with_params(plaintext, passphrase, params)?;
 
     if let Some(file) = opt.output {

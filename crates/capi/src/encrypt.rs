@@ -92,9 +92,9 @@ pub unsafe extern "C" fn abcrypt_encrypt_with_params(
     passphrase_len: usize,
     out: Option<NonNull<u8>>,
     out_len: usize,
-    m_cost: u32,
-    t_cost: u32,
-    p_cost: u32,
+    memory_cost: u32,
+    time_cost: u32,
+    parallelism: u32,
 ) -> ErrorCode {
     let Some(plaintext) = plaintext else {
         return ErrorCode::Error;
@@ -106,7 +106,7 @@ pub unsafe extern "C" fn abcrypt_encrypt_with_params(
     };
     // SAFETY: just checked that `passphrase` is not a null pointer.
     let passphrase = unsafe { slice::from_raw_parts(passphrase.as_ptr(), passphrase_len) };
-    let Ok(params) = Params::new(m_cost, t_cost, p_cost, None) else {
+    let Ok(params) = Params::new(memory_cost, time_cost, parallelism, None) else {
         return ErrorCode::InvalidArgon2Params;
     };
     let cipher = match Encryptor::with_params(&plaintext, passphrase, params) {
@@ -294,7 +294,7 @@ mod tests {
     }
 
     #[test]
-    fn m_cost() {
+    fn memory_cost() {
         let mut plaintext: [u8; TEST_DATA.len()] = TEST_DATA.try_into().unwrap();
         let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
         let mut ciphertext = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
@@ -316,7 +316,7 @@ mod tests {
     }
 
     #[test]
-    fn t_cost() {
+    fn time_cost() {
         let mut plaintext: [u8; TEST_DATA.len()] = TEST_DATA.try_into().unwrap();
         let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
         let mut ciphertext = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
@@ -338,7 +338,7 @@ mod tests {
     }
 
     #[test]
-    fn p_cost() {
+    fn parallelism() {
         let mut plaintext: [u8; TEST_DATA.len()] = TEST_DATA.try_into().unwrap();
         let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
         let mut ciphertext = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];

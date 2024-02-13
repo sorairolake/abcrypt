@@ -61,7 +61,7 @@ abcrypt information data.txt.abcrypt
 Output:
 
 ```text
-Parameters used: m_cost = 32; t_cost = 3; p_cost = 4;
+Parameters used: memoryCost = 32; timeCost = 3; parallelism = 4;
 ```
 
 Output as JSON:
@@ -74,9 +74,9 @@ Output:
 
 ```json
 {
-  "m_cost": 32,
-  "t_cost": 3,
-  "p_cost": 4
+  "memoryCost": 32,
+  "timeCost": 3,
+  "parallelism": 4
 }
 ```
 

@@ -79,9 +79,9 @@
 //!
 //! // And extract the Argon2 parameters from it.
 //! let params = abcrypt::Params::new(ciphertext).unwrap();
-//! assert_eq!(params.m_cost(), argon2::Params::DEFAULT_M_COST);
-//! assert_eq!(params.t_cost(), argon2::Params::DEFAULT_T_COST);
-//! assert_eq!(params.p_cost(), argon2::Params::DEFAULT_P_COST);
+//! assert_eq!(params.memory_cost(), argon2::Params::DEFAULT_M_COST);
+//! assert_eq!(params.time_cost(), argon2::Params::DEFAULT_T_COST);
+//! assert_eq!(params.parallelism(), argon2::Params::DEFAULT_P_COST);
 //! # }
 //! ```
 //!
