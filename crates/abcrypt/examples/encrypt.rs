@@ -11,13 +11,23 @@
 // Lint levels of Clippy.
 #![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
 
-#[cfg(feature = "std")]
-#[derive(Debug, clap::Parser)]
+use std::{
+    fs,
+    io::{self, Read, Write},
+    path::PathBuf,
+};
+
+use abcrypt::argon2::Params;
+use anyhow::Context;
+use clap::Parser;
+use dialoguer::{theme::ColorfulTheme, Password};
+
+#[derive(Debug, Parser)]
 #[command(version, about)]
 struct Opt {
     /// Output the result to a file.
     #[arg(short, long, value_name("FILE"))]
-    output: Option<std::path::PathBuf>,
+    output: Option<PathBuf>,
 
     /// Set the memory size in KiB.
     #[arg(short, long, default_value("19456"), value_name("NUM"))]
@@ -35,21 +45,10 @@ struct Opt {
     ///
     /// If [FILE] is not specified, data will be read from stdin.
     #[arg(value_name("FILE"))]
-    input: Option<std::path::PathBuf>,
+    input: Option<PathBuf>,
 }
 
-#[cfg(feature = "std")]
 fn main() -> anyhow::Result<()> {
-    use std::{
-        fs,
-        io::{self, Read, Write},
-    };
-
-    use abcrypt::argon2::Params;
-    use anyhow::Context;
-    use clap::Parser;
-    use dialoguer::{theme::ColorfulTheme, Password};
-
     let opt = Opt::parse();
 
     let plaintext = if let Some(file) = opt.input {
@@ -78,9 +77,4 @@ fn main() -> anyhow::Result<()> {
             .write_all(&ciphertext)
             .context("could not write data to stdout")
     }
-}
-
-#[cfg(not(feature = "std"))]
-fn main() -> anyhow::Result<()> {
-    anyhow::bail!("`std` feature is required");
 }

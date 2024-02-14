@@ -38,7 +38,7 @@ default: build
 
 # Apply lint suggestions
 @clippy-fix:
-    cargo clippy --workspace --fix --allow-dirty --allow-staged --lib --tests --examples -- -D warnings
+    cargo clippy --workspace --fix --allow-dirty --allow-staged --lib --bins --examples --tests -- -D warnings
 
 # Configure the Meson project
 setup-meson:
