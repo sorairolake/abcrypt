@@ -152,6 +152,11 @@ mod tests {
         assert_eq!(code, ErrorCode::Ok);
         assert_ne!(ciphertext, TEST_DATA);
 
+        let params = abcrypt::Params::new(ciphertext).unwrap();
+        assert_eq!(params.memory_cost(), 19456);
+        assert_eq!(params.time_cost(), 2);
+        assert_eq!(params.parallelism(), 1);
+
         let mut plaintext = [u8::default(); TEST_DATA.len()];
         assert_ne!(plaintext, TEST_DATA);
         let code = unsafe {
@@ -188,6 +193,11 @@ mod tests {
         };
         assert_eq!(code, ErrorCode::Ok);
         assert_ne!(ciphertext, TEST_DATA);
+
+        let params = abcrypt::Params::new(ciphertext).unwrap();
+        assert_eq!(params.memory_cost(), 32);
+        assert_eq!(params.time_cost(), 3);
+        assert_eq!(params.parallelism(), 4);
 
         let mut plaintext = [u8::default(); TEST_DATA.len()];
         assert_ne!(plaintext, TEST_DATA);

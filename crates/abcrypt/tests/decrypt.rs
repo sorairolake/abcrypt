@@ -155,3 +155,10 @@ fn out_len() {
     let cipher = Decryptor::new(&TEST_DATA_ENC, PASSPHRASE).unwrap();
     assert_eq!(cipher.out_len(), TEST_DATA.len());
 }
+
+#[cfg(feature = "alloc")]
+#[test]
+fn success_convenience_function() {
+    let plaintext = abcrypt::decrypt(TEST_DATA_ENC, PASSPHRASE).unwrap();
+    assert_eq!(plaintext, TEST_DATA);
+}

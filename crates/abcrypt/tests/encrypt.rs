@@ -14,14 +14,38 @@ use abcrypt::{argon2::Params, Decryptor, Encryptor, HEADER_SIZE, TAG_SIZE};
 const PASSPHRASE: &str = "passphrase";
 const TEST_DATA: &[u8] = include_bytes!("data/data.txt");
 
+#[cfg(feature = "alloc")]
 #[test]
 fn success() {
+    let cipher = Encryptor::new(&TEST_DATA, PASSPHRASE).unwrap();
+    let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
+    cipher.encrypt(&mut buf);
+    assert_ne!(buf, TEST_DATA);
+
+    let params = abcrypt::Params::new(buf).unwrap();
+    assert_eq!(params.memory_cost(), 19456);
+    assert_eq!(params.time_cost(), 2);
+    assert_eq!(params.parallelism(), 1);
+
+    let cipher = Decryptor::new(&buf, PASSPHRASE).unwrap();
+    let mut buf = [u8::default(); TEST_DATA.len()];
+    cipher.decrypt(&mut buf).unwrap();
+    assert_eq!(buf, TEST_DATA);
+}
+
+#[test]
+fn success_with_params() {
     let cipher =
         Encryptor::with_params(&TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())
             .unwrap();
     let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
     cipher.encrypt(&mut buf);
     assert_ne!(buf, TEST_DATA);
+
+    let params = abcrypt::Params::new(buf).unwrap();
+    assert_eq!(params.memory_cost(), 32);
+    assert_eq!(params.time_cost(), 3);
+    assert_eq!(params.parallelism(), 4);
 
     let cipher = Decryptor::new(&buf, PASSPHRASE).unwrap();
     let mut buf = [u8::default(); TEST_DATA.len()];
@@ -38,6 +62,11 @@ fn success_to_vec() {
             .unwrap();
     assert_ne!(ciphertext, TEST_DATA);
     assert_eq!(ciphertext.len(), TEST_DATA.len() + HEADER_SIZE + TAG_SIZE);
+
+    let params = abcrypt::Params::new(&ciphertext).unwrap();
+    assert_eq!(params.memory_cost(), 32);
+    assert_eq!(params.time_cost(), 3);
+    assert_eq!(params.parallelism(), 4);
 
     let plaintext = Decryptor::new(&ciphertext, PASSPHRASE)
         .and_then(|c| c.decrypt_to_vec())
@@ -141,4 +170,38 @@ fn out_len() {
         Encryptor::with_params(&TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())
             .unwrap();
     assert_eq!(cipher.out_len(), TEST_DATA.len() + HEADER_SIZE + TAG_SIZE);
+}
+
+#[cfg(feature = "alloc")]
+#[test]
+fn success_convenience_function() {
+    let ciphertext = abcrypt::encrypt(TEST_DATA, PASSPHRASE).unwrap();
+    assert_ne!(ciphertext, TEST_DATA);
+    assert_eq!(ciphertext.len(), TEST_DATA.len() + HEADER_SIZE + TAG_SIZE);
+
+    let params = abcrypt::Params::new(&ciphertext).unwrap();
+    assert_eq!(params.memory_cost(), 19456);
+    assert_eq!(params.time_cost(), 2);
+    assert_eq!(params.parallelism(), 1);
+
+    let plaintext = abcrypt::decrypt(ciphertext, PASSPHRASE).unwrap();
+    assert_eq!(plaintext, TEST_DATA);
+}
+
+#[cfg(feature = "alloc")]
+#[test]
+fn success_convenience_function_with_params() {
+    let ciphertext =
+        abcrypt::encrypt_with_params(TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())
+            .unwrap();
+    assert_ne!(ciphertext, TEST_DATA);
+    assert_eq!(ciphertext.len(), TEST_DATA.len() + HEADER_SIZE + TAG_SIZE);
+
+    let params = abcrypt::Params::new(&ciphertext).unwrap();
+    assert_eq!(params.memory_cost(), 32);
+    assert_eq!(params.time_cost(), 3);
+    assert_eq!(params.parallelism(), 4);
+
+    let plaintext = abcrypt::decrypt(ciphertext, PASSPHRASE).unwrap();
+    assert_eq!(plaintext, TEST_DATA);
 }

@@ -9,6 +9,7 @@
 // Lint levels of Clippy.
 #![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
 
+use abcrypt_wasm::Params;
 use wasm_bindgen::JsValue;
 use wasm_bindgen_test::wasm_bindgen_test;
 
@@ -17,6 +18,28 @@ const TEST_DATA: &[u8] = include_bytes!("data/data.txt");
 
 #[wasm_bindgen_test]
 fn success() {
+    let ciphertext = abcrypt_wasm::encrypt(TEST_DATA, PASSPHRASE)
+        .map_err(JsValue::from)
+        .unwrap();
+    assert_ne!(ciphertext, TEST_DATA);
+    assert_eq!(
+        ciphertext.len(),
+        TEST_DATA.len() + abcrypt_wasm::header_size() + abcrypt_wasm::tag_size()
+    );
+
+    let params = Params::new(&ciphertext).map_err(JsValue::from).unwrap();
+    assert_eq!(params.memory_cost(), 19456);
+    assert_eq!(params.time_cost(), 2);
+    assert_eq!(params.parallelism(), 1);
+
+    let plaintext = abcrypt_wasm::decrypt(&ciphertext, PASSPHRASE)
+        .map_err(JsValue::from)
+        .unwrap();
+    assert_eq!(plaintext, TEST_DATA);
+}
+
+#[wasm_bindgen_test]
+fn success_with_params() {
     let ciphertext = abcrypt_wasm::encrypt_with_params(TEST_DATA, PASSPHRASE, 32, 3, 4)
         .map_err(JsValue::from)
         .unwrap();
@@ -25,6 +48,11 @@ fn success() {
         ciphertext.len(),
         TEST_DATA.len() + abcrypt_wasm::header_size() + abcrypt_wasm::tag_size()
     );
+
+    let params = Params::new(&ciphertext).map_err(JsValue::from).unwrap();
+    assert_eq!(params.memory_cost(), 32);
+    assert_eq!(params.time_cost(), 3);
+    assert_eq!(params.parallelism(), 4);
 
     let plaintext = abcrypt_wasm::decrypt(&ciphertext, PASSPHRASE)
         .map_err(JsValue::from)
