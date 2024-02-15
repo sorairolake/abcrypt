@@ -74,7 +74,7 @@ licensing information.
 
 [ci-badge]: https://img.shields.io/github/actions/workflow/status/sorairolake/abcrypt/CI.yaml?branch=develop&label=CI&logo=github&style=for-the-badge
 [ci-url]: https://github.com/sorairolake/abcrypt/actions?query=branch%3Adevelop+workflow%3ACI++
-[version-badge]: https://img.shields.io/crates/v/abcrypt-wasm?style=for-the-badge
+[version-badge]: https://img.shields.io/crates/v/abcrypt-wasm?logo=rust&style=for-the-badge
 [version-url]: https://crates.io/crates/abcrypt-wasm
 [docs-badge]: https://img.shields.io/docsrs/abcrypt-wasm?label=Docs.rs&logo=docsdotrs&style=for-the-badge
 [docs-url]: https://docs.rs/abcrypt-wasm

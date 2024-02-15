@@ -7,7 +7,7 @@
 :shields-url: https://img.shields.io
 :ci-badge: {shields-url}/github/actions/workflow/status/sorairolake/abcrypt/CI.yaml?branch=develop&label=CI&logo=github&style=for-the-badge
 :ci-url: {project-url}/actions?query=branch%3Adevelop+workflow%3ACI++
-:version-badge: {shields-url}/crates/v/abcrypt?style=for-the-badge
+:version-badge: {shields-url}/crates/v/abcrypt?logo=rust&style=for-the-badge
 :version-url: https://crates.io/crates/abcrypt
 :docs-badge: {shields-url}/docsrs/abcrypt?label=Docs.rs&logo=docsdotrs&style=for-the-badge
 :docs-url: https://docs.rs/abcrypt
