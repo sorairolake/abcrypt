@@ -19,5 +19,3 @@ image:{docs-badge}[Docs,link={docs-url}]
 image:{license-badge}[License]
 
 *abcrypt* is an implementation of the abcrypt encrypted data format.
-
-This crate implements version 0 of the format.

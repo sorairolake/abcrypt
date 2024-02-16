@@ -5,8 +5,6 @@
 //! The `abcrypt` crate is an implementation of the [abcrypt encrypted data
 //! format].
 //!
-//! This crate implements version 0 of the format.
-//!
 //! # Examples
 //!
 //! ## Encryption and decryption
