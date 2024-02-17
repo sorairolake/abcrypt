@@ -24,7 +24,7 @@ abcrypt = "0.3.1"
 
 ### Example
 
-```rs
+```rust
 use abcrypt::{argon2::Params, Decryptor, Encryptor};
 
 let data = b"Hello, world!\n";
