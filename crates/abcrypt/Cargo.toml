@@ -22,14 +22,17 @@ include = ["/LICENSES", "/README.md", "/src"]
 
 [[example]]
 name = "decrypt"
+path = "examples/decrypt.rs"
 required-features = ["default"]
 
 [[example]]
 name = "encrypt"
+path = "examples/encrypt.rs"
 required-features = ["default"]
 
 [[example]]
 name = "info"
+path = "examples/info.rs"
 required-features = ["default", "serde"]
 
 [dependencies]
