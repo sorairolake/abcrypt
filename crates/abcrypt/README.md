@@ -19,12 +19,12 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-abcrypt = "0.3.1"
+abcrypt = "0.3.2"
 ```
 
 ### Example
 
-```rs
+```rust
 use abcrypt::{argon2::Params, Decryptor, Encryptor};
 
 let data = b"Hello, world!\n";

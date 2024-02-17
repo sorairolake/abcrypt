@@ -8,7 +8,7 @@
 [source,toml]
 ----
 [dependencies]
-abcrypt = "0.3.1"
+abcrypt = "0.3.2"
 ----
 
 == Crate features
