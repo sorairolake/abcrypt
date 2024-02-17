@@ -1,0 +1,30 @@
+; SPDX-FileCopyrightText: 2024 Shun Sakai
+;
+; SPDX-License-Identifier: CC-BY-4.0
+
+abcrypt = header payload
+
+; Header
+
+header = signature version-number argon2-parameters salt nonce header-mac
+
+signature      = %s"abcrypt" ; magic number
+version-number = OCTET
+salt           = 32OCTET     ; 32-byte salt for Argon2
+nonce          = 24OCTET     ; 24-byte nonce for XChaCha20-Poly1305
+header-mac     = 64OCTET     ; BLAKE2b-512-MAC of the header
+
+; Argon2 parameters
+
+argon2-parameters = memory-cost time-cost parallelism
+
+memory-cost = %x00000008-FFFFFFFF ; memory size in KiB
+time-cost   = %x00000001-FFFFFFFF ; number of iterations
+parallelism = %x00000001-00FFFFFF ; degree of parallelism
+
+; Payload
+
+payload = ciphertext ciphertext-mac
+
+ciphertext     = *OCTET  ; encrypted with XChaCha20
+ciphertext-mac = 16OCTET ; Poly1305 of the ciphertext

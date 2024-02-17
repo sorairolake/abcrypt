@@ -4,7 +4,7 @@
 
 = abcrypt-encrypt(1)
 // Specify in UTC.
-:docdate: 2024-01-19
+:docdate: 2024-02-13
 :doctype: manpage
 ifdef::revnumber[:mansource: abcrypt {revnumber}]
 :manmanual: General Commands Manual
@@ -36,7 +36,7 @@ _FILE_::
 
   Output the result to a file.
 
-*-m*, *--memory-size* _BYTE_::
+*-m*, *--memory-cost* _BYTE_::
 
   Set the memory size in bytes. _BYTE_ can be suffixed with the symbol (B) and
   the byte prefix (such as Ki and M). If only a numeric value is specified for
@@ -45,7 +45,7 @@ _FILE_::
   nearest it. _BYTE_ should be between *8 KiB* and *4294967295 KiB* (4 TiB).
   Default is 19456 KiB (19 MiB).
 
-*-t*, *--iterations* _NUM_::
+*-t*, *--time-cost* _NUM_::
 
   Set the number of iterations. _NUM_ should be between *1* and *4294967295*.
   Default is 2.

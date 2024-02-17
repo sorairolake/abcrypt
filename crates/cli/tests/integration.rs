@@ -191,7 +191,7 @@ fn encrypt_if_output_is_directory() {
 }
 
 #[test]
-fn validate_m_parameter_with_unit_for_encrypt_command() {
+fn validate_memory_cost_with_unit_for_encrypt_command() {
     command()
         .arg("encrypt")
         .arg("-m")
@@ -203,12 +203,12 @@ fn validate_m_parameter_with_unit_for_encrypt_command() {
         .assert()
         .success()
         .stderr(predicate::str::starts_with(
-            "Parameters used: m_cost = 19456; t_cost = 2; p_cost = 1;",
+            "Parameters used: memoryCost = 19456; timeCost = 2; parallelism = 1;",
         ));
 }
 
 #[test]
-fn validate_m_parameter_without_unit_for_encrypt_command() {
+fn validate_memory_cost_without_unit_for_encrypt_command() {
     command()
         .arg("encrypt")
         .arg("-m")
@@ -220,12 +220,12 @@ fn validate_m_parameter_without_unit_for_encrypt_command() {
         .assert()
         .success()
         .stderr(predicate::str::starts_with(
-            "Parameters used: m_cost = 19456; t_cost = 2; p_cost = 1;",
+            "Parameters used: memoryCost = 19456; timeCost = 2; parallelism = 1;",
         ));
 }
 
 #[test]
-fn validate_m_parameter_with_byte_prefix_for_encrypt_command() {
+fn validate_memory_cost_with_byte_prefix_for_encrypt_command() {
     command()
         .arg("encrypt")
         .arg("-m")
@@ -237,7 +237,7 @@ fn validate_m_parameter_with_byte_prefix_for_encrypt_command() {
         .assert()
         .success()
         .stderr(predicate::str::starts_with(
-            "Parameters used: m_cost = 19456; t_cost = 2; p_cost = 1;",
+            "Parameters used: memoryCost = 19456; timeCost = 2; parallelism = 1;",
         ));
     command()
         .arg("encrypt")
@@ -250,7 +250,7 @@ fn validate_m_parameter_with_byte_prefix_for_encrypt_command() {
         .assert()
         .success()
         .stderr(predicate::str::starts_with(
-            "Parameters used: m_cost = 19456; t_cost = 2; p_cost = 1;",
+            "Parameters used: memoryCost = 19456; timeCost = 2; parallelism = 1;",
         ));
     command()
         .arg("encrypt")
@@ -263,12 +263,12 @@ fn validate_m_parameter_with_byte_prefix_for_encrypt_command() {
         .assert()
         .success()
         .stderr(predicate::str::starts_with(
-            "Parameters used: m_cost = 19456; t_cost = 2; p_cost = 1;",
+            "Parameters used: memoryCost = 19456; timeCost = 2; parallelism = 1;",
         ));
 }
 
 #[test]
-fn validate_m_parameter_with_invalid_unit_for_encrypt_command() {
+fn validate_memory_cost_with_invalid_unit_for_encrypt_command() {
     command()
         .arg("encrypt")
         .arg("-m")
@@ -296,7 +296,7 @@ fn validate_m_parameter_with_invalid_unit_for_encrypt_command() {
 }
 
 #[test]
-fn validate_m_parameter_with_nan_for_encrypt_command() {
+fn validate_memory_cost_with_nan_for_encrypt_command() {
     command()
         .arg("encrypt")
         .arg("-m")
@@ -342,7 +342,7 @@ fn validate_m_parameter_with_nan_for_encrypt_command() {
 }
 
 #[test]
-fn validate_m_parameter_ranges_for_encrypt_command() {
+fn validate_memory_cost_ranges_for_encrypt_command() {
     command()
         .arg("encrypt")
         .arg("-m")
@@ -368,7 +368,7 @@ fn validate_m_parameter_ranges_for_encrypt_command() {
         .assert()
         .success()
         .stderr(predicate::str::starts_with(
-            "Parameters used: m_cost = 8; t_cost = 2; p_cost = 1;",
+            "Parameters used: memoryCost = 8; timeCost = 2; parallelism = 1;",
         ));
     command()
         .arg("encrypt")
@@ -387,7 +387,7 @@ fn validate_m_parameter_ranges_for_encrypt_command() {
 }
 
 #[test]
-fn validate_t_parameter_with_nan_for_encrypt_command() {
+fn validate_time_cost_with_nan_for_encrypt_command() {
     command()
         .arg("encrypt")
         .arg("-t")
@@ -402,7 +402,7 @@ fn validate_t_parameter_with_nan_for_encrypt_command() {
 }
 
 #[test]
-fn validate_t_parameter_ranges_for_encrypt_command() {
+fn validate_time_cost_ranges_for_encrypt_command() {
     command()
         .arg("encrypt")
         .arg("-t")
@@ -425,7 +425,7 @@ fn validate_t_parameter_ranges_for_encrypt_command() {
         .assert()
         .success()
         .stderr(predicate::str::starts_with(
-            "Parameters used: m_cost = 19456; t_cost = 1; p_cost = 1;",
+            "Parameters used: memoryCost = 19456; timeCost = 1; parallelism = 1;",
         ));
     command()
         .arg("encrypt")
@@ -443,7 +443,7 @@ fn validate_t_parameter_ranges_for_encrypt_command() {
 }
 
 #[test]
-fn validate_p_parameter_with_nan_for_encrypt_command() {
+fn validate_parallelism_with_nan_for_encrypt_command() {
     command()
         .arg("encrypt")
         .arg("-p")
@@ -458,7 +458,7 @@ fn validate_p_parameter_with_nan_for_encrypt_command() {
 }
 
 #[test]
-fn validate_p_parameter_ranges_for_encrypt_command() {
+fn validate_parallelism_ranges_for_encrypt_command() {
     command()
         .arg("encrypt")
         .arg("-p")
@@ -481,7 +481,7 @@ fn validate_p_parameter_ranges_for_encrypt_command() {
         .assert()
         .success()
         .stderr(predicate::str::starts_with(
-            "Parameters used: m_cost = 19456; t_cost = 2; p_cost = 2;",
+            "Parameters used: memoryCost = 19456; timeCost = 2; parallelism = 2;",
         ));
     command()
         .arg("encrypt")
@@ -520,7 +520,7 @@ fn encrypt_verbose() {
         .assert()
         .success()
         .stderr(predicate::str::starts_with(
-            "Parameters used: m_cost = 19456; t_cost = 2; p_cost = 1;",
+            "Parameters used: memoryCost = 19456; timeCost = 2; parallelism = 1;",
         ));
 }
 
@@ -669,7 +669,7 @@ fn decrypt_verbose() {
         .success()
         .stdout(predicate::eq("Hello, world!\n"))
         .stderr(predicate::str::starts_with(
-            "Parameters used: m_cost = 32; t_cost = 3; p_cost = 4;",
+            "Parameters used: memoryCost = 32; timeCost = 3; parallelism = 4;",
         ));
 }
 
@@ -705,7 +705,7 @@ fn basic_information() {
         .assert()
         .success()
         .stderr(predicate::str::starts_with(
-            "Parameters used: m_cost = 32; t_cost = 3; p_cost = 4;",
+            "Parameters used: memoryCost = 32; timeCost = 3; parallelism = 4;",
         ));
 }
 
@@ -760,7 +760,7 @@ fn information_as_json() {
         .assert()
         .success()
         .stdout(predicate::eq(concat!(
-            r#"{"m_cost":32,"t_cost":3,"p_cost":4}"#,
+            r#"{"memoryCost":32,"timeCost":3,"parallelism":4}"#,
             '\n'
         )));
 }

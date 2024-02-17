@@ -23,19 +23,19 @@ fn success() {
 }
 
 #[wasm_bindgen_test]
-fn m_cost() {
+fn memory_cost() {
     let params = Params::new(TEST_DATA_ENC).map_err(JsValue::from).unwrap();
-    assert_eq!(params.m_cost(), 32);
+    assert_eq!(params.memory_cost(), 32);
 }
 
 #[wasm_bindgen_test]
-fn t_cost() {
+fn time_cost() {
     let params = Params::new(TEST_DATA_ENC).map_err(JsValue::from).unwrap();
-    assert_eq!(params.t_cost(), 3);
+    assert_eq!(params.time_cost(), 3);
 }
 
 #[wasm_bindgen_test]
-fn p_cost() {
+fn parallelism() {
     let params = Params::new(TEST_DATA_ENC).map_err(JsValue::from).unwrap();
-    assert_eq!(params.p_cost(), 4);
+    assert_eq!(params.parallelism(), 4);
 }

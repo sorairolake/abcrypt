@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: Apache-2.0 OR MIT
 
 [tool.bumpversion]
-current_version = "0.2.10"
+current_version = "0.3.0"
 
 [[tool.bumpversion.files]]
 filename = "crates/abcrypt/README.md"
@@ -15,4 +15,4 @@ filename = "crates/abcrypt/src/lib.rs"
 filename = "docs/book/modules/lib/pages/usage.adoc"
 
 [[tool.bumpversion.files]]
-filename = "docs/FORMAT.adoc"
+filename = "docs/spec/FORMAT.adoc"

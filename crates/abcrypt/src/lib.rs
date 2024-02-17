@@ -5,8 +5,6 @@
 //! The `abcrypt` crate is an implementation of the [abcrypt encrypted data
 //! format].
 //!
-//! This crate implements version 0 of the format.
-//!
 //! # Examples
 //!
 //! ## Encryption and decryption
@@ -79,15 +77,15 @@
 //!
 //! // And extract the Argon2 parameters from it.
 //! let params = abcrypt::Params::new(ciphertext).unwrap();
-//! assert_eq!(params.m_cost(), argon2::Params::DEFAULT_M_COST);
-//! assert_eq!(params.t_cost(), argon2::Params::DEFAULT_T_COST);
-//! assert_eq!(params.p_cost(), argon2::Params::DEFAULT_P_COST);
+//! assert_eq!(params.memory_cost(), argon2::Params::DEFAULT_M_COST);
+//! assert_eq!(params.time_cost(), argon2::Params::DEFAULT_T_COST);
+//! assert_eq!(params.parallelism(), argon2::Params::DEFAULT_P_COST);
 //! # }
 //! ```
 //!
 //! [abcrypt encrypted data format]: https://sorairolake.github.io/abcrypt/book/format.html
 
-#![doc(html_root_url = "https://docs.rs/abcrypt/0.2.10/")]
+#![doc(html_root_url = "https://docs.rs/abcrypt/0.3.0/")]
 #![no_std]
 #![cfg_attr(doc_cfg, feature(doc_auto_cfg, doc_cfg))]
 // Lint levels of rustc.

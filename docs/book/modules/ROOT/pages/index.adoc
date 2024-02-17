@@ -9,13 +9,13 @@
 :crates-io-crates: {crates-io-url}/crates
 :ci-badge: {shields-url}/github/actions/workflow/status/sorairolake/abcrypt/CI.yaml?branch=develop&label=CI&logo=github&style=for-the-badge
 :ci-url: {project-url}/actions?query=branch%3Adevelop+workflow%3ACI++
-:abcrypt-badge: {shields-url}/crates/v/abcrypt?style=for-the-badge
+:abcrypt-badge: {shields-url}/crates/v/abcrypt?logo=rust&style=for-the-badge
 :abcrypt-crates-io: {crates-io-crates}/abcrypt
-:abcrypt-cli-badge: {shields-url}/crates/v/abcrypt-cli?style=for-the-badge
+:abcrypt-cli-badge: {shields-url}/crates/v/abcrypt-cli?logo=rust&style=for-the-badge
 :abcrypt-cli-crates-io: {crates-io-crates}/abcrypt-cli
-:abcrypt-capi-badge: {shields-url}/crates/v/abcrypt-capi?style=for-the-badge
+:abcrypt-capi-badge: {shields-url}/crates/v/abcrypt-capi?logo=rust&style=for-the-badge
 :abcrypt-capi-crates-io: {crates-io-crates}/abcrypt-capi
-:abcrypt-wasm-badge: {shields-url}/crates/v/abcrypt-wasm?style=for-the-badge
+:abcrypt-wasm-badge: {shields-url}/crates/v/abcrypt-wasm?logo=rust&style=for-the-badge
 :abcrypt-wasm-crates-io: {crates-io-crates}/abcrypt-wasm
 
 image:{ci-badge}[CI,link={ci-url}]

@@ -1,11 +1,11 @@
 // SPDX-FileCopyrightText: 2023 Shun Sakai
 //
-// SPDX-License-Identifier: Apache-2.0 OR MIT
+// SPDX-License-Identifier: CC-BY-4.0
 
 = Abcrypt Encrypted Data Format
 Shun Sakai <sorairolake@protonmail.ch>
 // Specify in UTC.
-v0.2.10, 2023-09-30
+v0.3.0, 2024-02-13
 :icons: font
 :idprefix:
 :idseparator: -
@@ -65,17 +65,17 @@ abcrypt files may use the extension `.abcrypt`.
 
 |stem:[8]
 |stem:[4]
-|Memory size `m`.
+|Memory size `m` (`memoryCost`).
 |<<argon2-parameters>>
 
 |stem:[12]
 |stem:[4]
-|Number of iterations `t`.
+|Number of iterations `t` (`timeCost`).
 |<<argon2-parameters>>
 
 |stem:[16]
 |stem:[4]
-|Degree of parallelism `p`.
+|Degree of parallelism `p` (`parallelism`).
 |<<argon2-parameters>>
 
 |stem:[20]
@@ -115,9 +115,9 @@ are produced by <<argon2>>. The abcrypt format uses Argon2id as the type and
 .The derived key is produced as follows
 ----
 derived_key = Argon2(
-    m_cost = header[8..12],
-    t_cost = header[12..16],
-    p_cost = header[16..20],
+    memoryCost = header[8..12],
+    timeCost = header[12..16],
+    parallelism = header[16..20],
     output_len = 96,
     algorithm = Argon2id,
     version = 0x13,
@@ -130,9 +130,9 @@ The resulting derived key (`derived_key`) length is 96 bytes. The first 32
 bytes of `derived_key` are for encryption (<<xchacha20-poly1305>> key), and the
 last 64 bytes are for computing the header MAC (<<blake2b-512-mac>> key).
 
-<<argon2-parameters,`m_cost`>>, <<argon2-parameters,`t_cost`>>,
-<<argon2-parameters,`p_cost`>>, and <<salt,`salt`>> used when encrypting are
-stored in the header, and these stored values are used when decrypting.
+<<argon2-parameters,`memoryCost`>>, <<argon2-parameters,`timeCost`>>,
+<<argon2-parameters,`parallelism`>>, and <<salt,`salt`>> used when encrypting
+are stored in the header, and these stored values are used when decrypting.
 
 == Header format
 
@@ -151,17 +151,17 @@ A 1-byte version number of the abcrypt format. The current value is 0.
 |===
 |Parameter |Minimum value |Maximum value |Description
 
-|`m_cost`
+|`memoryCost`
 |stem:[8 xx p]
 |stem:[2^(32) - 1]
 |Memory size in KiB.
 
-|`t_cost`
+|`timeCost`
 |stem:[1]
 |stem:[2^(32) - 1]
 |Number of iterations.
 
-|`p_cost`
+|`parallelism`
 |stem:[1]
 |stem:[2^(24) - 1]
 |Degree of parallelism.
@@ -217,6 +217,18 @@ ciphertext = XChaCha20-Poly1305(
 The size of `aad` (additional authenticated data) is zero (empty).
 
 IMPORTANT: The abcrypt format uses a postfix tag.
+
+== ABNF definition of the file format
+
+[source,abnf]
+----
+ifdef::site-gen-antora[]
+include::example$abcrypt.abnf[lines=5..-1]
+endif::[]
+ifndef::site-gen-antora[]
+include::abcrypt.abnf[lines=5..-1]
+endif::[]
+----
 
 == Format changelog
 

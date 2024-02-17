@@ -10,12 +10,12 @@ pub fn get(data: &[u8]) -> anyhow::Result<abcrypt::Params> {
 }
 
 /// Prints the encryption parameters.
-fn display(m_cost: u32, t_cost: u32, p_cost: u32) {
-    eprint!("Parameters used: m_cost = {m_cost}; t_cost = {t_cost}; p_cost = {p_cost};");
+fn display(memory_cost: u32, time_cost: u32, parallelism: u32) {
+    eprint!("Parameters used: memoryCost = {memory_cost}; timeCost = {time_cost}; parallelism = {parallelism};");
 }
 
 /// Prints the encryption parameters with a newline.
-pub fn displayln(m_cost: u32, t_cost: u32, p_cost: u32) {
-    display(m_cost, t_cost, p_cost);
+pub fn displayln(memory_cost: u32, time_cost: u32, parallelism: u32) {
+    display(memory_cost, time_cost, parallelism);
     eprintln!();
 }

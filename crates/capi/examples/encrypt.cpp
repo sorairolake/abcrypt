@@ -24,11 +24,11 @@
 
 int main(int argc, char *argv[]) {
   CLI::App app{"An example of encrypting to the abcrypt encrypted data format"};
-  std::uint32_t memory_size{19456};
-  app.add_option("-m,--memory-size", memory_size, "Set the memory size in KiB")
+  std::uint32_t memory_cost{19456};
+  app.add_option("-m,--memory-cost", memory_cost, "Set the memory size in KiB")
       ->capture_default_str();
-  std::uint32_t iterations{2};
-  app.add_option("-t,--iterations", iterations, "Set the number of iterations")
+  std::uint32_t time_cost{2};
+  app.add_option("-t,--time-cost", time_cost, "Set the number of iterations")
       ->capture_default_str();
   std::uint32_t parallelism{1};
   app.add_option("-p,--parallelism", parallelism,
@@ -78,7 +78,7 @@ int main(int argc, char *argv[]) {
   auto error_code = abcrypt_encrypt_with_params(
       plaintext.data(), plaintext.size(),
       reinterpret_cast<uint8_t *>(passphrase.data()), passphrase.size(),
-      ciphertext.data(), ciphertext.size(), memory_size, iterations,
+      ciphertext.data(), ciphertext.size(), memory_cost, time_cost,
       parallelism);
   if (error_code != ABCRYPT_ERROR_CODE_OK) {
     std::vector<std::uint8_t> buf(abcrypt_error_message_out_len(error_code));

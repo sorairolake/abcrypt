@@ -13,15 +13,13 @@ SPDX-License-Identifier: Apache-2.0 OR MIT
 
 **abcrypt** is an implementation of the [abcrypt encrypted data format].
 
-This crate implements version 0 of the format.
-
 ## Usage
 
 Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-abcrypt = "0.2.10"
+abcrypt = "0.3.0"
 ```
 
 ### Example
@@ -75,7 +73,7 @@ See the [documentation][docs-url] for more details.
 
 ## Minimum supported Rust version
 
-The minimum supported Rust version (MSRV) of this library is v1.70.0.
+The minimum supported Rust version (MSRV) of this library is v1.74.0.
 
 ## Changelog
 
@@ -98,12 +96,12 @@ licensing information.
 
 [ci-badge]: https://img.shields.io/github/actions/workflow/status/sorairolake/abcrypt/CI.yaml?branch=develop&label=CI&logo=github&style=for-the-badge
 [ci-url]: https://github.com/sorairolake/abcrypt/actions?query=branch%3Adevelop+workflow%3ACI++
-[version-badge]: https://img.shields.io/crates/v/abcrypt?style=for-the-badge
+[version-badge]: https://img.shields.io/crates/v/abcrypt?logo=rust&style=for-the-badge
 [version-url]: https://crates.io/crates/abcrypt
 [docs-badge]: https://img.shields.io/docsrs/abcrypt?label=Docs.rs&logo=docsdotrs&style=for-the-badge
 [docs-url]: https://docs.rs/abcrypt
 [license-badge]: https://img.shields.io/crates/l/abcrypt?style=for-the-badge
-[abcrypt encrypted data format]: ../../docs/FORMAT.adoc
+[abcrypt encrypted data format]: ../../docs/spec/FORMAT.adoc
 [CHANGELOG.adoc]: CHANGELOG.adoc
 [CONTRIBUTING.adoc]: ../../CONTRIBUTING.adoc
 [AUTHORS.adoc]: ../../AUTHORS.adoc

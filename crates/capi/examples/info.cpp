@@ -59,12 +59,14 @@ int main(int argc, char *argv[]) {
     abcrypt_params_free(params);
     return EXIT_FAILURE;
   }
-  auto m_cost = abcrypt_params_m_cost(params);
-  auto t_cost = abcrypt_params_t_cost(params);
-  auto p_cost = abcrypt_params_p_cost(params);
+  auto memory_cost = abcrypt_params_memory_cost(params);
+  auto time_cost = abcrypt_params_time_cost(params);
+  auto parallelism = abcrypt_params_parallelism(params);
   abcrypt_params_free(params);
 
-  std::cout << fmt::format("Parameters used: m = {}; t = {}; p = {};", m_cost,
-                           t_cost, p_cost)
+  std::cout << fmt::format(
+                   "Parameters used: memoryCost = {}; timeCost = {}; "
+                   "parallelism = {};",
+                   memory_cost, time_cost, parallelism)
             << std::endl;
 }

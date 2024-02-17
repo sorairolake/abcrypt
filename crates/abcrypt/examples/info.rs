@@ -11,28 +11,31 @@
 // Lint levels of Clippy.
 #![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
 
-#[cfg(feature = "std")]
-#[derive(Debug, clap::Parser)]
+use std::{
+    fs,
+    io::{self, Read},
+    path::PathBuf,
+};
+
+use abcrypt::Params;
+use anyhow::Context;
+use clap::Parser;
+
+#[derive(Debug, Parser)]
 #[command(version, about)]
 struct Opt {
+    /// Output the encryption parameters as JSON.
+    #[arg(short, long)]
+    json: bool,
+
     /// Input file.
     ///
     /// If [FILE] is not specified, data will be read from stdin.
     #[arg(value_name("FILE"))]
-    input: Option<std::path::PathBuf>,
+    input: Option<PathBuf>,
 }
 
-#[cfg(feature = "std")]
 fn main() -> anyhow::Result<()> {
-    use std::{
-        fs,
-        io::{self, Read},
-    };
-
-    use abcrypt::Params;
-    use anyhow::Context;
-    use clap::Parser;
-
     let opt = Opt::parse();
 
     let ciphertext = if let Some(file) = opt.input {
@@ -46,16 +49,16 @@ fn main() -> anyhow::Result<()> {
     }?;
 
     let params = Params::new(ciphertext).context("data is not a valid abcrypt encrypted file")?;
-    println!(
-        "Parameters used: m_cost = {}; t_cost = {}; p_cost = {};",
-        params.m_cost(),
-        params.t_cost(),
-        params.p_cost()
-    );
+    if opt.json {
+        let output = serde_json::to_string(&params).context("could not serialize as JSON")?;
+        println!("{output}");
+    } else {
+        println!(
+            "Parameters used: memoryCost = {}; timeCost = {}; parallelism = {};",
+            params.memory_cost(),
+            params.time_cost(),
+            params.parallelism()
+        );
+    }
     Ok(())
-}
-
-#[cfg(not(feature = "std"))]
-fn main() -> anyhow::Result<()> {
-    anyhow::bail!("`std` feature is required");
 }

@@ -9,10 +9,11 @@ use crate::{format::Header, Result};
 /// The Argon2 parameters used for the encrypted data.
 #[derive(Clone, Copy, Debug)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize))]
+#[cfg_attr(feature = "serde", serde(rename_all = "camelCase"))]
 pub struct Params {
-    m_cost: u32,
-    t_cost: u32,
-    p_cost: u32,
+    memory_cost: u32,
+    time_cost: u32,
+    parallelism: u32,
 }
 
 impl Params {
@@ -51,12 +52,12 @@ impl Params {
     /// let ciphertext = include_bytes!("../tests/data/data.txt.abcrypt");
     ///
     /// let params = Params::new(ciphertext).unwrap();
-    /// assert_eq!(params.m_cost(), 32);
+    /// assert_eq!(params.memory_cost(), 32);
     /// ```
     #[must_use]
     #[inline]
-    pub const fn m_cost(&self) -> u32 {
-        self.m_cost
+    pub const fn memory_cost(&self) -> u32 {
+        self.memory_cost
     }
 
     /// Gets number of iterations.
@@ -69,12 +70,12 @@ impl Params {
     /// let ciphertext = include_bytes!("../tests/data/data.txt.abcrypt");
     ///
     /// let params = Params::new(ciphertext).unwrap();
-    /// assert_eq!(params.t_cost(), 3);
+    /// assert_eq!(params.time_cost(), 3);
     /// ```
     #[must_use]
     #[inline]
-    pub const fn t_cost(&self) -> u32 {
-        self.t_cost
+    pub const fn time_cost(&self) -> u32 {
+        self.time_cost
     }
 
     /// Gets degree of parallelism.
@@ -87,29 +88,35 @@ impl Params {
     /// let ciphertext = include_bytes!("../tests/data/data.txt.abcrypt");
     ///
     /// let params = Params::new(ciphertext).unwrap();
-    /// assert_eq!(params.p_cost(), 4);
+    /// assert_eq!(params.parallelism(), 4);
     /// ```
     #[must_use]
     #[inline]
-    pub const fn p_cost(&self) -> u32 {
-        self.p_cost
+    pub const fn parallelism(&self) -> u32 {
+        self.parallelism
     }
 }
 
 impl From<Params> for argon2::Params {
     fn from(params: Params) -> Self {
-        Self::new(params.m_cost(), params.t_cost(), params.p_cost(), None)
-            .expect("`Params` should be valid as `argon2::Params`")
+        Self::new(
+            params.memory_cost(),
+            params.time_cost(),
+            params.parallelism(),
+            None,
+        )
+        .expect("`Params` should be valid as `argon2::Params`")
     }
 }
 
 impl From<argon2::Params> for Params {
     fn from(params: argon2::Params) -> Self {
-        let (m_cost, t_cost, p_cost) = (params.m_cost(), params.t_cost(), params.p_cost());
+        let (memory_cost, time_cost, parallelism) =
+            (params.m_cost(), params.t_cost(), params.p_cost());
         Self {
-            m_cost,
-            t_cost,
-            p_cost,
+            memory_cost,
+            time_cost,
+            parallelism,
         }
     }
 }

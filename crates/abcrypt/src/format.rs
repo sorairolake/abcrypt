@@ -110,22 +110,22 @@ impl Header {
             0 => Version::V0,
             v => return Err(Error::UnknownVersion(v)),
         };
-        let m_cost = u32::from_le_bytes(
+        let memory_cost = u32::from_le_bytes(
             data[8..12]
                 .try_into()
-                .expect("size of `m_cost` should be 4 bytes"),
+                .expect("size of `memoryCost` should be 4 bytes"),
         );
-        let t_cost = u32::from_le_bytes(
+        let time_cost = u32::from_le_bytes(
             data[12..16]
                 .try_into()
-                .expect("size of `t_cost` should be 4 bytes"),
+                .expect("size of `timeCost` should be 4 bytes"),
         );
-        let p_cost = u32::from_le_bytes(
+        let parallelism = u32::from_le_bytes(
             data[16..20]
                 .try_into()
-                .expect("size of `p_cost` should be 4 bytes"),
+                .expect("size of `parallelism` should be 4 bytes"),
         );
-        let params = argon2::Params::new(m_cost, t_cost, p_cost, None)
+        let params = argon2::Params::new(memory_cost, time_cost, parallelism, None)
             .map(Params::from)
             .map_err(Error::InvalidArgon2Params)?;
         let salt = data[20..52]
@@ -164,9 +164,9 @@ impl Header {
         let mut header = [u8::default(); Self::SIZE];
         header[..7].copy_from_slice(&self.magic_number);
         header[7] = self.version.into();
-        header[8..12].copy_from_slice(&self.params.m_cost().to_le_bytes());
-        header[12..16].copy_from_slice(&self.params.t_cost().to_le_bytes());
-        header[16..20].copy_from_slice(&self.params.p_cost().to_le_bytes());
+        header[8..12].copy_from_slice(&self.params.memory_cost().to_le_bytes());
+        header[12..16].copy_from_slice(&self.params.time_cost().to_le_bytes());
+        header[16..20].copy_from_slice(&self.params.parallelism().to_le_bytes());
         header[20..52].copy_from_slice(&self.salt);
         header[52..76].copy_from_slice(&self.nonce);
         header[76..].copy_from_slice(&self.mac);

@@ -12,10 +12,10 @@ const { args, options } = await new command.Command()
   .name("encrypt")
   .version(VERSION)
   .description("An example of encrypting to the abcrypt encrypted data format.")
-  .option("-m, --memory-size <NUM:integer>", "Set the memory size in KiB.", {
+  .option("-m, --memory-cost <NUM:integer>", "Set the memory size in KiB.", {
     default: 19456,
   })
-  .option("-t, --iterations <NUM:integer>", "Set the number of iterations.", {
+  .option("-t, --time-cost <NUM:integer>", "Set the number of iterations.", {
     default: 2,
   })
   .option("-p, --parallelism <NUM:integer>", "Set the degree of parallelism.", {
@@ -31,8 +31,8 @@ const passphrase = new TextEncoder()
 const ciphertext = abcrypt.encryptWithParams(
   plaintext,
   passphrase,
-  options.memorySize,
-  options.iterations,
+  options.memoryCost,
+  options.timeCost,
   options.parallelism,
 );
 

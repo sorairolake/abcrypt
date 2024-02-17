@@ -54,7 +54,7 @@ pub fn run() -> anyhow::Result<()> {
                 }?;
 
                 let params =
-                    argon2::Params::new(*arg.memory_size, *arg.iterations, *arg.parallelism, None)
+                    argon2::Params::new(*arg.memory_cost, *arg.time_cost, *arg.parallelism, None)
                         .map_err(abcrypt::Error::InvalidArgon2Params)?;
 
                 if arg.verbose {
@@ -89,7 +89,11 @@ pub fn run() -> anyhow::Result<()> {
 
                 let params = params::get(&input)?;
                 if arg.verbose {
-                    params::displayln(params.m_cost(), params.t_cost(), params.p_cost());
+                    params::displayln(
+                        params.memory_cost(),
+                        params.time_cost(),
+                        params.parallelism(),
+                    );
                 }
 
                 let cipher = match Decryptor::new(&input, passphrase) {
@@ -123,7 +127,11 @@ pub fn run() -> anyhow::Result<()> {
                     }
                     return Ok(());
                 }
-                params::displayln(params.m_cost(), params.t_cost(), params.p_cost());
+                params::displayln(
+                    params.memory_cost(),
+                    params.time_cost(),
+                    params.parallelism(),
+                );
             }
         }
     } else {

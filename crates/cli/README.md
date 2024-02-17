@@ -61,7 +61,7 @@ abcrypt information data.txt.abcrypt
 Output:
 
 ```text
-Parameters used: m_cost = 32; t_cost = 3; p_cost = 4;
+Parameters used: memoryCost = 32; timeCost = 3; parallelism = 4;
 ```
 
 Output as JSON:
@@ -74,9 +74,9 @@ Output:
 
 ```json
 {
-  "m_cost": 32,
-  "t_cost": 3,
-  "p_cost": 4
+  "memoryCost": 32,
+  "timeCost": 3,
+  "parallelism": 4
 }
 ```
 
@@ -132,10 +132,10 @@ licensing information.
 
 [ci-badge]: https://img.shields.io/github/actions/workflow/status/sorairolake/abcrypt/CI.yaml?branch=develop&label=CI&logo=github&style=for-the-badge
 [ci-url]: https://github.com/sorairolake/abcrypt/actions?query=branch%3Adevelop+workflow%3ACI++
-[version-badge]: https://img.shields.io/crates/v/abcrypt-cli?style=for-the-badge
+[version-badge]: https://img.shields.io/crates/v/abcrypt-cli?logo=rust&style=for-the-badge
 [version-url]: https://crates.io/crates/abcrypt-cli
 [license-badge]: https://img.shields.io/crates/l/abcrypt-cli?style=for-the-badge
-[abcrypt format]: ../../docs/FORMAT.adoc
+[abcrypt format]: ../../docs/spec/FORMAT.adoc
 [environment variables]: https://doc.rust-lang.org/cargo/reference/environment-variables.html#configuration-environment-variables
 [release page]: https://github.com/sorairolake/abcrypt/releases
 [BUILD.adoc]: BUILD.adoc
