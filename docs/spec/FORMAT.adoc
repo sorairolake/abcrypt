@@ -5,7 +5,7 @@
 = Abcrypt Encrypted Data Format
 Shun Sakai <sorairolake@protonmail.ch>
 // Specify in UTC.
-v0.3.1, 2024-02-13
+v0.3.2, 2024-02-13
 :icons: font
 :idprefix:
 :idseparator: -
