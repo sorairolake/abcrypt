@@ -14,7 +14,7 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
 
-== {compare-url}/abcrypt-cli-v0.2.12\...HEAD[Unreleased]
+== {compare-url}/abcrypt-cli-v0.2.12\...abcrypt-cli-v0.3.0[0.3.0] - 2024-02-18
 
 === Changed
 
