@@ -5,6 +5,9 @@
 = Contribution Guide
 :git-flow-url: https://nvie.com/posts/a-successful-git-branching-model/
 :commit-messages-guide-url: https://github.com/RomuloOliveira/commit-messages-guide
+ifdef::site-gen-antora[]
+:coc-url: https://www.contributor-covenant.org/version/2/1/code_of_conduct/
+endif::[]
 
 == Branching model
 
@@ -28,10 +31,24 @@ Please see the {commit-messages-guide-url}[Commit messages guide].
   https://github.com/fsfe/reuse-tool[`reuse`] is useful for updating the
   copyright information.
 . Please update the following applicable Changelog if possible.
+ifdef::site-gen-antora[]
+.. xref:lib:changelog.adoc[Library].
+.. xref:cli:changelog.adoc[Command-line Utility].
+.. xref:capi:changelog.adoc[C API].
+.. xref:wasm:changelog.adoc[Wasm Bindings].
+endif::[]
+ifndef::site-gen-antora[]
 .. link:crates/abcrypt/CHANGELOG.adoc[].
 .. link:crates/cli/CHANGELOG.adoc[].
 .. link:crates/capi/CHANGELOG.adoc[].
+.. link:crates/wasm/CHANGELOG.adoc[].
+endif::[]
+ifdef::site-gen-antora[]
+. Please read and agree to follow the {coc-url}[Code of Conduct].
+endif::[]
+ifndef::site-gen-antora[]
 . Please read and agree to follow the link:CODE_OF_CONDUCT.md[Code of Conduct].
+endif::[]
 
 == Development
 
