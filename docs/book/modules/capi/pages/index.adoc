@@ -18,5 +18,4 @@ image:{version-badge}[Version,link={version-url}]
 image:{docs-badge}[Docs,link={docs-url}]
 image:{license-badge}[License]
 
-This crate ({version-url}[`abcrypt-capi`]) exposes a C API for the
-xref:lib:index.adoc[`abcrypt`] crate.
+*abcrypt-wasm* exposes a C API for the xref:lib:index.adoc[`abcrypt`] crate.

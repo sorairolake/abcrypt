@@ -93,6 +93,18 @@ clang-tidy: setup-meson
 @build-book:
     npx antora antora-playbook.yml
 
+# Build the Wasm bindings
+build-wasm:
+    #!/usr/bin/env bash
+    cd crates/wasm
+    wasm-pack build -s sorairolake -t nodejs --release
+
+# Publish the Wasm bindings
+publish-wasm: build-wasm
+    #!/usr/bin/env bash
+    cd crates/wasm
+    wasm-pack publish -a public
+
 # Increment the version of the library
 @bump-lib part:
     bump-my-version bump --config-file .bumpversion-lib.toml {{part}}

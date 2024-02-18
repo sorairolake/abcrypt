@@ -11,8 +11,7 @@ SPDX-License-Identifier: Apache-2.0 OR MIT
 [![Docs][docs-badge]][docs-url]
 ![License][license-badge]
 
-This crate ([`abcrypt-capi`][version-url]) exposes a C API for the [`abcrypt`]
-crate.
+**abcrypt-capi** exposes a C API for the [`abcrypt`] crate.
 
 ## Usage
 
