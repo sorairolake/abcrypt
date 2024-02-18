@@ -5,6 +5,14 @@
 = Usage
 :wasm-pack-url: https://rustwasm.github.io/wasm-pack/
 
+== Installation
+
+.To install this library
+[source,sh]
+----
+npm install @sorairolake/abcrypt-wasm
+----
+
 == Build
 
 You will need {wasm-pack-url}[`wasm-pack`] to build this crate.

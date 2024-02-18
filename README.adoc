@@ -7,6 +7,8 @@
 :shields-url: https://img.shields.io
 :crates-io-url: https://crates.io
 :crates-io-crates: {crates-io-url}/crates
+:npm-url: https://www.npmjs.com
+:npm-package: {npm-url}/package
 :ci-badge: {shields-url}/github/actions/workflow/status/sorairolake/abcrypt/CI.yaml?branch=develop&style=for-the-badge&logo=github&label=CI
 :ci-url: {project-url}/actions?query=branch%3Adevelop+workflow%3ACI++
 :abcrypt-repo-url: {project-url}/tree/develop/crates/abcrypt
@@ -19,8 +21,8 @@
 :abcrypt-capi-badge: {shields-url}/crates/v/abcrypt-capi?style=for-the-badge&logo=rust
 :abcrypt-capi-crates-io: {crates-io-crates}/abcrypt-capi
 :abcrypt-wasm-repo-url: {project-url}/tree/develop/crates/wasm
-:abcrypt-wasm-badge: {shields-url}/crates/v/abcrypt-wasm?style=for-the-badge&logo=rust
-:abcrypt-wasm-crates-io: {crates-io-crates}/abcrypt-wasm
+:abcrypt-wasm-badge: {shields-url}/npm/v/%40sorairolake%2Fabcrypt-wasm?style=for-the-badge&logo=npm
+:abcrypt-wasm-npm: {npm-package}/@sorairolake/abcrypt-wasm
 :reuse-spec-url: https://reuse.software/spec/
 
 image:{ci-badge}[CI,link={ci-url}]
@@ -48,7 +50,7 @@ image::crates/cli/assets/screenshot.webp[Screenshot of abcrypt]
 |C API for abcrypt.
 
 |{abcrypt-wasm-repo-url}[`abcrypt-wasm`]
-|image:{abcrypt-wasm-badge}[Version,link={abcrypt-wasm-crates-io}]
+|image:{abcrypt-wasm-badge}[Version,link={abcrypt-wasm-npm}]
 |Wasm bindings for abcrypt.
 |===
 
