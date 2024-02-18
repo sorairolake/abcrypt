@@ -14,6 +14,12 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
 
+== {compare-url}/abcrypt-wasm-v0.3.0\...abcrypt-wasm-v0.3.1[0.3.1] - 2024-02-18
+
+=== Changed
+
+* Update documents ({pull-request-url}/288[#288])
+
 == {compare-url}/abcrypt-wasm-v0.2.0\...abcrypt-wasm-v0.3.0[0.3.0] - 2024-02-18
 
 === Changed
