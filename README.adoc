@@ -7,19 +7,19 @@
 :shields-url: https://img.shields.io
 :crates-io-url: https://crates.io
 :crates-io-crates: {crates-io-url}/crates
-:ci-badge: {shields-url}/github/actions/workflow/status/sorairolake/abcrypt/CI.yaml?branch=develop&label=CI&logo=github&style=for-the-badge
+:ci-badge: {shields-url}/github/actions/workflow/status/sorairolake/abcrypt/CI.yaml?branch=develop&style=for-the-badge&logo=github&label=CI
 :ci-url: {project-url}/actions?query=branch%3Adevelop+workflow%3ACI++
 :abcrypt-repo-url: {project-url}/tree/develop/crates/abcrypt
-:abcrypt-badge: {shields-url}/crates/v/abcrypt?logo=rust&style=for-the-badge
+:abcrypt-badge: {shields-url}/crates/v/abcrypt?style=for-the-badge&logo=rust
 :abcrypt-crates-io: {crates-io-crates}/abcrypt
 :abcrypt-cli-repo-url: {project-url}/tree/develop/crates/cli
-:abcrypt-cli-badge: {shields-url}/crates/v/abcrypt-cli?logo=rust&style=for-the-badge
+:abcrypt-cli-badge: {shields-url}/crates/v/abcrypt-cli?style=for-the-badge&logo=rust
 :abcrypt-cli-crates-io: {crates-io-crates}/abcrypt-cli
 :abcrypt-capi-repo-url: {project-url}/tree/develop/crates/capi
-:abcrypt-capi-badge: {shields-url}/crates/v/abcrypt-capi?logo=rust&style=for-the-badge
+:abcrypt-capi-badge: {shields-url}/crates/v/abcrypt-capi?style=for-the-badge&logo=rust
 :abcrypt-capi-crates-io: {crates-io-crates}/abcrypt-capi
 :abcrypt-wasm-repo-url: {project-url}/tree/develop/crates/wasm
-:abcrypt-wasm-badge: {shields-url}/crates/v/abcrypt-wasm?logo=rust&style=for-the-badge
+:abcrypt-wasm-badge: {shields-url}/crates/v/abcrypt-wasm?style=for-the-badge&logo=rust
 :abcrypt-wasm-crates-io: {crates-io-crates}/abcrypt-wasm
 :reuse-spec-url: https://reuse.software/spec/
 
