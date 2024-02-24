@@ -81,6 +81,50 @@ clang-tidy: setup-meson
 @type-check-wasm-examples:
     deno check crates/wasm/examples/*.ts
 
+# Configure a development environment for the Python bindings
+setup-python:
+    #!/usr/bin/env bash
+    cd crates/python
+    python3 -m venv venv
+    source venv/bin/activate
+    maturin develop
+    pip3 install abcrypt-py[test,dev]
+
+# Run tests for the Python bindings
+python-test:
+    #!/usr/bin/env bash
+    cd crates/python
+    source venv/bin/activate
+    pytest
+
+# Run the formatter for the Python bindings
+python-fmt:
+    #!/usr/bin/env bash
+    cd crates/python
+    source venv/bin/activate
+    ruff format .
+
+# Run the linter for the Python bindings
+python-lint:
+    #!/usr/bin/env bash
+    cd crates/python
+    source venv/bin/activate
+    ruff check .
+
+# Apply lint suggestions for the Python bindings
+python-lint-fix:
+    #!/usr/bin/env bash
+    cd crates/python
+    source venv/bin/activate
+    ruff check --fix .
+
+# Run `mypy`
+python-type-check:
+    #!/usr/bin/env bash
+    cd crates/python
+    source venv/bin/activate
+    mypy .
+
 # Run the linter for GitHub Actions workflow files
 @lint-github-actions:
     actionlint -verbose

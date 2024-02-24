@@ -25,7 +25,7 @@ use crate::ErrorCode;
 /// # Safety
 ///
 /// Behavior is undefined if any of the following violates the safety conditions
-/// of [`slice::from_raw_parts`]:
+/// of `slice::from_raw_parts`:
 ///
 /// - `plaintext` and `plaintext_len`.
 /// - `passphrase` and `passphrase_len`.
@@ -79,7 +79,7 @@ pub unsafe extern "C" fn abcrypt_encrypt(
 /// # Safety
 ///
 /// Behavior is undefined if any of the following violates the safety conditions
-/// of [`slice::from_raw_parts`]:
+/// of `slice::from_raw_parts`:
 ///
 /// - `plaintext` and `plaintext_len`.
 /// - `passphrase` and `passphrase_len`.

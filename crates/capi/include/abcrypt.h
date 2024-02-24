@@ -65,7 +65,7 @@ extern "C" {
 // # Safety
 //
 // Behavior is undefined if any of the following violates the safety conditions
-// of [`slice::from_raw_parts`]:
+// of `slice::from_raw_parts`:
 //
 // - `ciphertext` and `ciphertext_len`.
 // - `passphrase` and `passphrase_len`.
@@ -91,7 +91,7 @@ enum abcrypt_error_code abcrypt_decrypt(uint8_t *ciphertext,
 // # Safety
 //
 // Behavior is undefined if any of the following violates the safety conditions
-// of [`slice::from_raw_parts`]:
+// of `slice::from_raw_parts`:
 //
 // - `plaintext` and `plaintext_len`.
 // - `passphrase` and `passphrase_len`.
@@ -116,7 +116,7 @@ enum abcrypt_error_code abcrypt_encrypt(uint8_t *plaintext,
 // # Safety
 //
 // Behavior is undefined if any of the following violates the safety conditions
-// of [`slice::from_raw_parts`]:
+// of `slice::from_raw_parts`:
 //
 // - `plaintext` and `plaintext_len`.
 // - `passphrase` and `passphrase_len`.
@@ -140,7 +140,7 @@ enum abcrypt_error_code abcrypt_encrypt_with_params(uint8_t *plaintext,
 // # Safety
 //
 // Behavior is undefined if `buf` and `buf_len` violates the safety conditions
-// of [`slice::from_raw_parts`].
+// of `slice::from_raw_parts`.
 enum abcrypt_error_code abcrypt_error_message(enum abcrypt_error_code error_code,
                                               uint8_t *buf,
                                               uintptr_t buf_len);
@@ -155,7 +155,7 @@ struct abcrypt_params *abcrypt_params_new(void);
 //
 // # Safety
 //
-// This must not violate the safety conditions of [`Box::from_raw`].
+// This must not violate the safety conditions of `Box::from_raw`.
 void abcrypt_params_free(struct abcrypt_params *params);
 
 // Reads the Argon2 parameters from `ciphertext`.
@@ -173,7 +173,7 @@ void abcrypt_params_free(struct abcrypt_params *params);
 // # Safety
 //
 // Behavior is undefined if `ciphertext` and `ciphertext_len` violates the
-// safety conditions of [`slice::from_raw_parts`].
+// safety conditions of `slice::from_raw_parts`.
 enum abcrypt_error_code abcrypt_params_read(uint8_t *ciphertext,
                                             uintptr_t ciphertext_len,
                                             struct abcrypt_params *params);

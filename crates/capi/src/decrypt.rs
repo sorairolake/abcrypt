@@ -29,7 +29,7 @@ use crate::ErrorCode;
 /// # Safety
 ///
 /// Behavior is undefined if any of the following violates the safety conditions
-/// of [`slice::from_raw_parts`]:
+/// of `slice::from_raw_parts`:
 ///
 /// - `ciphertext` and `ciphertext_len`.
 /// - `passphrase` and `passphrase_len`.

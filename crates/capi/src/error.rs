@@ -52,7 +52,7 @@ impl ErrorCode {
     /// # Safety
     ///
     /// Behavior is undefined if `buf` and `buf_len` violates the safety
-    /// conditions of [`slice::from_raw_parts`].
+    /// conditions of `slice::from_raw_parts`.
     #[must_use]
     unsafe fn error_message(self, buf: Option<NonNull<u8>>, buf_len: usize) -> Self {
         let message = CString::new(self.to_string())
@@ -116,7 +116,7 @@ impl From<Error> for ErrorCode {
 /// # Safety
 ///
 /// Behavior is undefined if `buf` and `buf_len` violates the safety conditions
-/// of [`slice::from_raw_parts`].
+/// of `slice::from_raw_parts`.
 #[must_use]
 #[no_mangle]
 pub unsafe extern "C" fn abcrypt_error_message(
