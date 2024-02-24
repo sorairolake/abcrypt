@@ -65,7 +65,7 @@ The minimum supported Rust version (MSRV) of this library is v1.74.0.
 python3 -m venv venv
 source venv/bin/activate
 maturin develop
-pip3 install abcrypt-py[test] abcrypt-py[dev]
+pip3 install abcrypt-py[test,dev]
 ```
 
 ## Changelog

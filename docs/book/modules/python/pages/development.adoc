@@ -12,5 +12,5 @@
 python3 -m venv venv
 source venv/bin/activate
 maturin develop
-pip3 install abcrypt-py[test] abcrypt-py[dev]
+pip3 install abcrypt-py[test,dev]
 ----
