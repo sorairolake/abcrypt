@@ -25,18 +25,27 @@ jobs:
         target:
           - aarch64
           - x86_64
+        python-version:
+          - "3.8"
+          - "3.9"
+          - "3.10"
+          - "3.11"
+          - "3.12" # latest version
+          - "pypy3.8"
+          - "pypy3.9"
+          - "pypy3.10" # latest version
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12" # latest version
+          python-version: ${{ matrix.python-version }}
       - name: Build wheels
         uses: PyO3/maturin-action@v1.41.0
         with:
           command: build
-          args: --strip -f -o dist -r
+          args: --strip -i ${{ matrix.python-version }} -o dist -r
           manylinux: auto
           target: ${{ matrix.target }}
           working-directory: "crates/python"
@@ -44,7 +53,7 @@ jobs:
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: wheels-linux-${{ matrix.target }}
+          name: wheels-python-${{ matrix.python-version }}-linux-${{ matrix.target }}
           path: "crates/python/dist"
 
   macos:
@@ -55,25 +64,34 @@ jobs:
         target:
           - aarch64
           - x86_64
+        python-version:
+          - "3.8"
+          - "3.9"
+          - "3.10"
+          - "3.11"
+          - "3.12" # latest version
+          - "pypy3.8"
+          - "pypy3.9"
+          - "pypy3.10" # latest version
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12" # latest version
+          python-version: ${{ matrix.python-version }}
       - name: Build wheels
         uses: PyO3/maturin-action@v1.41.0
         with:
           command: build
-          args: --strip -f -o dist -r
+          args: --strip -i ${{ matrix.python-version }} -o dist -r
           target: ${{ matrix.target }}
           working-directory: "crates/python"
           sccache: "true"
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: wheels-macos-${{ matrix.target }}
+          name: wheels-python-${{ matrix.python-version }}-macos-${{ matrix.target }}
           path: "crates/python/dist"
 
   windows:
@@ -83,26 +101,32 @@ jobs:
       matrix:
         target:
           - x64
+        python-version:
+          - "3.8"
+          - "3.9"
+          - "3.10"
+          - "3.11"
+          - "3.12" # latest version
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12" # latest version
+          python-version: ${{ matrix.python-version }}
           architecture: ${{ matrix.target }}
       - name: Build wheels
         uses: PyO3/maturin-action@v1.41.0
         with:
           command: build
-          args: --strip -f -o dist -r
+          args: --strip -i ${{ matrix.python-version }} -o dist -r
           target: ${{ matrix.target }}
           working-directory: "crates/python"
           sccache: "true"
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: wheels-windows-${{ matrix.target }}
+          name: wheels-python-${{ matrix.python-version }}-windows-${{ matrix.target }}
           path: "crates/python/dist"
 
   sdist:
