@@ -31,7 +31,7 @@ impl Params {
     ///
     /// # Safety
     ///
-    /// This must not violate the safety conditions of [`Box::from_raw`].
+    /// This must not violate the safety conditions of `Box::from_raw`.
     #[inline]
     unsafe fn free(params: Option<NonNull<Self>>) {
         if let Some(p) = params {
@@ -55,7 +55,7 @@ impl Params {
     /// # Safety
     ///
     /// Behavior is undefined if `ciphertext` and `ciphertext_len` violates the
-    /// safety conditions of [`slice::from_raw_parts`].
+    /// safety conditions of `slice::from_raw_parts`.
     #[must_use]
     unsafe fn read(
         ciphertext: Option<NonNull<u8>>,
@@ -163,7 +163,7 @@ pub extern "C" fn abcrypt_params_new() -> Option<NonNull<Params>> {
 ///
 /// # Safety
 ///
-/// This must not violate the safety conditions of [`Box::from_raw`].
+/// This must not violate the safety conditions of `Box::from_raw`.
 #[no_mangle]
 #[inline]
 pub unsafe extern "C" fn abcrypt_params_free(params: Option<NonNull<Params>>) {
@@ -185,7 +185,7 @@ pub unsafe extern "C" fn abcrypt_params_free(params: Option<NonNull<Params>>) {
 /// # Safety
 ///
 /// Behavior is undefined if `ciphertext` and `ciphertext_len` violates the
-/// safety conditions of [`slice::from_raw_parts`].
+/// safety conditions of `slice::from_raw_parts`.
 #[must_use]
 #[no_mangle]
 pub unsafe extern "C" fn abcrypt_params_read(

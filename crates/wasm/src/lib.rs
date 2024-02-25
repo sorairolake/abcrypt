@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-//! The `abcrypt-wasm` crate is the Wasm bindings for the [`abcrypt`] crate.
+//! The `abcrypt-wasm` crate is the Wasm bindings for the `abcrypt` crate.
 
 #![doc(html_root_url = "https://docs.rs/abcrypt-wasm/0.3.1/")]
 // Lint levels of rustc.

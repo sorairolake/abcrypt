@@ -1,0 +1,16 @@
+// SPDX-FileCopyrightText: 2023 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= Development
+:maturin-url: https://www.maturin.rs/
+
+{maturin-url}[maturin] is required for development of this library.
+
+[source,sh]
+----
+python3 -m venv venv
+source venv/bin/activate
+maturin develop
+pip3 install abcrypt-py[test,dev]
+----

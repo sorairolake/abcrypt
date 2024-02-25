@@ -1,0 +1,29 @@
+# SPDX-FileCopyrightText: 2022 Shun Sakai
+#
+# SPDX-License-Identifier: Apache-2.0 OR MIT
+
+[package]
+name = "abcrypt-py"
+version = "0.1.0"
+authors.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+description = "Python bindings for abcrypt"
+documentation = "https://docs.rs/abcrypt-py"
+readme = "README.md"
+homepage.workspace = true
+repository.workspace = true
+license = "Apache-2.0 OR MIT"
+keywords = ["abcrypt", "crypto"]
+categories = ["cryptography"]
+include = ["/LICENSES", "/README.md", "/src"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+name = "abcrypt_py"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+abcrypt = { version = "0.3.2", path = "../abcrypt" }
+pyo3 = "0.20.3"

@@ -18,7 +18,7 @@ impl Params {
     ///
     /// # Errors
     ///
-    /// Returns [`Err`] if any of the following are true:
+    /// Returns an error if any of the following are true:
     ///
     /// - `ciphertext` is shorter than 156 bytes.
     /// - The magic number is invalid.

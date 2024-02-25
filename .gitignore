@@ -13,5 +13,20 @@ target/
 # Node.js dependency directory
 node_modules/
 
+# Python
+
+## Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+## Unit test / coverage reports
+.pytest_cache/
+
+## Environments
+.venv
+venv/
+venv.bak/
+
 # Generated files by Antora
 build/

@@ -1,0 +1,17 @@
+// SPDX-FileCopyrightText: 2022 Shun Sakai
+//
+// SPDX-License-Identifier: Apache-2.0 OR MIT
+
+= Examples
+
+link:encrypt.py[]::
+
+  An example of encrypting to the abcrypt encrypted data format.
+
+link:decrypt.py[]::
+
+  An example of decrypting from the abcrypt encrypted data format.
+
+link:info.py[]::
+
+  An example of reading the Argon2 parameters.

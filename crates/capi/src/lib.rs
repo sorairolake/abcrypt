@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-//! The `abcrypt-capi` crate is the C API for the [`abcrypt`] crate.
+//! The `abcrypt-capi` crate is the C API for the `abcrypt` crate.
 
 #![doc(html_root_url = "https://docs.rs/abcrypt-capi/0.3.0/")]
 // Lint levels of rustc.

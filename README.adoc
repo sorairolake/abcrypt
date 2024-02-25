@@ -9,6 +9,8 @@
 :crates-io-crates: {crates-io-url}/crates
 :npm-url: https://www.npmjs.com
 :npm-package: {npm-url}/package
+:pypi-url: https://pypi.org
+:pypi-project: {pypi-url}/project
 :ci-badge: {shields-url}/github/actions/workflow/status/sorairolake/abcrypt/CI.yaml?branch=develop&style=for-the-badge&logo=github&label=CI
 :ci-url: {project-url}/actions?query=branch%3Adevelop+workflow%3ACI++
 :abcrypt-repo-url: {project-url}/tree/develop/crates/abcrypt
@@ -23,6 +25,9 @@
 :abcrypt-wasm-repo-url: {project-url}/tree/develop/crates/wasm
 :abcrypt-wasm-badge: {shields-url}/npm/v/%40sorairolake%2Fabcrypt-wasm?style=for-the-badge&logo=npm
 :abcrypt-wasm-npm: {npm-package}/@sorairolake/abcrypt-wasm
+:abcrypt-py-repo-url: {project-url}/tree/develop/crates/python
+:abcrypt-py-badge: {shields-url}/pypi/v/abcrypt-py?style=for-the-badge&logo=pypi
+:abcrypt-py-pypi: {pypi-project}/abcrypt-py/
 :reuse-spec-url: https://reuse.software/spec/
 
 image:{ci-badge}[CI,link={ci-url}]
@@ -52,6 +57,10 @@ image::crates/cli/assets/screenshot.webp[Screenshot of abcrypt]
 |{abcrypt-wasm-repo-url}[`abcrypt-wasm`]
 |image:{abcrypt-wasm-badge}[Version,link={abcrypt-wasm-npm}]
 |Wasm bindings for abcrypt.
+
+|{abcrypt-py-repo-url}[`abcrypt-py`]
+|image:{abcrypt-py-badge}[Version,link={abcrypt-py-pypi}]
+|Python bindings for abcrypt.
 |===
 
 == Format specification
