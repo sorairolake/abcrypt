@@ -45,6 +45,8 @@ body:
         - `abcrypt`: 0.1.0
         - `abcrypt-cli`: 0.1.0
         - `abcrypt-capi`: 0.1.0
+        - `abcrypt-wasm`: 0.1.0
+        - `abcrypt-py`: 0.1.0
     validations:
       required: true
 

@@ -167,3 +167,8 @@ publish-wasm: build-wasm
 @bump-wasm part:
     bump-my-version bump --config-file .bumpversion-wasm.toml {{part}}
     cargo set-version --bump {{part}} -p abcrypt-wasm
+
+# Increment the version of the Python bindings
+@bump-python part:
+    bump-my-version bump --config-file .bumpversion-python.toml {{part}}
+    cargo set-version --bump {{part}} -p abcrypt-py
