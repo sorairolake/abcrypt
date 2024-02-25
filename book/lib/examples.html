@@ -9,55 +9,28 @@
 <span class=nav-text>API Reference</span><ul class=nav-list><li class=nav-item data-depth=2><a class=nav-link href=../capi/capi.html>C API</a><li class=nav-item data-depth=2><a class=nav-link href=https://docs.rs/abcrypt-capi>Rust API</a></ul><li class=nav-item data-depth=1><a class=nav-link href=../capi/changelog.html>Changelog</a></ul><li class=nav-item data-depth=0><button class=nav-item-toggle></button>
 <span class=nav-text>Wasm Bindings</span><ul class=nav-list><li class=nav-item data-depth=1><a class=nav-link href=../wasm/index.html>Introduction</a><li class=nav-item data-depth=1><a class=nav-link href=../wasm/usage.html>Usage</a><li class=nav-item data-depth=1><button class=nav-item-toggle></button>
 <span class=nav-text>API Reference</span><ul class=nav-list><li class=nav-item data-depth=2><a class=nav-link href=https://docs.rs/abcrypt-wasm>Rust API</a></ul><li class=nav-item data-depth=1><a class=nav-link href=../wasm/changelog.html>Changelog</a></ul><li class=nav-item data-depth=0><button class=nav-item-toggle></button>
+<span class=nav-text>Python Bindings</span><ul class=nav-list><li class=nav-item data-depth=1><a class=nav-link href=../python/index.html>Introduction</a><li class=nav-item data-depth=1><a class=nav-link href=../python/usage.html>Usage</a><li class=nav-item data-depth=1><button class=nav-item-toggle></button>
+<span class=nav-text>API Reference</span><ul class=nav-list><li class=nav-item data-depth=2><a class=nav-link href=../python/python.html>Python API</a><li class=nav-item data-depth=2><a class=nav-link href=https://docs.rs/abcrypt-py>Rust API</a></ul><li class=nav-item data-depth=1><a class=nav-link href=../python/development.html>Development</a><li class=nav-item data-depth=1><a class=nav-link href=../python/changelog.html>Changelog</a></ul><li class=nav-item data-depth=0><button class=nav-item-toggle></button>
 <span class=nav-text>Command-line Utility</span><ul class=nav-list><li class=nav-item data-depth=1><a class=nav-link href=../cli/index.html>Introduction</a><li class=nav-item data-depth=1><a class=nav-link href=../cli/install.html>Installation</a><li class=nav-item data-depth=1><a class=nav-link href=../cli/build.html>How to Build</a><li class=nav-item data-depth=1><a class=nav-link href=../cli/usage.html>Usage</a><li class=nav-item data-depth=1><button class=nav-item-toggle></button>
 <span class=nav-text>Manual pages</span><ul class=nav-list><li class=nav-item data-depth=2><a class=nav-link href=../cli/man/man1/abcrypt.1.html><code>abcrypt(1)</code></a><li class=nav-item data-depth=2><a class=nav-link href=../cli/man/man1/abcrypt-encrypt.1.html><code>abcrypt-encrypt(1)</code></a><li class=nav-item data-depth=2><a class=nav-link href=../cli/man/man1/abcrypt-decrypt.1.html><code>abcrypt-decrypt(1)</code></a><li class=nav-item data-depth=2><a class=nav-link href=../cli/man/man1/abcrypt-information.1.html><code>abcrypt-information(1)</code></a><li class=nav-item data-depth=2><a class=nav-link href=../cli/man/man1/abcrypt-help.1.html><code>abcrypt-help(1)</code></a></ul><li class=nav-item data-depth=1><a class=nav-link href=../cli/changelog.html>Changelog</a></ul><li class=nav-item data-depth=0><button class=nav-item-toggle></button>
 <span class=nav-text>Format Specification</span><ul class=nav-list><li class=nav-item data-depth=1><a class=nav-link href=../format.html>Abcrypt Encrypted Data Format</a></ul><li class=nav-item data-depth=0><button class=nav-item-toggle></button>
 <span class=nav-text>Resources</span><ul class=nav-list><li class=nav-item data-depth=1><a class=nav-link href=../contributing.html>Contribution Guide</a><li class=nav-item data-depth=1><a class=nav-link href=../authors.html>List of Authors</a><li class=nav-item data-depth=1><a class=nav-link href=../license.html>License</a></ul></ul></nav></div><div class=nav-panel-explore data-panel=explore><div class=context><span class=title>abcrypt</span>
 <span class=version></span></div><ul class=components><li class="component is-current"><div class=title><a href=../index.html>abcrypt</a></div></ul></div></div></aside></div><main class=article><div class=toolbar role=navigation><button class=nav-toggle></button>
-<a href=../index.html class=home-link></a><nav class=breadcrumbs aria-label=breadcrumbs><ul><li><a href=../index.html>abcrypt</a><li>Library<li><a href=examples.html>Examples</a></ul></nav><div class=edit-this-page><a href=https://github.com/sorairolake/abcrypt/edit/HEAD/docs/book/modules/lib/pages/examples.adoc>Edit this Page</a></div></div><div class=content><aside class="toc sidebar" data-title=Contents data-levels=2><div class=toc-menu></div></aside><article class=doc><h1 class=page>Examples</h1><div class=sect1><h2 id=_encryption_and_decryption><a class=anchor href=#_encryption_and_decryption></a>Encryption and decryption</h2><div class=sectionbody><div class=listingblock><div class=title>When the <code>alloc</code> feature is enabled</div><div class=content><pre class="highlightjs highlight"><code class="language-rs hljs" data-lang=rs>use abcrypt::{argon2::Params, Decryptor, Encryptor};
+<a href=../index.html class=home-link></a><nav class=breadcrumbs aria-label=breadcrumbs><ul><li><a href=../index.html>abcrypt</a><li>Library<li><a href=examples.html>Examples</a></ul></nav><div class=edit-this-page><a href=https://github.com/sorairolake/abcrypt/edit/HEAD/docs/book/modules/lib/pages/examples.adoc>Edit this Page</a></div></div><div class=content><aside class="toc sidebar" data-title=Contents data-levels=2><div class=toc-menu></div></aside><article class=doc><h1 class=page>Examples</h1><div class=listingblock><div class=content><pre class="highlightjs highlight"><code class="language-rs hljs" data-lang=rs>use abcrypt::Params;
 
 let data = b"Hello, world!\n";
 let passphrase = "passphrase";
 
 // Encrypt `data` using `passphrase`.
-let params = Params::new(32, 3, 4, None).unwrap();
-let ciphertext = Encryptor::with_params(data, passphrase, params)
-    .map(|c| c.encrypt_to_vec())
-    .unwrap();
+let ciphertext = abcrypt::encrypt(data, passphrase).unwrap();
 assert_ne!(ciphertext, data);
 
-// And decrypt it back.
-let plaintext = Decryptor::new(&amp;ciphertext, passphrase)
-    .and_then(|c| c.decrypt_to_vec())
-    .unwrap();
-assert_eq!(plaintext, data);</code></pre></div></div><div class=listingblock><div class=title>When the <code>alloc</code> feature is disabled</div><div class=content><pre class="highlightjs highlight"><code class="language-rs hljs" data-lang=rs>use abcrypt::{argon2::Params, Decryptor, Encryptor};
-
-let data = b"Hello, world!\n";
-let passphrase = "passphrase";
-
-// Encrypt `data` using `passphrase`.
-let params = Params::new(32, 3, 4, None).unwrap();
-let cipher = Encryptor::with_params(data, passphrase, params).unwrap();
-let mut buf = [u8::default(); 170];
-cipher.encrypt(&amp;mut buf);
-assert_ne!(buf, data.as_slice());
-
-// And decrypt it back.
-let cipher = Decryptor::new(&amp;buf, passphrase).unwrap();
-let mut buf = [u8::default(); 14];
-cipher.decrypt(&amp;mut buf).unwrap();
-assert_eq!(buf, data.as_slice());</code></pre></div></div></div></div><div class=sect1><h2 id=_extracting_the_argon2_parameters_in_the_encrypted_data><a class=anchor href=#_extracting_the_argon2_parameters_in_the_encrypted_data></a>Extracting the Argon2 parameters in the encrypted data</h2><div class=sectionbody><div class=listingblock><div class=content><pre class="highlightjs highlight"><code class="language-rs hljs" data-lang=rs>use abcrypt::{argon2, Encryptor};
-
-let data = b"Hello, world!\n";
-let passphrase = "passphrase";
-
-// Encrypt `data` using `passphrase`.
-let ciphertext = Encryptor::new(data, passphrase)
-    .map(|c| c.encrypt_to_vec())
-    .unwrap();
-
 // And extract the Argon2 parameters from it.
-let params = abcrypt::Params::new(ciphertext).unwrap();
-assert_eq!(params.memory_cost(), argon2::Params::DEFAULT_M_COST);
-assert_eq!(params.time_cost(), argon2::Params::DEFAULT_T_COST);
-assert_eq!(params.parallelism(), argon2::Params::DEFAULT_P_COST);</code></pre></div></div></div></div></article></div></main></div><footer class=footer><p>&copy; 2022&ndash;2024 Shun Sakai &#183; <a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC BY 4.0</a><p>Powered by <a href=https://antora.org/ target=_blank>Antora</a> & <a href=https://gitlab.com/antora/antora-ui-default target=_blank>Antora Default UI</a></footer><script id=site-script src=../../_/js/site.js data-ui-root-path=../../_></script><script async src=../../_/js/vendor/highlight.js></script><script src=../../_/js/vendor/lunr.js></script><script src=../../_/js/search-ui.js id=search-ui-script data-site-root-path=../.. data-snippet-length=100 data-stylesheet=../../_/css/search.css></script><script async src=../../search-index.js></script>
+let params = Params::new(&amp;ciphertext).unwrap();
+assert_eq!(params.memory_cost(), 19456);
+assert_eq!(params.time_cost(), 2);
+assert_eq!(params.parallelism(), 1);
+
+// And decrypt it back.
+let plaintext = abcrypt::decrypt(ciphertext, passphrase).unwrap();
+assert_eq!(plaintext, data);</code></pre></div></div></article></div></main></div><footer class=footer><p>&copy; 2022&ndash;2024 Shun Sakai &#183; <a href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC BY 4.0</a><p>Powered by <a href=https://antora.org/ target=_blank>Antora</a> & <a href=https://gitlab.com/antora/antora-ui-default target=_blank>Antora Default UI</a></footer><script id=site-script src=../../_/js/site.js data-ui-root-path=../../_></script><script async src=../../_/js/vendor/highlight.js></script><script src=../../_/js/vendor/lunr.js></script><script src=../../_/js/search-ui.js id=search-ui-script data-site-root-path=../.. data-snippet-length=100 data-stylesheet=../../_/css/search.css></script><script async src=../../search-index.js></script>
