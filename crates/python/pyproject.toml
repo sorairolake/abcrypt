@@ -19,8 +19,8 @@ classifiers = [
 dynamic = ["version"]
 
 [project.optional-dependencies]
-test = ["pytest"]
-dev = ["mypy", "ruff"]
+test = ["pytest>=6.2.4"]
+dev = ["mypy>=0.900", "ruff>=0.1.3"]
 
 [tool.maturin]
 features = ["pyo3/extension-module"]
