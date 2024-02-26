@@ -1,0 +1,21 @@
+// SPDX-FileCopyrightText: 2024 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= Awesome List
+:awesome-badge: https://awesome.re/badge-flat.svg
+:awesome-url: https://awesome.re/
+:github-url: https://github.com
+
+image:{awesome-badge}[Awesome,link={awesome-url}]
+
+A curated list of awesome things related to the abcrypt file encryption
+ecosystem.
+
+== Implementations
+
+=== Go
+
+{github-url}/sorairolake/abcrypt-go[abcrypt-go]::
+
+  A simple, modern and secure file encryption library for Go.
