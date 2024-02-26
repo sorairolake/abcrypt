@@ -4,7 +4,7 @@
 
 [package]
 name = "abcrypt-py"
-version = "0.1.0"
+version = "0.1.1"
 authors.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -16,7 +16,7 @@ repository.workspace = true
 license = "Apache-2.0 OR MIT"
 keywords = ["abcrypt", "crypto"]
 categories = ["cryptography"]
-include = ["/LICENSES", "/README.md", "/src"]
+include = ["/LICENSE-*", "/README.md", "/src"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
