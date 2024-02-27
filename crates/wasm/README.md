@@ -9,6 +9,7 @@ SPDX-License-Identifier: Apache-2.0 OR MIT
 [![CI][ci-badge]][ci-url]
 [![npm Version][npm-version-badge]][npm-version-url]
 [![crates.io Version][crates-version-badge]][crates-version-url]
+![MSRV][msrv-badge]
 [![Docs][docs-badge]][docs-url]
 ![License][license-badge]
 
@@ -92,6 +93,7 @@ licensing information.
 [npm-version-url]: https://www.npmjs.com/package/@sorairolake/abcrypt-wasm
 [crates-version-badge]: https://img.shields.io/crates/v/abcrypt-wasm?style=for-the-badge&logo=rust
 [crates-version-url]: https://crates.io/crates/abcrypt-wasm
+[msrv-badge]: https://img.shields.io/crates/msrv/abcrypt-wasm?style=for-the-badge&logo=rust
 [docs-badge]: https://img.shields.io/docsrs/abcrypt-wasm?style=for-the-badge&logo=docsdotrs&label=Docs.rs
 [docs-url]: https://docs.rs/abcrypt-wasm
 [license-badge]: https://img.shields.io/crates/l/abcrypt-wasm?style=for-the-badge
