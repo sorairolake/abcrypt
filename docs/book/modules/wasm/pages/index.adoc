@@ -11,6 +11,7 @@
 :npm-version-url: https://www.npmjs.com/package/@sorairolake/abcrypt-wasm
 :crates-version-badge: {shields-url}/crates/v/abcrypt-wasm?style=for-the-badge&logo=rust
 :crates-version-url: https://crates.io/crates/abcrypt-wasm
+:msrv-badge: {shields-url}/crates/msrv/abcrypt-wasm?style=for-the-badge&logo=rust
 :docs-badge: {shields-url}/docsrs/abcrypt-wasm?style=for-the-badge&logo=docsdotrs&label=Docs.rs
 :docs-url: https://docs.rs/abcrypt-wasm
 :license-badge: {shields-url}/crates/l/abcrypt-wasm?style=for-the-badge
@@ -18,6 +19,7 @@
 image:{ci-badge}[CI,link={ci-url}]
 image:{npm-version-badge}[npm Version,link={npm-version-url}]
 image:{crates-version-badge}[crates.io Version,link={crates-version-url}]
+image:{msrv-badge}[MSRV]
 image:{docs-badge}[Docs,link={docs-url}]
 image:{license-badge}[License]
 

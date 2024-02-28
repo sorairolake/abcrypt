@@ -9,15 +9,19 @@
 :ci-url: {project-url}/actions?query=branch%3Adevelop+workflow%3ACI++
 :pypi-version-badge: {shields-url}/pypi/v/abcrypt-py?style=for-the-badge&logo=pypi
 :pypi-version-url: https://pypi.org/project/abcrypt-py/
+:pypi-python-version-badge: {shields-url}/pypi/pyversions/abcrypt-py?style=for-the-badge&logo=python
 :crates-version-badge: {shields-url}/crates/v/abcrypt-py?style=for-the-badge&logo=rust
 :crates-version-url: https://crates.io/crates/abcrypt-py
+:msrv-badge: {shields-url}/crates/msrv/abcrypt-py?style=for-the-badge&logo=rust
 :docs-badge: {shields-url}/docsrs/abcrypt-py?style=for-the-badge&logo=docsdotrs&label=Docs.rs
 :docs-url: https://docs.rs/abcrypt-py
 :license-badge: {shields-url}/crates/l/abcrypt-py?style=for-the-badge
 
 image:{ci-badge}[CI,link={ci-url}]
 image:{pypi-version-badge}[PyPI Version,link={pypi-version-url}]
+image:{pypi-python-version-badge}[PyPI Python Version]
 image:{crates-version-badge}[crates.io Version,link={crates-version-url}]
+image:{msrv-badge}[MSRV]
 image:{docs-badge}[Docs,link={docs-url}]
 image:{license-badge}[License]
 

@@ -8,6 +8,7 @@ SPDX-License-Identifier: Apache-2.0 OR MIT
 
 [![CI][ci-badge]][ci-url]
 [![Version][version-badge]][version-url]
+![MSRV][msrv-badge]
 [![Docs][docs-badge]][docs-url]
 ![License][license-badge]
 
@@ -99,6 +100,7 @@ licensing information.
 [ci-url]: https://github.com/sorairolake/abcrypt/actions?query=branch%3Adevelop+workflow%3ACI++
 [version-badge]: https://img.shields.io/crates/v/abcrypt?style=for-the-badge&logo=rust
 [version-url]: https://crates.io/crates/abcrypt
+[msrv-badge]: https://img.shields.io/crates/msrv/abcrypt?style=for-the-badge&logo=rust
 [docs-badge]: https://img.shields.io/docsrs/abcrypt?style=for-the-badge&logo=docsdotrs&label=Docs.rs
 [docs-url]: https://docs.rs/abcrypt
 [license-badge]: https://img.shields.io/crates/l/abcrypt?style=for-the-badge

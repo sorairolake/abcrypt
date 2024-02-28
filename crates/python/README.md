@@ -8,7 +8,9 @@ SPDX-License-Identifier: Apache-2.0 OR MIT
 
 [![CI][ci-badge]][ci-url]
 [![PyPI Version][pypi-version-badge]][pypi-version-url]
+![PyPI Python Version][pypi-python-version-badge]
 [![crates.io Version][crates-version-badge]][crates-version-url]
+![MSRV][msrv-badge]
 [![Docs][docs-badge]][docs-url]
 ![License][license-badge]
 
@@ -91,8 +93,10 @@ licensing information.
 [ci-url]: https://github.com/sorairolake/abcrypt/actions?query=branch%3Adevelop+workflow%3ACI++
 [pypi-version-badge]: https://img.shields.io/pypi/v/abcrypt-py?style=for-the-badge&logo=pypi
 [pypi-version-url]: https://pypi.org/project/abcrypt-py/
+[pypi-python-version-badge]: https://img.shields.io/pypi/pyversions/abcrypt-py?style=for-the-badge&logo=python
 [crates-version-badge]: https://img.shields.io/crates/v/abcrypt-py?style=for-the-badge&logo=rust
 [crates-version-url]: https://crates.io/crates/abcrypt-py
+[msrv-badge]: https://img.shields.io/crates/msrv/abcrypt-py?style=for-the-badge&logo=rust
 [docs-badge]: https://img.shields.io/docsrs/abcrypt-py?style=for-the-badge&logo=docsdotrs&label=Docs.rs
 [docs-url]: https://docs.rs/abcrypt-py
 [license-badge]: https://img.shields.io/crates/l/abcrypt-py?style=for-the-badge

@@ -9,10 +9,12 @@
 :ci-url: {project-url}/actions?query=branch%3Adevelop+workflow%3ACI++
 :version-badge: {shields-url}/crates/v/abcrypt-cli?style=for-the-badge&logo=rust
 :version-url: https://crates.io/crates/abcrypt-cli
+:msrv-badge: {shields-url}/crates/msrv/abcrypt-cli?style=for-the-badge&logo=rust
 :license-badge: {shields-url}/crates/l/abcrypt-cli?style=for-the-badge
 
 image:{ci-badge}[CI,link={ci-url}]
 image:{version-badge}[Version,link={version-url}]
+image:{msrv-badge}[MSRV]
 image:{license-badge}[License]
 
 *abcrypt* ({version-url}[`abcrypt-cli`]) is a command-line utility for encrypt

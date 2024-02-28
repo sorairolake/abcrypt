@@ -9,12 +9,16 @@ import getpass
 import sys
 
 import abcrypt_py
+import version
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(
         prog="decrypt",
         description="An example of decrypting a file from the abcrypt encrypted data format",
+    )
+    parser.add_argument(
+        "-V", "--version", action="version", version=version.VERSION
     )
     parser.add_argument(
         "-o",
