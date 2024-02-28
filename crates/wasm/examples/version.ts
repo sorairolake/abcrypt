@@ -2,4 +2,4 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-export const VERSION = "0.3.1";
+export const VERSION = "0.3.2";
