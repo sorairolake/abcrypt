@@ -14,6 +14,12 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
 
+== {compare-url}/abcrypt-py-v0.1.2\...HEAD[Unreleased]
+
+=== Changed
+
+* Change the location of license files ({pull-request-url}/334[#334])
+
 == {compare-url}/abcrypt-py-v0.1.1\...abcrypt-py-v0.1.2[0.1.2] - 2024-02-28
 
 === Added
