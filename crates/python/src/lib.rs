@@ -21,7 +21,7 @@ use std::borrow::Cow;
 use abcrypt::argon2;
 use pyo3::{
     exceptions::PyValueError, pyclass, pyfunction, pymethods, pymodule, types::PyModule,
-    wrap_pyfunction, PyResult, Python,
+    wrap_pyfunction, Bound, PyResult,
 };
 
 pub use crate::params::Params;
@@ -99,7 +99,7 @@ pub fn decrypt<'a>(ciphertext: &[u8], passphrase: &[u8]) -> PyResult<Cow<'a, [u8
 
 /// A Python module implemented in Rust.
 #[pymodule]
-fn abcrypt_py(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
+fn abcrypt_py(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(encrypt, m)?)?;
     m.add_function(wrap_pyfunction!(encrypt_with_params, m)?)?;
     m.add_function(wrap_pyfunction!(decrypt, m)?)?;
