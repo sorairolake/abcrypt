@@ -4,7 +4,7 @@
 
 [package]
 name = "abcrypt"
-version = "0.3.2"
+version = "0.3.3"
 authors.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -17,6 +17,10 @@ license = "Apache-2.0 OR MIT"
 keywords = ["abcrypt", "crypto"]
 categories = ["cryptography", "no-std"]
 include = ["/LICENSES", "/README.md", "/src"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "doc_cfg"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -46,7 +50,7 @@ serde = { version = "1.0.197", default-features = false, features = ["derive"], 
 anyhow.workspace = true
 clap.workspace = true
 dialoguer.workspace = true
-serde_json = "1.0.114"
+serde_json = "1.0.115"
 serde_test = "1.0.176"
 
 [features]
@@ -54,7 +58,3 @@ default = ["std"]
 alloc = ["argon2/alloc"]
 std = ["alloc", "argon2/std", "blake2/std", "chacha20poly1305/std"]
 serde = ["dep:serde"]
-
-[package.metadata.docs.rs]
-all-features = true
-rustdoc-args = ["--cfg", "doc_cfg"]
