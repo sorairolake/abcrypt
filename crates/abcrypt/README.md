@@ -20,7 +20,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-abcrypt = "0.3.2"
+abcrypt = "0.3.3"
 ```
 
 ### Example
