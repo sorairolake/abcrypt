@@ -7,9 +7,10 @@
 :docdate: 2024-04-13
 :doctype: manpage
 :icons: font
-ifdef::revnumber[:mansource: abcrypt {revnumber}]
+ifdef::revnumber[:mansource: abcrypt-capi {revnumber}]
+ifndef::revnumber[:mansource: abcrypt-capi]
 :manmanual: Library Functions Manual
-:includedir: ../include
+:includedir: ./include
 :owasp-cheatsheets: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
 
 == NAME

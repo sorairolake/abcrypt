@@ -11,11 +11,10 @@
 
 use std::{
     env, io,
-    path::Path,
     process::{Command, ExitStatus},
 };
 
-fn generate_man_page(out_dir: impl AsRef<Path>) -> io::Result<ExitStatus> {
+fn generate_man_page(out_dir: &str) -> io::Result<ExitStatus> {
     let man_dir = env::current_dir()?.join("docs/man");
     let mut command = Command::new("asciidoctor");
     command
@@ -24,15 +23,9 @@ fn generate_man_page(out_dir: impl AsRef<Path>) -> io::Result<ExitStatus> {
     #[cfg(feature = "json")]
     command.args(["-a", "json"]);
     command
-        .args(["-D".as_ref(), out_dir.as_ref()])
-        .args([
-            man_dir.join("man1/abcrypt.1.adoc"),
-            man_dir.join("man1/abcrypt-encrypt.1.adoc"),
-            man_dir.join("man1/abcrypt-decrypt.1.adoc"),
-            man_dir.join("man1/abcrypt-information.1.adoc"),
-            man_dir.join("man1/abcrypt-help.1.adoc"),
-            man_dir.join("man5/abcrypt.5.adoc"),
-        ])
+        .args(["-D", out_dir])
+        .args(["--failure-level", "WARN"])
+        .args([man_dir.join("man1/*.1.adoc"), man_dir.join("man5/*.5.adoc")])
         .status()
 }
 
@@ -40,7 +33,7 @@ fn main() {
     println!("cargo:rerun-if-changed=docs/man");
 
     let out_dir = env::var("OUT_DIR").expect("environment variable `OUT_DIR` not defined");
-    match generate_man_page(out_dir) {
+    match generate_man_page(&out_dir) {
         Ok(exit_status) => {
             if !exit_status.success() {
                 println!("cargo:warning=Asciidoctor failed: {exit_status}");

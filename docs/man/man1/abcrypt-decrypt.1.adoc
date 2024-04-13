@@ -7,8 +7,9 @@
 :docdate: 2024-01-19
 :doctype: manpage
 ifdef::revnumber[:mansource: abcrypt {revnumber}]
+ifndef::revnumber[:mansource: abcrypt]
 :manmanual: General Commands Manual
-:includedir: ../include
+:includedir: ./include
 
 == NAME
 

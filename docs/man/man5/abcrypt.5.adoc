@@ -7,8 +7,9 @@
 :docdate: 2024-04-13
 :doctype: manpage
 ifdef::revnumber[:mansource: abcrypt {revnumber}]
+ifndef::revnumber[:mansource: abcrypt]
 :manmanual: File Formats Manual
-:includedir: ../include
+:includedir: ./include
 :scrypt-encrypted-data-format: https://www.tarsnap.com/scrypt.html
 :ietf-datatracker: https://datatracker.ietf.org
 :datatracker-html-doc: {ietf-datatracker}/doc/html
