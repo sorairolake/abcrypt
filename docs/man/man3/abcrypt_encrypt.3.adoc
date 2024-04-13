@@ -1,0 +1,88 @@
+// SPDX-FileCopyrightText: 2024 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= abcrypt_encrypt(3)
+// Specify in UTC.
+:docdate: 2024-04-13
+:doctype: manpage
+:icons: font
+ifdef::revnumber[:mansource: abcrypt {revnumber}]
+:manmanual: Library Functions Manual
+:includedir: ../include
+:owasp-cheatsheets: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
+
+== NAME
+
+abcrypt_encrypt - API function
+
+== SYNOPSIS
+
+[source,c]
+----
+#include <abcrypt.h>
+
+enum abcrypt_error_code abcrypt_encrypt(uint8_t *plaintext,
+                                        uintptr_t plaintext_len,
+                                        uint8_t *passphrase,
+                                        uintptr_t passphrase_len,
+                                        uint8_t *out,
+                                        uintptr_t out_len);
+----
+
+== DESCRIPTION
+
+This function encrypts _plaintext_ and write to _out_.
+
+This uses the {owasp-cheatsheets}[recommended Argon2 parameters].
+
+=== Arguments
+
+_plaintext_::
+
+  A pointer to the plaintext to encrypt.
+
+_plaintext_len_::
+
+  Length of _plaintext_.
+
+_passphrase_::
+
+  A pointer to the passphrase used for encryption.
+
+_passphrase_len_::
+
+  Length of _passphrase_.
+
+_out_::
+
+  A pointer to where to write the ciphertext.
+
+_out_len_::
+
+  Length of _out_.
+
+[CAUTION]
+.Behavior is undefined if any of the following are true:
+====
+* _plaintext_ or _plaintext_len_ is invalid.
+* _passphrase_ or _passphrase_len_ is invalid.
+* _out_ or _out_len_ is invalid.
+====
+
+== RETURN VALUE
+
+Returns `ABCRYPT_ERROR_CODE_OK` if successful, otherwise returns an error value
+defined in *abcrypt_error_code*(3).
+
+== VERSIONS
+
+This function was added in version 0.1.0.
+
+include::{includedir}/section-reporting-bugs.adoc[]
+
+include::{includedir}/section-copyright.adoc[]
+
+== SEE ALSO
+
+*abcrypt_decrypt*(1), *abcrypt_encrypt_with_params*(1)

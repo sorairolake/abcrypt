@@ -1,0 +1,58 @@
+// SPDX-FileCopyrightText: 2024 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= abcrypt_params(3)
+// Specify in UTC.
+:docdate: 2024-04-13
+:doctype: manpage
+ifdef::revnumber[:mansource: abcrypt {revnumber}]
+:manmanual: Library Functions Manual
+:includedir: ../include
+
+== NAME
+
+abcrypt_params - API type
+
+== SYNOPSIS
+
+[source,c]
+----
+#include <abcrypt.h>
+
+typedef struct abcrypt_params {
+  uint32_t memory_cost;
+  uint32_t time_cost;
+  uint32_t parallelism;
+} abcrypt_params;
+----
+
+== DESCRIPTION
+
+This type represents the Argon2 parameters used for the encrypted data.
+
+=== Fields
+
+_memory_cost_::
+
+  The memory size in KiB.
+
+_time_cost_::
+
+  The number of iterations.
+
+_parallelism_::
+
+  The degree of parallelism.
+
+== VERSIONS
+
+This type was added in version 0.1.0.
+
+include::{includedir}/section-reporting-bugs.adoc[]
+
+include::{includedir}/section-copyright.adoc[]
+
+== SEE ALSO
+
+*abcrypt_params_free*(3), *abcrypt_params_new*(3), *abcrypt_params_read*(3)

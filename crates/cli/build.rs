@@ -16,7 +16,7 @@ use std::{
 };
 
 fn generate_man_page(out_dir: impl AsRef<Path>) -> io::Result<ExitStatus> {
-    let man_dir = env::current_dir()?.join("docs/man/man1");
+    let man_dir = env::current_dir()?.join("docs/man");
     let mut command = Command::new("asciidoctor");
     command
         .args(["-b", "manpage"])
@@ -26,11 +26,12 @@ fn generate_man_page(out_dir: impl AsRef<Path>) -> io::Result<ExitStatus> {
     command
         .args(["-D".as_ref(), out_dir.as_ref()])
         .args([
-            man_dir.join("abcrypt.1.adoc"),
-            man_dir.join("abcrypt-encrypt.1.adoc"),
-            man_dir.join("abcrypt-decrypt.1.adoc"),
-            man_dir.join("abcrypt-information.1.adoc"),
-            man_dir.join("abcrypt-help.1.adoc"),
+            man_dir.join("man1/abcrypt.1.adoc"),
+            man_dir.join("man1/abcrypt-encrypt.1.adoc"),
+            man_dir.join("man1/abcrypt-decrypt.1.adoc"),
+            man_dir.join("man1/abcrypt-information.1.adoc"),
+            man_dir.join("man1/abcrypt-help.1.adoc"),
+            man_dir.join("man5/abcrypt.5.adoc"),
         ])
         .status()
 }

@@ -9,7 +9,7 @@ use wasm_bindgen::{prelude::wasm_bindgen, JsError};
 
 /// Encrypts `plaintext` and into a newly allocated `Uint8Array`.
 ///
-/// This uses the default Argon2 parameters.
+/// This uses the recommended Argon2 parameters.
 ///
 /// # Errors
 ///

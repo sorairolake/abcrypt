@@ -1,0 +1,40 @@
+// SPDX-FileCopyrightText: 2024 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= ABCRYPT_HEADER_SIZE(3)
+// Specify in UTC.
+:docdate: 2024-04-13
+:doctype: manpage
+ifdef::revnumber[:mansource: abcrypt {revnumber}]
+:manmanual: Library Functions Manual
+:includedir: ../include
+
+== NAME
+
+ABCRYPT_HEADER_SIZE - API constant
+
+== SYNOPSIS
+
+[source,c]
+----
+#include <abcrypt.h>
+
+#define ABCRYPT_HEADER_SIZE 140
+----
+
+== DESCRIPTION
+
+This constant represents the number of bytes of the header.
+
+== VERSIONS
+
+This type was added in version 0.1.0.
+
+include::{includedir}/section-reporting-bugs.adoc[]
+
+include::{includedir}/section-copyright.adoc[]
+
+== SEE ALSO
+
+*ABCRYPT_TAG_SIZE*(3)

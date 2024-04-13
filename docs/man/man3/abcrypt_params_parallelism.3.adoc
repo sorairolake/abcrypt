@@ -1,0 +1,50 @@
+// SPDX-FileCopyrightText: 2024 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= abcrypt_params_parallelism(3)
+// Specify in UTC.
+:docdate: 2024-04-13
+:doctype: manpage
+ifdef::revnumber[:mansource: abcrypt {revnumber}]
+:manmanual: Library Functions Manual
+:includedir: ../include
+
+== NAME
+
+abcrypt_params_parallelism - API function
+
+== SYNOPSIS
+
+[source,c]
+----
+#include <abcrypt.h>
+
+uint32_t abcrypt_params_parallelism(struct abcrypt_params *params);
+----
+
+== DESCRIPTION
+
+This function gets degree of parallelism.
+
+=== Arguments
+
+_params_::
+
+  A pointer to the Argon2 parameters structure.
+
+== RETURN VALUE
+
+Returns `0` if `params` is `NULL`, otherwise returns the degree of parallelism.
+
+== VERSIONS
+
+This function was added in version 0.3.0.
+
+include::{includedir}/section-reporting-bugs.adoc[]
+
+include::{includedir}/section-copyright.adoc[]
+
+== SEE ALSO
+
+*abcrypt_params_read*(3)

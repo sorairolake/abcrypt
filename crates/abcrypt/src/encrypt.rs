@@ -23,7 +23,8 @@ pub struct Encryptor<'m> {
 impl<'m> Encryptor<'m> {
     /// Creates a new `Encryptor`.
     ///
-    /// This uses the default Argon2 parameters created by [`Params::default`].
+    /// This uses the recommended Argon2 parameters created by
+    /// [`Params::default`].
     ///
     /// # Errors
     ///
@@ -195,7 +196,7 @@ impl<'m> Encryptor<'m> {
 
 /// Encrypts `plaintext` and into a newly allocated [`Vec`](alloc::vec::Vec).
 ///
-/// This uses the default Argon2 parameters created by [`Params::default`].
+/// This uses the recommended Argon2 parameters created by [`Params::default`].
 ///
 /// This is a convenience function for using [`Encryptor::new`] and
 /// [`Encryptor::encrypt_to_vec`].
