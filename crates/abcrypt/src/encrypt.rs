@@ -23,7 +23,7 @@ pub struct Encryptor<'m> {
 impl<'m> Encryptor<'m> {
     /// Creates a new `Encryptor`.
     ///
-    /// This uses the recommended Argon2 parameters created by
+    /// This uses the [recommended Argon2 parameters] created by
     /// [`Params::default`].
     ///
     /// # Errors
@@ -40,6 +40,8 @@ impl<'m> Encryptor<'m> {
     ///
     /// let cipher = Encryptor::new(data, passphrase).unwrap();
     /// ```
+    ///
+    /// [recommended Argon2 parameters]: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
     #[cfg(feature = "alloc")]
     pub fn new(plaintext: &'m impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Self> {
         Self::with_params(plaintext, passphrase, Params::default())
@@ -196,7 +198,8 @@ impl<'m> Encryptor<'m> {
 
 /// Encrypts `plaintext` and into a newly allocated [`Vec`](alloc::vec::Vec).
 ///
-/// This uses the recommended Argon2 parameters created by [`Params::default`].
+/// This uses the [recommended Argon2 parameters] created by
+/// [`Params::default`].
 ///
 /// This is a convenience function for using [`Encryptor::new`] and
 /// [`Encryptor::encrypt_to_vec`].
@@ -214,6 +217,8 @@ impl<'m> Encryptor<'m> {
 /// let ciphertext = abcrypt::encrypt(data, passphrase).unwrap();
 /// # assert_ne!(ciphertext, data);
 /// ```
+///
+/// [recommended Argon2 parameters]: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
 #[cfg(feature = "alloc")]
 pub fn encrypt(
     plaintext: impl AsRef<[u8]>,
