@@ -24,7 +24,6 @@ fn generate_man_page(out_dir: &str) -> io::Result<ExitStatus> {
     command.args(["-a", "json"]);
     command
         .args(["-D", out_dir])
-        .args(["--failure-level", "WARN"])
         .args([man_dir.join("man1/*.1.adoc"), man_dir.join("man5/*.5.adoc")])
         .status()
 }
