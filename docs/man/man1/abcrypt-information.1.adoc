@@ -4,7 +4,7 @@
 
 = abcrypt-information(1)
 // Specify in UTC.
-:docdate: 2024-01-19
+:docdate: 2024-04-15
 :doctype: manpage
 ifdef::revnumber[:mansource: abcrypt {revnumber}]
 ifndef::revnumber[:mansource: abcrypt]
@@ -53,6 +53,18 @@ endif::[]
 include::{includedir}/section-exit-status.adoc[]
 
 include::{includedir}/section-notes.adoc[]
+
+== EXAMPLES
+
+Print the encryption parameters:{blank}::
+
+  $ *abcrypt information data.txt.abcrypt*
+
+ifdef::json,env-github,site-gen-antora[]
+Print the encryption parameters as JSON:{blank}::
+
+  $ *abcrypt information -j data.txt.abcrypt*
+endif::[]
 
 include::{includedir}/section-reporting-bugs.adoc[]
 

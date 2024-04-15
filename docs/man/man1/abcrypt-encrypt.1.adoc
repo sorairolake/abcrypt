@@ -4,7 +4,7 @@
 
 = abcrypt-encrypt(1)
 // Specify in UTC.
-:docdate: 2024-02-13
+:docdate: 2024-04-15
 :doctype: manpage
 ifdef::revnumber[:mansource: abcrypt {revnumber}]
 ifndef::revnumber[:mansource: abcrypt]
@@ -102,6 +102,22 @@ include::{includedir}/section-notes.adoc[]
 Encrypt a file:{blank}::
 
   $ *abcrypt encrypt data.txt > data.txt.abcrypt*
+
+Output the result to the specified file:{blank}::
+
+  $ *abcrypt encrypt -o data.txt.abcrypt data.txt*
+
+Encrypt a file with the specified parameters:{blank}::
+
+  $ *abcrypt encrypt -m 32KiB -t 3 -p 4 data.txt > data.txt.abcrypt*
+
+Read the passphrase from the file:{blank}::
+
+  $ *abcrypt encrypt --passphrase-from-file passphrase.txt data.txt > data.txt.abcrypt*
+
+Print the encryption parameters when encrypting:{blank}::
+
+  $ *abcrypt encrypt -v data.txt > data.txt.abcrypt*
 
 include::{includedir}/section-reporting-bugs.adoc[]
 

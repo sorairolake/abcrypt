@@ -4,7 +4,7 @@
 
 = abcrypt-decrypt(1)
 // Specify in UTC.
-:docdate: 2024-01-19
+:docdate: 2024-04-15
 :doctype: manpage
 ifdef::revnumber[:mansource: abcrypt {revnumber}]
 ifndef::revnumber[:mansource: abcrypt]
@@ -79,6 +79,18 @@ include::{includedir}/section-notes.adoc[]
 Decrypt a file:{blank}::
 
   $ *abcrypt decrypt data.txt.abcrypt > data.txt*
+
+Output the result to the specified file:{blank}::
+
+  $ *abcrypt decrypt -o data.txt data.txt.abcrypt*
+
+Read the passphrase from the file:{blank}::
+
+  $ *abcrypt decrypt --passphrase-from-file passphrase.txt data.txt.abcrypt > data.txt*
+
+Print the encryption parameters when decrypting:{blank}::
+
+  $ *abcrypt decrypt -v data.txt.abcrypt > data.txt*
 
 include::{includedir}/section-reporting-bugs.adoc[]
 
