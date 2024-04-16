@@ -1,0 +1,49 @@
+// SPDX-FileCopyrightText: 2024 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= abcrypt_params_new(3)
+// Specify in UTC.
+:docdate: 2024-04-13
+:doctype: manpage
+ifdef::revnumber[:mansource: abcrypt-capi {revnumber}]
+ifndef::revnumber[:mansource: abcrypt-capi]
+:manmanual: Library Functions Manual
+:includedir: ./include
+
+== NAME
+
+abcrypt_params_new - API function
+
+== SYNOPSIS
+
+[source,c]
+----
+#include <abcrypt.h>
+
+struct abcrypt_params *abcrypt_params_new(void);
+----
+
+== DESCRIPTION
+
+This function creates a new Argon2 parameters structure.
+
+=== Arguments
+
+Takes no arguments.
+
+== RETURN VALUE
+
+Returns a pointer to the Argon2 parameters structure.
+
+== VERSIONS
+
+This function was added in version 0.1.0.
+
+include::{includedir}/section-reporting-bugs.adoc[]
+
+include::{includedir}/section-copyright.adoc[]
+
+== SEE ALSO
+
+*abcrypt_params*(3)

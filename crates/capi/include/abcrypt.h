@@ -79,7 +79,7 @@ enum abcrypt_error_code abcrypt_decrypt(uint8_t *ciphertext,
 
 // Encrypts `plaintext` and write to `out`.
 //
-// This uses the default Argon2 parameters.
+// This uses the recommended Argon2 parameters.
 //
 // # Errors
 //
@@ -151,7 +151,7 @@ uintptr_t abcrypt_error_message_out_len(enum abcrypt_error_code error_code);
 // Creates a new Argon2 parameters.
 struct abcrypt_params *abcrypt_params_new(void);
 
-// Free a Argon2 parameters.
+// Frees a Argon2 parameters.
 //
 // # Safety
 //

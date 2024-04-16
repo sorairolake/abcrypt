@@ -27,7 +27,7 @@ impl Params {
         NonNull::new(Box::into_raw(Box::default()))
     }
 
-    /// Free a Argon2 parameters.
+    /// Frees a Argon2 parameters.
     ///
     /// # Safety
     ///
@@ -159,7 +159,7 @@ pub extern "C" fn abcrypt_params_new() -> Option<NonNull<Params>> {
     Params::new()
 }
 
-/// Free a Argon2 parameters.
+/// Frees a Argon2 parameters.
 ///
 /// # Safety
 ///

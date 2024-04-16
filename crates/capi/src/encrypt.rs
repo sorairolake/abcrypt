@@ -13,7 +13,7 @@ use crate::ErrorCode;
 #[allow(clippy::module_name_repetitions)]
 /// Encrypts `plaintext` and write to `out`.
 ///
-/// This uses the default Argon2 parameters.
+/// This uses the recommended Argon2 parameters.
 ///
 /// # Errors
 ///

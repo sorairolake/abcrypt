@@ -1,0 +1,55 @@
+// SPDX-FileCopyrightText: 2024 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= abcrypt_params_free(3)
+// Specify in UTC.
+:docdate: 2024-04-13
+:doctype: manpage
+:icons: font
+ifdef::revnumber[:mansource: abcrypt-capi {revnumber}]
+ifndef::revnumber[:mansource: abcrypt-capi]
+:manmanual: Library Functions Manual
+:includedir: ./include
+
+== NAME
+
+abcrypt_params_free - API function
+
+== SYNOPSIS
+
+[source,c]
+----
+#include <abcrypt.h>
+
+void abcrypt_params_free(struct abcrypt_params *params);
+----
+
+== DESCRIPTION
+
+This function frees the Argon2 parameters structure.
+
+=== Arguments
+
+_params_::
+
+  A pointer to the Argon2 parameters structure to free.
+
+WARNING: This function must not be called on a freed _params_, because a
+double-free may occur.
+
+== RETURN VALUE
+
+Returns nothing.
+
+== VERSIONS
+
+This function was added in version 0.1.0.
+
+include::{includedir}/section-reporting-bugs.adoc[]
+
+include::{includedir}/section-copyright.adoc[]
+
+== SEE ALSO
+
+*abcrypt_params*(3)

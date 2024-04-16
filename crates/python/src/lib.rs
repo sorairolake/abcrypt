@@ -46,7 +46,7 @@ impl Format {
 
 /// Encrypts `plaintext` and into a newly allocated `bytes`.
 ///
-/// This uses the default Argon2 parameters.
+/// This uses the recommended Argon2 parameters.
 ///
 /// # Errors
 ///
