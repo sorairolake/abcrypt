@@ -14,11 +14,15 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
 
-== {compare-url}/abcrypt-cli-v0.3.0\...HEAD[Unreleased]
+== {compare-url}/abcrypt-cli-v0.3.0\...abcrypt-cli-v0.3.1[0.3.1] - 2024-04-16
 
 === Added
 
 * Add man page for the format specification ({pull-request-url}/369[#369])
+
+=== Changed
+
+* Update examples in man pages
 
 == {compare-url}/abcrypt-cli-v0.2.12\...abcrypt-cli-v0.3.0[0.3.0] - 2024-02-18
 
