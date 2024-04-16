@@ -4,7 +4,7 @@
 
 = ABCRYPT_TAG_SIZE(3)
 // Specify in UTC.
-:docdate: 2024-04-13
+:docdate: 2024-04-16
 :doctype: manpage
 ifdef::revnumber[:mansource: abcrypt-capi {revnumber}]
 ifndef::revnumber[:mansource: abcrypt-capi]
@@ -31,7 +31,7 @@ the ciphertext.
 
 == VERSIONS
 
-This type was added in version 0.1.0.
+This constant was added in version 0.1.0.
 
 include::{includedir}/section-reporting-bugs.adoc[]
 
