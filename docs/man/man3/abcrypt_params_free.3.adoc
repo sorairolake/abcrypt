@@ -10,7 +10,7 @@
 ifdef::revnumber[:mansource: abcrypt-capi {revnumber}]
 ifndef::revnumber[:mansource: abcrypt-capi]
 :manmanual: Library Functions Manual
-:includedir: ./include
+ifndef::site-gen-antora[:includedir: ./include]
 
 == NAME
 
@@ -46,9 +46,11 @@ Returns nothing.
 
 This function was added in version 0.1.0.
 
-include::{includedir}/section-reporting-bugs.adoc[]
+ifndef::site-gen-antora[include::{includedir}/section-reporting-bugs.adoc[]]
+ifdef::site-gen-antora[include::partial$man/man3/include/section-reporting-bugs.adoc[]]
 
-include::{includedir}/section-copyright.adoc[]
+ifndef::site-gen-antora[include::{includedir}/section-copyright.adoc[]]
+ifdef::site-gen-antora[include::partial$man/man3/include/section-copyright.adoc[]]
 
 == SEE ALSO
 

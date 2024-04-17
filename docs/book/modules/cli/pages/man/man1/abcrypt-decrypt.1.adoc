@@ -1,0 +1,1 @@
+../../../../../../man/man1/abcrypt-decrypt.1.adoc

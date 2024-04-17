@@ -9,7 +9,7 @@
 ifdef::revnumber[:mansource: abcrypt {revnumber}]
 ifndef::revnumber[:mansource: abcrypt]
 :manmanual: General Commands Manual
-:includedir: ./include
+ifndef::site-gen-antora[:includedir: ./include]
 
 == NAME
 
@@ -50,9 +50,11 @@ endif::[]
   Print version number. The long flag (*--version*) will also print the
   copyright notice, the license notice and where to report bugs.
 
-include::{includedir}/section-exit-status.adoc[]
+ifndef::site-gen-antora[include::{includedir}/section-exit-status.adoc[]]
+ifdef::site-gen-antora[include::partial$man/man1/include/section-exit-status.adoc[]]
 
-include::{includedir}/section-notes.adoc[]
+ifndef::site-gen-antora[include::{includedir}/section-notes.adoc[]]
+ifdef::site-gen-antora[include::partial$man/man1/include/section-notes.adoc[]]
 
 == EXAMPLES
 
@@ -66,9 +68,11 @@ Print the encryption parameters as JSON:{blank}::
   $ *abcrypt information -j data.txt.abcrypt*
 endif::[]
 
-include::{includedir}/section-reporting-bugs.adoc[]
+ifndef::site-gen-antora[include::{includedir}/section-reporting-bugs.adoc[]]
+ifdef::site-gen-antora[include::partial$man/man1/include/section-reporting-bugs.adoc[]]
 
-include::{includedir}/section-copyright.adoc[]
+ifndef::site-gen-antora[include::{includedir}/section-copyright.adoc[]]
+ifdef::site-gen-antora[include::partial$man/man1/include/section-copyright.adoc[]]
 
 == SEE ALSO
 
