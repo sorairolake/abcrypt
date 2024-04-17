@@ -1,9 +1,1 @@
-// SPDX-FileCopyrightText: 2022 Shun Sakai
-//
-// SPDX-License-Identifier: CC-BY-4.0
-
-== REPORTING BUGS
-
-Report bugs to:{blank}::
-
-  https://github.com/sorairolake/abcrypt/issues
+../../man1/include/section-reporting-bugs.adoc
