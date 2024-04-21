@@ -27,6 +27,12 @@ cargo install abcrypt-cli
 If you want to enable optimizations such as LTO, set them using [environment
 variables].
 
+### Via a package manager
+
+| OS    | Package manager | Command                                    |
+| ----- | --------------- | ------------------------------------------ |
+| _Any_ | [Homebrew]      | `brew install sorairolake/tap/abcrypt-cli` |
+
 ### From binaries
 
 The [release page] contains pre-built binaries for Linux, macOS and Windows.
@@ -139,6 +145,7 @@ licensing information.
 [license-badge]: https://img.shields.io/crates/l/abcrypt-cli?style=for-the-badge
 [abcrypt format]: ../../docs/spec/FORMAT.adoc
 [environment variables]: https://doc.rust-lang.org/cargo/reference/environment-variables.html#configuration-environment-variables
+[Homebrew]: https://brew.sh/
 [release page]: https://github.com/sorairolake/abcrypt/releases
 [BUILD.adoc]: BUILD.adoc
 [`abcrypt(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt.1.html
