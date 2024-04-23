@@ -20,11 +20,30 @@ env:
   CARGO_PROFILE_RELEASE_PANIC: "abort"
 
 jobs:
+  get-version:
+    name: Get version
+    runs-on: ubuntu-22.04
+    outputs:
+      version: ${{ steps.get_version.outputs.version }}
+      version_without_v: ${{ steps.get_version_without_v.outputs.version-without-v }}
+    steps:
+      - name: Get version
+        id: get_version
+        shell: bash
+        run: |
+          ref_name="${GITHUB_REF_NAME##*/}"
+          if [[ "${ref_name}" =~ ^abcrypt-cli-v.* ]] ; then
+            ref_name="${ref_name##*-}"
+          fi
+          echo "version=${ref_name}" >> "$GITHUB_OUTPUT"
+      - name: Get version without v
+        id: get_version_without_v
+        run: echo "version-without-v=${GITHUB_REF_NAME##*-v}" >> "$GITHUB_OUTPUT"
+
   build:
     name: Build
+    needs: get-version
     runs-on: ${{ matrix.os }}
-    outputs:
-      extracted_version: ${{ steps.extracted_version.outputs.version }}
     strategy:
       matrix:
         target:
@@ -82,18 +101,6 @@ jobs:
       - name: Build a package with cross
         if: ${{ matrix.use-cross }}
         run: cross build -p abcrypt-cli --release --target ${{ matrix.target }}
-      - name: Get version
-        id: get_version
-        uses: battila7/get-version-action@v2.3.0
-      - name: Extract version
-        id: extracted_version
-        shell: bash
-        run: |
-          version="${{ steps.get_version.outputs.version }}"
-          if [[ "${version}" =~ ^abcrypt-cli-v.* ]] ; then
-            version="${version##*-}"
-          fi
-          echo "version=${version}" >> "$GITHUB_OUTPUT"
       - name: Create a package
         shell: bash
         run: |
@@ -102,7 +109,7 @@ jobs:
           else
             bin="target/${{ matrix.target }}/release/abcrypt.exe"
           fi
-          package="abcrypt-${{ steps.extracted_version.outputs.version }}-${{ matrix.target }}"
+          package="abcrypt-${{ needs.get-version.outputs.version }}-${{ matrix.target }}"
 
           mkdir -p "${package}"/docs
           cp crates/cli/README.md "${bin}" "${package}"
@@ -123,12 +130,14 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: "abcrypt-${{ steps.extracted_version.outputs.version }}-${{ matrix.target }}"
-          path: "abcrypt-*.*"
+          name: "abcrypt-${{ needs.get-version.outputs.version }}-${{ matrix.target }}"
+          path: "abcrypt-*-*"
 
   release:
     name: Release
-    needs: build
+    needs:
+      - get-version
+      - build
     runs-on: ubuntu-22.04
     steps:
       - name: Download artifact
@@ -148,6 +157,6 @@ jobs:
             abcrypt-*
             sha256sums.txt
             b2sums.txt
-          name: "Release abcrypt-cli ${{ needs.build.outputs.extracted_version }}"
+          name: "Release abcrypt-cli version ${{ needs.get-version.outputs.version_without_v }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
