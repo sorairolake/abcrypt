@@ -246,6 +246,7 @@ impl Opt {
     }
 }
 
+#[allow(clippy::doc_markdown)]
 #[derive(Clone, Debug, ValueEnum)]
 #[value(rename_all = "lower")]
 pub enum Shell {
