@@ -7,7 +7,7 @@
 * xref:install.adoc[]
 * xref:build.adoc[]
 * xref:usage.adoc[]
-* Manual pages
+* Man pages
 ** xref:man/man1/abcrypt.1.adoc[`abcrypt(1)`]
 ** xref:man/man1/abcrypt-encrypt.1.adoc[`abcrypt-encrypt(1)`]
 ** xref:man/man1/abcrypt-decrypt.1.adoc[`abcrypt-decrypt(1)`]
