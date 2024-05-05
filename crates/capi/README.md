@@ -32,9 +32,9 @@ This will produce static and shared C libraries.
 
 See the [documentation][docs-url] for more details.
 
-#### Manual pages
+#### Man pages
 
-To find the directory where manual pages are generated:
+To find the directory where man pages are generated:
 
 ```sh
 fd -t directory out ./target/*/build/abcrypt-capi-*
