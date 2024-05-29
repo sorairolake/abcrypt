@@ -7,7 +7,7 @@ from typing import Final
 
 import abcrypt_py
 
-TEST_DIR: Final[Path] = Path(__file__).parent.resolve()
+TEST_DIR: Final[Path] = Path(__file__).resolve().parent
 TEST_DATA_ENC: Final[bytes] = Path(
     TEST_DIR / "data/data.txt.abcrypt"
 ).read_bytes()
