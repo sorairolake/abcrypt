@@ -29,7 +29,7 @@ anyhow.workspace = true
 byte-unit = "5.1.4"
 clap = { workspace = true, features = ["wrap_help"] }
 clap_complete = "4.5.3"
-clap_complete_nushell = "4.5.1"
+clap_complete_nushell = "4.5.2"
 dialoguer.workspace = true
 serde_json = { version = "1.0.117", optional = true }
 sysexits = "0.8.0"
