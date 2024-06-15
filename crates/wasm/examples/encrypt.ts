@@ -4,7 +4,11 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-import { abcrypt, cli, command } from "./deps.ts";
+import * as cli from "@std/cli";
+
+import * as command from "@cliffy/command";
+
+import * as abcrypt from "../pkg/abcrypt_wasm.js";
 
 import { VERSION } from "./version.ts";
 
