@@ -20,8 +20,8 @@ use std::borrow::Cow;
 
 use abcrypt::argon2;
 use pyo3::{
-    exceptions::PyValueError, pyclass, pyfunction, pymethods, pymodule, types::PyModule,
-    wrap_pyfunction, Bound, PyResult,
+    exceptions::PyValueError, prelude::PyModuleMethods, pyclass, pyfunction, pymethods, pymodule,
+    types::PyModule, wrap_pyfunction, Bound, PyResult,
 };
 
 pub use crate::params::Params;
