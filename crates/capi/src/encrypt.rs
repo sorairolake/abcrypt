@@ -240,7 +240,7 @@ mod tests {
 
     #[test]
     fn minimum_output_length() {
-        let mut plaintext = [u8::default(); 0];
+        let mut plaintext = [];
         let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
         let mut ciphertext = [u8::default(); HEADER_SIZE + TAG_SIZE];
         let code = unsafe {
