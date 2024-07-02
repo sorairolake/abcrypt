@@ -12,7 +12,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 ![License][license-badge]
 
 **abcrypt** ([`abcrypt-cli`][version-url]) is a command-line utility for
-encrypt and decrypt files using the [abcrypt format].
+encrypt and decrypt files using the [abcrypt encrypted data format].
 
 ![Screenshot of abcrypt](assets/screenshot.webp)
 
@@ -143,7 +143,7 @@ licensing information.
 [version-url]: https://crates.io/crates/abcrypt-cli
 [msrv-badge]: https://img.shields.io/crates/msrv/abcrypt-cli?style=for-the-badge&logo=rust
 [license-badge]: https://img.shields.io/crates/l/abcrypt-cli?style=for-the-badge
-[abcrypt format]: ../../docs/spec/FORMAT.adoc
+[abcrypt encrypted data format]: ../../docs/spec/FORMAT.adoc
 [environment variables]: https://doc.rust-lang.org/cargo/reference/environment-variables.html#configuration-environment-variables
 [Homebrew]: https://brew.sh/
 [release page]: https://github.com/sorairolake/abcrypt/releases

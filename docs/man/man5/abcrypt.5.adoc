@@ -4,7 +4,7 @@
 
 = abcrypt(5)
 // Specify in UTC.
-:docdate: 2024-04-13
+:docdate: 2024-07-02
 :doctype: manpage
 ifdef::revnumber[:mansource: abcrypt {revnumber}]
 ifndef::revnumber[:mansource: abcrypt]
@@ -34,7 +34,7 @@ checking and XChaCha20-Poly1305 for encryption.
 An {manname} file is composed of two parts: a header containing the required
 data and a file body encrypted with the derived key.
 
-.The structure of the abcrypt format
+.The structure of the abcrypt encrypted data format
 |===
 |Offset |Bytes |Description
 
