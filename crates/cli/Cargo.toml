@@ -31,7 +31,7 @@ clap = { workspace = true, features = ["wrap_help"] }
 clap_complete = "4.5.7"
 clap_complete_nushell = "4.5.2"
 dialoguer.workspace = true
-serde_json = { version = "1.0.118", optional = true }
+serde_json = { version = "1.0.120", optional = true }
 sysexits = "0.8.0"
 
 [dev-dependencies]
