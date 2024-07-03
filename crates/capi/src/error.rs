@@ -8,9 +8,9 @@ use std::{ffi::CString, fmt, ptr::NonNull, slice};
 
 use abcrypt::Error;
 
-#[allow(clippy::module_name_repetitions)]
 /// The error code for the abcrypt encrypted data format.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[allow(clippy::module_name_repetitions)]
 #[repr(C)]
 pub enum ErrorCode {
     /// Everything is ok.
@@ -259,8 +259,8 @@ mod tests {
         assert_eq!(format!("{:?}", ErrorCode::InvalidMac), "InvalidMac");
     }
 
-    #[allow(clippy::cognitive_complexity, clippy::too_many_lines)]
     #[test]
+    #[allow(clippy::cognitive_complexity, clippy::too_many_lines)]
     fn equality() {
         assert_eq!(ErrorCode::Ok, ErrorCode::Ok);
         assert_ne!(ErrorCode::Ok, ErrorCode::Error);
@@ -403,8 +403,8 @@ mod tests {
         );
     }
 
-    #[allow(clippy::too_many_lines)]
     #[test]
+    #[allow(clippy::too_many_lines)]
     fn error_message() {
         {
             let expected = CString::new("everything is ok").unwrap();

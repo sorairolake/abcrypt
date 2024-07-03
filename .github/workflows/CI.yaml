@@ -21,7 +21,7 @@ jobs:
       matrix:
         target:
           - x86_64-unknown-linux-gnu
-          - x86_64-apple-darwin
+          - aarch64-apple-darwin
           - x86_64-pc-windows-msvc
         toolchain:
           - 1.74.0 # MSRV
@@ -29,8 +29,8 @@ jobs:
         include:
           - target: x86_64-unknown-linux-gnu
             os: ubuntu-22.04
-          - target: x86_64-apple-darwin
-            os: macos-12
+          - target: aarch64-apple-darwin
+            os: macos-14
           - target: x86_64-pc-windows-msvc
             os: windows-2022
     steps:
@@ -98,14 +98,32 @@ jobs:
       matrix:
         os:
           - ubuntu-22.04
-          - macos-12
+          - macos-14
           - windows-2022
         rust-version:
           - 1.74.0 # MSRV
           - stable
         python-version:
-          - "3.8"
           - "3.12" # latest version
+        include:
+          - os: ubuntu-22.04
+            rust-version: 1.74.0 # MSRV
+            python-version: "3.8"
+          - os: ubuntu-22.04
+            rust-version: stable
+            python-version: "3.8"
+          - os: macos-14
+            rust-version: 1.74.0 # MSRV
+            python-version: "3.10"
+          - os: macos-14
+            rust-version: stable
+            python-version: "3.10"
+          - os: windows-2022
+            rust-version: 1.74.0 # MSRV
+            python-version: "3.8"
+          - os: windows-2022
+            rust-version: stable
+            python-version: "3.8"
     steps:
       - name: Set Git to use LF
         if: matrix.os == 'windows-2022'
@@ -242,6 +260,12 @@ jobs:
         uses: Swatinem/rust-cache@v2.7.3
       - name: Build examples for the C API
         run: just build-capi-examples
+      - name: Check code formatted
+        run: |
+          just clang-format
+          git diff --exit-code
+      - name: Check no lint warnings
+        run: just clang-tidy
 
   wasm-examples:
     name: Examples for the Wasm bindings

@@ -47,7 +47,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Build wheels
-        uses: PyO3/maturin-action@v1.42.1
+        uses: PyO3/maturin-action@v1.44.0
         with:
           command: build
           args: --strip -i ${{ matrix.python-version }} -o dist -r
@@ -63,15 +63,13 @@ jobs:
 
   macos:
     name: Build wheels for macOS
-    runs-on: macos-12
+    runs-on: macos-14
     strategy:
       matrix:
         target:
           - aarch64
           - x86_64
         python-version:
-          - "3.8"
-          - "3.9"
           - "3.10"
           - "3.11"
           - "3.12" # latest version
@@ -86,7 +84,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Build wheels
-        uses: PyO3/maturin-action@v1.42.1
+        uses: PyO3/maturin-action@v1.44.0
         with:
           command: build
           args: --strip -i ${{ matrix.python-version }} -o dist -r
@@ -121,7 +119,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
           architecture: ${{ matrix.target }}
       - name: Build wheels
-        uses: PyO3/maturin-action@v1.42.1
+        uses: PyO3/maturin-action@v1.44.0
         with:
           command: build
           args: --strip -i ${{ matrix.python-version }} -o dist -r
@@ -141,7 +139,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Build sdist
-        uses: PyO3/maturin-action@v1.42.1
+        uses: PyO3/maturin-action@v1.44.0
         with:
           command: sdist
           args: -o dist
@@ -167,7 +165,7 @@ jobs:
           pattern: wheels-*
           merge-multiple: true
       - name: Publish to PyPI
-        uses: PyO3/maturin-action@v1.42.1
+        uses: PyO3/maturin-action@v1.44.0
         if: startsWith(github.ref, 'refs/tags/')
         with:
           command: upload

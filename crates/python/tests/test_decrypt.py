@@ -9,7 +9,7 @@ import abcrypt_py
 import pytest
 
 PASSPHRASE: Final[bytes] = b"passphrase"
-TEST_DIR: Final[Path] = Path(__file__).parent.resolve()
+TEST_DIR: Final[Path] = Path(__file__).resolve().parent
 TEST_DATA: Final[bytes] = Path(TEST_DIR / "data/data.txt").read_bytes()
 TEST_DATA_ENC: Final[bytes] = Path(
     TEST_DIR / "data/data.txt.abcrypt"

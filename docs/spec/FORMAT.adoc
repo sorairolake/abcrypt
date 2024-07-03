@@ -5,7 +5,7 @@
 = Abcrypt Encrypted Data Format
 Shun Sakai <sorairolake@protonmail.ch>
 // Specify in UTC.
-v0.3.4, 2024-02-13
+v0.3.5, 2024-07-02
 :icons: font
 :idprefix:
 :idseparator: -
@@ -49,7 +49,7 @@ the required data and a <<file-body,file body>> encrypted with the derived key.
 
 abcrypt files may use the extension `.abcrypt`.
 
-.The structure of the abcrypt format
+.The structure of the abcrypt encrypted data format
 |===
 |Offset |Bytes |Description |Detail
 
@@ -109,8 +109,8 @@ All multibyte values are stored in little-endian.
 == Key derivation
 
 The derived key for computing the header MAC and the derived key for encryption
-are produced by <<argon2>>. The abcrypt format uses Argon2id as the type and
-0x13 (19) as the version.
+are produced by <<argon2>>. The abcrypt encrypted data format uses Argon2id as
+the type and 0x13 (19) as the version.
 
 .The derived key is produced as follows
 ----
@@ -138,12 +138,13 @@ are stored in the header, and these stored values are used when decrypting.
 
 === Magic number
 
-A 7-byte string for identifying the abcrypt format. The value is "abcrypt"
-(`61 62 63 72 79 70 74` in hex).
+A 7-byte string for identifying the abcrypt encrypted data format. The value is
+"abcrypt" (`61 62 63 72 79 70 74` in hex).
 
 === Version number
 
-A 1-byte version number of the abcrypt format. The current value is 0.
+A 1-byte version number of the abcrypt encrypted data format. The current value
+is 0.
 
 === Argon2 parameters
 
@@ -216,7 +217,7 @@ ciphertext = XChaCha20-Poly1305(
 
 The size of `aad` (additional authenticated data) is zero (empty).
 
-IMPORTANT: The abcrypt format uses a postfix tag.
+IMPORTANT: The abcrypt encrypted data format uses a postfix tag.
 
 == ABNF definition of the file format
 

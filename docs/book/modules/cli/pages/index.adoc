@@ -18,6 +18,6 @@ image:{msrv-badge}[MSRV]
 image:{license-badge}[License]
 
 *abcrypt* ({version-url}[`abcrypt-cli`]) is a command-line utility for encrypt
-and decrypt files using the abcrypt format.
+and decrypt files using the abcrypt encrypted data format.
 
 image::screenshot.webp[Screenshot of abcrypt]

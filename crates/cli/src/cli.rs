@@ -104,8 +104,8 @@ pub enum Command {
     Information(Information),
 }
 
-#[allow(clippy::struct_excessive_bools)]
 #[derive(Args, Debug)]
+#[allow(clippy::struct_excessive_bools)]
 #[command(group(ArgGroup::new("passphrase")))]
 pub struct Encrypt {
     /// Output the result to a file.
@@ -173,8 +173,8 @@ pub struct Encrypt {
     pub input: Option<PathBuf>,
 }
 
-#[allow(clippy::struct_excessive_bools)]
 #[derive(Args, Debug)]
+#[allow(clippy::struct_excessive_bools)]
 #[command(group(ArgGroup::new("passphrase")))]
 pub struct Decrypt {
     /// Output the result to a file.
@@ -247,6 +247,7 @@ impl Opt {
 }
 
 #[derive(Clone, Debug, ValueEnum)]
+#[allow(clippy::doc_markdown)]
 #[value(rename_all = "lower")]
 pub enum Shell {
     /// Bash.

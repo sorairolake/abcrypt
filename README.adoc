@@ -44,11 +44,11 @@ image::crates/cli/assets/screenshot.webp[Screenshot of abcrypt]
 
 |{abcrypt-repo-url}[`abcrypt`]
 |image:{abcrypt-badge}[Version,link={abcrypt-crates-io}]
-|The abcrypt format reference implementation.
+|The abcrypt encrypted data format reference implementation.
 
 |{abcrypt-cli-repo-url}[`abcrypt-cli`]
 |image:{abcrypt-cli-badge}[Version,link={abcrypt-cli-crates-io}]
-|File encryption tool using the abcrypt format.
+|File encryption tool using the abcrypt encrypted data format.
 
 |{abcrypt-capi-repo-url}[`abcrypt-capi`]
 |image:{abcrypt-capi-badge}[Version,link={abcrypt-capi-crates-io}]

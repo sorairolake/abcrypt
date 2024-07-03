@@ -3,6 +3,8 @@
 // SPDX-License-Identifier: CC-BY-4.0
 
 = Installation
+:environment-variables-url: https://doc.rust-lang.org/cargo/reference/environment-variables.html#configuration-environment-variables
+:brew-url: https://brew.sh/
 :release-page-url: https://github.com/sorairolake/abcrypt/releases
 
 == From source
@@ -11,6 +13,19 @@
 ----
 cargo install abcrypt-cli
 ----
+
+If you want to enable optimizations such as LTO, set them using
+{environment-variables-url}[environment variables].
+
+== Via a package manager
+
+|===
+|OS |Package manager |Command
+
+|_Any_
+|{brew-url}[Homebrew]
+|`brew install sorairolake/tap/abcrypt-cli`
+|===
 
 == From binaries
 

@@ -8,7 +8,7 @@
 * API Reference
 ** xref:capi.adoc[]
 ** https://docs.rs/abcrypt-capi[Rust API]
-* Manual pages
+* Man pages
 ** xref:man/man3/ABCRYPT_HEADER_SIZE.3.adoc[`ABCRYPT_HEADER_SIZE(3)`]
 ** xref:man/man3/ABCRYPT_TAG_SIZE.3.adoc[`ABCRYPT_TAG_SIZE(3)`]
 ** xref:man/man3/abcrypt_error_code.3.adoc[`abcrypt_error_code(3)`]
