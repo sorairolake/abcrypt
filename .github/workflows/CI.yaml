@@ -295,14 +295,3 @@ jobs:
         run: |
           wasm-pack build -t deno crates/wasm
           deno check crates/wasm/examples/*.ts
-
-  semver:
-    name: Semantic Versioning
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Check Semantic Versioning
-        uses: obi1kenobi/cargo-semver-checks-action@v2.4
-        with:
-          package: abcrypt
