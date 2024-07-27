@@ -35,7 +35,7 @@ serde_json = { version = "1.0.120", optional = true }
 sysexits = "0.8.1"
 
 [dev-dependencies]
-assert_cmd = "2.0.14"
+assert_cmd = "2.0.15"
 predicates = "3.1.2"
 
 [features]
