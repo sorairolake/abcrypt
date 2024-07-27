@@ -5,11 +5,11 @@
 //! Decrypts from the abcrypt encrypted data format.
 
 use argon2::Argon2;
-use chacha20poly1305::{AeadInPlace, KeyInit, Tag, XChaCha20Poly1305};
+use chacha20poly1305::{AeadInPlace, KeyInit, XChaCha20Poly1305};
 
 use crate::{
     format::{DerivedKey, Header},
-    Error, Result, ARGON2_ALGORITHM, ARGON2_VERSION, ASSOCIATED_DATA, HEADER_SIZE, TAG_SIZE,
+    Error, Result, ARGON2_ALGORITHM, ARGON2_VERSION, HEADER_SIZE, TAG_SIZE,
 };
 
 /// Decryptor for the abcrypt encrypted data format.
@@ -18,7 +18,6 @@ pub struct Decryptor<'c> {
     header: Header,
     dk: DerivedKey,
     ciphertext: &'c [u8],
-    tag: Tag,
 }
 
 impl<'c> Decryptor<'c> {
@@ -73,14 +72,11 @@ impl<'c> Decryptor<'c> {
 
             header.verify_mac(&dk.mac(), ciphertext[76..HEADER_SIZE].into())?;
 
-            let (ciphertext, tag) =
-                ciphertext[HEADER_SIZE..].split_at(ciphertext.len() - HEADER_SIZE - TAG_SIZE);
-            let tag = Tag::clone_from_slice(tag);
+            let ciphertext = &ciphertext[HEADER_SIZE..];
             Ok(Self {
                 header,
                 dk,
                 ciphertext,
-                tag,
             })
         };
         inner(ciphertext.as_ref(), passphrase.as_ref())
@@ -113,15 +109,13 @@ impl<'c> Decryptor<'c> {
     /// ```
     pub fn decrypt(&self, mut buf: impl AsMut<[u8]>) -> Result<()> {
         let inner = |decryptor: &Self, buf: &mut [u8]| -> Result<()> {
-            buf.copy_from_slice(decryptor.ciphertext);
+            let (plaintext, tag) = decryptor
+                .ciphertext
+                .split_at(decryptor.ciphertext.len() - TAG_SIZE);
+            buf.copy_from_slice(plaintext);
 
             let cipher = XChaCha20Poly1305::new(&decryptor.dk.encrypt());
-            cipher.decrypt_in_place_detached(
-                &decryptor.header.nonce(),
-                ASSOCIATED_DATA,
-                buf,
-                &decryptor.tag,
-            )?;
+            cipher.decrypt_in_place_detached(&decryptor.header.nonce(), b"", buf, tag.into())?;
             Ok(())
         };
         inner(self, buf.as_mut())
@@ -171,7 +165,7 @@ impl<'c> Decryptor<'c> {
     #[must_use]
     #[inline]
     pub const fn out_len(&self) -> usize {
-        self.ciphertext.len()
+        self.ciphertext.len() - TAG_SIZE
     }
 }
 

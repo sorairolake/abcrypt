@@ -19,7 +19,7 @@ const TEST_DATA: &[u8] = include_bytes!("data/data.txt");
 fn success() {
     let cipher = Encryptor::new(&TEST_DATA, PASSPHRASE).unwrap();
     let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
-    cipher.encrypt(&mut buf).unwrap();
+    cipher.encrypt(&mut buf);
     assert_ne!(buf, TEST_DATA);
 
     let params = abcrypt::Params::new(buf).unwrap();
@@ -39,7 +39,7 @@ fn success_with_params() {
         Encryptor::with_params(&TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())
             .unwrap();
     let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
-    cipher.encrypt(&mut buf).unwrap();
+    cipher.encrypt(&mut buf);
     assert_ne!(buf, TEST_DATA);
 
     let params = abcrypt::Params::new(buf).unwrap();
@@ -58,7 +58,7 @@ fn success_with_params() {
 fn success_to_vec() {
     let ciphertext =
         Encryptor::with_params(&TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())
-            .and_then(|c| c.encrypt_to_vec())
+            .map(|c| c.encrypt_to_vec())
             .unwrap();
     assert_ne!(ciphertext, TEST_DATA);
     assert_eq!(ciphertext.len(), TEST_DATA.len() + HEADER_SIZE + TAG_SIZE);
@@ -81,7 +81,7 @@ fn invalid_output_length() {
         Encryptor::with_params(&TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())
             .unwrap();
     let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE - 1];
-    cipher.encrypt(&mut buf).unwrap();
+    cipher.encrypt(&mut buf);
 }
 
 #[test]
@@ -90,7 +90,7 @@ fn minimum_output_length() {
         Encryptor::with_params(&[], PASSPHRASE, Params::new(32, 3, 4, None).unwrap()).unwrap();
     assert_eq!(cipher.out_len(), HEADER_SIZE + TAG_SIZE);
     let mut buf = [u8::default(); HEADER_SIZE + TAG_SIZE];
-    cipher.encrypt(&mut buf).unwrap();
+    cipher.encrypt(&mut buf);
 }
 
 #[test]
@@ -99,7 +99,7 @@ fn magic_number() {
         Encryptor::with_params(&TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())
             .unwrap();
     let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
-    cipher.encrypt(&mut buf).unwrap();
+    cipher.encrypt(&mut buf);
     assert_eq!(&buf[..7], b"abcrypt");
 }
 
@@ -109,7 +109,7 @@ fn version() {
         Encryptor::with_params(&TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())
             .unwrap();
     let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
-    cipher.encrypt(&mut buf).unwrap();
+    cipher.encrypt(&mut buf);
     assert_eq!(buf[7], 0);
 }
 
@@ -119,7 +119,7 @@ fn memory_cost() {
         Encryptor::with_params(&TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())
             .unwrap();
     let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
-    cipher.encrypt(&mut buf).unwrap();
+    cipher.encrypt(&mut buf);
     assert_eq!(&buf[8..12], u32::to_le_bytes(32));
 }
 
@@ -129,7 +129,7 @@ fn time_cost() {
         Encryptor::with_params(&TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())
             .unwrap();
     let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
-    cipher.encrypt(&mut buf).unwrap();
+    cipher.encrypt(&mut buf);
     assert_eq!(&buf[12..16], u32::to_le_bytes(3));
 }
 
@@ -139,7 +139,7 @@ fn parallelism() {
         Encryptor::with_params(&TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())
             .unwrap();
     let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
-    cipher.encrypt(&mut buf).unwrap();
+    cipher.encrypt(&mut buf);
     assert_eq!(&buf[16..20], u32::to_le_bytes(4));
 }
 
