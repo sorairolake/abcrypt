@@ -46,7 +46,7 @@ fn invalid_output_length() {
 #[test]
 fn incorrect_passphrase() {
     let err = Decryptor::new(&TEST_DATA_ENC, "password").unwrap_err();
-    assert_eq!(err, Error::InvalidHeaderMac(MacError));
+    assert_eq!(err, MacError.into());
 }
 
 #[test]
@@ -133,7 +133,7 @@ fn invalid_header_mac() {
     header_mac.reverse();
     data[76..140].copy_from_slice(&header_mac);
     let err = Decryptor::new(&data, PASSPHRASE).unwrap_err();
-    assert_eq!(err, Error::InvalidHeaderMac(MacError));
+    assert_eq!(err, MacError.into());
 }
 
 #[test]
@@ -147,7 +147,7 @@ fn invalid_mac() {
     let cipher = Decryptor::new(&data, PASSPHRASE).unwrap();
     let mut buf = [u8::default(); TEST_DATA.len()];
     let err = cipher.decrypt(&mut buf).unwrap_err();
-    assert_eq!(err, Error::InvalidMac(chacha20poly1305::Error));
+    assert_eq!(err, chacha20poly1305::Error.into());
 }
 
 #[test]

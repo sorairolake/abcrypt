@@ -115,9 +115,7 @@ impl<'c> Decryptor<'c> {
             buf.copy_from_slice(plaintext);
 
             let cipher = XChaCha20Poly1305::new(&decryptor.dk.encrypt());
-            cipher
-                .decrypt_in_place_detached(&decryptor.header.nonce(), b"", buf, tag.into())
-                .map_err(Error::InvalidMac)?;
+            cipher.decrypt_in_place_detached(&decryptor.header.nonce(), b"", buf, tag.into())?;
             Ok(())
         };
         inner(self, buf.as_mut())

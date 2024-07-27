@@ -154,7 +154,7 @@ impl Header {
     pub fn verify_mac(&mut self, key: &Blake2bMac512Key, tag: &Blake2bMac512Output) -> Result<()> {
         let mut mac = Blake2bMac512::new(key);
         mac.update(&self.as_bytes()[..76]);
-        mac.verify(tag).map_err(Error::InvalidHeaderMac)?;
+        mac.verify(tag)?;
         self.mac.copy_from_slice(tag);
         Ok(())
     }
