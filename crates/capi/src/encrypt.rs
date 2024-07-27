@@ -61,8 +61,9 @@ pub unsafe extern "C" fn abcrypt_encrypt(
     };
     // SAFETY: just checked that `out` is not a null pointer.
     let out = unsafe { slice::from_raw_parts_mut(out.as_ptr(), out_len) };
-    cipher.encrypt(out);
-    ErrorCode::Ok
+    cipher
+        .encrypt(out)
+        .map_or_else(ErrorCode::from, |()| ErrorCode::Ok)
 }
 
 #[allow(clippy::module_name_repetitions)]
@@ -121,8 +122,9 @@ pub unsafe extern "C" fn abcrypt_encrypt_with_params(
     };
     // SAFETY: just checked that `out` is not a null pointer.
     let out = unsafe { slice::from_raw_parts_mut(out.as_ptr(), out_len) };
-    cipher.encrypt(out);
-    ErrorCode::Ok
+    cipher
+        .encrypt(out)
+        .map_or_else(ErrorCode::from, |()| ErrorCode::Ok)
 }
 
 #[cfg(test)]

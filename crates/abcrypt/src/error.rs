@@ -84,7 +84,7 @@ impl From<chacha20poly1305::Error> for Error {
 /// use abcrypt::{Decryptor, Encryptor};
 ///
 /// fn encrypt(plaintext: &[u8], passphrase: &[u8]) -> abcrypt::Result<Vec<u8>> {
-///     Encryptor::new(&plaintext, passphrase).map(|c| c.encrypt_to_vec())
+///     Encryptor::new(&plaintext, passphrase).and_then(|c| c.encrypt_to_vec())
 /// }
 ///
 /// fn decrypt(ciphertext: &[u8], passphrase: &[u8]) -> abcrypt::Result<Vec<u8>> {

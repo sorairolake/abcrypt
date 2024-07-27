@@ -85,7 +85,7 @@ impl Header {
         let version = Version::default();
         let params = params.into();
         let salt = StdRng::from_entropy().gen();
-        let nonce = XChaCha20Poly1305::generate_nonce(&mut StdRng::from_entropy());
+        let nonce = XChaCha20Poly1305::generate_nonce(StdRng::from_entropy());
         let mac = Blake2bMac512Output::default();
         Self {
             magic_number,

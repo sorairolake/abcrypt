@@ -9,7 +9,7 @@ use chacha20poly1305::{AeadInPlace, KeyInit, XChaCha20Poly1305};
 
 use crate::{
     format::{DerivedKey, Header},
-    Error, Result, ARGON2_ALGORITHM, ARGON2_VERSION, HEADER_SIZE, TAG_SIZE,
+    Error, Result, ARGON2_ALGORITHM, ARGON2_VERSION, ASSOCIATED_DATA, HEADER_SIZE, TAG_SIZE,
 };
 
 /// Encryptor for the abcrypt encrypted data format.
@@ -107,13 +107,14 @@ impl<'m> Encryptor<'m> {
 
     /// Encrypts the plaintext into `buf`.
     ///
+    /// # Errors
+    ///
+    /// Returns [`Err`] if the buffer has insufficient capacity to store the
+    /// resulting ciphertext.
+    ///
     /// # Panics
     ///
-    /// Panics if any of the following are true:
-    ///
-    /// - `buf` and the encrypted data have different lengths.
-    /// - The buffer has insufficient capacity to store the resulting
-    ///   ciphertext.
+    /// Panics if `buf` and the encrypted data have different lengths.
     ///
     /// # Examples
     ///
@@ -126,31 +127,34 @@ impl<'m> Encryptor<'m> {
     /// let params = Params::new(32, 3, 4, None).unwrap();
     /// let cipher = Encryptor::with_params(data, passphrase, params).unwrap();
     /// let mut buf = [u8::default(); 170];
-    /// cipher.encrypt(&mut buf);
+    /// cipher.encrypt(&mut buf).unwrap();
     /// # assert_ne!(buf, data.as_slice());
     /// ```
-    pub fn encrypt(&self, mut buf: impl AsMut<[u8]>) {
-        let inner = |encryptor: &Self, buf: &mut [u8]| {
+    pub fn encrypt(&self, mut buf: impl AsMut<[u8]>) -> Result<()> {
+        let inner = |encryptor: &Self, buf: &mut [u8]| -> Result<()> {
             buf[..HEADER_SIZE].copy_from_slice(&encryptor.header.as_bytes());
-            buf[HEADER_SIZE..(self.out_len() - TAG_SIZE)].copy_from_slice(encryptor.plaintext);
+            let body = &mut buf[HEADER_SIZE..(self.out_len() - TAG_SIZE)];
+            body.copy_from_slice(encryptor.plaintext);
 
             let cipher = XChaCha20Poly1305::new(&encryptor.dk.encrypt());
-            let tag = cipher
-                .encrypt_in_place_detached(
-                    &encryptor.header.nonce(),
-                    b"",
-                    &mut buf[HEADER_SIZE..(self.out_len() - TAG_SIZE)],
-                )
-                .expect(
-                    "the buffer should have sufficient capacity to store the resulting ciphertext",
-                );
+            let tag = cipher.encrypt_in_place_detached(
+                &encryptor.header.nonce(),
+                ASSOCIATED_DATA,
+                body,
+            )?;
             buf[(self.out_len() - TAG_SIZE)..].copy_from_slice(&tag);
+            Ok(())
         };
-        inner(self, buf.as_mut());
+        inner(self, buf.as_mut())
     }
 
     /// Encrypts the plaintext and into a newly allocated
     /// [`Vec`](alloc::vec::Vec).
+    ///
+    /// # Errors
+    ///
+    /// Returns [`Err`] if the buffer has insufficient capacity to store the
+    /// resulting ciphertext.
     ///
     /// # Examples
     ///
@@ -162,15 +166,14 @@ impl<'m> Encryptor<'m> {
     ///
     /// let params = Params::new(32, 3, 4, None).unwrap();
     /// let cipher = Encryptor::with_params(data, passphrase, params).unwrap();
-    /// let ciphertext = cipher.encrypt_to_vec();
+    /// let ciphertext = cipher.encrypt_to_vec().unwrap();
     /// # assert_ne!(ciphertext, data);
     /// ```
     #[cfg(feature = "alloc")]
-    #[must_use]
-    pub fn encrypt_to_vec(&self) -> alloc::vec::Vec<u8> {
+    pub fn encrypt_to_vec(&self) -> Result<alloc::vec::Vec<u8>> {
         let mut buf = vec![u8::default(); self.out_len()];
-        self.encrypt(&mut buf);
-        buf
+        self.encrypt(&mut buf)?;
+        Ok(buf)
     }
 
     #[allow(clippy::missing_panics_doc)]
@@ -224,7 +227,7 @@ pub fn encrypt(
     plaintext: impl AsRef<[u8]>,
     passphrase: impl AsRef<[u8]>,
 ) -> Result<alloc::vec::Vec<u8>> {
-    Encryptor::new(&plaintext, passphrase).map(|c| c.encrypt_to_vec())
+    Encryptor::new(&plaintext, passphrase).and_then(|c| c.encrypt_to_vec())
 }
 
 #[allow(clippy::module_name_repetitions)]
@@ -256,5 +259,5 @@ pub fn encrypt_with_params(
     passphrase: impl AsRef<[u8]>,
     params: Params,
 ) -> Result<alloc::vec::Vec<u8>> {
-    Encryptor::with_params(&plaintext, passphrase, params).map(|c| c.encrypt_to_vec())
+    Encryptor::with_params(&plaintext, passphrase, params).and_then(|c| c.encrypt_to_vec())
 }

@@ -20,7 +20,7 @@
 //! // Encrypt `data` using `passphrase`.
 //! let params = Params::new(32, 3, 4, None).unwrap();
 //! let ciphertext = Encryptor::with_params(data, passphrase, params)
-//!     .map(|c| c.encrypt_to_vec())
+//!     .and_then(|c| c.encrypt_to_vec())
 //!     .unwrap();
 //! assert_ne!(ciphertext, data);
 //!
@@ -50,7 +50,7 @@
 //! let params = Params::new(32, 3, 4, None).unwrap();
 //! let cipher = Encryptor::with_params(data, passphrase, params).unwrap();
 //! let mut buf = [u8::default(); 170];
-//! cipher.encrypt(&mut buf);
+//! cipher.encrypt(&mut buf).unwrap();
 //! assert_ne!(buf, data.as_slice());
 //!
 //! // And decrypt it back.
@@ -72,7 +72,7 @@
 //!
 //! // Encrypt `data` using `passphrase`.
 //! let ciphertext = Encryptor::new(data, passphrase)
-//!     .map(|c| c.encrypt_to_vec())
+//!     .and_then(|c| c.encrypt_to_vec())
 //!     .unwrap();
 //!
 //! // And extract the Argon2 parameters from it.
@@ -130,6 +130,8 @@ const ARGON2_VERSION: argon2::Version = argon2::Version::V0x13;
 #[cfg(not(feature = "alloc"))]
 // 1 MiB.
 const MEMORY_BLOCKS: [argon2::Block; usize::pow(2, 8)] = [argon2::Block::new(); usize::pow(2, 8)];
+
+const ASSOCIATED_DATA: &[u8] = &[];
 
 #[cfg(test)]
 mod tests {
