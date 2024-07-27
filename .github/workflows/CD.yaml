@@ -8,6 +8,7 @@ on:
   push:
     tags:
       - "abcrypt-cli-v[0-9]+.[0-9]+.[0-9]+"
+  workflow_dispatch:
 
 permissions:
   contents: write
