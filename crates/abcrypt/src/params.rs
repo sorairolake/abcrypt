@@ -38,8 +38,11 @@ impl Params {
     /// assert!(Params::new(ciphertext).is_ok());
     /// ```
     pub fn new(ciphertext: impl AsRef<[u8]>) -> Result<Self> {
-        let params = Header::parse(ciphertext.as_ref()).map(|h| h.params())?;
-        Ok(params)
+        let inner = |ciphertext: &[u8]| -> Result<Self> {
+            let params = Header::parse(ciphertext).map(|h| h.params())?;
+            Ok(params)
+        };
+        inner(ciphertext.as_ref())
     }
 
     /// Gets memory size in KiB.
