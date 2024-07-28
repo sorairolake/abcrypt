@@ -95,7 +95,6 @@ impl<'m> Encryptor<'m> {
             let dk = DerivedKey::new(dk);
 
             header.compute_mac(&dk.mac());
-
             Ok(Self {
                 header,
                 dk,

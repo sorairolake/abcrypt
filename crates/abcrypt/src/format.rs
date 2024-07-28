@@ -131,7 +131,7 @@ impl Header {
         let salt = data[20..52]
             .try_into()
             .expect("size of salt should be 32 bytes");
-        let nonce = XNonce::clone_from_slice(&data[52..76]);
+        let nonce = *XNonce::from_slice(&data[52..76]);
         let mac = Blake2bMac512Output::default();
         Ok(Self {
             magic_number,
@@ -203,8 +203,8 @@ impl DerivedKey {
 
     /// Creates a new `DerivedKey`.
     pub fn new(dk: [u8; Self::SIZE]) -> Self {
-        let encrypt = XChaCha20Poly1305Key::clone_from_slice(&dk[..32]);
-        let mac = Blake2bMac512Key::clone_from_slice(&dk[32..]);
+        let encrypt = *XChaCha20Poly1305Key::from_slice(&dk[..32]);
+        let mac = *Blake2bMac512Key::from_slice(&dk[32..]);
         Self { encrypt, mac }
     }
 

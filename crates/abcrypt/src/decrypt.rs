@@ -72,10 +72,9 @@ impl<'c> Decryptor<'c> {
             let dk = DerivedKey::new(dk);
 
             header.verify_mac(&dk.mac(), ciphertext[76..HEADER_SIZE].into())?;
-
             let (ciphertext, tag) =
                 ciphertext[HEADER_SIZE..].split_at(ciphertext.len() - HEADER_SIZE - TAG_SIZE);
-            let tag = Tag::clone_from_slice(tag);
+            let tag = *Tag::from_slice(tag);
             Ok(Self {
                 header,
                 dk,
