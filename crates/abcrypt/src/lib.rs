@@ -131,6 +131,8 @@ const ARGON2_VERSION: argon2::Version = argon2::Version::V0x13;
 // 1 MiB.
 const MEMORY_BLOCKS: [argon2::Block; usize::pow(2, 8)] = [argon2::Block::new(); usize::pow(2, 8)];
 
+const AAD: &[u8] = &[];
+
 #[cfg(test)]
 mod tests {
     #[cfg(not(feature = "alloc"))]

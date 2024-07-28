@@ -9,7 +9,7 @@ use chacha20poly1305::{AeadInPlace, KeyInit, XChaCha20Poly1305};
 
 use crate::{
     format::{DerivedKey, Header},
-    Error, Result, ARGON2_ALGORITHM, ARGON2_VERSION, HEADER_SIZE, TAG_SIZE,
+    Error, Result, AAD, ARGON2_ALGORITHM, ARGON2_VERSION, HEADER_SIZE, TAG_SIZE,
 };
 
 /// Encryptor for the abcrypt encrypted data format.
@@ -112,8 +112,7 @@ impl<'m> Encryptor<'m> {
     /// Panics if any of the following are true:
     ///
     /// - `buf` and the encrypted data have different lengths.
-    /// - The buffer has insufficient capacity to store the resulting
-    ///   ciphertext.
+    /// - The end of the keystream will be reached with the given data length.
     ///
     /// # Examples
     ///
@@ -132,18 +131,13 @@ impl<'m> Encryptor<'m> {
     pub fn encrypt(&self, mut buf: impl AsMut<[u8]>) {
         let inner = |encryptor: &Self, buf: &mut [u8]| {
             buf[..HEADER_SIZE].copy_from_slice(&encryptor.header.as_bytes());
-            buf[HEADER_SIZE..(self.out_len() - TAG_SIZE)].copy_from_slice(encryptor.plaintext);
+            let body = &mut buf[HEADER_SIZE..(self.out_len() - TAG_SIZE)];
+            body.copy_from_slice(encryptor.plaintext);
 
             let cipher = XChaCha20Poly1305::new(&encryptor.dk.encrypt());
             let tag = cipher
-                .encrypt_in_place_detached(
-                    &encryptor.header.nonce(),
-                    b"",
-                    &mut buf[HEADER_SIZE..(self.out_len() - TAG_SIZE)],
-                )
-                .expect(
-                    "the buffer should have sufficient capacity to store the resulting ciphertext",
-                );
+                .encrypt_in_place_detached(&encryptor.header.nonce(), AAD, body)
+                .expect("data too long");
             buf[(self.out_len() - TAG_SIZE)..].copy_from_slice(&tag);
         };
         inner(self, buf.as_mut());
