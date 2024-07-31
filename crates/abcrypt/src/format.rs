@@ -85,7 +85,7 @@ impl Header {
         let version = Version::default();
         let params = params.into();
         let salt = StdRng::from_entropy().gen();
-        let nonce = XChaCha20Poly1305::generate_nonce(&mut StdRng::from_entropy());
+        let nonce = XChaCha20Poly1305::generate_nonce(StdRng::from_entropy());
         let mac = Blake2bMac512Output::default();
         Self {
             magic_number,
@@ -131,7 +131,7 @@ impl Header {
         let salt = data[20..52]
             .try_into()
             .expect("size of salt should be 32 bytes");
-        let nonce = XNonce::clone_from_slice(&data[52..76]);
+        let nonce = *XNonce::from_slice(&data[52..76]);
         let mac = Blake2bMac512Output::default();
         Ok(Self {
             magic_number,
@@ -154,7 +154,7 @@ impl Header {
     pub fn verify_mac(&mut self, key: &Blake2bMac512Key, tag: &Blake2bMac512Output) -> Result<()> {
         let mut mac = Blake2bMac512::new(key);
         mac.update(&self.as_bytes()[..76]);
-        mac.verify(tag).map_err(Error::InvalidHeaderMac)?;
+        mac.verify(tag)?;
         self.mac.copy_from_slice(tag);
         Ok(())
     }
@@ -203,8 +203,8 @@ impl DerivedKey {
 
     /// Creates a new `DerivedKey`.
     pub fn new(dk: [u8; Self::SIZE]) -> Self {
-        let encrypt = XChaCha20Poly1305Key::clone_from_slice(&dk[..32]);
-        let mac = Blake2bMac512Key::clone_from_slice(&dk[32..]);
+        let encrypt = *XChaCha20Poly1305Key::from_slice(&dk[..32]);
+        let mac = *Blake2bMac512Key::from_slice(&dk[32..]);
         Self { encrypt, mac }
     }
 

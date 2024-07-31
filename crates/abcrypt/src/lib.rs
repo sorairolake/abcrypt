@@ -85,7 +85,7 @@
 //!
 //! [abcrypt encrypted data format]: https://sorairolake.github.io/abcrypt/book/format.html
 
-#![doc(html_root_url = "https://docs.rs/abcrypt/0.3.5/")]
+#![doc(html_root_url = "https://docs.rs/abcrypt/0.3.6/")]
 #![no_std]
 #![cfg_attr(docsrs, feature(doc_auto_cfg, doc_cfg))]
 // Lint levels of rustc.
@@ -130,6 +130,8 @@ const ARGON2_VERSION: argon2::Version = argon2::Version::V0x13;
 #[cfg(not(feature = "alloc"))]
 // 1 MiB.
 const MEMORY_BLOCKS: [argon2::Block; usize::pow(2, 8)] = [argon2::Block::new(); usize::pow(2, 8)];
+
+const AAD: &[u8] = &[];
 
 #[cfg(test)]
 mod tests {

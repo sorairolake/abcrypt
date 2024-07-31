@@ -119,12 +119,8 @@ pub fn run() -> anyhow::Result<()> {
                 #[cfg(feature = "json")]
                 if arg.json {
                     let output =
-                        serde_json::to_vec(&params).context("could not serialize as JSON")?;
-                    if let Ok(string) = std::str::from_utf8(&output) {
-                        println!("{string}");
-                    } else {
-                        output::write_to_stdout(&output)?;
-                    }
+                        serde_json::to_string(&params).context("could not serialize as JSON")?;
+                    println!("{output}");
                     return Ok(());
                 }
                 params::displayln(

@@ -61,6 +61,18 @@ impl std::error::Error for Error {
     }
 }
 
+impl From<MacError> for Error {
+    fn from(err: MacError) -> Self {
+        Self::InvalidHeaderMac(err)
+    }
+}
+
+impl From<chacha20poly1305::Error> for Error {
+    fn from(err: chacha20poly1305::Error) -> Self {
+        Self::InvalidMac(err)
+    }
+}
+
 /// A specialized [`Result`](result::Result) type for read and write operations
 /// for the abcrypt encrypted data format.
 ///
@@ -421,6 +433,19 @@ mod tests {
             .source()
             .unwrap()
             .is::<chacha20poly1305::Error>());
+    }
+
+    #[test]
+    fn from_mac_error_to_error() {
+        assert_eq!(Error::from(MacError), Error::InvalidHeaderMac(MacError));
+    }
+
+    #[test]
+    fn from_chacha20poly1305_error_to_error() {
+        assert_eq!(
+            Error::from(chacha20poly1305::Error),
+            Error::InvalidMac(chacha20poly1305::Error)
+        );
     }
 
     #[test]

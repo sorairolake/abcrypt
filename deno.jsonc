@@ -1,0 +1,12 @@
+// SPDX-FileCopyrightText: 2024 Shun Sakai
+//
+// SPDX-License-Identifier: Apache-2.0 OR MIT
+
+{
+  "imports": {
+    "@cliffy/command": "jsr:@cliffy/command@1.0.0-rc.5",
+    "@std/cli": "jsr:@std/cli@^1.0.1",
+    "@std/io": "jsr:@std/io@^0.224.3"
+  },
+  "lock": false
+}

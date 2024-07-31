@@ -4,7 +4,7 @@
 
 = abcrypt(5)
 // Specify in UTC.
-:docdate: 2024-07-02
+:docdate: 2024-07-30
 :doctype: manpage
 ifdef::revnumber[:mansource: abcrypt {revnumber}]
 ifndef::revnumber[:mansource: abcrypt]
@@ -26,8 +26,10 @@ abcrypt - abcrypt encrypted data format
 *{manname}* is a modern file encryption format with the data authenticity
 inspired by the {scrypt-encrypted-data-format}[scrypt encrypted data format].
 
-It uses Argon2id for key derivation, BLAKE2b-512-MAC for header integrity
-checking and XChaCha20-Poly1305 for encryption.
+It uses Argon2id as defined in {rfc9106}[RFC 9106] for key derivation,
+BLAKE2b-512-MAC as defined in {rfc7693}[RFC 7693] for header integrity checking
+and XChaCha20-Poly1305 as defined in
+{draft-arciszewski-xchacha-03}[draft-arciszewski-xchacha-03] for encryption.
 
 === File format structure
 
@@ -84,20 +86,6 @@ All multibyte values are stored in little-endian.
 === Filename
 
 {manname} files may use the extension `.abcrypt`.
-
-== NOTES
-
-Argon2 specification:{blank}::
-
-  {rfc9106}[RFC 9106]
-
-BLAKE2 specification:{blank}::
-
-  {rfc7693}[RFC 7693]
-
-XChaCha20-Poly1305 specification:{blank}::
-
-  {draft-arciszewski-xchacha-03}[draft-arciszewski-xchacha-03]
 
 include::{includedir}/section-copyright.adoc[]
 
