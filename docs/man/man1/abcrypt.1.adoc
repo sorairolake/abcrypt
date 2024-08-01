@@ -4,7 +4,7 @@
 
 = abcrypt(1)
 // Specify in UTC.
-:docdate: 2024-07-02
+:docdate: 2024-08-01
 :doctype: manpage
 ifdef::revnumber[:mansource: abcrypt {revnumber}]
 ifndef::revnumber[:mansource: abcrypt]
@@ -22,7 +22,7 @@ abcrypt - an utility for encrypt and decrypt files
 == DESCRIPTION
 
 *{manname}* is a command-line utility for encrypt and decrypt files using the
-abcrypt encrypted data format.
+*abcrypt*(5) encrypted data format.
 
 == COMMANDS
 
