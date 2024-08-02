@@ -94,7 +94,7 @@ fn validate_conflicts_if_reading_from_stdin_for_decrypt_command() {
         .assert()
         .failure()
         .stderr(predicate::str::ends_with(
-            "cannot read both passphrase and input data from stdin\n",
+            "cannot read both passphrase and input data from standard input\n",
         ));
 }
 

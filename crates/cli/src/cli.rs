@@ -37,19 +37,19 @@ const LONG_VERSION: &str = concat!(
 const AFTER_LONG_HELP: &str = "See `abcrypt(1)` for more details.";
 
 const ENCRYPT_AFTER_LONG_HELP: &str = concat!(
-    "By default, the result will be write to stdout.\n",
+    "By default, the result will be write to standard output.\n",
     '\n',
     "See `abcrypt-encrypt(1)` for more details."
 );
 
 const DECRYPT_AFTER_LONG_HELP: &str = concat!(
-    "By default, the result will be write to stdout.\n",
+    "By default, the result will be write to standard output.\n",
     '\n',
     "See `abcrypt-decrypt(1)` for more details."
 );
 
 const INFORMATION_AFTER_LONG_HELP: &str = concat!(
-    "The result will be write to stdout.\n",
+    "The result will be write to standard output.\n",
     '\n',
     "See `abcrypt-information(1)` for more details."
 );
@@ -69,7 +69,7 @@ const INFORMATION_AFTER_LONG_HELP: &str = concat!(
 pub struct Opt {
     /// Generate shell completion.
     ///
-    /// The completion is output to stdout.
+    /// The completion is output to standard output.
     #[arg(long, value_enum, value_name("SHELL"))]
     pub generate_completion: Option<Shell>,
 
@@ -136,7 +136,7 @@ pub struct Encrypt {
     #[arg(long, group("passphrase"))]
     pub passphrase_from_tty: bool,
 
-    /// Read the passphrase from stdin.
+    /// Read the passphrase from standard input.
     #[arg(long, group("passphrase"))]
     pub passphrase_from_stdin: bool,
 
@@ -168,7 +168,7 @@ pub struct Encrypt {
 
     /// Input file.
     ///
-    /// If [FILE] is not specified, data will be read from stdin.
+    /// If [FILE] is not specified, data will be read from standard input.
     #[arg(value_name("FILE"), value_hint(ValueHint::FilePath))]
     pub input: Option<PathBuf>,
 }
@@ -187,7 +187,7 @@ pub struct Decrypt {
     #[arg(long, group("passphrase"))]
     pub passphrase_from_tty: bool,
 
-    /// Read the passphrase from stdin.
+    /// Read the passphrase from standard input.
     #[arg(long, group("passphrase"))]
     pub passphrase_from_stdin: bool,
 
@@ -215,7 +215,7 @@ pub struct Decrypt {
 
     /// Input file.
     ///
-    /// If [FILE] is not specified, data will be read from stdin.
+    /// If [FILE] is not specified, data will be read from standard input.
     #[arg(value_name("FILE"), value_hint(ValueHint::FilePath))]
     pub input: Option<PathBuf>,
 }
@@ -229,7 +229,7 @@ pub struct Information {
 
     /// Input file.
     ///
-    /// If [FILE] is not specified, data will be read from stdin.
+    /// If [FILE] is not specified, data will be read from standard input.
     #[arg(value_name("FILE"), value_hint(ValueHint::FilePath))]
     pub input: Option<PathBuf>,
 }

@@ -4,7 +4,7 @@
 
 = abcrypt-information(1)
 // Specify in UTC.
-:docdate: 2024-08-01
+:docdate: 2024-08-02
 :doctype: manpage
 ifdef::revnumber[:mansource: abcrypt {revnumber}]
 ifndef::revnumber[:mansource: abcrypt]
@@ -25,8 +25,8 @@ abcrypt-information - provides information about the encryption parameters
 == DESCRIPTION
 
 This command provides information about the encryption parameters from _FILE_.
-The result will be write to stdout. If _FILE_ is not specified, data will be
-read from stdin.
+The result will be write to standard output. If _FILE_ is not specified, data
+will be read from standard input.
 
 The encryption parameters outputs either a human-readable string or JSON.
 
@@ -53,7 +53,7 @@ defined in {rfc9106}[RFC 9106].
 
 _FILE_::
 
-  Input file. If _FILE_ is not specified, data will be read from stdin.
+  Input file. If _FILE_ is not specified, data will be read from standard input.
 
 == OPTIONS
 

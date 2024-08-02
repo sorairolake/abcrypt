@@ -13,10 +13,11 @@ use crate::{
     input, output, params, passphrase,
 };
 
-/// Ensures that there are no conflicts if reading the passphrase from stdin.
+/// Ensures that there are no conflicts if reading the passphrase from standard
+/// input.
 fn ensure_stdin_does_not_conflict(path: Option<&Path>) -> anyhow::Result<()> {
     if path.is_none() {
-        bail!("cannot read both passphrase and input data from stdin");
+        bail!("cannot read both passphrase and input data from standard input");
     }
     Ok(())
 }

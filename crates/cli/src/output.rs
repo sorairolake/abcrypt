@@ -15,9 +15,9 @@ pub fn write_to_file(path: &Path, data: &[u8]) -> anyhow::Result<()> {
     fs::write(path, data).with_context(|| format!("could not write data to {}", path.display()))
 }
 
-/// Writes the result to stdout.
+/// Writes the result to standard output.
 pub fn write_to_stdout(data: &[u8]) -> anyhow::Result<()> {
     io::stdout()
         .write_all(data)
-        .context("could not write data to stdout")
+        .context("could not write data to standard output")
 }

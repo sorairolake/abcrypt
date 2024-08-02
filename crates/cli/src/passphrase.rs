@@ -25,12 +25,12 @@ pub fn read_passphrase_from_tty() -> anyhow::Result<String> {
         .context("could not read passphrase")
 }
 
-/// Reads the passphrase from stdin.
+/// Reads the passphrase from standard input.
 pub fn read_passphrase_from_stdin() -> anyhow::Result<String> {
     let mut buf = String::new();
     io::stdin()
         .read_line(&mut buf)
-        .context("could not read passphrase from stdin")?;
+        .context("could not read passphrase from standard input")?;
     buf.remove_newline();
     Ok(buf)
 }
