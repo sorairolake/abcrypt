@@ -4,12 +4,15 @@
 
 = abcrypt-information(1)
 // Specify in UTC.
-:docdate: 2024-04-15
+:docdate: 2024-08-02
 :doctype: manpage
 ifdef::revnumber[:mansource: abcrypt {revnumber}]
 ifndef::revnumber[:mansource: abcrypt]
 :manmanual: General Commands Manual
 ifndef::site-gen-antora[:includedir: ./include]
+:ietf-datatracker: https://datatracker.ietf.org
+:datatracker-html-doc: {ietf-datatracker}/doc/html
+:rfc9106: {datatracker-html-doc}/rfc9106
 
 == NAME
 
@@ -21,8 +24,28 @@ abcrypt-information - provides information about the encryption parameters
 
 == DESCRIPTION
 
-This command provides information about the encryption parameters. The result
-will be write to stdout.
+This command provides information about the encryption parameters from _FILE_.
+The result will be write to standard output. If _FILE_ is not specified, data
+will be read from standard input.
+
+The encryption parameters outputs either a human-readable string or JSON.
+
+.List of the encryption parameters
+|===
+|Parameter |Description
+
+|`m` (`memoryCost`)
+|The memory size in KiB
+
+|`t` (`timeCost`)
+|The number of iterations
+
+|`p` (`parallelism`)
+|The degree of parallelism
+|===
+
+The encryption parameters represents the same thing as the Argon2 parameters as
+defined in {rfc9106}[RFC 9106].
 
 *abcrypt info* and *abcrypt i* are aliases for this command.
 
@@ -30,7 +53,7 @@ will be write to stdout.
 
 _FILE_::
 
-  Input file. If _FILE_ is not specified, data will be read from stdin.
+  Input file. If _FILE_ is not specified, data will be read from standard input.
 
 == OPTIONS
 

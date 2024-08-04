@@ -4,7 +4,7 @@
 
 = abcrypt-decrypt(1)
 // Specify in UTC.
-:docdate: 2024-04-15
+:docdate: 2024-08-02
 :doctype: manpage
 ifdef::revnumber[:mansource: abcrypt {revnumber}]
 ifndef::revnumber[:mansource: abcrypt]
@@ -21,7 +21,12 @@ abcrypt-decrypt - decrypt files
 
 == DESCRIPTION
 
-This command decrypt files. By default, the result will be write to stdout.
+This command decrypts _FILE_. By default, the result will be write to standard
+output. If _FILE_ is not specified, data will be read from standard input. If
+*-o* is specified, the result will be write to the specified file.
+
+The passphrase used for decryption can be read from either `/dev/tty`, standard
+input, an environment variable, or a file.
 
 *abcrypt dec* and *abcrypt d* are aliases for this command.
 
@@ -29,7 +34,7 @@ This command decrypt files. By default, the result will be write to stdout.
 
 _FILE_::
 
-  Input file. If _FILE_ is not specified, data will be read from stdin.
+  Input file. If _FILE_ is not specified, data will be read from standard input.
 
 == OPTIONS
 
@@ -39,12 +44,12 @@ _FILE_::
 
 *--passphrase-from-tty*::
 
-  Read the passphrase from /dev/tty. This is the default behavior.
+  Read the passphrase from `/dev/tty`. This is the default behavior.
 
 *--passphrase-from-stdin*::
 
-  Read the passphrase from stdin. This option cannot be used if _FILE_ is also
-  stdin.
+  Read the passphrase from standard input. This option cannot be used if _FILE_
+  is also standard input.
 
 *--passphrase-from-env* _VAR_::
 

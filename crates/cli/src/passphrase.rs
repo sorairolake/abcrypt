@@ -4,7 +4,6 @@
 
 use std::{
     env,
-    ffi::OsStr,
     fs::File,
     io::{self, BufRead, BufReader},
     path::Path,
@@ -25,12 +24,12 @@ pub fn read_passphrase_from_tty() -> anyhow::Result<String> {
         .context("could not read passphrase")
 }
 
-/// Reads the passphrase from stdin.
+/// Reads the passphrase from standard input.
 pub fn read_passphrase_from_stdin() -> anyhow::Result<String> {
     let mut buf = String::new();
     io::stdin()
         .read_line(&mut buf)
-        .context("could not read passphrase from stdin")?;
+        .context("could not read passphrase from standard input")?;
     buf.remove_newline();
     Ok(buf)
 }
@@ -45,7 +44,7 @@ pub fn read_passphrase_from_tty_once() -> anyhow::Result<String> {
 }
 
 /// Reads the passphrase from the environment variable.
-pub fn read_passphrase_from_env(key: &OsStr) -> anyhow::Result<String> {
+pub fn read_passphrase_from_env(key: &str) -> anyhow::Result<String> {
     env::var(key).context("could not read passphrase from environment variable")
 }
 

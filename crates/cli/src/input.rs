@@ -18,7 +18,7 @@ pub fn read(path: Option<&Path>) -> anyhow::Result<Vec<u8>> {
         let mut buf = Vec::new();
         io::stdin()
             .read_to_end(&mut buf)
-            .context("could not read data from stdin")?;
+            .context("could not read data from standard input")?;
         Ok(buf)
     }
 }

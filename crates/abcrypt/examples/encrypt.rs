@@ -43,7 +43,7 @@ struct Opt {
 
     /// Input file.
     ///
-    /// If [FILE] is not specified, data will be read from stdin.
+    /// If [FILE] is not specified, data will be read from standard input.
     #[arg(value_name("FILE"))]
     input: Option<PathBuf>,
 }
@@ -57,7 +57,7 @@ fn main() -> anyhow::Result<()> {
         let mut buf = Vec::new();
         io::stdin()
             .read_to_end(&mut buf)
-            .context("could not read data from stdin")?;
+            .context("could not read data from standard input")?;
         Ok(buf)
     }?;
 
@@ -75,6 +75,6 @@ fn main() -> anyhow::Result<()> {
     } else {
         io::stdout()
             .write_all(&ciphertext)
-            .context("could not write data to stdout")
+            .context("could not write data to standard output")
     }
 }

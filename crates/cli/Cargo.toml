@@ -4,7 +4,7 @@
 
 [package]
 name = "abcrypt-cli"
-version = "0.3.2"
+version = "0.3.3"
 authors.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -28,10 +28,10 @@ abcrypt = { version = "0.3.6", path = "../abcrypt", features = ["serde"] }
 anyhow.workspace = true
 byte-unit = "5.1.4"
 clap = { workspace = true, features = ["wrap_help"] }
-clap_complete = "4.5.11"
+clap_complete = "4.5.12"
 clap_complete_nushell = "4.5.3"
 dialoguer.workspace = true
-serde_json = { version = "1.0.121", optional = true }
+serde_json = { version = "1.0.122", optional = true }
 sysexits = "0.8.1"
 
 [dev-dependencies]
