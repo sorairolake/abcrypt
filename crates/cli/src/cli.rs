@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 use std::{
-    ffi::{OsStr, OsString},
+    ffi::OsStr,
     fmt,
     io::{self, Write},
     ops::Deref,
@@ -149,7 +149,7 @@ pub struct Encrypt {
     /// Note that storing a passphrase in an environment variable can be a
     /// security risk.
     #[arg(long, value_name("VAR"), group("passphrase"))]
-    pub passphrase_from_env: Option<OsString>,
+    pub passphrase_from_env: Option<String>,
 
     /// Read the passphrase from the file.
     ///
@@ -196,7 +196,7 @@ pub struct Decrypt {
     /// Note that storing a passphrase in an environment variable can be a
     /// security risk.
     #[arg(long, value_name("VAR"), group("passphrase"))]
-    pub passphrase_from_env: Option<OsString>,
+    pub passphrase_from_env: Option<String>,
 
     /// Read the passphrase from the file.
     ///

@@ -4,7 +4,6 @@
 
 use std::{
     env,
-    ffi::OsStr,
     fs::File,
     io::{self, BufRead, BufReader},
     path::Path,
@@ -45,7 +44,7 @@ pub fn read_passphrase_from_tty_once() -> anyhow::Result<String> {
 }
 
 /// Reads the passphrase from the environment variable.
-pub fn read_passphrase_from_env(key: &OsStr) -> anyhow::Result<String> {
+pub fn read_passphrase_from_env(key: &str) -> anyhow::Result<String> {
     env::var(key).context("could not read passphrase from environment variable")
 }
 
