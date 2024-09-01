@@ -26,7 +26,7 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 abcrypt = { version = "0.3.6", path = "../abcrypt" }
 getrandom = { version = "0.2.15", features = ["js"] }
-wasm-bindgen = "0.2.92"
+wasm-bindgen = "0.2.93"
 
 [dev-dependencies]
-wasm-bindgen-test = "0.3.42"
+wasm-bindgen-test = "0.3.43"

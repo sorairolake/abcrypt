@@ -5,8 +5,8 @@
 {
   "imports": {
     "@cliffy/command": "jsr:@cliffy/command@1.0.0-rc.5",
-    "@std/cli": "jsr:@std/cli@^1.0.1",
-    "@std/io": "jsr:@std/io@^0.224.3"
+    "@std/cli": "jsr:@std/cli@^1.0.4",
+    "@std/io": "jsr:@std/io@^0.224.6"
   },
   "lock": false
 }
