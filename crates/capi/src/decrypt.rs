@@ -35,7 +35,7 @@ use crate::ErrorCode;
 /// - `passphrase` and `passphrase_len`.
 /// - `out` and `out_len`.
 #[no_mangle]
-pub unsafe extern "C" fn abcrypt_decrypt(
+pub unsafe extern "C-unwind" fn abcrypt_decrypt(
     ciphertext: Option<NonNull<u8>>,
     ciphertext_len: usize,
     passphrase: Option<NonNull<u8>>,
