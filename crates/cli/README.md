@@ -24,8 +24,8 @@ encrypt and decrypt files using the [abcrypt encrypted data format].
 cargo install abcrypt-cli
 ```
 
-If you want to enable optimizations such as LTO, set them using [environment
-variables].
+If you want to enable optimizations such as LTO, set them using
+[environment variables].
 
 ### From binaries
 
