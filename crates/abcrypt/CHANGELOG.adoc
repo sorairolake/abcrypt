@@ -16,6 +16,13 @@ project adheres to https://semver.org/[Semantic Versioning].
 
 == {compare-url}/abcrypt-v0.3.6\...HEAD[Unreleased]
 
+=== Changed
+
+* Make `Error` trait available in `no_std` mode ({pull-request-url}/556[#556])
+* Bump MSRV to 1.81.0 ({pull-request-url}/556[#556])
+
+== {compare-url}/abcrypt-v0.3.6\...HEAD[Unreleased]
+
 === Fixed
 
 * Change `Encryptor::encrypt` and `Decryptor::decrypt` to take the buffer to
