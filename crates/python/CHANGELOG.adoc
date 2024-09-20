@@ -14,6 +14,12 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
 
+== {compare-url}/abcrypt-py-v0.1.4\...HEAD[Unreleased]
+
+=== Changed
+
+* Bump MSRV to 1.81.0 ({pull-request-url}/556[#556])
+
 == {compare-url}/abcrypt-py-v0.1.3\...abcrypt-py-v0.1.4[0.1.4] - 2024-03-17
 
 === Fixed

@@ -4,7 +4,7 @@
 
 //! Error types for this crate.
 
-use core::{fmt, result};
+use core::{error, fmt, result};
 
 use blake2::digest::MacError;
 
@@ -48,10 +48,9 @@ impl fmt::Display for Error {
     }
 }
 
-#[cfg(feature = "std")]
-impl std::error::Error for Error {
+impl error::Error for Error {
     #[inline]
-    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+    fn source(&self) -> Option<&(dyn error::Error + 'static)> {
         match self {
             Self::InvalidArgon2Params(err) | Self::InvalidArgon2Context(err) => Some(err),
             Self::InvalidHeaderMac(err) => Some(err),
@@ -411,10 +410,9 @@ mod tests {
         );
     }
 
-    #[cfg(feature = "std")]
     #[test]
     fn source() {
-        use std::error::Error as _;
+        use error::Error as _;
 
         assert!(Error::InvalidLength.source().is_none());
         assert!(Error::InvalidMagicNumber.source().is_none());
