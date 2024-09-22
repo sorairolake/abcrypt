@@ -10,6 +10,7 @@ on:
       - "release/abcrypt-*"
     tags:
       - "abcrypt-v[0-9]+.[0-9]+.[0-9]+"
+  workflow_dispatch:
 
 jobs:
   semver:
