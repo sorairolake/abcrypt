@@ -12,9 +12,8 @@
 
 extern crate test;
 
-use test::Bencher;
-
 use abcrypt::{argon2::Params, Encryptor};
+use test::Bencher;
 
 const PASSPHRASE: &str = "passphrase";
 const TEST_DATA: &[u8] = include_bytes!("../tests/data/data.txt");

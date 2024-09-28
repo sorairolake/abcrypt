@@ -72,9 +72,8 @@ pub unsafe extern "C-unwind" fn abcrypt_decrypt(
 
 #[cfg(test)]
 mod tests {
-    use crate::{HEADER_SIZE, TAG_SIZE};
-
     use super::*;
+    use crate::{HEADER_SIZE, TAG_SIZE};
 
     const PASSPHRASE: &str = "passphrase";
     const TEST_DATA: &[u8] = include_bytes!("../tests/data/data.txt");

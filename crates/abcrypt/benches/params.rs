@@ -12,9 +12,8 @@
 
 extern crate test;
 
-use test::Bencher;
-
 use abcrypt::Params;
+use test::Bencher;
 
 // Generated using `abcrypt` crate version 0.1.0.
 const TEST_DATA_ENC: &[u8] = include_bytes!("../tests/data/data.txt.abcrypt");

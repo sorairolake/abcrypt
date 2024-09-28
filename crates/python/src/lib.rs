@@ -23,9 +23,8 @@ use pyo3::{
     types::PyModule, wrap_pyfunction, Bound, PyResult,
 };
 
-pub use crate::params::Params;
-
 use crate::error::Error;
+pub use crate::params::Params;
 
 /// Specifications of the abcrypt encrypted data format.
 #[derive(Clone, Copy, Debug)]

@@ -30,7 +30,7 @@ default: build
 
 # Run the formatter with options
 @fmt-with-options:
-    cargo fmt --all -- --config "format_code_in_doc_comments=true,wrap_comments=true"
+    cargo +nightly fmt --all
 
 # Run the linter
 @clippy:

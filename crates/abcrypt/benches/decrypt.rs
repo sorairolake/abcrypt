@@ -12,9 +12,8 @@
 
 extern crate test;
 
-use test::Bencher;
-
 use abcrypt::Decryptor;
+use test::Bencher;
 
 const PASSPHRASE: &str = "passphrase";
 // Generated using `abcrypt` crate version 0.1.0.
