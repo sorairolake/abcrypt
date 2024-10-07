@@ -17,7 +17,7 @@ repository = "https://github.com/sorairolake/abcrypt"
 
 [workspace.dependencies]
 anyhow = "1.0.89"
-clap = { version = "4.5.18", features = ["derive"] }
+clap = { version = "4.5.19", features = ["derive"] }
 dialoguer = { version = "0.11.0", default-features = false, features = ["password"] }
 
 [profile.release.package.abcrypt-cli]
