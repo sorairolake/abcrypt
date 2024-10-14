@@ -35,31 +35,6 @@ wasm-pack build
 
 This will generate build artifacts in the `pkg` directory.
 
-### Example
-
-```ts
-import * as assert from "jsr:@std/assert";
-
-import * as abcrypt from "./pkg/abcrypt_wasm.js";
-
-const data = new TextEncoder().encode("Hello, world!\n");
-const passphrase = new TextEncoder().encode("passphrase");
-
-// Encrypt `data` using `passphrase`.
-const ciphertext = abcrypt.encrypt(data, passphrase);
-assert.assertNotEquals(ciphertext, data);
-
-// And extract the Argon2 parameters from it.
-const params = new abcrypt.Params(ciphertext);
-assert.assertEquals(params.memoryCost, 19456);
-assert.assertEquals(params.timeCost, 2);
-assert.assertEquals(params.parallelism, 1);
-
-// And decrypt it back.
-const plaintext = abcrypt.decrypt(ciphertext, passphrase);
-assert.assertEquals(plaintext, data);
-```
-
 ### Documentation
 
 See the [documentation][docs-url] for more details.

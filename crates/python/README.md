@@ -26,31 +26,6 @@ To install this library:
 pip install abcrypt-py
 ```
 
-### Example
-
-```py
-from typing import Final
-
-import abcrypt_py
-
-DATA: Final[bytes] = b"Hello, world!\n"
-PASSPHRASE: Final[bytes] = b"passphrase"
-
-# Encrypt `DATA` using `PASSPHRASE`.
-ciphertext = abcrypt_py.encrypt(DATA, PASSPHRASE)
-assert ciphertext != DATA
-
-# And extract the Argon2 parameters from it.
-params = abcrypt_py.Params(ciphertext)
-assert params.memory_cost == 19456
-assert params.time_cost == 2
-assert params.parallelism == 1
-
-# And decrypt it back.
-plaintext = abcrypt_py.decrypt(ciphertext, PASSPHRASE)
-assert plaintext == DATA
-```
-
 ### Documentation
 
 See the [documentation][docs-url] for more details.

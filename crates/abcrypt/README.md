@@ -23,29 +23,6 @@ Add this to your `Cargo.toml`:
 abcrypt = "0.3.6"
 ```
 
-### Example
-
-```rust
-use abcrypt::Params;
-
-let data = b"Hello, world!\n";
-let passphrase = "passphrase";
-
-// Encrypt `data` using `passphrase`.
-let ciphertext = abcrypt::encrypt(data, passphrase).unwrap();
-assert_ne!(ciphertext, data);
-
-// And extract the Argon2 parameters from it.
-let params = Params::new(&ciphertext).unwrap();
-assert_eq!(params.memory_cost(), 19456);
-assert_eq!(params.time_cost(), 2);
-assert_eq!(params.parallelism(), 1);
-
-// And decrypt it back.
-let plaintext = abcrypt::decrypt(ciphertext, passphrase).unwrap();
-assert_eq!(plaintext, data);
-```
-
 ### Crate features
 
 #### `alloc`
