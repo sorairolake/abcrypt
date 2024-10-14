@@ -47,7 +47,7 @@ jobs:
           toolchain: ${{ matrix.toolchain }}
           targets: ${{ matrix.target }}
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.3
+        uses: Swatinem/rust-cache@v2.7.5
         with:
           key: ${{ matrix.target }}
       - name: Run tests
@@ -87,7 +87,7 @@ jobs:
         with:
           node-version: 20
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.3
+        uses: Swatinem/rust-cache@v2.7.5
       - name: Run tests
         run: wasm-pack test --node crates/wasm
 
@@ -140,7 +140,7 @@ jobs:
           toolchain: stable
           components: rustfmt
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.3
+        uses: Swatinem/rust-cache@v2.7.5
       - name: Check code formatted
         run: cargo fmt --all -- --check
 
@@ -156,7 +156,7 @@ jobs:
           toolchain: stable
           components: clippy
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.3
+        uses: Swatinem/rust-cache@v2.7.5
       - name: Check no lint warnings
         run: cargo clippy --workspace -- -D warnings
       - name: Check no lint warnings (no default features)
@@ -173,7 +173,7 @@ jobs:
         with:
           toolchain: stable
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.3
+        uses: Swatinem/rust-cache@v2.7.5
       - name: Check no `rustdoc` lint warnings
         run: RUSTDOCFLAGS="-D warnings" cargo doc --workspace --exclude abcrypt-cli --no-deps --document-private-items
 
@@ -188,7 +188,7 @@ jobs:
         with:
           toolchain: nightly
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.3
+        uses: Swatinem/rust-cache@v2.7.5
       - name: Run benchmarks
         run: cargo bench -p abcrypt
 
@@ -239,7 +239,7 @@ jobs:
       - name: Setup just
         uses: extractions/setup-just@v2
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.3
+        uses: Swatinem/rust-cache@v2.7.5
       - name: Build examples for the C API
         run: just build-capi-examples
       - name: Check code formatted
@@ -268,7 +268,7 @@ jobs:
         with:
           version: "latest"
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.3
+        uses: Swatinem/rust-cache@v2.7.5
       - name: Check code formatted
         run: deno fmt --check crates/wasm/examples/*.ts
       - name: Check no lint warnings
