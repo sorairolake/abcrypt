@@ -127,7 +127,7 @@ impl<'m> Encryptor<'m> {
     /// cipher.encrypt(&mut buf);
     /// # assert_ne!(buf, data.as_slice());
     /// ```
-    pub fn encrypt(&self, mut buf: impl AsMut<[u8]>) {
+    pub fn encrypt(&self, buf: &mut (impl AsMut<[u8]> + ?Sized)) {
         let inner = |encryptor: &Self, buf: &mut [u8]| {
             buf[..HEADER_SIZE].copy_from_slice(&encryptor.header.as_bytes());
             let body = &mut buf[HEADER_SIZE..(self.out_len() - TAG_SIZE)];
