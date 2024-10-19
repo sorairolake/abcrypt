@@ -4,9 +4,9 @@
 
 {
   "imports": {
-    "@cliffy/command": "jsr:@cliffy/command@1.0.0-rc.5",
-    "@std/cli": "jsr:@std/cli@^1.0.4",
-    "@std/io": "jsr:@std/io@^0.224.6"
+    "@cliffy/command": "jsr:@cliffy/command@1.0.0-rc.7",
+    "@std/cli": "jsr:@std/cli@^1.0.6",
+    "@std/io": "jsr:@std/io@^0.225.0"
   },
   "lock": false
 }

@@ -24,14 +24,14 @@ name = "abcrypt"
 path = "src/main.rs"
 
 [dependencies]
-abcrypt = { version = "0.3.6", path = "../abcrypt", features = ["serde"] }
+abcrypt = { version = "0.3.7", path = "../abcrypt", features = ["serde"] }
 anyhow.workspace = true
 byte-unit = "5.1.4"
 clap = { workspace = true, features = ["wrap_help"] }
 clap_complete = "4.5.33"
 clap_complete_nushell = "4.5.4"
 dialoguer.workspace = true
-serde_json = { version = "1.0.128", optional = true }
+serde_json = { version = "1.0.131", optional = true }
 sysexits = "0.8.2"
 
 [dev-dependencies]
