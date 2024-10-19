@@ -155,7 +155,7 @@ impl From<abcrypt::Params> for Params {
 #[must_use]
 #[no_mangle]
 #[inline]
-pub extern "C" fn abcrypt_params_new() -> Option<NonNull<Params>> {
+pub extern "C-unwind" fn abcrypt_params_new() -> Option<NonNull<Params>> {
     Params::new()
 }
 
@@ -166,7 +166,7 @@ pub extern "C" fn abcrypt_params_new() -> Option<NonNull<Params>> {
 /// This must not violate the safety conditions of `Box::from_raw`.
 #[no_mangle]
 #[inline]
-pub unsafe extern "C" fn abcrypt_params_free(params: Option<NonNull<Params>>) {
+pub unsafe extern "C-unwind" fn abcrypt_params_free(params: Option<NonNull<Params>>) {
     Params::free(params);
 }
 
@@ -188,7 +188,7 @@ pub unsafe extern "C" fn abcrypt_params_free(params: Option<NonNull<Params>>) {
 /// safety conditions of `slice::from_raw_parts`.
 #[must_use]
 #[no_mangle]
-pub unsafe extern "C" fn abcrypt_params_read(
+pub unsafe extern "C-unwind" fn abcrypt_params_read(
     ciphertext: Option<NonNull<u8>>,
     ciphertext_len: usize,
     params: Option<NonNull<Params>>,
@@ -202,7 +202,7 @@ pub unsafe extern "C" fn abcrypt_params_read(
 #[must_use]
 #[no_mangle]
 #[inline]
-pub extern "C" fn abcrypt_params_memory_cost(params: Option<NonNull<Params>>) -> u32 {
+pub extern "C-unwind" fn abcrypt_params_memory_cost(params: Option<NonNull<Params>>) -> u32 {
     Params::memory_cost(params)
 }
 
@@ -212,7 +212,7 @@ pub extern "C" fn abcrypt_params_memory_cost(params: Option<NonNull<Params>>) ->
 #[must_use]
 #[no_mangle]
 #[inline]
-pub extern "C" fn abcrypt_params_time_cost(params: Option<NonNull<Params>>) -> u32 {
+pub extern "C-unwind" fn abcrypt_params_time_cost(params: Option<NonNull<Params>>) -> u32 {
     Params::time_cost(params)
 }
 
@@ -222,7 +222,7 @@ pub extern "C" fn abcrypt_params_time_cost(params: Option<NonNull<Params>>) -> u
 #[must_use]
 #[no_mangle]
 #[inline]
-pub extern "C" fn abcrypt_params_parallelism(params: Option<NonNull<Params>>) -> u32 {
+pub extern "C-unwind" fn abcrypt_params_parallelism(params: Option<NonNull<Params>>) -> u32 {
     Params::parallelism(params)
 }
 

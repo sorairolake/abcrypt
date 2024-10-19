@@ -194,5 +194,5 @@ uint32_t abcrypt_params_time_cost(struct abcrypt_params *params);
 uint32_t abcrypt_params_parallelism(struct abcrypt_params *params);
 
 #ifdef __cplusplus
-} // extern "C"
-#endif // __cplusplus
+}  // extern "C"
+#endif  // __cplusplus

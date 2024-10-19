@@ -30,7 +30,7 @@ default: build
 
 # Run the formatter with options
 @fmt-with-options:
-    cargo fmt --all -- --config "format_code_in_doc_comments=true,wrap_comments=true"
+    cargo +nightly fmt --all
 
 # Run the linter
 @clippy:
@@ -38,7 +38,7 @@ default: build
 
 # Apply lint suggestions
 @clippy-fix:
-    cargo clippy --workspace --fix --allow-dirty --allow-staged --lib --bins --examples --tests -- -D warnings
+    cargo +nightly clippy --workspace --fix --allow-dirty --allow-staged -- -D warnings
 
 # Configure the Meson project
 setup-meson:

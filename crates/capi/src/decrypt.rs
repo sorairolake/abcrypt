@@ -35,7 +35,7 @@ use crate::ErrorCode;
 /// - `passphrase` and `passphrase_len`.
 /// - `out` and `out_len`.
 #[no_mangle]
-pub unsafe extern "C" fn abcrypt_decrypt(
+pub unsafe extern "C-unwind" fn abcrypt_decrypt(
     ciphertext: Option<NonNull<u8>>,
     ciphertext_len: usize,
     passphrase: Option<NonNull<u8>>,
@@ -72,9 +72,8 @@ pub unsafe extern "C" fn abcrypt_decrypt(
 
 #[cfg(test)]
 mod tests {
-    use crate::{HEADER_SIZE, TAG_SIZE};
-
     use super::*;
+    use crate::{HEADER_SIZE, TAG_SIZE};
 
     const PASSPHRASE: &str = "passphrase";
     const TEST_DATA: &[u8] = include_bytes!("../tests/data/data.txt");

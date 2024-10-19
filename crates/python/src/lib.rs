@@ -6,7 +6,6 @@
 
 #![doc(html_root_url = "https://docs.rs/abcrypt-py/0.1.4/")]
 // Lint levels of rustc.
-#![forbid(unsafe_code)]
 #![deny(missing_debug_implementations, missing_docs)]
 #![warn(rust_2018_idioms)]
 // Lint levels of Clippy.
@@ -24,9 +23,8 @@ use pyo3::{
     types::PyModule, wrap_pyfunction, Bound, PyResult,
 };
 
-pub use crate::params::Params;
-
 use crate::error::Error;
+pub use crate::params::Params;
 
 /// Specifications of the abcrypt encrypted data format.
 #[derive(Clone, Copy, Debug)]

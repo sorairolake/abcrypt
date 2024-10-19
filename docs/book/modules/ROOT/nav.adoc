@@ -7,6 +7,7 @@
 
 .Resources
 * xref:awesome.adoc[]
+* xref:repository.adoc[]
 * xref:contributing.adoc[]
 * xref:authors.adoc[]
 * xref:license.adoc[]

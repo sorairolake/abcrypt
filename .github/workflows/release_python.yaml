@@ -28,14 +28,11 @@ jobs:
           - aarch64
           - x86_64
         python-version:
-          - "3.8"
           - "3.9"
           - "3.10"
           - "3.11"
-          - "3.12" # latest version
-          - "pypy3.8"
-          - "pypy3.9"
-          - "pypy3.10" # latest version
+          - "3.12"
+          - "3.13"
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -67,12 +64,11 @@ jobs:
           - aarch64
           - x86_64
         python-version:
+          - "3.9"
           - "3.10"
           - "3.11"
-          - "3.12" # latest version
-          - "pypy3.8"
-          - "pypy3.9"
-          - "pypy3.10" # latest version
+          - "3.12"
+          - "3.13"
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -102,11 +98,11 @@ jobs:
         target:
           - x64
         python-version:
-          - "3.8"
           - "3.9"
           - "3.10"
           - "3.11"
-          - "3.12" # latest version
+          - "3.12"
+          - "3.13"
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
