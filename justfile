@@ -65,6 +65,10 @@ clang-tidy: setup-meson
     cd crates/capi/examples
     ninja -C builddir clang-tidy
 
+# Run tests for the Wasm bindings
+@wasm-test:
+    wasm-pack test --node crates/wasm
+
 # Build examples for the Wasm bindings
 @build-wasm-examples:
     wasm-pack build -t deno crates/wasm
