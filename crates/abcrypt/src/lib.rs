@@ -98,8 +98,6 @@
 #[cfg(feature = "alloc")]
 #[macro_use]
 extern crate alloc;
-#[cfg(feature = "std")]
-extern crate std;
 
 mod decrypt;
 mod encrypt;
