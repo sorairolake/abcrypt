@@ -26,17 +26,17 @@ all-features = true
 [[example]]
 name = "decrypt"
 path = "examples/decrypt.rs"
-required-features = ["default"]
+required-features = ["std"]
 
 [[example]]
 name = "encrypt"
 path = "examples/encrypt.rs"
-required-features = ["default"]
+required-features = ["std"]
 
 [[example]]
 name = "info"
 path = "examples/info.rs"
-required-features = ["default", "serde"]
+required-features = ["std", "serde"]
 
 [dependencies]
 argon2 = { version = "0.5.3", default-features = false }
