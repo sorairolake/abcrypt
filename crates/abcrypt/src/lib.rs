@@ -51,13 +51,13 @@
 //! let cipher = Encryptor::with_params(data, passphrase, params).unwrap();
 //! let mut buf = [u8::default(); 170];
 //! cipher.encrypt(&mut buf);
-//! assert_ne!(buf, data.as_slice());
+//! assert_ne!(buf.as_slice(), data);
 //!
 //! // And decrypt it back.
 //! let cipher = Decryptor::new(&buf, passphrase).unwrap();
 //! let mut buf = [u8::default(); 14];
 //! cipher.decrypt(&mut buf).unwrap();
-//! assert_eq!(buf, data.as_slice());
+//! assert_eq!(buf, *data);
 //! ```
 //!
 //! ## Extracting the Argon2 parameters in the encrypted data

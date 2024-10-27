@@ -108,7 +108,7 @@ impl<'c> Decryptor<'c> {
     /// let cipher = Decryptor::new(&ciphertext, passphrase).unwrap();
     /// let mut buf = [u8::default(); 14];
     /// cipher.decrypt(&mut buf).unwrap();
-    /// # assert_eq!(buf, data.as_slice());
+    /// # assert_eq!(buf, *data);
     /// ```
     pub fn decrypt(&self, buf: &mut (impl AsMut<[u8]> + ?Sized)) -> Result<()> {
         let inner = |decryptor: &Self, buf: &mut [u8]| -> Result<()> {
