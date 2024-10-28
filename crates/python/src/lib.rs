@@ -6,10 +6,8 @@
 
 #![doc(html_root_url = "https://docs.rs/abcrypt-py/0.1.4/")]
 // Lint levels of rustc.
-#![deny(missing_debug_implementations, missing_docs)]
-#![warn(rust_2018_idioms)]
+#![deny(missing_docs)]
 // Lint levels of Clippy.
-#![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
 #![allow(clippy::redundant_pub_crate)]
 
 mod error;

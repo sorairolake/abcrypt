@@ -28,3 +28,6 @@ abcrypt = { version = "0.3.7", path = "../abcrypt" }
 
 [build-dependencies]
 cbindgen = { version = "0.27.0", default-features = false }
+
+[lints]
+workspace = true

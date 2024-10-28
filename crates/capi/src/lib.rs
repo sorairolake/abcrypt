@@ -6,10 +6,7 @@
 
 #![doc(html_root_url = "https://docs.rs/abcrypt-capi/0.3.2/")]
 // Lint levels of rustc.
-#![deny(missing_debug_implementations, missing_docs)]
-#![warn(rust_2018_idioms)]
-// Lint levels of Clippy.
-#![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
+#![deny(missing_docs)]
 
 mod decrypt;
 mod encrypt;

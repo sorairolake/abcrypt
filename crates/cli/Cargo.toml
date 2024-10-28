@@ -41,3 +41,6 @@ predicates = "3.1.2"
 [features]
 default = ["json"]
 json = ["dep:serde_json"]
+
+[lints]
+workspace = true
