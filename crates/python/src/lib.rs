@@ -6,6 +6,7 @@
 
 #![doc(html_root_url = "https://docs.rs/abcrypt-py/0.1.4/")]
 // Lint levels of rustc.
+#![forbid(unsafe_code)]
 #![deny(missing_docs)]
 // Lint levels of Clippy.
 #![allow(clippy::redundant_pub_crate)]
