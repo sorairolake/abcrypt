@@ -119,6 +119,7 @@ impl From<Error> for ErrorCode {
 /// of `slice::from_raw_parts`.
 #[must_use]
 #[no_mangle]
+#[inline]
 pub unsafe extern "C-unwind" fn abcrypt_error_message(
     error_code: ErrorCode,
     buf: Option<NonNull<u8>>,
@@ -129,6 +130,7 @@ pub unsafe extern "C-unwind" fn abcrypt_error_message(
 
 /// Returns the number of output bytes of the error message.
 #[no_mangle]
+#[inline]
 pub extern "C-unwind" fn abcrypt_error_message_out_len(error_code: ErrorCode) -> usize {
     error_code.error_message_out_len()
 }

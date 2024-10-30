@@ -62,12 +62,14 @@ impl std::error::Error for Error {
 }
 
 impl From<MacError> for Error {
+    #[inline]
     fn from(err: MacError) -> Self {
         Self::InvalidHeaderMac(err)
     }
 }
 
 impl From<chacha20poly1305::Error> for Error {
+    #[inline]
     fn from(err: chacha20poly1305::Error) -> Self {
         Self::InvalidMac(err)
     }

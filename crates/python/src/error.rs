@@ -11,12 +11,14 @@ use pyo3::{exceptions::PyValueError, PyErr};
 pub struct Error(abcrypt::Error);
 
 impl From<Error> for PyErr {
+    #[inline]
     fn from(err: Error) -> Self {
         PyValueError::new_err(err.0.to_string())
     }
 }
 
 impl From<abcrypt::Error> for Error {
+    #[inline]
     fn from(err: abcrypt::Error) -> Self {
         Self(err)
     }

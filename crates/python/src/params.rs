@@ -25,6 +25,7 @@ impl Params {
     /// - The magic number is invalid.
     /// - The version number is the unrecognized abcrypt version number.
     /// - The Argon2 parameters are invalid.
+    #[inline]
     #[new]
     pub fn new(ciphertext: &[u8]) -> PyResult<Self> {
         let params = abcrypt::Params::new(ciphertext)

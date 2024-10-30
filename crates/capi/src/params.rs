@@ -122,6 +122,7 @@ impl Params {
 }
 
 impl Default for Params {
+    #[inline]
     fn default() -> Self {
         let (memory_cost, time_cost, parallelism) = (
             argon2::Params::DEFAULT_M_COST,
@@ -137,6 +138,7 @@ impl Default for Params {
 }
 
 impl From<abcrypt::Params> for Params {
+    #[inline]
     fn from(params: abcrypt::Params) -> Self {
         let (memory_cost, time_cost, parallelism) = (
             params.memory_cost(),
@@ -188,6 +190,7 @@ pub unsafe extern "C-unwind" fn abcrypt_params_free(params: Option<NonNull<Param
 /// safety conditions of `slice::from_raw_parts`.
 #[must_use]
 #[no_mangle]
+#[inline]
 pub unsafe extern "C-unwind" fn abcrypt_params_read(
     ciphertext: Option<NonNull<u8>>,
     ciphertext_len: usize,

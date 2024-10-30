@@ -19,6 +19,7 @@ use wasm_bindgen::{prelude::wasm_bindgen, JsError};
 /// - The Argon2 context is invalid.
 /// - The MAC (authentication tag) of the header is invalid.
 /// - The MAC (authentication tag) of the ciphertext is invalid.
+#[inline]
 #[wasm_bindgen]
 pub fn decrypt(ciphertext: &[u8], passphrase: &[u8]) -> Result<Vec<u8>, JsError> {
     abcrypt::decrypt(ciphertext, passphrase).map_err(JsError::from)

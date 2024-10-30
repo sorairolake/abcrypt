@@ -48,6 +48,7 @@ impl Format {
 /// # Errors
 ///
 /// Returns an error if the Argon2 context is invalid.
+#[inline]
 #[pyfunction]
 pub fn encrypt<'a>(plaintext: &[u8], passphrase: &[u8]) -> PyResult<Cow<'a, [u8]>> {
     let ciphertext = abcrypt::encrypt(plaintext, passphrase).map_err(Error::from)?;
@@ -60,6 +61,7 @@ pub fn encrypt<'a>(plaintext: &[u8], passphrase: &[u8]) -> PyResult<Cow<'a, [u8]
 /// # Errors
 ///
 /// Returns an error if the Argon2 context is invalid.
+#[inline]
 #[pyfunction]
 pub fn encrypt_with_params<'a>(
     plaintext: &[u8],
@@ -88,6 +90,7 @@ pub fn encrypt_with_params<'a>(
 /// - The Argon2 context is invalid.
 /// - The MAC (authentication tag) of the header is invalid.
 /// - The MAC (authentication tag) of the ciphertext is invalid.
+#[inline]
 #[pyfunction]
 pub fn decrypt<'a>(ciphertext: &[u8], passphrase: &[u8]) -> PyResult<Cow<'a, [u8]>> {
     let plaintext = abcrypt::decrypt(ciphertext, passphrase).map_err(Error::from)?;

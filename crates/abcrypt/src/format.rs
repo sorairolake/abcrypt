@@ -49,6 +49,7 @@ pub enum Version {
 }
 
 impl From<Version> for u8 {
+    #[inline]
     fn from(version: Version) -> Self {
         version as Self
     }
@@ -144,6 +145,7 @@ impl Header {
     }
 
     /// Gets a BLAKE2b-512-MAC of this header.
+    #[inline]
     pub fn compute_mac(&mut self, key: &Blake2bMac512Key) {
         let mut mac = Blake2bMac512::new(key);
         mac.update(&self.as_bytes()[..76]);
@@ -174,16 +176,19 @@ impl Header {
     }
 
     /// Returns the Argon2 parameters stored in this header.
+    #[inline]
     pub const fn params(&self) -> Params {
         self.params
     }
 
     /// Returns a salt stored in this header.
+    #[inline]
     pub const fn salt(&self) -> Salt {
         self.salt
     }
 
     /// Returns a nonce stored in this header.
+    #[inline]
     pub const fn nonce(&self) -> XNonce {
         self.nonce
     }
@@ -202,6 +207,7 @@ impl DerivedKey {
         + <Blake2bMac512 as KeySizeUser>::KeySize::USIZE;
 
     /// Creates a new `DerivedKey`.
+    #[inline]
     pub fn new(dk: [u8; Self::SIZE]) -> Self {
         let encrypt = *XChaCha20Poly1305Key::from_slice(&dk[..32]);
         let mac = *Blake2bMac512Key::from_slice(&dk[32..]);
@@ -209,11 +215,13 @@ impl DerivedKey {
     }
 
     /// Returns the key for encrypted.
+    #[inline]
     pub const fn encrypt(&self) -> XChaCha20Poly1305Key {
         self.encrypt
     }
 
     /// Returns the key for a MAC.
+    #[inline]
     pub const fn mac(&self) -> Blake2bMac512Key {
         self.mac
     }

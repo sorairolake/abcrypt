@@ -37,6 +37,7 @@ impl Params {
     ///
     /// assert!(Params::new(ciphertext).is_ok());
     /// ```
+    #[inline]
     pub fn new(ciphertext: impl AsRef<[u8]>) -> Result<Self> {
         let inner = |ciphertext: &[u8]| -> Result<Self> {
             let params = Header::parse(ciphertext).map(|h| h.params())?;
@@ -101,6 +102,7 @@ impl Params {
 }
 
 impl From<Params> for argon2::Params {
+    #[inline]
     fn from(params: Params) -> Self {
         Self::new(
             params.memory_cost(),
@@ -113,6 +115,7 @@ impl From<Params> for argon2::Params {
 }
 
 impl From<argon2::Params> for Params {
+    #[inline]
     fn from(params: argon2::Params) -> Self {
         let (memory_cost, time_cost, parallelism) =
             (params.m_cost(), params.t_cost(), params.p_cost());

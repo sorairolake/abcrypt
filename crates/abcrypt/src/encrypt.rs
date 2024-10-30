@@ -43,6 +43,7 @@ impl<'m> Encryptor<'m> {
     ///
     /// [recommended Argon2 parameters]: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
     #[cfg(feature = "alloc")]
+    #[inline]
     pub fn new(plaintext: &'m impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Self> {
         Self::with_params(plaintext, passphrase, Params::default())
     }
@@ -160,6 +161,7 @@ impl<'m> Encryptor<'m> {
     /// ```
     #[cfg(feature = "alloc")]
     #[must_use]
+    #[inline]
     pub fn encrypt_to_vec(&self) -> alloc::vec::Vec<u8> {
         let mut buf = vec![u8::default(); self.out_len()];
         self.encrypt(&mut buf);
@@ -213,6 +215,7 @@ impl<'m> Encryptor<'m> {
 ///
 /// [recommended Argon2 parameters]: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
 #[cfg(feature = "alloc")]
+#[inline]
 pub fn encrypt(
     plaintext: impl AsRef<[u8]>,
     passphrase: impl AsRef<[u8]>,
@@ -244,6 +247,7 @@ pub fn encrypt(
 /// # assert_ne!(ciphertext, data);
 /// ```
 #[cfg(feature = "alloc")]
+#[inline]
 pub fn encrypt_with_params(
     plaintext: impl AsRef<[u8]>,
     passphrase: impl AsRef<[u8]>,
