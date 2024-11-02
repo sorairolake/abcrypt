@@ -26,7 +26,7 @@ path = "src/main.rs"
 [dependencies]
 abcrypt = { version = "0.3.7", path = "../abcrypt", features = ["serde"] }
 anyhow.workspace = true
-byte-unit = "5.1.4"
+byte-unit = "5.1.6"
 clap = { workspace = true, features = ["wrap_help"] }
 clap_complete = "4.5.36"
 clap_complete_nushell = "4.5.4"
