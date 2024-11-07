@@ -14,6 +14,48 @@ on:
     - cron: "0 0 * * 0"
 
 jobs:
+  check:
+    name: Check
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        target:
+          - x86_64-unknown-linux-gnu
+          - aarch64-apple-darwin
+          - x86_64-pc-windows-msvc
+        toolchain:
+          - 1.74.0 # MSRV
+          - stable
+        include:
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-22.04
+          - target: aarch64-apple-darwin
+            os: macos-14
+          - target: x86_64-pc-windows-msvc
+            os: windows-2022
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: ${{ matrix.toolchain }}
+          targets: ${{ matrix.target }}
+      - name: Cache build artifacts
+        uses: Swatinem/rust-cache@v2.7.5
+        with:
+          key: ${{ matrix.target }}
+      - name: Check packages
+        run: cargo check --target ${{ matrix.target }}
+      - name: Check packages (no default features)
+        run: cargo check -p abcrypt -p abcrypt-cli --target ${{ matrix.target }} --no-default-features
+      - name: Check packages (`alloc` feature)
+        run: cargo check -p abcrypt --target ${{ matrix.target }} --no-default-features -F alloc
+      - name: Check packages (`serde` feature)
+        run: cargo check -p abcrypt --target ${{ matrix.target }} -F serde
+      - name: Check packages (`serde` feature with no default features)
+        run: cargo check -p abcrypt --target ${{ matrix.target }} --no-default-features -F serde
+
   test:
     name: Test
     runs-on: ${{ matrix.os }}
@@ -24,7 +66,7 @@ jobs:
           - aarch64-apple-darwin
           - x86_64-pc-windows-msvc
         toolchain:
-          - 1.74.0 # MSRV
+          - 1.74.0
           - stable
         include:
           - target: x86_64-unknown-linux-gnu
@@ -63,13 +105,41 @@ jobs:
       - name: Check if the header file is up-to-date
         run: git diff --exit-code
 
+  wasm-check:
+    name: Check Wasm bindings
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        toolchain:
+          - 1.74.0 # MSRV
+          - stable
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: ${{ matrix.toolchain }}
+      - name: Install wasm-pack
+        uses: jetli/wasm-pack-action@v0.4.0
+        with:
+          version: "latest"
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Cache build artifacts
+        uses: Swatinem/rust-cache@v2.7.5
+      - name: Check a package
+        run: wasm-pack build -s sorairolake -t nodejs --dev crates/wasm
+
   wasm-test:
     name: Test Wasm bindings
     runs-on: ubuntu-22.04
     strategy:
       matrix:
         toolchain:
-          - 1.74.0 # MSRV
+          - 1.74.0
           - stable
     steps:
       - name: Checkout code
@@ -101,7 +171,7 @@ jobs:
           - macos-14
           - windows-2022
         rust-version:
-          - 1.74.0 # MSRV
+          - 1.74.0
           - stable
         python-version:
           - "3.8"
@@ -222,7 +292,7 @@ jobs:
     strategy:
       matrix:
         toolchain:
-          - 1.74.0 # MSRV
+          - 1.74.0
           - stable
     steps:
       - name: Checkout code
