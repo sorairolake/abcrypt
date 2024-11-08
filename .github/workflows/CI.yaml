@@ -93,7 +93,7 @@ jobs:
         with:
           key: ${{ matrix.target }}
       - name: Run tests
-        run: cargo test --target ${{ matrix.target }}
+        run: cargo test -p abcrypt -p abcrypt-cli -p abcrypt-capi --target ${{ matrix.target }}
       - name: Run tests (no default features)
         run: cargo test -p abcrypt -p abcrypt-cli --target ${{ matrix.target }} --no-default-features
       - name: Run tests (`alloc` feature)

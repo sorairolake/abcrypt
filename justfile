@@ -22,7 +22,7 @@ default: build
 
 # Run tests
 @test:
-    cargo test
+    cargo test -p abcrypt -p abcrypt-cli -p abcrypt-capi
 
 # Run the formatter
 @fmt:
