@@ -21,7 +21,7 @@ env:
 jobs:
   linux:
     name: Build wheels for Linux
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         target:
@@ -127,7 +127,7 @@ jobs:
 
   sdist:
     name: Build sdist
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -150,7 +150,7 @@ jobs:
       - macos
       - windows
       - sdist
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Download wheels
         uses: actions/download-artifact@v4
