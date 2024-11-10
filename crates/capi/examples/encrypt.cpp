@@ -4,7 +4,6 @@
 
 // An example of encrypting a file to the abcrypt encrypted data format.
 
-#include <fmt/core.h>
 #include <termios.h>
 #include <unistd.h>
 
@@ -13,6 +12,7 @@
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
+#include <format>
 #include <fstream>
 #include <iostream>
 #include <iterator>
@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
 
   std::ifstream input_file(input_filename);
   if (!input_file) {
-    std::clog << fmt::format("Error: could not open {}: {}", input_filename,
+    std::clog << std::format("Error: could not open {}: {}", input_filename,
                              std::strerror(errno))
               << std::endl;
     return EXIT_FAILURE;
@@ -84,13 +84,13 @@ int main(int argc, char *argv[]) {
     std::vector<std::uint8_t> buf(abcrypt_error_message_out_len(error_code));
     abcrypt_error_message(error_code, buf.data(), buf.size());
     std::string error_message(buf.cbegin(), buf.cend());
-    std::clog << fmt::format("Error: {}", error_message) << std::endl;
+    std::clog << std::format("Error: {}", error_message) << std::endl;
     return EXIT_FAILURE;
   }
 
   std::ofstream output_file(output_filename);
   if (!output_file) {
-    std::clog << fmt::format("Error: could not open {}: {}", output_filename,
+    std::clog << std::format("Error: could not open {}: {}", output_filename,
                              std::strerror(errno))
               << std::endl;
     return EXIT_FAILURE;

@@ -4,13 +4,12 @@
 
 // An example of reading the Argon2 parameters from a file.
 
-#include <fmt/core.h>
-
 #include <CLI/CLI.hpp>
 #include <cerrno>
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
+#include <format>
 #include <fstream>
 #include <iostream>
 #include <iterator>
@@ -33,7 +32,7 @@ int main(int argc, char *argv[]) {
     auto ifn = input_filename.value();
     std::ifstream input_file(ifn);
     if (!input_file) {
-      std::clog << fmt::format("Error: could not open {}: {}", ifn,
+      std::clog << std::format("Error: could not open {}: {}", ifn,
                                std::strerror(errno))
                 << std::endl;
       return EXIT_FAILURE;
@@ -52,7 +51,7 @@ int main(int argc, char *argv[]) {
     std::vector<std::uint8_t> buf(abcrypt_error_message_out_len(error_code));
     abcrypt_error_message(error_code, buf.data(), buf.size());
     std::string error_message(buf.cbegin(), buf.cend());
-    std::clog << fmt::format(
+    std::clog << std::format(
                      "Error: data is not a valid abcrypt encrypted file: {}",
                      error_message)
               << std::endl;
@@ -64,7 +63,7 @@ int main(int argc, char *argv[]) {
   auto parallelism = abcrypt_params_parallelism(params);
   abcrypt_params_free(params);
 
-  std::cout << fmt::format(
+  std::cout << std::format(
                    "Parameters used: memoryCost = {}; timeCost = {}; "
                    "parallelism = {};",
                    memory_cost, time_cost, parallelism)

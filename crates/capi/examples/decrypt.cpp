@@ -4,7 +4,6 @@
 
 // An example of decrypting a file from the abcrypt encrypted data format.
 
-#include <fmt/core.h>
 #include <termios.h>
 #include <unistd.h>
 
@@ -13,6 +12,7 @@
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
+#include <format>
 #include <fstream>
 #include <iostream>
 #include <iterator>
@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
 
   std::ifstream input_file(input_filename);
   if (!input_file) {
-    std::clog << fmt::format("Error: could not open {}: {}", input_filename,
+    std::clog << std::format("Error: could not open {}: {}", input_filename,
                              std::strerror(errno))
               << std::endl;
     return EXIT_FAILURE;
@@ -68,18 +68,18 @@ int main(int argc, char *argv[]) {
     std::string error_message(buf.cbegin(), buf.cend());
     switch (error_code) {
       case ABCRYPT_ERROR_CODE_INVALID_HEADER_MAC:
-        std::clog << fmt::format("Error: passphrase is incorrect: {}",
+        std::clog << std::format("Error: passphrase is incorrect: {}",
                                  error_message)
                   << std::endl;
         break;
       case ABCRYPT_ERROR_CODE_INVALID_MAC:
-        std::clog << fmt::format("Error: the encrypted data is corrupted: {}",
+        std::clog << std::format("Error: the encrypted data is corrupted: {}",
                                  error_message)
                   << std::endl;
         break;
       default:
         std::clog
-            << fmt::format(
+            << std::format(
                    "Error: the header in the encrypted data is invalid: {}",
                    error_message)
             << std::endl;
@@ -92,7 +92,7 @@ int main(int argc, char *argv[]) {
     auto ofn = output_filename.value();
     std::ofstream output_file(ofn);
     if (!output_file) {
-      std::clog << fmt::format("Error: could not open {}: {}", ofn,
+      std::clog << std::format("Error: could not open {}: {}", ofn,
                                std::strerror(errno))
                 << std::endl;
       return EXIT_FAILURE;
