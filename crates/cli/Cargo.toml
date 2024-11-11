@@ -32,7 +32,7 @@ clap_complete = "4.5.36"
 clap_complete_nushell = "4.5.4"
 dialoguer.workspace = true
 serde_json = { version = "1.0.132", optional = true }
-sysexits = "0.8.4"
+sysexits = "0.8.5"
 
 [dev-dependencies]
 assert_cmd = "2.0.16"
