@@ -19,20 +19,27 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        target:
-          - x86_64-unknown-linux-gnu
-          - aarch64-apple-darwin
-          - x86_64-pc-windows-msvc
-        toolchain:
-          - 1.74.0 # MSRV
+        os-alias:
+          - ubuntu
+          - macos
+          - windows
+        toolchain-alias:
+          - msrv
           - stable
         include:
-          - target: x86_64-unknown-linux-gnu
+          - os-alias: ubuntu
             os: ubuntu-24.04
-          - target: aarch64-apple-darwin
+            target: x86_64-unknown-linux-gnu
+          - os-alias: macos
             os: macos-14
-          - target: x86_64-pc-windows-msvc
+            target: aarch64-apple-darwin
+          - os-alias: windows
             os: windows-2022
+            target: x86_64-pc-windows-msvc
+          - toolchain-alias: msrv
+            toolchain: 1.74.0
+          - toolchain-alias: stable
+            toolchain: stable
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -61,20 +68,27 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        target:
-          - x86_64-unknown-linux-gnu
-          - aarch64-apple-darwin
-          - x86_64-pc-windows-msvc
-        toolchain:
-          - 1.74.0
+        os-alias:
+          - ubuntu
+          - macos
+          - windows
+        toolchain-alias:
+          - msrv
           - stable
         include:
-          - target: x86_64-unknown-linux-gnu
+          - os-alias: ubuntu
             os: ubuntu-24.04
-          - target: aarch64-apple-darwin
+            target: x86_64-unknown-linux-gnu
+          - os-alias: macos
             os: macos-14
-          - target: x86_64-pc-windows-msvc
+            target: aarch64-apple-darwin
+          - os-alias: windows
             os: windows-2022
+            target: x86_64-pc-windows-msvc
+          - toolchain-alias: msrv
+            toolchain: 1.74.0
+          - toolchain-alias: stable
+            toolchain: stable
     steps:
       - name: Set Git to use LF
         if: matrix.os == 'windows-2022'
@@ -110,9 +124,14 @@ jobs:
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        toolchain:
-          - 1.74.0 # MSRV
+        toolchain-alias:
+          - msrv
           - stable
+        include:
+          - toolchain-alias: msrv
+            toolchain: 1.74.0
+          - toolchain-alias: stable
+            toolchain: stable
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -138,9 +157,14 @@ jobs:
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        toolchain:
-          - 1.74.0
+        toolchain-alias:
+          - msrv
           - stable
+        include:
+          - toolchain-alias: msrv
+            toolchain: 1.74.0
+          - toolchain-alias: stable
+            toolchain: stable
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -166,16 +190,31 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os:
-          - ubuntu-24.04
-          - macos-14
-          - windows-2022
-        rust-version:
-          - 1.74.0
+        os-alias:
+          - ubuntu
+          - macos
+          - windows
+        rust-version-alias:
+          - msrv
           - stable
-        python-version:
-          - "3.8"
-          - "3.x" # latest stable version of Python 3
+        python-version-alias:
+          - minimum
+          - latest
+        include:
+          - os-alias: ubuntu
+            os: ubuntu-24.04
+          - os-alias: macos
+            os: macos-14
+          - os-alias: windows
+            os: windows-2022
+          - rust-version-alias: msrv
+            rust-version: 1.74.0
+          - rust-version-alias: stable
+            rust-version: stable
+          - python-version-alias: minimum
+            python-version: "3.8"
+          - python-version-alias: latest
+            python-version: "3.x"
     steps:
       - name: Set Git to use LF
         if: matrix.os == 'windows-2022'
@@ -291,9 +330,14 @@ jobs:
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        toolchain:
-          - 1.74.0
+        toolchain-alias:
+          - msrv
           - stable
+        include:
+          - toolchain-alias: msrv
+            toolchain: 1.74.0
+          - toolchain-alias: stable
+            toolchain: stable
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
