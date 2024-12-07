@@ -4,7 +4,7 @@
 
 = abcrypt-decrypt(1)
 // Specify in UTC.
-:docdate: 2024-08-02
+:docdate: 2024-12-07
 :doctype: manpage
 ifdef::revnumber[:mansource: abcrypt {revnumber}]
 ifndef::revnumber[:mansource: abcrypt]
@@ -107,4 +107,5 @@ ifdef::site-gen-antora[include::partial$man/man1/include/section-copyright.adoc[
 
 == SEE ALSO
 
-*abcrypt*(1), *abcrypt-encrypt*(1), *abcrypt-help*(1), *abcrypt-information*(1)
+*abcrypt*(1), *abcrypt-argon2*(1), *abcrypt-encrypt*(1), *abcrypt-help*(1),
+*abcrypt-information*(1)

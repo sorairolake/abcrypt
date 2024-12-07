@@ -11,7 +11,7 @@ use std::{
     str::FromStr,
 };
 
-use abcrypt::argon2::Params;
+use abcrypt::argon2::{Algorithm, Params, Version};
 use anyhow::anyhow;
 use byte_unit::{Byte, Unit};
 use clap::{
@@ -48,11 +48,9 @@ const DECRYPT_AFTER_LONG_HELP: &str = concat!(
     "See `abcrypt-decrypt(1)` for more details."
 );
 
-const INFORMATION_AFTER_LONG_HELP: &str = concat!(
-    "The result will be write to standard output.\n",
-    '\n',
-    "See `abcrypt-information(1)` for more details."
-);
+const ARGON2_AFTER_LONG_HELP: &str = "See `abcrypt-argon2(1)` for more details.";
+
+const INFORMATION_AFTER_LONG_HELP: &str = "See `abcrypt-information(1)` for more details.";
 
 #[derive(Debug, Parser)]
 #[command(
@@ -95,6 +93,10 @@ pub enum Command {
     )]
     Decrypt(Decrypt),
 
+    /// Provides information about the Argon2 context.
+    #[command(after_long_help(ARGON2_AFTER_LONG_HELP))]
+    Argon2(Argon2),
+
     /// Provides information about the encryption parameters.
     #[command(
         after_long_help(INFORMATION_AFTER_LONG_HELP),
@@ -111,6 +113,26 @@ pub struct Encrypt {
     /// Output the result to a file.
     #[arg(short, long, value_name("FILE"), value_hint(ValueHint::FilePath))]
     pub output: Option<PathBuf>,
+
+    /// Set the Argon2 type.
+    #[arg(
+        long,
+        value_enum,
+        default_value_t,
+        value_name("TYPE"),
+        ignore_case(true)
+    )]
+    pub argon2_type: Argon2Type,
+
+    /// Set the Argon2 version.
+    #[arg(
+        long,
+        value_enum,
+        default_value_t,
+        value_name("VERSION"),
+        ignore_case(true)
+    )]
+    pub argon2_version: Argon2Version,
 
     /// Set the memory size in bytes.
     ///
@@ -221,6 +243,15 @@ pub struct Decrypt {
 }
 
 #[derive(Args, Debug)]
+pub struct Argon2 {
+    /// Input file.
+    ///
+    /// If [FILE] is not specified, data will be read from standard input.
+    #[arg(value_name("FILE"), value_hint(ValueHint::FilePath))]
+    pub input: Option<PathBuf>,
+}
+
+#[derive(Args, Debug)]
 pub struct Information {
     /// Output the encryption parameters as JSON.
     #[cfg(feature = "json")]
@@ -290,6 +321,50 @@ impl Generator for Shell {
             Self::Nushell => clap_complete_nushell::Nushell.generate(cmd, buf),
             Self::PowerShell => clap_complete::Shell::PowerShell.generate(cmd, buf),
             Self::Zsh => clap_complete::Shell::Zsh.generate(cmd, buf),
+        }
+    }
+}
+
+#[derive(Clone, Debug, Default, ValueEnum)]
+pub enum Argon2Type {
+    /// Argon2d.
+    Argon2d,
+
+    /// Argon2i.
+    Argon2i,
+
+    /// Argon2id.
+    #[default]
+    Argon2id,
+}
+
+impl From<Argon2Type> for Algorithm {
+    fn from(argon2_type: Argon2Type) -> Self {
+        match argon2_type {
+            Argon2Type::Argon2d => Self::Argon2d,
+            Argon2Type::Argon2i => Self::Argon2i,
+            Argon2Type::Argon2id => Self::Argon2id,
+        }
+    }
+}
+
+#[derive(Clone, Debug, Default, ValueEnum)]
+pub enum Argon2Version {
+    /// Version 0x10.
+    #[value(name = "0x10", alias("16"))]
+    V0x10,
+
+    /// Version 0x13.
+    #[default]
+    #[value(name = "0x13", alias("19"))]
+    V0x13,
+}
+
+impl From<Argon2Version> for Version {
+    fn from(argon2_version: Argon2Version) -> Self {
+        match argon2_version {
+            Argon2Version::V0x10 => Self::V0x10,
+            Argon2Version::V0x13 => Self::V0x13,
         }
     }
 }

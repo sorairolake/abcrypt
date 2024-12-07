@@ -11,7 +11,7 @@ fn basic_decrypt() {
     utils::command::command()
         .arg("decrypt")
         .arg("--passphrase-from-stdin")
-        .arg("data/data.txt.abcrypt")
+        .arg("data/v1/data.txt.abcrypt")
         .write_stdin("passphrase")
         .assert()
         .success()
@@ -63,7 +63,7 @@ fn decrypt_if_output_is_directory() {
         .arg("-o")
         .arg("data/dummy")
         .arg("--passphrase-from-stdin")
-        .arg("data/data.txt.abcrypt")
+        .arg("data/v1/data.txt.abcrypt")
         .write_stdin("passphrase")
         .assert()
         .failure()
@@ -104,7 +104,7 @@ fn decrypt_if_input_file_is_invalid() {
             "data is not a valid abcrypt encrypted file",
         ))
         .stderr(predicate::str::contains(
-            "encrypted data is shorter than 156 bytes",
+            "encrypted data is shorter than 164 bytes",
         ));
 }
 
@@ -113,7 +113,7 @@ fn decrypt_if_passphrase_is_incorrect() {
     utils::command::command()
         .arg("decrypt")
         .arg("--passphrase-from-stdin")
-        .arg("data/data.txt.abcrypt")
+        .arg("data/v1/data.txt.abcrypt")
         .write_stdin("password")
         .assert()
         .failure()
@@ -124,12 +124,28 @@ fn decrypt_if_passphrase_is_incorrect() {
 }
 
 #[test]
+fn decrypt_from_unsupported_version() {
+    utils::command::command()
+        .arg("decrypt")
+        .arg("--passphrase-from-stdin")
+        .arg("data/v0/data.txt.abcrypt")
+        .write_stdin("passphrase")
+        .assert()
+        .failure()
+        .code(65)
+        .stderr(predicate::str::contains(
+            "data is not a valid abcrypt encrypted file",
+        ))
+        .stderr(predicate::str::contains("unsupported version number `0`"));
+}
+
+#[test]
 fn decrypt_verbose() {
     utils::command::command()
         .arg("decrypt")
         .arg("--passphrase-from-stdin")
         .arg("-v")
-        .arg("data/data.txt.abcrypt")
+        .arg("data/v1/data.txt.abcrypt")
         .write_stdin("passphrase")
         .assert()
         .success()

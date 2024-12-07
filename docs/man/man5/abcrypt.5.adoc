@@ -4,7 +4,7 @@
 
 = abcrypt(5)
 // Specify in UTC.
-:docdate: 2024-07-30
+:docdate: 2024-12-06
 :doctype: manpage
 ifdef::revnumber[:mansource: abcrypt {revnumber}]
 ifndef::revnumber[:mansource: abcrypt]
@@ -26,7 +26,7 @@ abcrypt - abcrypt encrypted data format
 *{manname}* is a modern file encryption format with the data authenticity
 inspired by the {scrypt-encrypted-data-format}[scrypt encrypted data format].
 
-It uses Argon2id as defined in {rfc9106}[RFC 9106] for key derivation,
+It uses Argon2 as defined in {rfc9106}[RFC 9106] for key derivation,
 BLAKE2b-512-MAC as defined in {rfc7693}[RFC 7693] for header integrity checking
 and XChaCha20-Poly1305 as defined in
 {draft-arciszewski-xchacha-03}[draft-arciszewski-xchacha-03] for encryption.
@@ -50,33 +50,41 @@ data and a file body encrypted with the derived key.
 
 |8
 |4
-|Memory size `m` (`memoryCost`).
+|Argon2 type.
 
 |12
 |4
-|Number of iterations `t` (`timeCost`).
+|Argon2 version.
 
 |16
 |4
-|Degree of parallelism `p` (`parallelism`).
+|Memory size `m` (`memoryCost`).
 
 |20
-|32
-|Salt.
+|4
+|Number of iterations `t` (`timeCost`).
 
-|52
 |24
-|Nonce.
+|4
+|Degree of parallelism `p` (`parallelism`).
 
-|76
+|28
+|32
+|Salt for Argon2.
+
+|60
+|24
+|Nonce for XChaCha20-Poly1305.
+
+|84
 |64
 |MAC of the header.
 
-|140
+|148
 |n
 |Ciphertext.
 
-|140 + n
+|148 + n
 |16
 |MAC of the ciphertext.
 |===

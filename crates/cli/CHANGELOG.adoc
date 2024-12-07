@@ -14,6 +14,18 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
 
+== {compare-url}/abcrypt-cli-v0.3.3\...HEAD[Unreleased]
+
+=== Added
+
+* Supports the abcrypt version 1 file format ({pull-request-url}/619[#619])
+* Add `argon2` command to get the Argon2 context ({pull-request-url}/619[#619])
+
+=== Removed
+
+* Remove the abcrypt version 0 file format support
+  ({pull-request-url}/619[#619])
+
 == {compare-url}/abcrypt-cli-v0.3.2\...abcrypt-cli-v0.3.3[0.3.3] - 2024-08-04
 
 === Changed

@@ -6,8 +6,8 @@ use abcrypt_wasm::Params;
 use wasm_bindgen::JsValue;
 use wasm_bindgen_test::wasm_bindgen_test;
 
-// Generated using `abcrypt` crate version 0.1.0.
-const TEST_DATA_ENC: &[u8] = include_bytes!("data/data.txt.abcrypt");
+// Generated using `abcrypt` crate version 0.4.0.
+const TEST_DATA_ENC: &[u8] = include_bytes!("data/v1/data.txt.abcrypt");
 
 #[wasm_bindgen_test]
 fn success() {

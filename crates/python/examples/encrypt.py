@@ -29,6 +29,22 @@ def main() -> None:
         metavar="FILE",
     )
     parser.add_argument(
+        "--argon2-type",
+        default=2,
+        type=int,
+        choices=range(3),
+        help="set the Argon2 type",
+        metavar="TYPE",
+    )
+    parser.add_argument(
+        "--argon2-version",
+        default=0x13,
+        type=int,
+        choices=[0x10, 0x13],
+        help="set the Argon2 version",
+        metavar="VERSION",
+    )
+    parser.add_argument(
         "-m",
         "--memory-cost",
         default=19456,
@@ -65,9 +81,11 @@ def main() -> None:
     plaintext = args.input.read()
 
     passphrase = bytes(getpass.getpass("Enter passphrase: "), encoding="utf-8")
-    ciphertext = abcrypt_py.encrypt_with_params(
+    ciphertext = abcrypt_py.encrypt_with_version(
         plaintext,
         passphrase,
+        args.argon2_type,
+        args.argon2_version,
         args.memory_cost,
         args.time_cost,
         args.parallelism,

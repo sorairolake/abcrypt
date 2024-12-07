@@ -46,9 +46,12 @@ impl Params {
     ///
     /// Returns an error if any of the following are true:
     ///
-    /// - `ciphertext` is shorter than 156 bytes.
+    /// - `ciphertext` is shorter than 164 bytes.
     /// - The magic number is invalid.
+    /// - The version number is the unsupported abcrypt version number.
     /// - The version number is the unrecognized abcrypt version number.
+    /// - The Argon2 type is invalid.
+    /// - The Argon2 version is invalid.
     /// - The Argon2 parameters are invalid.
     /// - One of the parameters is null.
     ///
@@ -178,7 +181,7 @@ pub unsafe extern "C-unwind" fn abcrypt_params_free(params: Option<NonNull<Param
 ///
 /// Returns an error if any of the following are true:
 ///
-/// - `ciphertext` is shorter than 156 bytes.
+/// - `ciphertext` is shorter than 164 bytes.
 /// - The magic number is invalid.
 /// - The version number is the unrecognized abcrypt version number.
 /// - The Argon2 parameters are invalid.
@@ -233,8 +236,8 @@ pub extern "C-unwind" fn abcrypt_params_parallelism(params: Option<NonNull<Param
 mod tests {
     use super::*;
 
-    // Generated using `abcrypt` crate version 0.1.0.
-    const TEST_DATA_ENC: &[u8] = include_bytes!("../tests/data/data.txt.abcrypt");
+    // Generated using `abcrypt` crate version 0.4.0.
+    const TEST_DATA_ENC: &[u8] = include_bytes!("../tests/data/v1/data.txt.abcrypt");
 
     #[test]
     fn success() {

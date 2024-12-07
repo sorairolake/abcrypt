@@ -10,7 +10,7 @@ use predicates::prelude::predicate;
 fn basic_information() {
     utils::command::command()
         .arg("information")
-        .arg("data/data.txt.abcrypt")
+        .arg("data/v1/data.txt.abcrypt")
         .assert()
         .success()
         .stderr(predicate::str::starts_with(
@@ -60,7 +60,7 @@ fn information_command_without_default_feature() {
     utils::command::command()
         .arg("information")
         .arg("-j")
-        .arg("data/data.txt.abcrypt")
+        .arg("data/v1/data.txt.abcrypt")
         .assert()
         .failure()
         .code(2)
@@ -73,7 +73,7 @@ fn information_as_json() {
     utils::command::command()
         .arg("information")
         .arg("-j")
-        .arg("data/data.txt.abcrypt")
+        .arg("data/v1/data.txt.abcrypt")
         .assert()
         .success()
         .stdout(predicate::eq(concat!(
@@ -94,7 +94,7 @@ fn information_if_input_file_is_invalid() {
             "data is not a valid abcrypt encrypted file",
         ))
         .stderr(predicate::str::contains(
-            "encrypted data is shorter than 156 bytes",
+            "encrypted data is shorter than 164 bytes",
         ));
 }
 

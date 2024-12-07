@@ -4,7 +4,7 @@
 
 = abcrypt-information(1)
 // Specify in UTC.
-:docdate: 2024-08-02
+:docdate: 2024-12-07
 :doctype: manpage
 ifdef::revnumber[:mansource: abcrypt {revnumber}]
 ifndef::revnumber[:mansource: abcrypt]
@@ -25,8 +25,7 @@ abcrypt-information - provides information about the encryption parameters
 == DESCRIPTION
 
 This command provides information about the encryption parameters from _FILE_.
-The result will be write to standard output. If _FILE_ is not specified, data
-will be read from standard input.
+If _FILE_ is not specified, data will be read from standard input.
 
 The encryption parameters outputs either a human-readable string or JSON.
 
@@ -99,4 +98,5 @@ ifdef::site-gen-antora[include::partial$man/man1/include/section-copyright.adoc[
 
 == SEE ALSO
 
-*abcrypt*(1), *abcrypt-decrypt*(1), *abcrypt-encrypt*(1), *abcrypt-help*(1)
+*abcrypt*(1), *abcrypt-argon2*(1), *abcrypt-decrypt*(1), *abcrypt-encrypt*(1),
+*abcrypt-help*(1)

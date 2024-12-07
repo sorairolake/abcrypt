@@ -19,14 +19,23 @@ pub enum ErrorCode {
     /// General error.
     Error,
 
-    /// The encrypted data was shorter than 156 bytes.
+    /// The encrypted data was shorter than 164 bytes.
     InvalidLength,
 
     /// The magic number (file signature) was invalid.
     InvalidMagicNumber,
 
+    /// The version was the unsupported abcrypt version number.
+    UnsupportedVersion,
+
     /// The version was the unrecognized abcrypt version number.
     UnknownVersion,
+
+    /// The Argon2 type were invalid.
+    InvalidArgon2Type,
+
+    /// The Argon2 version were invalid.
+    InvalidArgon2Version,
 
     /// The Argon2 parameters were invalid.
     InvalidArgon2Params,
@@ -82,7 +91,10 @@ impl fmt::Display for ErrorCode {
             Self::Error => write!(f, "general error"),
             Self::InvalidLength => write!(f, "{}", Error::InvalidLength),
             Self::InvalidMagicNumber => write!(f, "{}", Error::InvalidMagicNumber),
+            Self::UnsupportedVersion => write!(f, "unsupported version number"),
             Self::UnknownVersion => write!(f, "unknown version number"),
+            Self::InvalidArgon2Type => write!(f, "invalid Argon2 type"),
+            Self::InvalidArgon2Version => write!(f, "invalid Argon2 version"),
             Self::InvalidArgon2Params => write!(f, "invalid Argon2 parameters"),
             Self::InvalidArgon2Context => write!(f, "invalid Argon2 context"),
             Self::InvalidHeaderMac => write!(f, "invalid header MAC"),
@@ -97,7 +109,10 @@ impl From<Error> for ErrorCode {
         match error {
             Error::InvalidLength => Self::InvalidLength,
             Error::InvalidMagicNumber => Self::InvalidMagicNumber,
+            Error::UnsupportedVersion(_) => Self::UnsupportedVersion,
             Error::UnknownVersion(_) => Self::UnknownVersion,
+            Error::InvalidArgon2Type(_) => Self::InvalidArgon2Type,
+            Error::InvalidArgon2Version(_) => Self::InvalidArgon2Version,
             Error::InvalidArgon2Params(_) => Self::InvalidArgon2Params,
             Error::InvalidArgon2Context(_) => Self::InvalidArgon2Context,
             Error::InvalidHeaderMac(_) => Self::InvalidHeaderMac,
@@ -137,21 +152,24 @@ pub extern "C-unwind" fn abcrypt_error_message_out_len(error_code: ErrorCode) ->
 
 #[cfg(test)]
 mod tests {
+    use std::ffi::c_int;
+
     use super::*;
 
     #[test]
     fn error_code() {
-        use std::ffi::c_int;
-
         assert_eq!(ErrorCode::Ok as c_int, 0);
         assert_eq!(ErrorCode::Error as c_int, 1);
         assert_eq!(ErrorCode::InvalidLength as c_int, 2);
         assert_eq!(ErrorCode::InvalidMagicNumber as c_int, 3);
-        assert_eq!(ErrorCode::UnknownVersion as c_int, 4);
-        assert_eq!(ErrorCode::InvalidArgon2Params as c_int, 5);
-        assert_eq!(ErrorCode::InvalidArgon2Context as c_int, 6);
-        assert_eq!(ErrorCode::InvalidHeaderMac as c_int, 7);
-        assert_eq!(ErrorCode::InvalidMac as c_int, 8);
+        assert_eq!(ErrorCode::UnsupportedVersion as c_int, 4);
+        assert_eq!(ErrorCode::UnknownVersion as c_int, 5);
+        assert_eq!(ErrorCode::InvalidArgon2Type as c_int, 6);
+        assert_eq!(ErrorCode::InvalidArgon2Version as c_int, 7);
+        assert_eq!(ErrorCode::InvalidArgon2Params as c_int, 8);
+        assert_eq!(ErrorCode::InvalidArgon2Context as c_int, 9);
+        assert_eq!(ErrorCode::InvalidHeaderMac as c_int, 10);
+        assert_eq!(ErrorCode::InvalidMac as c_int, 11);
     }
 
     #[test]
@@ -163,7 +181,19 @@ mod tests {
             ErrorCode::InvalidMagicNumber.clone(),
             ErrorCode::InvalidMagicNumber
         );
+        assert_eq!(
+            ErrorCode::UnsupportedVersion.clone(),
+            ErrorCode::UnsupportedVersion
+        );
         assert_eq!(ErrorCode::UnknownVersion.clone(), ErrorCode::UnknownVersion);
+        assert_eq!(
+            ErrorCode::InvalidArgon2Type.clone(),
+            ErrorCode::InvalidArgon2Type
+        );
+        assert_eq!(
+            ErrorCode::InvalidArgon2Version.clone(),
+            ErrorCode::InvalidArgon2Version
+        );
         assert_eq!(
             ErrorCode::InvalidArgon2Params.clone(),
             ErrorCode::InvalidArgon2Params
@@ -206,7 +236,25 @@ mod tests {
         }
 
         {
+            let a = ErrorCode::UnsupportedVersion;
+            let b = a;
+            assert_eq!(a, b);
+        }
+
+        {
             let a = ErrorCode::UnknownVersion;
+            let b = a;
+            assert_eq!(a, b);
+        }
+
+        {
+            let a = ErrorCode::InvalidArgon2Type;
+            let b = a;
+            assert_eq!(a, b);
+        }
+
+        {
+            let a = ErrorCode::InvalidArgon2Version;
             let b = a;
             assert_eq!(a, b);
         }
@@ -245,7 +293,19 @@ mod tests {
             format!("{:?}", ErrorCode::InvalidMagicNumber),
             "InvalidMagicNumber"
         );
+        assert_eq!(
+            format!("{:?}", ErrorCode::UnsupportedVersion),
+            "UnsupportedVersion"
+        );
         assert_eq!(format!("{:?}", ErrorCode::UnknownVersion), "UnknownVersion");
+        assert_eq!(
+            format!("{:?}", ErrorCode::InvalidArgon2Type),
+            "InvalidArgon2Type"
+        );
+        assert_eq!(
+            format!("{:?}", ErrorCode::InvalidArgon2Version),
+            "InvalidArgon2Version"
+        );
         assert_eq!(
             format!("{:?}", ErrorCode::InvalidArgon2Params),
             "InvalidArgon2Params"
@@ -268,7 +328,10 @@ mod tests {
         assert_ne!(ErrorCode::Ok, ErrorCode::Error);
         assert_ne!(ErrorCode::Ok, ErrorCode::InvalidLength);
         assert_ne!(ErrorCode::Ok, ErrorCode::InvalidMagicNumber);
+        assert_ne!(ErrorCode::Ok, ErrorCode::UnsupportedVersion);
         assert_ne!(ErrorCode::Ok, ErrorCode::UnknownVersion);
+        assert_ne!(ErrorCode::Ok, ErrorCode::InvalidArgon2Type);
+        assert_ne!(ErrorCode::Ok, ErrorCode::InvalidArgon2Version);
         assert_ne!(ErrorCode::Ok, ErrorCode::InvalidArgon2Params);
         assert_ne!(ErrorCode::Ok, ErrorCode::InvalidArgon2Context);
         assert_ne!(ErrorCode::Ok, ErrorCode::InvalidHeaderMac);
@@ -277,7 +340,10 @@ mod tests {
         assert_eq!(ErrorCode::Error, ErrorCode::Error);
         assert_ne!(ErrorCode::Error, ErrorCode::InvalidLength);
         assert_ne!(ErrorCode::Error, ErrorCode::InvalidMagicNumber);
+        assert_ne!(ErrorCode::Error, ErrorCode::UnsupportedVersion);
         assert_ne!(ErrorCode::Error, ErrorCode::UnknownVersion);
+        assert_ne!(ErrorCode::Error, ErrorCode::InvalidArgon2Type);
+        assert_ne!(ErrorCode::Error, ErrorCode::InvalidArgon2Version);
         assert_ne!(ErrorCode::Error, ErrorCode::InvalidArgon2Params);
         assert_ne!(ErrorCode::Error, ErrorCode::InvalidArgon2Context);
         assert_ne!(ErrorCode::Error, ErrorCode::InvalidHeaderMac);
@@ -286,7 +352,10 @@ mod tests {
         assert_ne!(ErrorCode::InvalidLength, ErrorCode::Error);
         assert_eq!(ErrorCode::InvalidLength, ErrorCode::InvalidLength);
         assert_ne!(ErrorCode::InvalidLength, ErrorCode::InvalidMagicNumber);
+        assert_ne!(ErrorCode::InvalidLength, ErrorCode::UnsupportedVersion);
         assert_ne!(ErrorCode::InvalidLength, ErrorCode::UnknownVersion);
+        assert_ne!(ErrorCode::InvalidLength, ErrorCode::InvalidArgon2Type);
+        assert_ne!(ErrorCode::InvalidLength, ErrorCode::InvalidArgon2Version);
         assert_ne!(ErrorCode::InvalidLength, ErrorCode::InvalidArgon2Params);
         assert_ne!(ErrorCode::InvalidLength, ErrorCode::InvalidArgon2Context);
         assert_ne!(ErrorCode::InvalidLength, ErrorCode::InvalidHeaderMac);
@@ -295,7 +364,13 @@ mod tests {
         assert_ne!(ErrorCode::InvalidMagicNumber, ErrorCode::Error);
         assert_ne!(ErrorCode::InvalidMagicNumber, ErrorCode::InvalidLength);
         assert_eq!(ErrorCode::InvalidMagicNumber, ErrorCode::InvalidMagicNumber);
+        assert_ne!(ErrorCode::InvalidMagicNumber, ErrorCode::UnsupportedVersion);
         assert_ne!(ErrorCode::InvalidMagicNumber, ErrorCode::UnknownVersion);
+        assert_ne!(ErrorCode::InvalidMagicNumber, ErrorCode::InvalidArgon2Type);
+        assert_ne!(
+            ErrorCode::InvalidMagicNumber,
+            ErrorCode::InvalidArgon2Version
+        );
         assert_ne!(
             ErrorCode::InvalidMagicNumber,
             ErrorCode::InvalidArgon2Params
@@ -306,15 +381,87 @@ mod tests {
         );
         assert_ne!(ErrorCode::InvalidMagicNumber, ErrorCode::InvalidHeaderMac);
         assert_ne!(ErrorCode::InvalidMagicNumber, ErrorCode::InvalidMac);
+        assert_ne!(ErrorCode::UnsupportedVersion, ErrorCode::Ok);
+        assert_ne!(ErrorCode::UnsupportedVersion, ErrorCode::Error);
+        assert_ne!(ErrorCode::UnsupportedVersion, ErrorCode::InvalidLength);
+        assert_ne!(ErrorCode::UnsupportedVersion, ErrorCode::InvalidMagicNumber);
+        assert_eq!(ErrorCode::UnsupportedVersion, ErrorCode::UnsupportedVersion);
+        assert_ne!(ErrorCode::UnsupportedVersion, ErrorCode::UnknownVersion);
+        assert_ne!(ErrorCode::UnsupportedVersion, ErrorCode::InvalidArgon2Type);
+        assert_ne!(
+            ErrorCode::UnsupportedVersion,
+            ErrorCode::InvalidArgon2Version
+        );
+        assert_ne!(
+            ErrorCode::UnsupportedVersion,
+            ErrorCode::InvalidArgon2Params
+        );
+        assert_ne!(
+            ErrorCode::UnsupportedVersion,
+            ErrorCode::InvalidArgon2Context
+        );
+        assert_ne!(ErrorCode::UnsupportedVersion, ErrorCode::InvalidHeaderMac);
+        assert_ne!(ErrorCode::UnsupportedVersion, ErrorCode::InvalidMac);
         assert_ne!(ErrorCode::UnknownVersion, ErrorCode::Ok);
         assert_ne!(ErrorCode::UnknownVersion, ErrorCode::Error);
         assert_ne!(ErrorCode::UnknownVersion, ErrorCode::InvalidLength);
         assert_ne!(ErrorCode::UnknownVersion, ErrorCode::InvalidMagicNumber);
+        assert_ne!(ErrorCode::UnknownVersion, ErrorCode::UnsupportedVersion);
         assert_eq!(ErrorCode::UnknownVersion, ErrorCode::UnknownVersion);
+        assert_ne!(ErrorCode::UnknownVersion, ErrorCode::InvalidArgon2Type);
+        assert_ne!(ErrorCode::UnknownVersion, ErrorCode::InvalidArgon2Version);
         assert_ne!(ErrorCode::UnknownVersion, ErrorCode::InvalidArgon2Params);
         assert_ne!(ErrorCode::UnknownVersion, ErrorCode::InvalidArgon2Context);
         assert_ne!(ErrorCode::UnknownVersion, ErrorCode::InvalidHeaderMac);
         assert_ne!(ErrorCode::UnknownVersion, ErrorCode::InvalidMac);
+        assert_ne!(ErrorCode::InvalidArgon2Type, ErrorCode::Ok);
+        assert_ne!(ErrorCode::InvalidArgon2Type, ErrorCode::Error);
+        assert_ne!(ErrorCode::InvalidArgon2Type, ErrorCode::InvalidLength);
+        assert_ne!(ErrorCode::InvalidArgon2Type, ErrorCode::InvalidMagicNumber);
+        assert_ne!(ErrorCode::InvalidArgon2Type, ErrorCode::UnsupportedVersion);
+        assert_ne!(ErrorCode::InvalidArgon2Type, ErrorCode::UnknownVersion);
+        assert_eq!(ErrorCode::InvalidArgon2Type, ErrorCode::InvalidArgon2Type);
+        assert_ne!(
+            ErrorCode::InvalidArgon2Type,
+            ErrorCode::InvalidArgon2Version
+        );
+        assert_ne!(ErrorCode::InvalidArgon2Type, ErrorCode::InvalidArgon2Params);
+        assert_ne!(
+            ErrorCode::InvalidArgon2Type,
+            ErrorCode::InvalidArgon2Context
+        );
+        assert_ne!(ErrorCode::InvalidArgon2Type, ErrorCode::InvalidHeaderMac);
+        assert_ne!(ErrorCode::InvalidArgon2Type, ErrorCode::InvalidMac);
+        assert_ne!(ErrorCode::InvalidArgon2Version, ErrorCode::Ok);
+        assert_ne!(ErrorCode::InvalidArgon2Version, ErrorCode::Error);
+        assert_ne!(ErrorCode::InvalidArgon2Version, ErrorCode::InvalidLength);
+        assert_ne!(
+            ErrorCode::InvalidArgon2Version,
+            ErrorCode::InvalidMagicNumber
+        );
+        assert_ne!(
+            ErrorCode::InvalidArgon2Version,
+            ErrorCode::UnsupportedVersion
+        );
+        assert_ne!(ErrorCode::InvalidArgon2Version, ErrorCode::UnknownVersion);
+        assert_ne!(
+            ErrorCode::InvalidArgon2Version,
+            ErrorCode::InvalidArgon2Type
+        );
+        assert_eq!(
+            ErrorCode::InvalidArgon2Version,
+            ErrorCode::InvalidArgon2Version
+        );
+        assert_ne!(
+            ErrorCode::InvalidArgon2Version,
+            ErrorCode::InvalidArgon2Params
+        );
+        assert_ne!(
+            ErrorCode::InvalidArgon2Version,
+            ErrorCode::InvalidArgon2Context
+        );
+        assert_ne!(ErrorCode::InvalidArgon2Version, ErrorCode::InvalidHeaderMac);
+        assert_ne!(ErrorCode::InvalidArgon2Version, ErrorCode::InvalidMac);
         assert_ne!(ErrorCode::InvalidArgon2Params, ErrorCode::Ok);
         assert_ne!(ErrorCode::InvalidArgon2Params, ErrorCode::Error);
         assert_ne!(ErrorCode::InvalidArgon2Params, ErrorCode::InvalidLength);
@@ -322,7 +469,16 @@ mod tests {
             ErrorCode::InvalidArgon2Params,
             ErrorCode::InvalidMagicNumber
         );
+        assert_ne!(
+            ErrorCode::InvalidArgon2Params,
+            ErrorCode::UnsupportedVersion
+        );
         assert_ne!(ErrorCode::InvalidArgon2Params, ErrorCode::UnknownVersion);
+        assert_ne!(ErrorCode::InvalidArgon2Params, ErrorCode::InvalidArgon2Type);
+        assert_ne!(
+            ErrorCode::InvalidArgon2Params,
+            ErrorCode::InvalidArgon2Version
+        );
         assert_eq!(
             ErrorCode::InvalidArgon2Params,
             ErrorCode::InvalidArgon2Params
@@ -340,7 +496,19 @@ mod tests {
             ErrorCode::InvalidArgon2Context,
             ErrorCode::InvalidMagicNumber
         );
+        assert_ne!(
+            ErrorCode::InvalidArgon2Context,
+            ErrorCode::UnsupportedVersion
+        );
         assert_ne!(ErrorCode::InvalidArgon2Context, ErrorCode::UnknownVersion);
+        assert_ne!(
+            ErrorCode::InvalidArgon2Context,
+            ErrorCode::InvalidArgon2Type
+        );
+        assert_ne!(
+            ErrorCode::InvalidArgon2Context,
+            ErrorCode::InvalidArgon2Version
+        );
         assert_ne!(
             ErrorCode::InvalidArgon2Context,
             ErrorCode::InvalidArgon2Params
@@ -355,7 +523,10 @@ mod tests {
         assert_ne!(ErrorCode::InvalidHeaderMac, ErrorCode::Error);
         assert_ne!(ErrorCode::InvalidHeaderMac, ErrorCode::InvalidLength);
         assert_ne!(ErrorCode::InvalidHeaderMac, ErrorCode::InvalidMagicNumber);
+        assert_ne!(ErrorCode::InvalidHeaderMac, ErrorCode::UnsupportedVersion);
         assert_ne!(ErrorCode::InvalidHeaderMac, ErrorCode::UnknownVersion);
+        assert_ne!(ErrorCode::InvalidHeaderMac, ErrorCode::InvalidArgon2Type);
+        assert_ne!(ErrorCode::InvalidHeaderMac, ErrorCode::InvalidArgon2Version);
         assert_ne!(ErrorCode::InvalidHeaderMac, ErrorCode::InvalidArgon2Params);
         assert_ne!(ErrorCode::InvalidHeaderMac, ErrorCode::InvalidArgon2Context);
         assert_eq!(ErrorCode::InvalidHeaderMac, ErrorCode::InvalidHeaderMac);
@@ -364,7 +535,10 @@ mod tests {
         assert_ne!(ErrorCode::InvalidMac, ErrorCode::Error);
         assert_ne!(ErrorCode::InvalidMac, ErrorCode::InvalidLength);
         assert_ne!(ErrorCode::InvalidMac, ErrorCode::InvalidMagicNumber);
+        assert_ne!(ErrorCode::InvalidMac, ErrorCode::UnsupportedVersion);
         assert_ne!(ErrorCode::InvalidMac, ErrorCode::UnknownVersion);
+        assert_ne!(ErrorCode::InvalidMac, ErrorCode::InvalidArgon2Type);
+        assert_ne!(ErrorCode::InvalidMac, ErrorCode::InvalidArgon2Version);
         assert_ne!(ErrorCode::InvalidMac, ErrorCode::InvalidArgon2Params);
         assert_ne!(ErrorCode::InvalidMac, ErrorCode::InvalidArgon2Context);
         assert_ne!(ErrorCode::InvalidMac, ErrorCode::InvalidHeaderMac);
@@ -377,15 +551,27 @@ mod tests {
         assert_eq!(format!("{}", ErrorCode::Error), "general error");
         assert_eq!(
             format!("{}", ErrorCode::InvalidLength),
-            "encrypted data is shorter than 156 bytes"
+            "encrypted data is shorter than 164 bytes"
         );
         assert_eq!(
             format!("{}", ErrorCode::InvalidMagicNumber),
             "invalid magic number"
         );
         assert_eq!(
+            format!("{}", ErrorCode::UnsupportedVersion),
+            "unsupported version number"
+        );
+        assert_eq!(
             format!("{}", ErrorCode::UnknownVersion),
             "unknown version number"
+        );
+        assert_eq!(
+            format!("{}", ErrorCode::InvalidArgon2Type),
+            "invalid Argon2 type"
+        );
+        assert_eq!(
+            format!("{}", ErrorCode::InvalidArgon2Version),
+            "invalid Argon2 version"
         );
         assert_eq!(
             format!("{}", ErrorCode::InvalidArgon2Params),
@@ -431,7 +617,7 @@ mod tests {
         }
 
         {
-            let expected = CString::new("encrypted data is shorter than 156 bytes").unwrap();
+            let expected = CString::new("encrypted data is shorter than 164 bytes").unwrap();
             let expected = expected.as_bytes_with_nul();
             let mut buf = vec![u8::default(); expected.len()];
             let code = unsafe {
@@ -461,12 +647,57 @@ mod tests {
         }
 
         {
+            let expected = CString::new("unsupported version number").unwrap();
+            let expected = expected.as_bytes_with_nul();
+            let mut buf = vec![u8::default(); expected.len()];
+            let code = unsafe {
+                abcrypt_error_message(
+                    ErrorCode::UnsupportedVersion,
+                    NonNull::new(buf.as_mut_ptr()),
+                    buf.len(),
+                )
+            };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(buf, expected);
+        }
+
+        {
             let expected = CString::new("unknown version number").unwrap();
             let expected = expected.as_bytes_with_nul();
             let mut buf = vec![u8::default(); expected.len()];
             let code = unsafe {
                 abcrypt_error_message(
                     ErrorCode::UnknownVersion,
+                    NonNull::new(buf.as_mut_ptr()),
+                    buf.len(),
+                )
+            };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(buf, expected);
+        }
+
+        {
+            let expected = CString::new("invalid Argon2 type").unwrap();
+            let expected = expected.as_bytes_with_nul();
+            let mut buf = vec![u8::default(); expected.len()];
+            let code = unsafe {
+                abcrypt_error_message(
+                    ErrorCode::InvalidArgon2Type,
+                    NonNull::new(buf.as_mut_ptr()),
+                    buf.len(),
+                )
+            };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(buf, expected);
+        }
+
+        {
+            let expected = CString::new("invalid Argon2 version").unwrap();
+            let expected = expected.as_bytes_with_nul();
+            let mut buf = vec![u8::default(); expected.len()];
+            let code = unsafe {
+                abcrypt_error_message(
+                    ErrorCode::InvalidArgon2Version,
                     NonNull::new(buf.as_mut_ptr()),
                     buf.len(),
                 )
@@ -545,7 +776,19 @@ mod tests {
             abcrypt_error_message_out_len(ErrorCode::InvalidMagicNumber),
             21
         );
+        assert_eq!(
+            abcrypt_error_message_out_len(ErrorCode::UnsupportedVersion),
+            27
+        );
         assert_eq!(abcrypt_error_message_out_len(ErrorCode::UnknownVersion), 23);
+        assert_eq!(
+            abcrypt_error_message_out_len(ErrorCode::InvalidArgon2Type),
+            20
+        );
+        assert_eq!(
+            abcrypt_error_message_out_len(ErrorCode::InvalidArgon2Version),
+            23
+        );
         assert_eq!(
             abcrypt_error_message_out_len(ErrorCode::InvalidArgon2Params),
             26
@@ -572,8 +815,20 @@ mod tests {
             ErrorCode::InvalidMagicNumber
         );
         assert_eq!(
+            ErrorCode::from(Error::UnsupportedVersion(u8::MIN)),
+            ErrorCode::UnsupportedVersion
+        );
+        assert_eq!(
             ErrorCode::from(Error::UnknownVersion(u8::MAX)),
             ErrorCode::UnknownVersion
+        );
+        assert_eq!(
+            ErrorCode::from(Error::InvalidArgon2Type(u32::MAX)),
+            ErrorCode::InvalidArgon2Type
+        );
+        assert_eq!(
+            ErrorCode::from(Error::InvalidArgon2Version(u32::MAX)),
+            ErrorCode::InvalidArgon2Version
         );
         assert_eq!(
             ErrorCode::from(Error::InvalidArgon2Params(

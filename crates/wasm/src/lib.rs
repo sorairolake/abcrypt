@@ -17,7 +17,7 @@ use wasm_bindgen::prelude::wasm_bindgen;
 
 pub use crate::{
     decrypt::decrypt,
-    encrypt::{encrypt, encrypt_with_params},
+    encrypt::{encrypt, encrypt_with_params, encrypt_with_type, encrypt_with_version},
     params::Params,
 };
 
@@ -46,7 +46,7 @@ mod tests {
 
     #[wasm_bindgen_test]
     fn header_size() {
-        assert_eq!(super::header_size(), 140);
+        assert_eq!(super::header_size(), 148);
         assert_eq!(super::header_size(), abcrypt::HEADER_SIZE);
     }
 

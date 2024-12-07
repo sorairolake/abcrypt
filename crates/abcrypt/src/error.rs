@@ -11,14 +11,23 @@ use blake2::digest::MacError;
 /// The error type for the abcrypt encrypted data format.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Error {
-    /// The encrypted data was shorter than 156 bytes.
+    /// The encrypted data was shorter than 164 bytes.
     InvalidLength,
 
     /// The magic number (file signature) was invalid.
     InvalidMagicNumber,
 
+    /// The version was the unsupported abcrypt version number.
+    UnsupportedVersion(u8),
+
     /// The version was the unrecognized abcrypt version number.
     UnknownVersion(u8),
+
+    /// The Argon2 type were invalid.
+    InvalidArgon2Type(u32),
+
+    /// The Argon2 version were invalid.
+    InvalidArgon2Version(u32),
 
     /// The Argon2 parameters were invalid.
     InvalidArgon2Params(argon2::Error),
@@ -37,9 +46,16 @@ impl fmt::Display for Error {
     #[inline]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            Self::InvalidLength => write!(f, "encrypted data is shorter than 156 bytes"),
+            Self::InvalidLength => write!(f, "encrypted data is shorter than 164 bytes"),
             Self::InvalidMagicNumber => write!(f, "invalid magic number"),
+            Self::UnsupportedVersion(version) => {
+                write!(f, "unsupported version number `{version}`")
+            }
             Self::UnknownVersion(version) => write!(f, "unknown version number `{version}`"),
+            Self::InvalidArgon2Type(_) => write!(f, "invalid Argon2 type"),
+            Self::InvalidArgon2Version(version) => {
+                write!(f, "invalid Argon2 version `{version:#x}`")
+            }
             Self::InvalidArgon2Params(_) => write!(f, "invalid Argon2 parameters"),
             Self::InvalidArgon2Context(_) => write!(f, "invalid Argon2 context"),
             Self::InvalidHeaderMac(_) => write!(f, "invalid header MAC"),
@@ -114,8 +130,20 @@ mod tests {
         assert_eq!(Error::InvalidLength.clone(), Error::InvalidLength);
         assert_eq!(Error::InvalidMagicNumber.clone(), Error::InvalidMagicNumber);
         assert_eq!(
+            Error::UnsupportedVersion(u8::MIN).clone(),
+            Error::UnsupportedVersion(u8::MIN)
+        );
+        assert_eq!(
             Error::UnknownVersion(u8::MAX).clone(),
             Error::UnknownVersion(u8::MAX)
+        );
+        assert_eq!(
+            Error::InvalidArgon2Type(u32::MAX).clone(),
+            Error::InvalidArgon2Type(u32::MAX)
+        );
+        assert_eq!(
+            Error::InvalidArgon2Version(u32::MAX).clone(),
+            Error::InvalidArgon2Version(u32::MAX)
         );
         assert_eq!(
             Error::InvalidArgon2Params(argon2::Error::AdTooLong).clone(),
@@ -150,7 +178,25 @@ mod tests {
         }
 
         {
+            let a = Error::UnsupportedVersion(u8::MIN);
+            let b = a;
+            assert_eq!(a, b);
+        }
+
+        {
             let a = Error::UnknownVersion(u8::MAX);
+            let b = a;
+            assert_eq!(a, b);
+        }
+
+        {
+            let a = Error::InvalidArgon2Type(u32::MAX);
+            let b = a;
+            assert_eq!(a, b);
+        }
+
+        {
+            let a = Error::InvalidArgon2Version(u32::MAX);
             let b = a;
             assert_eq!(a, b);
         }
@@ -189,8 +235,20 @@ mod tests {
             "InvalidMagicNumber"
         );
         assert_eq!(
+            format!("{:?}", Error::UnsupportedVersion(u8::MIN)),
+            "UnsupportedVersion(0)"
+        );
+        assert_eq!(
             format!("{:?}", Error::UnknownVersion(u8::MAX)),
             "UnknownVersion(255)"
+        );
+        assert_eq!(
+            format!("{:?}", Error::InvalidArgon2Type(u32::MAX)),
+            "InvalidArgon2Type(4294967295)"
+        );
+        assert_eq!(
+            format!("{:?}", Error::InvalidArgon2Version(u32::MAX)),
+            "InvalidArgon2Version(4294967295)"
         );
         assert_eq!(
             format!("{:?}", Error::InvalidArgon2Params(argon2::Error::AdTooLong)),
@@ -218,7 +276,10 @@ mod tests {
     fn equality() {
         assert_eq!(Error::InvalidLength, Error::InvalidLength);
         assert_ne!(Error::InvalidLength, Error::InvalidMagicNumber);
+        assert_ne!(Error::InvalidLength, Error::UnsupportedVersion(u8::MIN));
         assert_ne!(Error::InvalidLength, Error::UnknownVersion(u8::MAX));
+        assert_ne!(Error::InvalidLength, Error::InvalidArgon2Type(u32::MAX));
+        assert_ne!(Error::InvalidLength, Error::InvalidArgon2Version(u32::MAX));
         assert_ne!(
             Error::InvalidLength,
             Error::InvalidArgon2Params(argon2::Error::AdTooLong)
@@ -234,7 +295,19 @@ mod tests {
         );
         assert_ne!(Error::InvalidMagicNumber, Error::InvalidLength);
         assert_eq!(Error::InvalidMagicNumber, Error::InvalidMagicNumber);
+        assert_ne!(
+            Error::InvalidMagicNumber,
+            Error::UnsupportedVersion(u8::MIN)
+        );
         assert_ne!(Error::InvalidMagicNumber, Error::UnknownVersion(u8::MAX));
+        assert_ne!(
+            Error::InvalidMagicNumber,
+            Error::InvalidArgon2Type(u32::MAX)
+        );
+        assert_ne!(
+            Error::InvalidMagicNumber,
+            Error::InvalidArgon2Version(u32::MAX)
+        );
         assert_ne!(
             Error::InvalidMagicNumber,
             Error::InvalidArgon2Params(argon2::Error::AdTooLong)
@@ -248,11 +321,60 @@ mod tests {
             Error::InvalidMagicNumber,
             Error::InvalidMac(chacha20poly1305::Error)
         );
+        assert_ne!(Error::UnsupportedVersion(u8::MIN), Error::InvalidLength);
+        assert_ne!(
+            Error::UnsupportedVersion(u8::MIN),
+            Error::InvalidMagicNumber
+        );
+        assert_eq!(
+            Error::UnsupportedVersion(u8::MIN),
+            Error::UnsupportedVersion(u8::MIN)
+        );
+        assert_ne!(
+            Error::UnsupportedVersion(u8::MIN),
+            Error::UnknownVersion(u8::MAX)
+        );
+        assert_ne!(
+            Error::UnsupportedVersion(u8::MIN),
+            Error::InvalidArgon2Type(u32::MAX)
+        );
+        assert_ne!(
+            Error::UnsupportedVersion(u8::MIN),
+            Error::InvalidArgon2Version(u32::MAX)
+        );
+        assert_ne!(
+            Error::UnsupportedVersion(u8::MIN),
+            Error::InvalidArgon2Params(argon2::Error::AdTooLong)
+        );
+        assert_ne!(
+            Error::UnsupportedVersion(u8::MIN),
+            Error::InvalidArgon2Context(argon2::Error::AdTooLong)
+        );
+        assert_ne!(
+            Error::UnsupportedVersion(u8::MIN),
+            Error::InvalidHeaderMac(MacError)
+        );
+        assert_ne!(
+            Error::UnsupportedVersion(u8::MIN),
+            Error::InvalidMac(chacha20poly1305::Error)
+        );
         assert_ne!(Error::UnknownVersion(u8::MAX), Error::InvalidLength);
         assert_ne!(Error::UnknownVersion(u8::MAX), Error::InvalidMagicNumber);
+        assert_ne!(
+            Error::UnknownVersion(u8::MAX),
+            Error::UnsupportedVersion(u8::MIN)
+        );
         assert_eq!(
             Error::UnknownVersion(u8::MAX),
             Error::UnknownVersion(u8::MAX)
+        );
+        assert_ne!(
+            Error::UnknownVersion(u8::MAX),
+            Error::InvalidArgon2Type(u32::MAX)
+        );
+        assert_ne!(
+            Error::UnknownVersion(u8::MAX),
+            Error::InvalidArgon2Version(u32::MAX)
         );
         assert_ne!(
             Error::UnknownVersion(u8::MAX),
@@ -270,6 +392,80 @@ mod tests {
             Error::UnknownVersion(u8::MAX),
             Error::InvalidMac(chacha20poly1305::Error)
         );
+        assert_ne!(Error::InvalidArgon2Type(u32::MAX), Error::InvalidLength);
+        assert_ne!(
+            Error::InvalidArgon2Type(u32::MAX),
+            Error::InvalidMagicNumber
+        );
+        assert_ne!(
+            Error::InvalidArgon2Type(u32::MAX),
+            Error::UnsupportedVersion(u8::MIN)
+        );
+        assert_ne!(
+            Error::InvalidArgon2Type(u32::MAX),
+            Error::UnknownVersion(u8::MAX)
+        );
+        assert_eq!(
+            Error::InvalidArgon2Type(u32::MAX),
+            Error::InvalidArgon2Type(u32::MAX)
+        );
+        assert_ne!(
+            Error::InvalidArgon2Type(u32::MAX),
+            Error::InvalidArgon2Version(u32::MAX)
+        );
+        assert_ne!(
+            Error::InvalidArgon2Type(u32::MAX),
+            Error::InvalidArgon2Params(argon2::Error::AdTooLong)
+        );
+        assert_ne!(
+            Error::InvalidArgon2Type(u32::MAX),
+            Error::InvalidArgon2Context(argon2::Error::AdTooLong)
+        );
+        assert_ne!(
+            Error::InvalidArgon2Type(u32::MAX),
+            Error::InvalidHeaderMac(MacError)
+        );
+        assert_ne!(
+            Error::InvalidArgon2Type(u32::MAX),
+            Error::InvalidMac(chacha20poly1305::Error)
+        );
+        assert_ne!(Error::InvalidArgon2Version(u32::MAX), Error::InvalidLength);
+        assert_ne!(
+            Error::InvalidArgon2Version(u32::MAX),
+            Error::InvalidMagicNumber
+        );
+        assert_ne!(
+            Error::InvalidArgon2Version(u32::MAX),
+            Error::UnsupportedVersion(u8::MIN)
+        );
+        assert_ne!(
+            Error::InvalidArgon2Version(u32::MAX),
+            Error::UnknownVersion(u8::MAX)
+        );
+        assert_ne!(
+            Error::InvalidArgon2Version(u32::MAX),
+            Error::InvalidArgon2Type(u32::MAX)
+        );
+        assert_eq!(
+            Error::InvalidArgon2Version(u32::MAX),
+            Error::InvalidArgon2Version(u32::MAX)
+        );
+        assert_ne!(
+            Error::InvalidArgon2Version(u32::MAX),
+            Error::InvalidArgon2Params(argon2::Error::AdTooLong)
+        );
+        assert_ne!(
+            Error::InvalidArgon2Version(u32::MAX),
+            Error::InvalidArgon2Context(argon2::Error::AdTooLong)
+        );
+        assert_ne!(
+            Error::InvalidArgon2Version(u32::MAX),
+            Error::InvalidHeaderMac(MacError)
+        );
+        assert_ne!(
+            Error::InvalidArgon2Version(u32::MAX),
+            Error::InvalidMac(chacha20poly1305::Error)
+        );
         assert_ne!(
             Error::InvalidArgon2Params(argon2::Error::AdTooLong),
             Error::InvalidLength
@@ -280,7 +476,19 @@ mod tests {
         );
         assert_ne!(
             Error::InvalidArgon2Params(argon2::Error::AdTooLong),
+            Error::UnsupportedVersion(u8::MIN)
+        );
+        assert_ne!(
+            Error::InvalidArgon2Params(argon2::Error::AdTooLong),
             Error::UnknownVersion(u8::MAX)
+        );
+        assert_ne!(
+            Error::InvalidArgon2Params(argon2::Error::AdTooLong),
+            Error::InvalidArgon2Type(u32::MAX)
+        );
+        assert_ne!(
+            Error::InvalidArgon2Params(argon2::Error::AdTooLong),
+            Error::InvalidArgon2Version(u32::MAX)
         );
         assert_eq!(
             Error::InvalidArgon2Params(argon2::Error::AdTooLong),
@@ -308,7 +516,19 @@ mod tests {
         );
         assert_ne!(
             Error::InvalidArgon2Context(argon2::Error::AdTooLong),
+            Error::UnsupportedVersion(u8::MIN)
+        );
+        assert_ne!(
+            Error::InvalidArgon2Context(argon2::Error::AdTooLong),
             Error::UnknownVersion(u8::MAX)
+        );
+        assert_ne!(
+            Error::InvalidArgon2Context(argon2::Error::AdTooLong),
+            Error::InvalidArgon2Type(u32::MAX)
+        );
+        assert_ne!(
+            Error::InvalidArgon2Context(argon2::Error::AdTooLong),
+            Error::InvalidArgon2Version(u32::MAX)
         );
         assert_ne!(
             Error::InvalidArgon2Context(argon2::Error::AdTooLong),
@@ -330,7 +550,19 @@ mod tests {
         assert_ne!(Error::InvalidHeaderMac(MacError), Error::InvalidMagicNumber);
         assert_ne!(
             Error::InvalidHeaderMac(MacError),
+            Error::UnsupportedVersion(u8::MIN)
+        );
+        assert_ne!(
+            Error::InvalidHeaderMac(MacError),
             Error::UnknownVersion(u8::MAX)
+        );
+        assert_ne!(
+            Error::InvalidHeaderMac(MacError),
+            Error::InvalidArgon2Type(u32::MAX)
+        );
+        assert_ne!(
+            Error::InvalidHeaderMac(MacError),
+            Error::InvalidArgon2Version(u32::MAX)
         );
         assert_ne!(
             Error::InvalidHeaderMac(MacError),
@@ -358,7 +590,19 @@ mod tests {
         );
         assert_ne!(
             Error::InvalidMac(chacha20poly1305::Error),
+            Error::UnsupportedVersion(u8::MIN)
+        );
+        assert_ne!(
+            Error::InvalidMac(chacha20poly1305::Error),
             Error::UnknownVersion(u8::MAX)
+        );
+        assert_ne!(
+            Error::InvalidMac(chacha20poly1305::Error),
+            Error::InvalidArgon2Type(u32::MAX)
+        );
+        assert_ne!(
+            Error::InvalidMac(chacha20poly1305::Error),
+            Error::InvalidArgon2Version(u32::MAX)
         );
         assert_ne!(
             Error::InvalidMac(chacha20poly1305::Error),
@@ -383,15 +627,27 @@ mod tests {
     fn display() {
         assert_eq!(
             format!("{}", Error::InvalidLength),
-            "encrypted data is shorter than 156 bytes"
+            "encrypted data is shorter than 164 bytes"
         );
         assert_eq!(
             format!("{}", Error::InvalidMagicNumber),
             "invalid magic number"
         );
         assert_eq!(
+            format!("{}", Error::UnsupportedVersion(u8::MIN)),
+            "unsupported version number `0`"
+        );
+        assert_eq!(
             format!("{}", Error::UnknownVersion(u8::MAX)),
             "unknown version number `255`"
+        );
+        assert_eq!(
+            format!("{}", Error::InvalidArgon2Type(u32::MAX)),
+            "invalid Argon2 type"
+        );
+        assert_eq!(
+            format!("{}", Error::InvalidArgon2Version(u32::MAX)),
+            "invalid Argon2 version `0xffffffff`"
         );
         assert_eq!(
             format!("{}", Error::InvalidArgon2Params(argon2::Error::AdTooLong)),
@@ -418,7 +674,10 @@ mod tests {
 
         assert!(Error::InvalidLength.source().is_none());
         assert!(Error::InvalidMagicNumber.source().is_none());
+        assert!(Error::UnsupportedVersion(u8::MIN).source().is_none());
         assert!(Error::UnknownVersion(u8::MAX).source().is_none());
+        assert!(Error::InvalidArgon2Type(u32::MAX).source().is_none());
+        assert!(Error::InvalidArgon2Version(u32::MAX).source().is_none());
         assert!(Error::InvalidArgon2Params(argon2::Error::AdTooLong)
             .source()
             .unwrap()

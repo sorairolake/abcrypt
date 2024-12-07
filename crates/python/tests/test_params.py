@@ -9,7 +9,7 @@ import abcrypt_py
 
 TEST_DIR: Final[Path] = Path(__file__).resolve().parent
 TEST_DATA_ENC: Final[bytes] = Path(
-    TEST_DIR / "data/data.txt.abcrypt"
+    TEST_DIR / "data/v1/data.txt.abcrypt"
 ).read_bytes()
 
 

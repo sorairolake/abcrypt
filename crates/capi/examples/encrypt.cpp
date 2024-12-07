@@ -24,6 +24,12 @@
 
 int main(int argc, char *argv[]) {
   CLI::App app{"An example of encrypting to the abcrypt encrypted data format"};
+  std::uint32_t argon2_type{2};
+  app.add_option("--argon2-type", argon2_type, "Set the Argon2 type")
+      ->capture_default_str();
+  std::uint32_t argon2_version{0x13};
+  app.add_option("--argon2-version", argon2_version, "Set the Argon2 version")
+      ->capture_default_str();
   std::uint32_t memory_cost{19456};
   app.add_option("-m,--memory-cost", memory_cost, "Set the memory size in KiB")
       ->capture_default_str();
@@ -75,11 +81,11 @@ int main(int argc, char *argv[]) {
 
   std::vector<std::uint8_t> ciphertext(
       plaintext.size() + (ABCRYPT_HEADER_SIZE + ABCRYPT_TAG_SIZE));
-  auto error_code = abcrypt_encrypt_with_params(
+  auto error_code = abcrypt_encrypt_with_version(
       plaintext.data(), plaintext.size(),
       reinterpret_cast<uint8_t *>(passphrase.data()), passphrase.size(),
-      ciphertext.data(), ciphertext.size(), memory_cost, time_cost,
-      parallelism);
+      ciphertext.data(), ciphertext.size(), argon2_type, argon2_version,
+      memory_cost, time_cost, parallelism);
   if (error_code != ABCRYPT_ERROR_CODE_OK) {
     std::vector<std::uint8_t> buf(abcrypt_error_message_out_len(error_code));
     abcrypt_error_message(error_code, buf.data(), buf.size());

@@ -7,8 +7,8 @@ use wasm_bindgen_test::wasm_bindgen_test;
 
 const PASSPHRASE: &[u8] = b"passphrase";
 const TEST_DATA: &[u8] = include_bytes!("data/data.txt");
-// Generated using `abcrypt` crate version 0.1.0.
-const TEST_DATA_ENC: &[u8] = include_bytes!("data/data.txt.abcrypt");
+// Generated using `abcrypt` crate version 0.4.0.
+const TEST_DATA_ENC: &[u8] = include_bytes!("data/v1/data.txt.abcrypt");
 
 #[wasm_bindgen_test]
 fn success() {
@@ -49,9 +49,15 @@ fn invalid_magic_number() {
 }
 
 #[wasm_bindgen_test]
+fn unsupported_version() {
+    let result = abcrypt_wasm::decrypt(include_bytes!("data/v0/data.txt.abcrypt"), PASSPHRASE);
+    assert!(result.is_err());
+}
+
+#[wasm_bindgen_test]
 fn unknown_version() {
     let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
-    data[7] = 1;
+    data[7] = 2;
     let result = abcrypt_wasm::decrypt(&data, PASSPHRASE);
     assert!(result.is_err());
 }
@@ -61,19 +67,19 @@ fn invalid_params() {
     let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
 
     {
-        data[8..12].copy_from_slice(&u32::to_le_bytes(7));
+        data[16..20].copy_from_slice(&u32::to_le_bytes(7));
         let result = abcrypt_wasm::decrypt(&data, PASSPHRASE);
         assert!(result.is_err());
     }
 
     {
-        data[12..16].copy_from_slice(&u32::to_le_bytes(0));
+        data[20..24].copy_from_slice(&u32::to_le_bytes(0));
         let result = abcrypt_wasm::decrypt(&data, PASSPHRASE);
         assert!(result.is_err());
     }
 
     {
-        data[16..20].copy_from_slice(&u32::pow(2, 24).to_le_bytes());
+        data[24..28].copy_from_slice(&u32::pow(2, 24).to_le_bytes());
         let result = abcrypt_wasm::decrypt(&data, PASSPHRASE);
         assert!(result.is_err());
     }
@@ -82,9 +88,9 @@ fn invalid_params() {
 #[wasm_bindgen_test]
 fn invalid_header_mac() {
     let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
-    let mut header_mac: [u8; 64] = data[76..140].try_into().unwrap();
+    let mut header_mac: [u8; 64] = data[84..148].try_into().unwrap();
     header_mac.reverse();
-    data[76..140].copy_from_slice(&header_mac);
+    data[84..148].copy_from_slice(&header_mac);
     let result = abcrypt_wasm::decrypt(&data, PASSPHRASE);
     assert!(result.is_err());
 }

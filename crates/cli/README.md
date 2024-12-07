@@ -107,6 +107,7 @@ Please see the following:
 - [`abcrypt(1)`]
 - [`abcrypt-encrypt(1)`]
 - [`abcrypt-decrypt(1)`]
+- [`abcrypt-argon2(1)`]
 - [`abcrypt-information(1)`]
 - [`abcrypt-help(1)`]
 
@@ -154,6 +155,7 @@ licensing information.
 [`abcrypt(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt.1.html
 [`abcrypt-encrypt(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt-encrypt.1.html
 [`abcrypt-decrypt(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt-decrypt.1.html
+[`abcrypt-argon2(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt-argon2.1.html
 [`abcrypt-information(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt-information.1.html
 [`abcrypt-help(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt-help.1.html
 [CHANGELOG.adoc]: CHANGELOG.adoc

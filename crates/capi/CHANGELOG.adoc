@@ -16,10 +16,19 @@ project adheres to https://semver.org/[Semantic Versioning].
 
 == {compare-url}/abcrypt-capi-v0.3.2\...HEAD[Unreleased]
 
+=== Added
+
+* Supports the abcrypt version 1 file format ({pull-request-url}/619[#619])
+
 === Changed
 
 * Re-enable `clang-format` and `clang-tidy` on CI ({pull-request-url}/384[#384])
 * Use `extern "C-unwind"` instead of `extern "C"` ({pull-request-url}/542[#542])
+
+=== Removed
+
+* Remove the abcrypt version 0 file format support
+  ({pull-request-url}/619[#619])
 
 == {compare-url}/abcrypt-capi-v0.3.1\...abcrypt-capi-v0.3.2[0.3.2] - 2024-04-16
 

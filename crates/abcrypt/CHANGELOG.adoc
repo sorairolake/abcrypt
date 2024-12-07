@@ -14,6 +14,18 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
 
+== {compare-url}/abcrypt-v0.3.7\...HEAD[Unreleased]
+
+=== Added
+
+* Supports the abcrypt version 1 file format ({pull-request-url}/619[#619])
+* Add `Argon2` struct to get the Argon2 context ({pull-request-url}/619[#619])
+
+=== Removed
+
+* Remove the abcrypt version 0 file format support
+  ({pull-request-url}/619[#619])
+
 == {compare-url}/abcrypt-v0.3.6\...abcrypt-v0.3.7[0.3.7] - 2024-10-19
 
 === Fixed

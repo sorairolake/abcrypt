@@ -14,6 +14,8 @@ SPDX-License-Identifier: Apache-2.0 OR MIT
 
 **abcrypt** is an implementation of the [abcrypt encrypted data format].
 
+This crate supports the abcrypt version 1 file format.
+
 ## Usage
 
 Add this to your `Cargo.toml`:
