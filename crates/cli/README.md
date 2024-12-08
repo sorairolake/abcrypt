@@ -14,8 +14,6 @@ SPDX-License-Identifier: GPL-3.0-or-later
 **abcrypt** ([`abcrypt-cli`][version-url]) is a command-line utility for
 encrypt and decrypt files using the [abcrypt encrypted data format].
 
-![Screenshot of abcrypt](assets/screenshot.webp)
-
 ## Installation
 
 ### From source
