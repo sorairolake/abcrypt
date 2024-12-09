@@ -4,7 +4,7 @@
 
 = abcrypt(5)
 // Specify in UTC.
-:docdate: 2024-12-06
+:docdate: 2024-12-09
 :doctype: manpage
 ifdef::revnumber[:mansource: abcrypt {revnumber}]
 ifndef::revnumber[:mansource: abcrypt]
@@ -91,9 +91,14 @@ data and a file body encrypted with the derived key.
 
 All multibyte values are stored in little-endian.
 
-=== Filename
+=== Filename extension
 
-{manname} files may use the extension `.abcrypt`.
+{manname} files should use the extension `.abcrypt`.
+
+=== MIME type
+
+When transferring {manname} files over the Internet, the appropriate MIME type
+is `application/x-abcrypt`.
 
 include::{includedir}/section-copyright.adoc[]
 

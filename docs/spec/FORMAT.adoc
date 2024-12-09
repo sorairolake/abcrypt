@@ -47,8 +47,6 @@ XChaCha20-Poly1305 is the AEAD algorithm from
 An abcrypt file is composed of two parts: a <<header-format,header>> containing
 the required data and a <<file-body,file body>> encrypted with the derived key.
 
-abcrypt files may use the extension `.abcrypt`.
-
 .The structure of the abcrypt encrypted data format
 |===
 |Offset |Bytes |Description |Detail
@@ -278,6 +276,15 @@ The size of `aad` (additional authenticated data) is zero (empty).
 header, and the stored value is used when decrypting.
 
 IMPORTANT: The abcrypt encrypted data format uses a postfix tag.
+
+== Filename extension
+
+abcrypt files should use the extension `.abcrypt`.
+
+== MIME type
+
+When transferring abcrypt files over the Internet, the appropriate MIME type is
+`application/x-abcrypt`.
 
 == ABNF definition of the file format
 

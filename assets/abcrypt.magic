@@ -1,0 +1,21 @@
+# abcrypt encrypted file
+# <https://github.com/sorairolake/abcrypt/blob/develop/docs/spec/FORMAT.adoc>
+0		string	abcrypt	abcrypt encrypted file
+!:mime	application/x-abcrypt
+!:ext	abcrypt
+>7		ubyte	x		- version %d
+# version 0
+>7		ubyte	0
+>>8		ulelong	x		\b, m = %d
+>>12	ulelong	x		\b, t = %d
+>>16	ulelong	x		\b, p = %d
+# version 1
+>7		ubyte	1
+>>8		ulelong	<3		\b, Argon2 type:
+>>>8	ulelong	0		Argon2d
+>>>8	ulelong	1		Argon2i
+>>>8	ulelong	2		Argon2id
+>>12	ulelong	x		\b, Argon2 version: %#x
+>>16	ulelong	x		\b, m = %d
+>>20	ulelong	x		\b, t = %d
+>>24	ulelong	x		\b, p = %d
