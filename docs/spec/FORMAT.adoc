@@ -5,7 +5,7 @@
 = Abcrypt Encrypted Data Format
 Shun Sakai <sorairolake@protonmail.ch>
 // Specify in UTC.
-v0.3.7, 2024-12-06
+v0.3.7, 2024-12-09
 :icons: font
 :idprefix:
 :idseparator: -
@@ -141,8 +141,15 @@ The size of `secretKey` (pepper) and `associatedData` (associated data) are
 zero (empty).
 
 The resulting derived key (`derivedKey`) length is 96 bytes. The first 32 bytes
-of `derivedKey` are for encryption (<<xchacha20-poly1305>> key), and the last
-64 bytes are for computing the header MAC (<<blake2b-512-mac>> key).
+of `derivedKey` are the <<xchacha20-poly1305>> key (`encryptionKey`) for
+encryption, and the last 64 bytes are the <<blake2b-512-mac>> key
+(`headerMacKey`) for computing the header MAC.
+
+.The derived key is split as follows
+----
+encryptionKey = derivedKey[..32]
+headerMacKey = derivedKey[32..]
+----
 
 <<argon2-type,`type`>>, <<argon2-version,`version`>>,
 <<argon2-parameters,`memoryCost`>>, <<argon2-parameters,`timeCost`>>,
@@ -242,7 +249,7 @@ The MAC (authentication tag) of the header. The MAC is computed with
 mac = BLAKE2b(
     data = header[..84],
     digestLength = 64,
-    key = derivedKey[32..],
+    key = headerMacKey,
     salt = [],
     personalization = [],
 )
@@ -260,7 +267,7 @@ The file body is encrypted with XChaCha20-Poly1305.
 ciphertext = XChaCha20-Poly1305(
     plaintext = plaintext,
     aad = [],
-    key = derivedKey[..32],
+    key = encryptionKey,
     nonce = header[60..84],
 )
 ----
