@@ -26,7 +26,7 @@ crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 abcrypt = { version = "0.3.7", path = "../abcrypt" }
-pyo3 = "0.23.2"
+pyo3 = "0.23.3"
 
 [lints]
 workspace = true
