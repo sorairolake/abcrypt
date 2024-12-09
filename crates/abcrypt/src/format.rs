@@ -38,7 +38,7 @@ pub const TAG_SIZE: usize = <XChaCha20Poly1305 as AeadCore>::TagSize::USIZE;
 
 /// Version of the abcrypt encrypted data format.
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
-pub enum Version {
+enum Version {
     /// Version 0.
     V0,
 
