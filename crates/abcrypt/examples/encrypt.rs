@@ -124,7 +124,7 @@ fn main() -> anyhow::Result<()> {
         .interact()
         .context("could not read passphrase")?;
     let params = Params::new(opt.memory_cost, opt.time_cost, opt.parallelism, None)?;
-    let ciphertext = abcrypt::encrypt_with_version(
+    let ciphertext = abcrypt::encrypt_with_context(
         plaintext,
         passphrase,
         opt.argon2_type.into(),

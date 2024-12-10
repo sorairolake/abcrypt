@@ -54,30 +54,8 @@ fn success_with_params() {
 }
 
 #[wasm_bindgen_test]
-fn success_with_type() {
-    let ciphertext = abcrypt_wasm::encrypt_with_type(TEST_DATA, PASSPHRASE, 0, 32, 3, 4)
-        .map_err(JsValue::from)
-        .unwrap();
-    assert_ne!(ciphertext, TEST_DATA);
-    assert_eq!(
-        ciphertext.len(),
-        TEST_DATA.len() + abcrypt_wasm::header_size() + abcrypt_wasm::tag_size()
-    );
-
-    let params = Params::new(&ciphertext).map_err(JsValue::from).unwrap();
-    assert_eq!(params.memory_cost(), 32);
-    assert_eq!(params.time_cost(), 3);
-    assert_eq!(params.parallelism(), 4);
-
-    let plaintext = abcrypt_wasm::decrypt(&ciphertext, PASSPHRASE)
-        .map_err(JsValue::from)
-        .unwrap();
-    assert_eq!(plaintext, TEST_DATA);
-}
-
-#[wasm_bindgen_test]
-fn success_with_version() {
-    let ciphertext = abcrypt_wasm::encrypt_with_version(TEST_DATA, PASSPHRASE, 1, 0x10, 32, 3, 4)
+fn success_with_context() {
+    let ciphertext = abcrypt_wasm::encrypt_with_context(TEST_DATA, PASSPHRASE, 1, 0x10, 32, 3, 4)
         .map_err(JsValue::from)
         .unwrap();
     assert_ne!(ciphertext, TEST_DATA);
@@ -127,21 +105,24 @@ fn version() {
 #[wasm_bindgen_test]
 fn argon2_type() {
     {
-        let ciphertext = abcrypt_wasm::encrypt_with_type(TEST_DATA, PASSPHRASE, 0, 32, 3, 4)
-            .map_err(JsValue::from)
-            .unwrap();
+        let ciphertext =
+            abcrypt_wasm::encrypt_with_context(TEST_DATA, PASSPHRASE, 0, 0x13, 32, 3, 4)
+                .map_err(JsValue::from)
+                .unwrap();
         assert_eq!(&ciphertext[8..12], u32::to_le_bytes(0));
     }
     {
-        let ciphertext = abcrypt_wasm::encrypt_with_type(TEST_DATA, PASSPHRASE, 1, 32, 3, 4)
-            .map_err(JsValue::from)
-            .unwrap();
+        let ciphertext =
+            abcrypt_wasm::encrypt_with_context(TEST_DATA, PASSPHRASE, 1, 0x13, 32, 3, 4)
+                .map_err(JsValue::from)
+                .unwrap();
         assert_eq!(&ciphertext[8..12], u32::to_le_bytes(1));
     }
     {
-        let ciphertext = abcrypt_wasm::encrypt_with_type(TEST_DATA, PASSPHRASE, 2, 32, 3, 4)
-            .map_err(JsValue::from)
-            .unwrap();
+        let ciphertext =
+            abcrypt_wasm::encrypt_with_context(TEST_DATA, PASSPHRASE, 2, 0x13, 32, 3, 4)
+                .map_err(JsValue::from)
+                .unwrap();
         assert_eq!(&ciphertext[8..12], u32::to_le_bytes(2));
     }
 }
@@ -150,14 +131,14 @@ fn argon2_type() {
 fn argon2_version() {
     {
         let ciphertext =
-            abcrypt_wasm::encrypt_with_version(TEST_DATA, PASSPHRASE, 2, 0x10, 32, 3, 4)
+            abcrypt_wasm::encrypt_with_context(TEST_DATA, PASSPHRASE, 2, 0x10, 32, 3, 4)
                 .map_err(JsValue::from)
                 .unwrap();
         assert_eq!(&ciphertext[12..16], u32::to_le_bytes(0x10));
     }
     {
         let ciphertext =
-            abcrypt_wasm::encrypt_with_version(TEST_DATA, PASSPHRASE, 2, 0x13, 32, 3, 4)
+            abcrypt_wasm::encrypt_with_context(TEST_DATA, PASSPHRASE, 2, 0x13, 32, 3, 4)
                 .map_err(JsValue::from)
                 .unwrap();
         assert_eq!(&ciphertext[12..16], u32::to_le_bytes(0x13));

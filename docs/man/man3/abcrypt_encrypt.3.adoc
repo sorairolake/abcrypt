@@ -4,14 +4,14 @@
 
 = abcrypt_encrypt(3)
 // Specify in UTC.
-:docdate: 2024-12-07
+:docdate: 2024-12-10
 :doctype: manpage
 :icons: font
 ifdef::revnumber[:mansource: abcrypt-capi {revnumber}]
 ifndef::revnumber[:mansource: abcrypt-capi]
 :manmanual: Library Functions Manual
 ifndef::site-gen-antora[:includedir: ./include]
-:owasp-cheatsheets: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
+:owasp-cheatsheets: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html#argon2id
 
 == NAME
 
@@ -35,7 +35,9 @@ enum abcrypt_error_code abcrypt_encrypt(uint8_t *plaintext,
 
 This function encrypts _plaintext_ and write to _out_.
 
-This uses the {owasp-cheatsheets}[recommended Argon2 parameters].
+This uses the recommended Argon2 parameters according to the
+{owasp-cheatsheets}[OWASP Password Storage Cheat Sheet]. This also uses
+Argon2id as the Argon2 type and version 0x13 as the Argon2 version.
 
 === Arguments
 
@@ -89,4 +91,4 @@ ifdef::site-gen-antora[include::partial$man/man3/include/section-copyright.adoc[
 == SEE ALSO
 
 *abcrypt_decrypt*(3), *abcrypt_encrypt_with_params*(3),
-*abcrypt_encrypt_with_type*(3), *abcrypt_encrypt_with_version*(3)
+*abcrypt_encrypt_with_context*(3)

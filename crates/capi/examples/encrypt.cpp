@@ -81,7 +81,7 @@ int main(int argc, char *argv[]) {
 
   std::vector<std::uint8_t> ciphertext(
       plaintext.size() + (ABCRYPT_HEADER_SIZE + ABCRYPT_TAG_SIZE));
-  auto error_code = abcrypt_encrypt_with_version(
+  auto error_code = abcrypt_encrypt_with_context(
       plaintext.data(), plaintext.size(),
       reinterpret_cast<uint8_t *>(passphrase.data()), passphrase.size(),
       ciphertext.data(), ciphertext.size(), argon2_type, argon2_version,

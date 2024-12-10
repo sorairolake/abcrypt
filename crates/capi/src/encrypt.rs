@@ -16,7 +16,9 @@ use crate::ErrorCode;
 #[allow(clippy::module_name_repetitions)]
 /// Encrypts `plaintext` and write to `out`.
 ///
-/// This uses the recommended Argon2 parameters.
+/// This uses the recommended Argon2 parameters according to the OWASP Password
+/// Storage Cheat Sheet. This also uses Argon2id as the Argon2 type and version
+/// 0x13 as the Argon2 version.
 ///
 /// # Errors
 ///
@@ -72,7 +74,8 @@ pub unsafe extern "C-unwind" fn abcrypt_encrypt(
 /// Encrypts `plaintext` with the specified Argon2 parameters and write to
 /// `out`.
 ///
-/// This uses the default Argon2 type.
+/// This uses Argon2id as the Argon2 type and version 0x13 as the Argon2
+/// version.
 ///
 /// # Errors
 ///
@@ -132,77 +135,6 @@ pub unsafe extern "C-unwind" fn abcrypt_encrypt_with_params(
 }
 
 #[allow(clippy::module_name_repetitions)]
-/// Encrypts `plaintext` with the specified Argon2 type and Argon2 parameters
-/// and write to `out`.
-///
-/// This uses the default Argon2 version.
-///
-/// # Errors
-///
-/// Returns an error if any of the following are true:
-///
-/// - The Argon2 type is invalid.
-/// - The Argon2 parameters are invalid.
-/// - The Argon2 context is invalid.
-/// - One of the parameters is null.
-///
-/// # Safety
-///
-/// Behavior is undefined if any of the following violates the safety conditions
-/// of `slice::from_raw_parts`:
-///
-/// - `plaintext` and `plaintext_len`.
-/// - `passphrase` and `passphrase_len`.
-/// - `out` and `out_len`.
-#[no_mangle]
-pub unsafe extern "C-unwind" fn abcrypt_encrypt_with_type(
-    plaintext: Option<NonNull<u8>>,
-    plaintext_len: usize,
-    passphrase: Option<NonNull<u8>>,
-    passphrase_len: usize,
-    out: Option<NonNull<u8>>,
-    out_len: usize,
-    argon2_type: u32,
-    memory_cost: u32,
-    time_cost: u32,
-    parallelism: u32,
-) -> ErrorCode {
-    let Some(plaintext) = plaintext else {
-        return ErrorCode::Error;
-    };
-    // SAFETY: just checked that `plaintext` is not a null pointer.
-    let plaintext = unsafe { slice::from_raw_parts(plaintext.as_ptr(), plaintext_len) };
-    let Some(passphrase) = passphrase else {
-        return ErrorCode::Error;
-    };
-    // SAFETY: just checked that `passphrase` is not a null pointer.
-    let passphrase = unsafe { slice::from_raw_parts(passphrase.as_ptr(), passphrase_len) };
-    let argon2_type = match argon2_type {
-        0 => Algorithm::Argon2d,
-        1 => Algorithm::Argon2i,
-        2 => Algorithm::Argon2id,
-        _ => return ErrorCode::InvalidArgon2Type,
-    };
-    let Ok(params) = Params::new(memory_cost, time_cost, parallelism, None) else {
-        return ErrorCode::InvalidArgon2Params;
-    };
-    let cipher = match Encryptor::with_type(&plaintext, passphrase, argon2_type, params) {
-        Ok(c) => c,
-        Err(err) => {
-            return err.into();
-        }
-    };
-
-    let Some(out) = out else {
-        return ErrorCode::Error;
-    };
-    // SAFETY: just checked that `out` is not a null pointer.
-    let out = unsafe { slice::from_raw_parts_mut(out.as_ptr(), out_len) };
-    cipher.encrypt(out);
-    ErrorCode::Ok
-}
-
-#[allow(clippy::module_name_repetitions)]
 /// Encrypts `plaintext` with the specified Argon2 type, Argon2 version and
 /// Argon2 parameters and write to `out`.
 ///
@@ -225,7 +157,7 @@ pub unsafe extern "C-unwind" fn abcrypt_encrypt_with_type(
 /// - `passphrase` and `passphrase_len`.
 /// - `out` and `out_len`.
 #[no_mangle]
-pub unsafe extern "C-unwind" fn abcrypt_encrypt_with_version(
+pub unsafe extern "C-unwind" fn abcrypt_encrypt_with_context(
     plaintext: Option<NonNull<u8>>,
     plaintext_len: usize,
     passphrase: Option<NonNull<u8>>,
@@ -260,7 +192,7 @@ pub unsafe extern "C-unwind" fn abcrypt_encrypt_with_version(
     let Ok(params) = Params::new(memory_cost, time_cost, parallelism, None) else {
         return ErrorCode::InvalidArgon2Params;
     };
-    let cipher = match Encryptor::with_version(
+    let cipher = match Encryptor::with_context(
         &plaintext,
         passphrase,
         argon2_type,
@@ -382,59 +314,12 @@ mod tests {
     }
 
     #[test]
-    fn success_with_type() {
+    fn success_with_context() {
         let mut plaintext: [u8; TEST_DATA.len()] = TEST_DATA.try_into().unwrap();
         let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
         let mut ciphertext = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
         let code = unsafe {
-            abcrypt_encrypt_with_type(
-                NonNull::new(plaintext.as_mut_ptr()),
-                plaintext.len(),
-                NonNull::new(passphrase.as_mut_ptr()),
-                passphrase.len(),
-                NonNull::new(ciphertext.as_mut_ptr()),
-                ciphertext.len(),
-                0,
-                32,
-                3,
-                4,
-            )
-        };
-        assert_eq!(code, ErrorCode::Ok);
-        assert_ne!(ciphertext, TEST_DATA);
-
-        let argon2 = Argon2::new(ciphertext).unwrap();
-        assert_eq!(argon2.variant(), Algorithm::Argon2d);
-        assert_eq!(argon2.version(), Version::V0x13);
-
-        let params = abcrypt::Params::new(ciphertext).unwrap();
-        assert_eq!(params.memory_cost(), 32);
-        assert_eq!(params.time_cost(), 3);
-        assert_eq!(params.parallelism(), 4);
-
-        let mut plaintext = [u8::default(); TEST_DATA.len()];
-        assert_ne!(plaintext, TEST_DATA);
-        let code = unsafe {
-            abcrypt_decrypt(
-                NonNull::new(ciphertext.as_mut_ptr()),
-                ciphertext.len(),
-                NonNull::new(passphrase.as_mut_ptr()),
-                passphrase.len(),
-                NonNull::new(plaintext.as_mut_ptr()),
-                plaintext.len(),
-            )
-        };
-        assert_eq!(code, ErrorCode::Ok);
-        assert_eq!(plaintext, TEST_DATA);
-    }
-
-    #[test]
-    fn success_with_version() {
-        let mut plaintext: [u8; TEST_DATA.len()] = TEST_DATA.try_into().unwrap();
-        let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
-        let mut ciphertext = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
-        let code = unsafe {
-            abcrypt_encrypt_with_version(
+            abcrypt_encrypt_with_context(
                 NonNull::new(plaintext.as_mut_ptr()),
                 plaintext.len(),
                 NonNull::new(passphrase.as_mut_ptr()),
@@ -571,7 +456,7 @@ mod tests {
             let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
             let mut ciphertext = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
             let code = unsafe {
-                abcrypt_encrypt_with_type(
+                abcrypt_encrypt_with_context(
                     NonNull::new(plaintext.as_mut_ptr()),
                     plaintext.len(),
                     NonNull::new(passphrase.as_mut_ptr()),
@@ -579,6 +464,7 @@ mod tests {
                     NonNull::new(ciphertext.as_mut_ptr()),
                     ciphertext.len(),
                     0,
+                    0x13,
                     32,
                     3,
                     4,
@@ -595,7 +481,7 @@ mod tests {
             let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
             let mut ciphertext = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
             let code = unsafe {
-                abcrypt_encrypt_with_type(
+                abcrypt_encrypt_with_context(
                     NonNull::new(plaintext.as_mut_ptr()),
                     plaintext.len(),
                     NonNull::new(passphrase.as_mut_ptr()),
@@ -603,6 +489,7 @@ mod tests {
                     NonNull::new(ciphertext.as_mut_ptr()),
                     ciphertext.len(),
                     1,
+                    0x13,
                     32,
                     3,
                     4,
@@ -619,7 +506,7 @@ mod tests {
             let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
             let mut ciphertext = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
             let code = unsafe {
-                abcrypt_encrypt_with_type(
+                abcrypt_encrypt_with_context(
                     NonNull::new(plaintext.as_mut_ptr()),
                     plaintext.len(),
                     NonNull::new(passphrase.as_mut_ptr()),
@@ -627,6 +514,7 @@ mod tests {
                     NonNull::new(ciphertext.as_mut_ptr()),
                     ciphertext.len(),
                     2,
+                    0x13,
                     32,
                     3,
                     4,
@@ -647,7 +535,7 @@ mod tests {
             let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
             let mut ciphertext = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
             let code = unsafe {
-                abcrypt_encrypt_with_version(
+                abcrypt_encrypt_with_context(
                     NonNull::new(plaintext.as_mut_ptr()),
                     plaintext.len(),
                     NonNull::new(passphrase.as_mut_ptr()),
@@ -672,7 +560,7 @@ mod tests {
             let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
             let mut ciphertext = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
             let code = unsafe {
-                abcrypt_encrypt_with_version(
+                abcrypt_encrypt_with_context(
                     NonNull::new(plaintext.as_mut_ptr()),
                     plaintext.len(),
                     NonNull::new(passphrase.as_mut_ptr()),

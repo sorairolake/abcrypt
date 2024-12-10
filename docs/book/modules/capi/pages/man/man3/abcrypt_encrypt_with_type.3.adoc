@@ -1,1 +1,0 @@
-../../../../../../man/man3/abcrypt_encrypt_with_type.3.adoc

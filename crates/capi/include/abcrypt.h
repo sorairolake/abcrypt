@@ -88,7 +88,9 @@ enum abcrypt_error_code abcrypt_decrypt(uint8_t *ciphertext,
 
 // Encrypts `plaintext` and write to `out`.
 //
-// This uses the recommended Argon2 parameters.
+// This uses the recommended Argon2 parameters according to the OWASP Password
+// Storage Cheat Sheet. This also uses Argon2id as the Argon2 type and version
+// 0x13 as the Argon2 version.
 //
 // # Errors
 //
@@ -115,7 +117,8 @@ enum abcrypt_error_code abcrypt_encrypt(uint8_t *plaintext,
 // Encrypts `plaintext` with the specified Argon2 parameters and write to
 // `out`.
 //
-// This uses the default Argon2 type.
+// This uses Argon2id as the Argon2 type and version 0x13 as the Argon2
+// version.
 //
 // # Errors
 //
@@ -143,39 +146,6 @@ enum abcrypt_error_code abcrypt_encrypt_with_params(uint8_t *plaintext,
                                                     uint32_t time_cost,
                                                     uint32_t parallelism);
 
-// Encrypts `plaintext` with the specified Argon2 type and Argon2 parameters
-// and write to `out`.
-//
-// This uses the default Argon2 version.
-//
-// # Errors
-//
-// Returns an error if any of the following are true:
-//
-// - The Argon2 type is invalid.
-// - The Argon2 parameters are invalid.
-// - The Argon2 context is invalid.
-// - One of the parameters is null.
-//
-// # Safety
-//
-// Behavior is undefined if any of the following violates the safety conditions
-// of `slice::from_raw_parts`:
-//
-// - `plaintext` and `plaintext_len`.
-// - `passphrase` and `passphrase_len`.
-// - `out` and `out_len`.
-enum abcrypt_error_code abcrypt_encrypt_with_type(uint8_t *plaintext,
-                                                  uintptr_t plaintext_len,
-                                                  uint8_t *passphrase,
-                                                  uintptr_t passphrase_len,
-                                                  uint8_t *out,
-                                                  uintptr_t out_len,
-                                                  uint32_t argon2_type,
-                                                  uint32_t memory_cost,
-                                                  uint32_t time_cost,
-                                                  uint32_t parallelism);
-
 // Encrypts `plaintext` with the specified Argon2 type, Argon2 version and
 // Argon2 parameters and write to `out`.
 //
@@ -197,7 +167,7 @@ enum abcrypt_error_code abcrypt_encrypt_with_type(uint8_t *plaintext,
 // - `plaintext` and `plaintext_len`.
 // - `passphrase` and `passphrase_len`.
 // - `out` and `out_len`.
-enum abcrypt_error_code abcrypt_encrypt_with_version(uint8_t *plaintext,
+enum abcrypt_error_code abcrypt_encrypt_with_context(uint8_t *plaintext,
                                                      uintptr_t plaintext_len,
                                                      uint8_t *passphrase,
                                                      uintptr_t passphrase_len,

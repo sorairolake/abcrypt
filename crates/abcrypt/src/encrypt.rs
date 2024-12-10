@@ -23,8 +23,10 @@ pub struct Encryptor<'m> {
 impl<'m> Encryptor<'m> {
     /// Creates a new `Encryptor`.
     ///
-    /// This uses the [recommended Argon2 parameters] created by
-    /// [`Params::default`].
+    /// This uses the recommended Argon2 parameters according to the [OWASP
+    /// Password Storage Cheat Sheet] created by [`Params::default`]. This also
+    /// uses the Argon2 type created by [`Algorithm::default`] and the Argon2
+    /// version created by [`Version::default`].
     ///
     /// # Errors
     ///
@@ -41,7 +43,7 @@ impl<'m> Encryptor<'m> {
     /// let cipher = Encryptor::new(data, passphrase).unwrap();
     /// ```
     ///
-    /// [recommended Argon2 parameters]: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
+    /// [OWASP Password Storage Cheat Sheet]: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html#argon2id
     #[cfg(feature = "alloc")]
     #[inline]
     pub fn new(plaintext: &'m impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Self> {
@@ -50,7 +52,8 @@ impl<'m> Encryptor<'m> {
 
     /// Creates a new `Encryptor` with the specified [`Params`].
     ///
-    /// This uses the Argon2 type created by [`Algorithm::default`].
+    /// This uses the Argon2 type created by [`Algorithm::default`] and the
+    /// Argon2 version created by [`Version::default`].
     ///
     /// # Errors
     ///
@@ -73,43 +76,10 @@ impl<'m> Encryptor<'m> {
         passphrase: impl AsRef<[u8]>,
         params: Params,
     ) -> Result<Self> {
-        Self::with_type(plaintext, passphrase, Algorithm::default(), params)
-    }
-
-    /// Creates a new `Encryptor` with the specified [`Algorithm`] and
-    /// [`Params`].
-    ///
-    /// This uses the Argon2 version created by [`Version::default`].
-    ///
-    /// # Errors
-    ///
-    /// Returns [`Err`] if the Argon2 context is invalid.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// # use abcrypt::{
-    /// #     argon2::{Algorithm, Params},
-    /// #     Encryptor,
-    /// # };
-    /// #
-    /// let data = b"Hello, world!\n";
-    /// let passphrase = "passphrase";
-    ///
-    /// let params = Params::new(32, 3, 4, None).unwrap();
-    /// let cipher = Encryptor::with_type(data, passphrase, Algorithm::Argon2d, params).unwrap();
-    /// ```
-    #[inline]
-    pub fn with_type(
-        plaintext: &'m impl AsRef<[u8]>,
-        passphrase: impl AsRef<[u8]>,
-        argon2_type: Algorithm,
-        params: Params,
-    ) -> Result<Self> {
-        Self::with_version(
+        Self::with_context(
             plaintext,
             passphrase,
-            argon2_type,
+            Algorithm::default(),
             Version::default(),
             params,
         )
@@ -135,10 +105,10 @@ impl<'m> Encryptor<'m> {
     ///
     /// let params = Params::new(32, 3, 4, None).unwrap();
     /// let cipher =
-    ///     Encryptor::with_version(data, passphrase, Algorithm::Argon2i, Version::V0x10, params)
+    ///     Encryptor::with_context(data, passphrase, Algorithm::Argon2i, Version::V0x10, params)
     ///         .unwrap();
     /// ```
-    pub fn with_version(
+    pub fn with_context(
         plaintext: &'m impl AsRef<[u8]>,
         passphrase: impl AsRef<[u8]>,
         argon2_type: Algorithm,
@@ -283,8 +253,10 @@ impl<'m> Encryptor<'m> {
 
 /// Encrypts `plaintext` and into a newly allocated [`Vec`](alloc::vec::Vec).
 ///
-/// This uses the [recommended Argon2 parameters] created by
-/// [`Params::default`].
+/// This uses the recommended Argon2 parameters according to the [OWASP Password
+/// Storage Cheat Sheet] created by [`Params::default`]. This also uses the
+/// Argon2 type created by [`Algorithm::default`] and the Argon2 version created
+/// by [`Version::default`].
 ///
 /// This is a convenience function for using [`Encryptor::new`] and
 /// [`Encryptor::encrypt_to_vec`].
@@ -303,7 +275,7 @@ impl<'m> Encryptor<'m> {
 /// # assert_ne!(ciphertext, data);
 /// ```
 ///
-/// [recommended Argon2 parameters]: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
+/// [OWASP Password Storage Cheat Sheet]: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html#argon2id
 #[cfg(feature = "alloc")]
 #[inline]
 pub fn encrypt(
@@ -317,7 +289,8 @@ pub fn encrypt(
 /// Encrypts `plaintext` with the specified [`Params`] and into a newly
 /// allocated [`Vec`](alloc::vec::Vec).
 ///
-/// This uses the Argon2 type created by [`Algorithm::default`].
+/// This uses the Argon2 type created by [`Algorithm::default`] and the Argon2
+/// version created by [`Version::default`].
 ///
 /// This is a convenience function for using [`Encryptor::with_params`] and
 /// [`Encryptor::encrypt_to_vec`].
@@ -349,47 +322,10 @@ pub fn encrypt_with_params(
 }
 
 #[allow(clippy::module_name_repetitions)]
-/// Encrypts `plaintext` with the specified [`Algorithm`] and [`Params`] and
-/// into a newly allocated [`Vec`](alloc::vec::Vec).
-///
-/// This uses the Argon2 version created by [`Version::default`].
-///
-/// This is a convenience function for using [`Encryptor::with_type`] and
-/// [`Encryptor::encrypt_to_vec`].
-///
-/// # Errors
-///
-/// Returns [`Err`] if the Argon2 context is invalid.
-///
-/// # Examples
-///
-/// ```
-/// # use abcrypt::argon2::{Algorithm, Params};
-/// #
-/// let data = b"Hello, world!\n";
-/// let passphrase = "passphrase";
-///
-/// let params = Params::new(32, 3, 4, None).unwrap();
-/// let ciphertext =
-///     abcrypt::encrypt_with_type(data, passphrase, Algorithm::Argon2d, params).unwrap();
-/// # assert_ne!(ciphertext, data);
-/// ```
-#[cfg(feature = "alloc")]
-#[inline]
-pub fn encrypt_with_type(
-    plaintext: impl AsRef<[u8]>,
-    passphrase: impl AsRef<[u8]>,
-    argon2_type: Algorithm,
-    params: Params,
-) -> Result<alloc::vec::Vec<u8>> {
-    Encryptor::with_type(&plaintext, passphrase, argon2_type, params).map(|c| c.encrypt_to_vec())
-}
-
-#[allow(clippy::module_name_repetitions)]
 /// Encrypts `plaintext` with the specified [`Algorithm`], [`Version`] and
 /// [`Params`] and into a newly allocated [`Vec`](alloc::vec::Vec).
 ///
-/// This is a convenience function for using [`Encryptor::with_version`] and
+/// This is a convenience function for using [`Encryptor::with_context`] and
 /// [`Encryptor::encrypt_to_vec`].
 ///
 /// # Errors
@@ -406,19 +342,19 @@ pub fn encrypt_with_type(
 ///
 /// let params = Params::new(32, 3, 4, None).unwrap();
 /// let ciphertext =
-///     abcrypt::encrypt_with_version(data, passphrase, Algorithm::Argon2i, Version::V0x10, params)
+///     abcrypt::encrypt_with_context(data, passphrase, Algorithm::Argon2i, Version::V0x10, params)
 ///         .unwrap();
 /// # assert_ne!(ciphertext, data);
 /// ```
 #[cfg(feature = "alloc")]
 #[inline]
-pub fn encrypt_with_version(
+pub fn encrypt_with_context(
     plaintext: impl AsRef<[u8]>,
     passphrase: impl AsRef<[u8]>,
     argon2_type: Algorithm,
     argon2_version: Version,
     params: Params,
 ) -> Result<alloc::vec::Vec<u8>> {
-    Encryptor::with_version(&plaintext, passphrase, argon2_type, argon2_version, params)
+    Encryptor::with_context(&plaintext, passphrase, argon2_type, argon2_version, params)
         .map(|c| c.encrypt_to_vec())
 }

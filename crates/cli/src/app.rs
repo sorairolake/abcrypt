@@ -62,7 +62,7 @@ pub fn run() -> anyhow::Result<()> {
                     params::displayln(params.m_cost(), params.t_cost(), params.p_cost());
                 }
 
-                let ciphertext = abcrypt::encrypt_with_version(
+                let ciphertext = abcrypt::encrypt_with_context(
                     input,
                     passphrase,
                     arg.argon2_type.into(),

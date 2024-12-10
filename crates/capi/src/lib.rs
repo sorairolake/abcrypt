@@ -15,10 +15,7 @@ mod params;
 
 pub use crate::{
     decrypt::abcrypt_decrypt,
-    encrypt::{
-        abcrypt_encrypt, abcrypt_encrypt_with_params, abcrypt_encrypt_with_type,
-        abcrypt_encrypt_with_version,
-    },
+    encrypt::{abcrypt_encrypt, abcrypt_encrypt_with_context, abcrypt_encrypt_with_params},
     error::{abcrypt_error_message, abcrypt_error_message_out_len, ErrorCode},
     params::{
         abcrypt_params_free, abcrypt_params_memory_cost, abcrypt_params_new,

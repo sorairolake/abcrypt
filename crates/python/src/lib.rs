@@ -43,7 +43,9 @@ impl Format {
 
 /// Encrypts `plaintext` and into a newly allocated `bytes`.
 ///
-/// This uses the recommended Argon2 parameters.
+/// This uses the recommended Argon2 parameters according to the OWASP Password
+/// Storage Cheat Sheet. This also uses Argon2id as the Argon2 type and version
+/// 0x13 as the Argon2 version.
 ///
 /// # Errors
 ///
@@ -58,7 +60,8 @@ pub fn encrypt<'a>(plaintext: &[u8], passphrase: &[u8]) -> PyResult<Cow<'a, [u8]
 /// Encrypts `plaintext` with the specified Argon2 parameters and into a newly
 /// allocated `bytes`.
 ///
-/// This uses the default Argon2 type.
+/// This uses Argon2id as the Argon2 type and version 0x13 as the Argon2
+/// version.
 ///
 /// # Errors
 ///
@@ -82,42 +85,6 @@ pub fn encrypt_with_params<'a>(
     Ok(ciphertext.into())
 }
 
-/// Encrypts `plaintext` with the specified Argon2 type and Argon2 parameters
-/// and into a newly allocated `bytes`.
-///
-/// This uses the default Argon2 version.
-///
-/// # Errors
-///
-/// Returns an error if any of the following are true:
-///
-/// - The Argon2 type is invalid.
-/// - The Argon2 parameters are invalid.
-/// - The Argon2 context is invalid.
-#[inline]
-#[pyfunction]
-pub fn encrypt_with_type<'a>(
-    plaintext: &[u8],
-    passphrase: &[u8],
-    argon2_type: u32,
-    memory_cost: u32,
-    time_cost: u32,
-    parallelism: u32,
-) -> PyResult<Cow<'a, [u8]>> {
-    let argon2_type = match argon2_type {
-        0 => Ok(Algorithm::Argon2d),
-        1 => Ok(Algorithm::Argon2i),
-        2 => Ok(Algorithm::Argon2id),
-        t => Err(abcrypt::Error::InvalidArgon2Type(t)),
-    }
-    .map_err(Error::from)?;
-    let params = argon2::Params::new(memory_cost, time_cost, parallelism, None)
-        .map_err(|e| PyValueError::new_err(e.to_string()))?;
-    let ciphertext = abcrypt::encrypt_with_type(plaintext, passphrase, argon2_type, params)
-        .map_err(Error::from)?;
-    Ok(ciphertext.into())
-}
-
 /// Encrypts `plaintext` with the specified Argon2 type, Argon2 version and
 /// Argon2 parameters and into a newly allocated `bytes`.
 ///
@@ -131,7 +98,7 @@ pub fn encrypt_with_type<'a>(
 /// - The Argon2 context is invalid.
 #[inline]
 #[pyfunction]
-pub fn encrypt_with_version<'a>(
+pub fn encrypt_with_context<'a>(
     plaintext: &[u8],
     passphrase: &[u8],
     argon2_type: u32,
@@ -152,7 +119,7 @@ pub fn encrypt_with_version<'a>(
     let params = argon2::Params::new(memory_cost, time_cost, parallelism, None)
         .map_err(|e| PyValueError::new_err(e.to_string()))?;
     let ciphertext =
-        abcrypt::encrypt_with_version(plaintext, passphrase, argon2_type, argon2_version, params)
+        abcrypt::encrypt_with_context(plaintext, passphrase, argon2_type, argon2_version, params)
             .map_err(Error::from)?;
     Ok(ciphertext.into())
 }
@@ -185,8 +152,7 @@ pub fn decrypt<'a>(ciphertext: &[u8], passphrase: &[u8]) -> PyResult<Cow<'a, [u8
 fn abcrypt_py(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(encrypt, m)?)?;
     m.add_function(wrap_pyfunction!(encrypt_with_params, m)?)?;
-    m.add_function(wrap_pyfunction!(encrypt_with_type, m)?)?;
-    m.add_function(wrap_pyfunction!(encrypt_with_version, m)?)?;
+    m.add_function(wrap_pyfunction!(encrypt_with_context, m)?)?;
     m.add_function(wrap_pyfunction!(decrypt, m)?)?;
     m.add_class::<Params>()?;
     m.add_class::<Format>()?;

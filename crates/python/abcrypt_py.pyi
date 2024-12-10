@@ -12,15 +12,7 @@ def encrypt_with_params(
     time_cost: int,
     parallelism: int,
 ) -> bytes: ...
-def encrypt_with_type(
-    plaintext: bytes,
-    passphrase: bytes,
-    argon2_type: int,
-    memory_cost: int,
-    time_cost: int,
-    parallelism: int,
-) -> bytes: ...
-def encrypt_with_version(
+def encrypt_with_context(
     plaintext: bytes,
     passphrase: bytes,
     argon2_type: int,

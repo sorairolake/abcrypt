@@ -81,7 +81,7 @@ def main() -> None:
     plaintext = args.input.read()
 
     passphrase = bytes(getpass.getpass("Enter passphrase: "), encoding="utf-8")
-    ciphertext = abcrypt_py.encrypt_with_version(
+    ciphertext = abcrypt_py.encrypt_with_context(
         plaintext,
         passphrase,
         args.argon2_type,

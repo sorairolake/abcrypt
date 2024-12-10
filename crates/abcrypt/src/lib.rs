@@ -129,7 +129,7 @@ pub use crate::{
 #[cfg(feature = "alloc")]
 pub use crate::{
     decrypt::decrypt,
-    encrypt::{encrypt, encrypt_with_params, encrypt_with_type, encrypt_with_version},
+    encrypt::{encrypt, encrypt_with_context, encrypt_with_params},
 };
 
 #[cfg(not(feature = "alloc"))]

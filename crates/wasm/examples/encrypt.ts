@@ -38,7 +38,7 @@ const plaintext = Deno.readFileSync(args[0]);
 
 const passphrase = new TextEncoder()
   .encode(cli.promptSecret("Enter passphrase: ")!);
-const ciphertext = abcrypt.encryptWithVersion(
+const ciphertext = abcrypt.encryptWithContext(
   plaintext,
   passphrase,
   options.argon2Type,
