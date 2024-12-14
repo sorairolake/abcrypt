@@ -19,3 +19,9 @@ ecosystem.
 {github-url}/sorairolake/abcrypt-go[abcrypt-go]::
 
   A simple, modern and secure file encryption library for Go.
+
+=== Zig
+
+{github-url}/sorairolake/abcrypt-zig[abcrypt-zig]::
+
+  A simple, modern and secure file encryption library for Zig.
