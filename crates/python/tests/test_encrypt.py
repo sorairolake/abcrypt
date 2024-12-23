@@ -52,9 +52,114 @@ def test_success_with_params() -> None:
     assert plaintext == TEST_DATA
 
 
-def test_success_with_context() -> None:
+def test_success_with_context_to_argon2d_and_v0x10() -> None:
     ciphertext = abcrypt_py.encrypt_with_context(
-        TEST_DATA, PASSPHRASE, 1, 0x10, 32, 3, 4
+        TEST_DATA, PASSPHRASE, 0, 0x10, 47104, 1, 1
+    )
+    assert ciphertext != TEST_DATA
+    assert (
+        len(ciphertext)
+        == len(TEST_DATA)
+        + abcrypt_py.Format.HEADER_SIZE
+        + abcrypt_py.Format.TAG_SIZE
+    )
+
+    params = abcrypt_py.Params(ciphertext)
+    assert params.memory_cost == 47104
+    assert params.time_cost == 1
+    assert params.parallelism == 1
+
+    plaintext = abcrypt_py.decrypt(ciphertext, PASSPHRASE)
+    assert plaintext == TEST_DATA
+
+
+def test_success_with_context_to_argon2d_and_v0x13() -> None:
+    ciphertext = abcrypt_py.encrypt_with_context(
+        TEST_DATA, PASSPHRASE, 0, 0x13, 19456, 2, 1
+    )
+    assert ciphertext != TEST_DATA
+    assert (
+        len(ciphertext)
+        == len(TEST_DATA)
+        + abcrypt_py.Format.HEADER_SIZE
+        + abcrypt_py.Format.TAG_SIZE
+    )
+
+    params = abcrypt_py.Params(ciphertext)
+    assert params.memory_cost == 19456
+    assert params.time_cost == 2
+    assert params.parallelism == 1
+
+    plaintext = abcrypt_py.decrypt(ciphertext, PASSPHRASE)
+    assert plaintext == TEST_DATA
+
+
+def test_success_with_context_to_argon2i_and_v0x10() -> None:
+    ciphertext = abcrypt_py.encrypt_with_context(
+        TEST_DATA, PASSPHRASE, 1, 0x10, 12288, 3, 1
+    )
+    assert ciphertext != TEST_DATA
+    assert (
+        len(ciphertext)
+        == len(TEST_DATA)
+        + abcrypt_py.Format.HEADER_SIZE
+        + abcrypt_py.Format.TAG_SIZE
+    )
+
+    params = abcrypt_py.Params(ciphertext)
+    assert params.memory_cost == 12288
+    assert params.time_cost == 3
+    assert params.parallelism == 1
+
+    plaintext = abcrypt_py.decrypt(ciphertext, PASSPHRASE)
+    assert plaintext == TEST_DATA
+
+
+def test_success_with_context_to_argon2i_and_v0x13() -> None:
+    ciphertext = abcrypt_py.encrypt_with_context(
+        TEST_DATA, PASSPHRASE, 1, 0x13, 9216, 4, 1
+    )
+    assert ciphertext != TEST_DATA
+    assert (
+        len(ciphertext)
+        == len(TEST_DATA)
+        + abcrypt_py.Format.HEADER_SIZE
+        + abcrypt_py.Format.TAG_SIZE
+    )
+
+    params = abcrypt_py.Params(ciphertext)
+    assert params.memory_cost == 9216
+    assert params.time_cost == 4
+    assert params.parallelism == 1
+
+    plaintext = abcrypt_py.decrypt(ciphertext, PASSPHRASE)
+    assert plaintext == TEST_DATA
+
+
+def test_success_with_context_to_argon2id_and_v0x10() -> None:
+    ciphertext = abcrypt_py.encrypt_with_context(
+        TEST_DATA, PASSPHRASE, 2, 0x10, 7168, 5, 1
+    )
+    assert ciphertext != TEST_DATA
+    assert (
+        len(ciphertext)
+        == len(TEST_DATA)
+        + abcrypt_py.Format.HEADER_SIZE
+        + abcrypt_py.Format.TAG_SIZE
+    )
+
+    params = abcrypt_py.Params(ciphertext)
+    assert params.memory_cost == 7168
+    assert params.time_cost == 5
+    assert params.parallelism == 1
+
+    plaintext = abcrypt_py.decrypt(ciphertext, PASSPHRASE)
+    assert plaintext == TEST_DATA
+
+
+def test_success_with_context_to_argon2id_and_v0x13() -> None:
+    ciphertext = abcrypt_py.encrypt_with_context(
+        TEST_DATA, PASSPHRASE, 2, 0x13, 32, 3, 4
     )
     assert ciphertext != TEST_DATA
     assert (

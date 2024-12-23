@@ -55,24 +55,132 @@ fn success_with_params() {
 
 #[wasm_bindgen_test]
 fn success_with_context() {
-    let ciphertext = abcrypt_wasm::encrypt_with_context(TEST_DATA, PASSPHRASE, 1, 0x10, 32, 3, 4)
-        .map_err(JsValue::from)
-        .unwrap();
-    assert_ne!(ciphertext, TEST_DATA);
-    assert_eq!(
-        ciphertext.len(),
-        TEST_DATA.len() + abcrypt_wasm::header_size() + abcrypt_wasm::tag_size()
-    );
+    {
+        let ciphertext =
+            abcrypt_wasm::encrypt_with_context(TEST_DATA, PASSPHRASE, 0, 0x10, 47104, 1, 1)
+                .map_err(JsValue::from)
+                .unwrap();
+        assert_ne!(ciphertext, TEST_DATA);
+        assert_eq!(
+            ciphertext.len(),
+            TEST_DATA.len() + abcrypt_wasm::header_size() + abcrypt_wasm::tag_size()
+        );
 
-    let params = Params::new(&ciphertext).map_err(JsValue::from).unwrap();
-    assert_eq!(params.memory_cost(), 32);
-    assert_eq!(params.time_cost(), 3);
-    assert_eq!(params.parallelism(), 4);
+        let params = Params::new(&ciphertext).map_err(JsValue::from).unwrap();
+        assert_eq!(params.memory_cost(), 47104);
+        assert_eq!(params.time_cost(), 1);
+        assert_eq!(params.parallelism(), 1);
 
-    let plaintext = abcrypt_wasm::decrypt(&ciphertext, PASSPHRASE)
-        .map_err(JsValue::from)
-        .unwrap();
-    assert_eq!(plaintext, TEST_DATA);
+        let plaintext = abcrypt_wasm::decrypt(&ciphertext, PASSPHRASE)
+            .map_err(JsValue::from)
+            .unwrap();
+        assert_eq!(plaintext, TEST_DATA);
+    }
+    {
+        let ciphertext =
+            abcrypt_wasm::encrypt_with_context(TEST_DATA, PASSPHRASE, 0, 0x13, 19456, 2, 1)
+                .map_err(JsValue::from)
+                .unwrap();
+        assert_ne!(ciphertext, TEST_DATA);
+        assert_eq!(
+            ciphertext.len(),
+            TEST_DATA.len() + abcrypt_wasm::header_size() + abcrypt_wasm::tag_size()
+        );
+
+        let params = Params::new(&ciphertext).map_err(JsValue::from).unwrap();
+        assert_eq!(params.memory_cost(), 19456);
+        assert_eq!(params.time_cost(), 2);
+        assert_eq!(params.parallelism(), 1);
+
+        let plaintext = abcrypt_wasm::decrypt(&ciphertext, PASSPHRASE)
+            .map_err(JsValue::from)
+            .unwrap();
+        assert_eq!(plaintext, TEST_DATA);
+    }
+    {
+        let ciphertext =
+            abcrypt_wasm::encrypt_with_context(TEST_DATA, PASSPHRASE, 1, 0x10, 12288, 3, 1)
+                .map_err(JsValue::from)
+                .unwrap();
+        assert_ne!(ciphertext, TEST_DATA);
+        assert_eq!(
+            ciphertext.len(),
+            TEST_DATA.len() + abcrypt_wasm::header_size() + abcrypt_wasm::tag_size()
+        );
+
+        let params = Params::new(&ciphertext).map_err(JsValue::from).unwrap();
+        assert_eq!(params.memory_cost(), 12288);
+        assert_eq!(params.time_cost(), 3);
+        assert_eq!(params.parallelism(), 1);
+
+        let plaintext = abcrypt_wasm::decrypt(&ciphertext, PASSPHRASE)
+            .map_err(JsValue::from)
+            .unwrap();
+        assert_eq!(plaintext, TEST_DATA);
+    }
+    {
+        let ciphertext =
+            abcrypt_wasm::encrypt_with_context(TEST_DATA, PASSPHRASE, 1, 0x13, 9216, 4, 1)
+                .map_err(JsValue::from)
+                .unwrap();
+        assert_ne!(ciphertext, TEST_DATA);
+        assert_eq!(
+            ciphertext.len(),
+            TEST_DATA.len() + abcrypt_wasm::header_size() + abcrypt_wasm::tag_size()
+        );
+
+        let params = Params::new(&ciphertext).map_err(JsValue::from).unwrap();
+        assert_eq!(params.memory_cost(), 9216);
+        assert_eq!(params.time_cost(), 4);
+        assert_eq!(params.parallelism(), 1);
+
+        let plaintext = abcrypt_wasm::decrypt(&ciphertext, PASSPHRASE)
+            .map_err(JsValue::from)
+            .unwrap();
+        assert_eq!(plaintext, TEST_DATA);
+    }
+    {
+        let ciphertext =
+            abcrypt_wasm::encrypt_with_context(TEST_DATA, PASSPHRASE, 2, 0x10, 7168, 5, 1)
+                .map_err(JsValue::from)
+                .unwrap();
+        assert_ne!(ciphertext, TEST_DATA);
+        assert_eq!(
+            ciphertext.len(),
+            TEST_DATA.len() + abcrypt_wasm::header_size() + abcrypt_wasm::tag_size()
+        );
+
+        let params = Params::new(&ciphertext).map_err(JsValue::from).unwrap();
+        assert_eq!(params.memory_cost(), 7168);
+        assert_eq!(params.time_cost(), 5);
+        assert_eq!(params.parallelism(), 1);
+
+        let plaintext = abcrypt_wasm::decrypt(&ciphertext, PASSPHRASE)
+            .map_err(JsValue::from)
+            .unwrap();
+        assert_eq!(plaintext, TEST_DATA);
+    }
+    {
+        let ciphertext =
+            abcrypt_wasm::encrypt_with_context(TEST_DATA, PASSPHRASE, 2, 0x10, 32, 3, 4)
+                .map_err(JsValue::from)
+                .unwrap();
+        assert_ne!(ciphertext, TEST_DATA);
+        assert_eq!(
+            ciphertext.len(),
+            TEST_DATA.len() + abcrypt_wasm::header_size() + abcrypt_wasm::tag_size()
+        );
+
+        let params = Params::new(&ciphertext).map_err(JsValue::from).unwrap();
+        assert_eq!(params.memory_cost(), 32);
+        assert_eq!(params.time_cost(), 3);
+        assert_eq!(params.parallelism(), 4);
+
+        let plaintext = abcrypt_wasm::decrypt(&ciphertext, PASSPHRASE)
+            .map_err(JsValue::from)
+            .unwrap();
+        assert_eq!(plaintext, TEST_DATA);
+    }
 }
 
 #[wasm_bindgen_test]

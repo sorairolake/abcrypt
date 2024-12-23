@@ -36,7 +36,7 @@ impl Params {
     /// ```
     /// # use abcrypt::Params;
     /// #
-    /// let ciphertext = include_bytes!("../tests/data/v1/data.txt.abcrypt");
+    /// let ciphertext = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
     ///
     /// assert!(Params::new(ciphertext).is_ok());
     /// ```
@@ -56,7 +56,7 @@ impl Params {
     /// ```
     /// # use abcrypt::Params;
     /// #
-    /// let ciphertext = include_bytes!("../tests/data/v1/data.txt.abcrypt");
+    /// let ciphertext = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
     ///
     /// let params = Params::new(ciphertext).unwrap();
     /// assert_eq!(params.memory_cost(), 32);
@@ -74,7 +74,7 @@ impl Params {
     /// ```
     /// # use abcrypt::Params;
     /// #
-    /// let ciphertext = include_bytes!("../tests/data/v1/data.txt.abcrypt");
+    /// let ciphertext = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
     ///
     /// let params = Params::new(ciphertext).unwrap();
     /// assert_eq!(params.time_cost(), 3);
@@ -92,7 +92,7 @@ impl Params {
     /// ```
     /// # use abcrypt::Params;
     /// #
-    /// let ciphertext = include_bytes!("../tests/data/v1/data.txt.abcrypt");
+    /// let ciphertext = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
     ///
     /// let params = Params::new(ciphertext).unwrap();
     /// assert_eq!(params.parallelism(), 4);

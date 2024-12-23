@@ -8,14 +8,61 @@ use wasm_bindgen_test::wasm_bindgen_test;
 const PASSPHRASE: &[u8] = b"passphrase";
 const TEST_DATA: &[u8] = include_bytes!("data/data.txt");
 // Generated using `abcrypt` crate version 0.4.0.
-const TEST_DATA_ENC: &[u8] = include_bytes!("data/v1/data.txt.abcrypt");
+const TEST_DATA_ENC: &[u8] = include_bytes!("data/v1/argon2id/v0x13/data.txt.abcrypt");
 
 #[wasm_bindgen_test]
 fn success() {
-    let plaintext = abcrypt_wasm::decrypt(TEST_DATA_ENC, PASSPHRASE)
+    {
+        let plaintext = abcrypt_wasm::decrypt(
+            include_bytes!("data/v1/argon2d/v0x10/data.txt.abcrypt"),
+            PASSPHRASE,
+        )
         .map_err(JsValue::from)
         .unwrap();
-    assert_eq!(plaintext, TEST_DATA);
+        assert_eq!(plaintext, TEST_DATA);
+    }
+    {
+        let plaintext = abcrypt_wasm::decrypt(
+            include_bytes!("data/v1/argon2d/v0x13/data.txt.abcrypt"),
+            PASSPHRASE,
+        )
+        .map_err(JsValue::from)
+        .unwrap();
+        assert_eq!(plaintext, TEST_DATA);
+    }
+    {
+        let plaintext = abcrypt_wasm::decrypt(
+            include_bytes!("data/v1/argon2i/v0x10/data.txt.abcrypt"),
+            PASSPHRASE,
+        )
+        .map_err(JsValue::from)
+        .unwrap();
+        assert_eq!(plaintext, TEST_DATA);
+    }
+    {
+        let plaintext = abcrypt_wasm::decrypt(
+            include_bytes!("data/v1/argon2i/v0x13/data.txt.abcrypt"),
+            PASSPHRASE,
+        )
+        .map_err(JsValue::from)
+        .unwrap();
+        assert_eq!(plaintext, TEST_DATA);
+    }
+    {
+        let plaintext = abcrypt_wasm::decrypt(
+            include_bytes!("data/v1/argon2id/v0x10/data.txt.abcrypt"),
+            PASSPHRASE,
+        )
+        .map_err(JsValue::from)
+        .unwrap();
+        assert_eq!(plaintext, TEST_DATA);
+    }
+    {
+        let plaintext = abcrypt_wasm::decrypt(TEST_DATA_ENC, PASSPHRASE)
+            .map_err(JsValue::from)
+            .unwrap();
+        assert_eq!(plaintext, TEST_DATA);
+    }
 }
 
 #[wasm_bindgen_test]

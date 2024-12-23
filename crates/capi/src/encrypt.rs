@@ -315,50 +315,282 @@ mod tests {
 
     #[test]
     fn success_with_context() {
-        let mut plaintext: [u8; TEST_DATA.len()] = TEST_DATA.try_into().unwrap();
-        let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
-        let mut ciphertext = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
-        let code = unsafe {
-            abcrypt_encrypt_with_context(
-                NonNull::new(plaintext.as_mut_ptr()),
-                plaintext.len(),
-                NonNull::new(passphrase.as_mut_ptr()),
-                passphrase.len(),
-                NonNull::new(ciphertext.as_mut_ptr()),
-                ciphertext.len(),
-                1,
-                0x10,
-                32,
-                3,
-                4,
-            )
-        };
-        assert_eq!(code, ErrorCode::Ok);
-        assert_ne!(ciphertext, TEST_DATA);
+        {
+            let mut plaintext: [u8; TEST_DATA.len()] = TEST_DATA.try_into().unwrap();
+            let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
+            let mut ciphertext = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
+            let code = unsafe {
+                abcrypt_encrypt_with_context(
+                    NonNull::new(plaintext.as_mut_ptr()),
+                    plaintext.len(),
+                    NonNull::new(passphrase.as_mut_ptr()),
+                    passphrase.len(),
+                    NonNull::new(ciphertext.as_mut_ptr()),
+                    ciphertext.len(),
+                    0,
+                    0x10,
+                    47104,
+                    1,
+                    1,
+                )
+            };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_ne!(ciphertext, TEST_DATA);
 
-        let argon2 = Argon2::new(ciphertext).unwrap();
-        assert_eq!(argon2.variant(), Algorithm::Argon2i);
-        assert_eq!(argon2.version(), Version::V0x10);
+            let argon2 = Argon2::new(ciphertext).unwrap();
+            assert_eq!(argon2.variant(), Algorithm::Argon2d);
+            assert_eq!(argon2.version(), Version::V0x10);
 
-        let params = abcrypt::Params::new(ciphertext).unwrap();
-        assert_eq!(params.memory_cost(), 32);
-        assert_eq!(params.time_cost(), 3);
-        assert_eq!(params.parallelism(), 4);
+            let params = abcrypt::Params::new(ciphertext).unwrap();
+            assert_eq!(params.memory_cost(), 47104);
+            assert_eq!(params.time_cost(), 1);
+            assert_eq!(params.parallelism(), 1);
 
-        let mut plaintext = [u8::default(); TEST_DATA.len()];
-        assert_ne!(plaintext, TEST_DATA);
-        let code = unsafe {
-            abcrypt_decrypt(
-                NonNull::new(ciphertext.as_mut_ptr()),
-                ciphertext.len(),
-                NonNull::new(passphrase.as_mut_ptr()),
-                passphrase.len(),
-                NonNull::new(plaintext.as_mut_ptr()),
-                plaintext.len(),
-            )
-        };
-        assert_eq!(code, ErrorCode::Ok);
-        assert_eq!(plaintext, TEST_DATA);
+            let mut plaintext = [u8::default(); TEST_DATA.len()];
+            assert_ne!(plaintext, TEST_DATA);
+            let code = unsafe {
+                abcrypt_decrypt(
+                    NonNull::new(ciphertext.as_mut_ptr()),
+                    ciphertext.len(),
+                    NonNull::new(passphrase.as_mut_ptr()),
+                    passphrase.len(),
+                    NonNull::new(plaintext.as_mut_ptr()),
+                    plaintext.len(),
+                )
+            };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(plaintext, TEST_DATA);
+        }
+        {
+            let mut plaintext: [u8; TEST_DATA.len()] = TEST_DATA.try_into().unwrap();
+            let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
+            let mut ciphertext = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
+            let code = unsafe {
+                abcrypt_encrypt_with_context(
+                    NonNull::new(plaintext.as_mut_ptr()),
+                    plaintext.len(),
+                    NonNull::new(passphrase.as_mut_ptr()),
+                    passphrase.len(),
+                    NonNull::new(ciphertext.as_mut_ptr()),
+                    ciphertext.len(),
+                    0,
+                    0x13,
+                    19456,
+                    2,
+                    1,
+                )
+            };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_ne!(ciphertext, TEST_DATA);
+
+            let argon2 = Argon2::new(ciphertext).unwrap();
+            assert_eq!(argon2.variant(), Algorithm::Argon2d);
+            assert_eq!(argon2.version(), Version::V0x13);
+
+            let params = abcrypt::Params::new(ciphertext).unwrap();
+            assert_eq!(params.memory_cost(), 19456);
+            assert_eq!(params.time_cost(), 2);
+            assert_eq!(params.parallelism(), 1);
+
+            let mut plaintext = [u8::default(); TEST_DATA.len()];
+            assert_ne!(plaintext, TEST_DATA);
+            let code = unsafe {
+                abcrypt_decrypt(
+                    NonNull::new(ciphertext.as_mut_ptr()),
+                    ciphertext.len(),
+                    NonNull::new(passphrase.as_mut_ptr()),
+                    passphrase.len(),
+                    NonNull::new(plaintext.as_mut_ptr()),
+                    plaintext.len(),
+                )
+            };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(plaintext, TEST_DATA);
+        }
+        {
+            let mut plaintext: [u8; TEST_DATA.len()] = TEST_DATA.try_into().unwrap();
+            let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
+            let mut ciphertext = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
+            let code = unsafe {
+                abcrypt_encrypt_with_context(
+                    NonNull::new(plaintext.as_mut_ptr()),
+                    plaintext.len(),
+                    NonNull::new(passphrase.as_mut_ptr()),
+                    passphrase.len(),
+                    NonNull::new(ciphertext.as_mut_ptr()),
+                    ciphertext.len(),
+                    1,
+                    0x10,
+                    12288,
+                    3,
+                    1,
+                )
+            };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_ne!(ciphertext, TEST_DATA);
+
+            let argon2 = Argon2::new(ciphertext).unwrap();
+            assert_eq!(argon2.variant(), Algorithm::Argon2i);
+            assert_eq!(argon2.version(), Version::V0x10);
+
+            let params = abcrypt::Params::new(ciphertext).unwrap();
+            assert_eq!(params.memory_cost(), 12288);
+            assert_eq!(params.time_cost(), 3);
+            assert_eq!(params.parallelism(), 1);
+
+            let mut plaintext = [u8::default(); TEST_DATA.len()];
+            assert_ne!(plaintext, TEST_DATA);
+            let code = unsafe {
+                abcrypt_decrypt(
+                    NonNull::new(ciphertext.as_mut_ptr()),
+                    ciphertext.len(),
+                    NonNull::new(passphrase.as_mut_ptr()),
+                    passphrase.len(),
+                    NonNull::new(plaintext.as_mut_ptr()),
+                    plaintext.len(),
+                )
+            };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(plaintext, TEST_DATA);
+        }
+        {
+            let mut plaintext: [u8; TEST_DATA.len()] = TEST_DATA.try_into().unwrap();
+            let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
+            let mut ciphertext = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
+            let code = unsafe {
+                abcrypt_encrypt_with_context(
+                    NonNull::new(plaintext.as_mut_ptr()),
+                    plaintext.len(),
+                    NonNull::new(passphrase.as_mut_ptr()),
+                    passphrase.len(),
+                    NonNull::new(ciphertext.as_mut_ptr()),
+                    ciphertext.len(),
+                    1,
+                    0x13,
+                    9216,
+                    4,
+                    1,
+                )
+            };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_ne!(ciphertext, TEST_DATA);
+
+            let argon2 = Argon2::new(ciphertext).unwrap();
+            assert_eq!(argon2.variant(), Algorithm::Argon2i);
+            assert_eq!(argon2.version(), Version::V0x13);
+
+            let params = abcrypt::Params::new(ciphertext).unwrap();
+            assert_eq!(params.memory_cost(), 9216);
+            assert_eq!(params.time_cost(), 4);
+            assert_eq!(params.parallelism(), 1);
+
+            let mut plaintext = [u8::default(); TEST_DATA.len()];
+            assert_ne!(plaintext, TEST_DATA);
+            let code = unsafe {
+                abcrypt_decrypt(
+                    NonNull::new(ciphertext.as_mut_ptr()),
+                    ciphertext.len(),
+                    NonNull::new(passphrase.as_mut_ptr()),
+                    passphrase.len(),
+                    NonNull::new(plaintext.as_mut_ptr()),
+                    plaintext.len(),
+                )
+            };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(plaintext, TEST_DATA);
+        }
+        {
+            let mut plaintext: [u8; TEST_DATA.len()] = TEST_DATA.try_into().unwrap();
+            let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
+            let mut ciphertext = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
+            let code = unsafe {
+                abcrypt_encrypt_with_context(
+                    NonNull::new(plaintext.as_mut_ptr()),
+                    plaintext.len(),
+                    NonNull::new(passphrase.as_mut_ptr()),
+                    passphrase.len(),
+                    NonNull::new(ciphertext.as_mut_ptr()),
+                    ciphertext.len(),
+                    2,
+                    0x10,
+                    7168,
+                    5,
+                    1,
+                )
+            };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_ne!(ciphertext, TEST_DATA);
+
+            let argon2 = Argon2::new(ciphertext).unwrap();
+            assert_eq!(argon2.variant(), Algorithm::Argon2id);
+            assert_eq!(argon2.version(), Version::V0x10);
+
+            let params = abcrypt::Params::new(ciphertext).unwrap();
+            assert_eq!(params.memory_cost(), 7168);
+            assert_eq!(params.time_cost(), 5);
+            assert_eq!(params.parallelism(), 1);
+
+            let mut plaintext = [u8::default(); TEST_DATA.len()];
+            assert_ne!(plaintext, TEST_DATA);
+            let code = unsafe {
+                abcrypt_decrypt(
+                    NonNull::new(ciphertext.as_mut_ptr()),
+                    ciphertext.len(),
+                    NonNull::new(passphrase.as_mut_ptr()),
+                    passphrase.len(),
+                    NonNull::new(plaintext.as_mut_ptr()),
+                    plaintext.len(),
+                )
+            };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(plaintext, TEST_DATA);
+        }
+        {
+            let mut plaintext: [u8; TEST_DATA.len()] = TEST_DATA.try_into().unwrap();
+            let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
+            let mut ciphertext = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
+            let code = unsafe {
+                abcrypt_encrypt_with_context(
+                    NonNull::new(plaintext.as_mut_ptr()),
+                    plaintext.len(),
+                    NonNull::new(passphrase.as_mut_ptr()),
+                    passphrase.len(),
+                    NonNull::new(ciphertext.as_mut_ptr()),
+                    ciphertext.len(),
+                    2,
+                    0x13,
+                    32,
+                    3,
+                    4,
+                )
+            };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_ne!(ciphertext, TEST_DATA);
+
+            let argon2 = Argon2::new(ciphertext).unwrap();
+            assert_eq!(argon2.variant(), Algorithm::Argon2id);
+            assert_eq!(argon2.version(), Version::V0x13);
+
+            let params = abcrypt::Params::new(ciphertext).unwrap();
+            assert_eq!(params.memory_cost(), 32);
+            assert_eq!(params.time_cost(), 3);
+            assert_eq!(params.parallelism(), 4);
+
+            let mut plaintext = [u8::default(); TEST_DATA.len()];
+            assert_ne!(plaintext, TEST_DATA);
+            let code = unsafe {
+                abcrypt_decrypt(
+                    NonNull::new(ciphertext.as_mut_ptr()),
+                    ciphertext.len(),
+                    NonNull::new(passphrase.as_mut_ptr()),
+                    passphrase.len(),
+                    NonNull::new(plaintext.as_mut_ptr()),
+                    plaintext.len(),
+                )
+            };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(plaintext, TEST_DATA);
+        }
     }
 
     #[test]

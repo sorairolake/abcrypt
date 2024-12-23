@@ -81,26 +81,128 @@ mod tests {
     const PASSPHRASE: &str = "passphrase";
     const TEST_DATA: &[u8] = include_bytes!("../tests/data/data.txt");
     // Generated using `abcrypt` crate version 0.4.0.
-    const TEST_DATA_ENC: &[u8] = include_bytes!("../tests/data/v1/data.txt.abcrypt");
+    const TEST_DATA_ENC: &[u8] = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
 
     #[test]
     fn success() {
-        let mut ciphertext: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
-        let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
-        let mut plaintext = [u8::default(); TEST_DATA.len()];
-        assert_ne!(plaintext, TEST_DATA);
-        let code = unsafe {
-            abcrypt_decrypt(
-                NonNull::new(ciphertext.as_mut_ptr()),
-                ciphertext.len(),
-                NonNull::new(passphrase.as_mut_ptr()),
-                passphrase.len(),
-                NonNull::new(plaintext.as_mut_ptr()),
-                plaintext.len(),
-            )
-        };
-        assert_eq!(code, ErrorCode::Ok);
-        assert_eq!(plaintext, TEST_DATA);
+        {
+            const TEST_DATA_ENC: &[u8] =
+                include_bytes!("../tests/data/v1/argon2d/v0x10/data.txt.abcrypt");
+            let mut ciphertext: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
+            let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
+            let mut plaintext = [u8::default(); TEST_DATA.len()];
+            assert_ne!(plaintext, TEST_DATA);
+            let code = unsafe {
+                abcrypt_decrypt(
+                    NonNull::new(ciphertext.as_mut_ptr()),
+                    ciphertext.len(),
+                    NonNull::new(passphrase.as_mut_ptr()),
+                    passphrase.len(),
+                    NonNull::new(plaintext.as_mut_ptr()),
+                    plaintext.len(),
+                )
+            };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(plaintext, TEST_DATA);
+        }
+        {
+            const TEST_DATA_ENC: &[u8] =
+                include_bytes!("../tests/data/v1/argon2d/v0x13/data.txt.abcrypt");
+            let mut ciphertext: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
+            let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
+            let mut plaintext = [u8::default(); TEST_DATA.len()];
+            assert_ne!(plaintext, TEST_DATA);
+            let code = unsafe {
+                abcrypt_decrypt(
+                    NonNull::new(ciphertext.as_mut_ptr()),
+                    ciphertext.len(),
+                    NonNull::new(passphrase.as_mut_ptr()),
+                    passphrase.len(),
+                    NonNull::new(plaintext.as_mut_ptr()),
+                    plaintext.len(),
+                )
+            };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(plaintext, TEST_DATA);
+        }
+        {
+            const TEST_DATA_ENC: &[u8] =
+                include_bytes!("../tests/data/v1/argon2i/v0x10/data.txt.abcrypt");
+            let mut ciphertext: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
+            let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
+            let mut plaintext = [u8::default(); TEST_DATA.len()];
+            assert_ne!(plaintext, TEST_DATA);
+            let code = unsafe {
+                abcrypt_decrypt(
+                    NonNull::new(ciphertext.as_mut_ptr()),
+                    ciphertext.len(),
+                    NonNull::new(passphrase.as_mut_ptr()),
+                    passphrase.len(),
+                    NonNull::new(plaintext.as_mut_ptr()),
+                    plaintext.len(),
+                )
+            };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(plaintext, TEST_DATA);
+        }
+        {
+            const TEST_DATA_ENC: &[u8] =
+                include_bytes!("../tests/data/v1/argon2i/v0x13/data.txt.abcrypt");
+            let mut ciphertext: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
+            let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
+            let mut plaintext = [u8::default(); TEST_DATA.len()];
+            assert_ne!(plaintext, TEST_DATA);
+            let code = unsafe {
+                abcrypt_decrypt(
+                    NonNull::new(ciphertext.as_mut_ptr()),
+                    ciphertext.len(),
+                    NonNull::new(passphrase.as_mut_ptr()),
+                    passphrase.len(),
+                    NonNull::new(plaintext.as_mut_ptr()),
+                    plaintext.len(),
+                )
+            };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(plaintext, TEST_DATA);
+        }
+        {
+            const TEST_DATA_ENC: &[u8] =
+                include_bytes!("../tests/data/v1/argon2id/v0x10/data.txt.abcrypt");
+            let mut ciphertext: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
+            let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
+            let mut plaintext = [u8::default(); TEST_DATA.len()];
+            assert_ne!(plaintext, TEST_DATA);
+            let code = unsafe {
+                abcrypt_decrypt(
+                    NonNull::new(ciphertext.as_mut_ptr()),
+                    ciphertext.len(),
+                    NonNull::new(passphrase.as_mut_ptr()),
+                    passphrase.len(),
+                    NonNull::new(plaintext.as_mut_ptr()),
+                    plaintext.len(),
+                )
+            };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(plaintext, TEST_DATA);
+        }
+        {
+            let mut ciphertext: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
+            let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
+            let mut plaintext = [u8::default(); TEST_DATA.len()];
+            assert_ne!(plaintext, TEST_DATA);
+            let code = unsafe {
+                abcrypt_decrypt(
+                    NonNull::new(ciphertext.as_mut_ptr()),
+                    ciphertext.len(),
+                    NonNull::new(passphrase.as_mut_ptr()),
+                    passphrase.len(),
+                    NonNull::new(plaintext.as_mut_ptr()),
+                    plaintext.len(),
+                )
+            };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(plaintext, TEST_DATA);
+        }
     }
 
     #[test]

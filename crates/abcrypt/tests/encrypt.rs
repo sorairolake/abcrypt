@@ -59,31 +59,173 @@ fn success_with_params() {
 
 #[test]
 fn success_with_context() {
-    let cipher = Encryptor::with_context(
-        &TEST_DATA,
-        PASSPHRASE,
-        Algorithm::Argon2i,
-        Version::V0x10,
-        Params::new(32, 3, 4, None).unwrap(),
-    )
-    .unwrap();
-    let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
-    cipher.encrypt(&mut buf);
-    assert_ne!(buf, TEST_DATA);
+    #[cfg(feature = "alloc")]
+    {
+        let cipher = Encryptor::with_context(
+            &TEST_DATA,
+            PASSPHRASE,
+            Algorithm::Argon2d,
+            Version::V0x10,
+            Params::new(47104, 1, 1, None).unwrap(),
+        )
+        .unwrap();
+        let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
+        cipher.encrypt(&mut buf);
+        assert_ne!(buf, TEST_DATA);
 
-    let argon2 = Argon2::new(buf).unwrap();
-    assert_eq!(argon2.variant(), Algorithm::Argon2i);
-    assert_eq!(argon2.version(), Version::V0x10);
+        let argon2 = Argon2::new(buf).unwrap();
+        assert_eq!(argon2.variant(), Algorithm::Argon2d);
+        assert_eq!(argon2.version(), Version::V0x10);
 
-    let params = abcrypt::Params::new(buf).unwrap();
-    assert_eq!(params.memory_cost(), 32);
-    assert_eq!(params.time_cost(), 3);
-    assert_eq!(params.parallelism(), 4);
+        let params = abcrypt::Params::new(buf).unwrap();
+        assert_eq!(params.memory_cost(), 47104);
+        assert_eq!(params.time_cost(), 1);
+        assert_eq!(params.parallelism(), 1);
 
-    let cipher = Decryptor::new(&buf, PASSPHRASE).unwrap();
-    let mut buf = [u8::default(); TEST_DATA.len()];
-    cipher.decrypt(&mut buf).unwrap();
-    assert_eq!(buf, TEST_DATA);
+        let cipher = Decryptor::new(&buf, PASSPHRASE).unwrap();
+        let mut buf = [u8::default(); TEST_DATA.len()];
+        cipher.decrypt(&mut buf).unwrap();
+        assert_eq!(buf, TEST_DATA);
+    }
+    #[cfg(feature = "alloc")]
+    {
+        let cipher = Encryptor::with_context(
+            &TEST_DATA,
+            PASSPHRASE,
+            Algorithm::Argon2d,
+            Version::V0x13,
+            Params::new(19456, 2, 1, None).unwrap(),
+        )
+        .unwrap();
+        let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
+        cipher.encrypt(&mut buf);
+        assert_ne!(buf, TEST_DATA);
+
+        let argon2 = Argon2::new(buf).unwrap();
+        assert_eq!(argon2.variant(), Algorithm::Argon2d);
+        assert_eq!(argon2.version(), Version::V0x13);
+
+        let params = abcrypt::Params::new(buf).unwrap();
+        assert_eq!(params.memory_cost(), 19456);
+        assert_eq!(params.time_cost(), 2);
+        assert_eq!(params.parallelism(), 1);
+
+        let cipher = Decryptor::new(&buf, PASSPHRASE).unwrap();
+        let mut buf = [u8::default(); TEST_DATA.len()];
+        cipher.decrypt(&mut buf).unwrap();
+        assert_eq!(buf, TEST_DATA);
+    }
+    #[cfg(feature = "alloc")]
+    {
+        let cipher = Encryptor::with_context(
+            &TEST_DATA,
+            PASSPHRASE,
+            Algorithm::Argon2i,
+            Version::V0x10,
+            Params::new(12288, 3, 1, None).unwrap(),
+        )
+        .unwrap();
+        let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
+        cipher.encrypt(&mut buf);
+        assert_ne!(buf, TEST_DATA);
+
+        let argon2 = Argon2::new(buf).unwrap();
+        assert_eq!(argon2.variant(), Algorithm::Argon2i);
+        assert_eq!(argon2.version(), Version::V0x10);
+
+        let params = abcrypt::Params::new(buf).unwrap();
+        assert_eq!(params.memory_cost(), 12288);
+        assert_eq!(params.time_cost(), 3);
+        assert_eq!(params.parallelism(), 1);
+
+        let cipher = Decryptor::new(&buf, PASSPHRASE).unwrap();
+        let mut buf = [u8::default(); TEST_DATA.len()];
+        cipher.decrypt(&mut buf).unwrap();
+        assert_eq!(buf, TEST_DATA);
+    }
+    #[cfg(feature = "alloc")]
+    {
+        let cipher = Encryptor::with_context(
+            &TEST_DATA,
+            PASSPHRASE,
+            Algorithm::Argon2i,
+            Version::V0x13,
+            Params::new(9216, 4, 1, None).unwrap(),
+        )
+        .unwrap();
+        let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
+        cipher.encrypt(&mut buf);
+        assert_ne!(buf, TEST_DATA);
+
+        let argon2 = Argon2::new(buf).unwrap();
+        assert_eq!(argon2.variant(), Algorithm::Argon2i);
+        assert_eq!(argon2.version(), Version::V0x13);
+
+        let params = abcrypt::Params::new(buf).unwrap();
+        assert_eq!(params.memory_cost(), 9216);
+        assert_eq!(params.time_cost(), 4);
+        assert_eq!(params.parallelism(), 1);
+
+        let cipher = Decryptor::new(&buf, PASSPHRASE).unwrap();
+        let mut buf = [u8::default(); TEST_DATA.len()];
+        cipher.decrypt(&mut buf).unwrap();
+        assert_eq!(buf, TEST_DATA);
+    }
+    #[cfg(feature = "alloc")]
+    {
+        let cipher = Encryptor::with_context(
+            &TEST_DATA,
+            PASSPHRASE,
+            Algorithm::Argon2id,
+            Version::V0x10,
+            Params::new(7168, 5, 1, None).unwrap(),
+        )
+        .unwrap();
+        let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
+        cipher.encrypt(&mut buf);
+        assert_ne!(buf, TEST_DATA);
+
+        let argon2 = Argon2::new(buf).unwrap();
+        assert_eq!(argon2.variant(), Algorithm::Argon2id);
+        assert_eq!(argon2.version(), Version::V0x10);
+
+        let params = abcrypt::Params::new(buf).unwrap();
+        assert_eq!(params.memory_cost(), 7168);
+        assert_eq!(params.time_cost(), 5);
+        assert_eq!(params.parallelism(), 1);
+
+        let cipher = Decryptor::new(&buf, PASSPHRASE).unwrap();
+        let mut buf = [u8::default(); TEST_DATA.len()];
+        cipher.decrypt(&mut buf).unwrap();
+        assert_eq!(buf, TEST_DATA);
+    }
+    {
+        let cipher = Encryptor::with_context(
+            &TEST_DATA,
+            PASSPHRASE,
+            Algorithm::Argon2id,
+            Version::V0x13,
+            Params::new(32, 3, 4, None).unwrap(),
+        )
+        .unwrap();
+        let mut buf = [u8::default(); TEST_DATA.len() + HEADER_SIZE + TAG_SIZE];
+        cipher.encrypt(&mut buf);
+        assert_ne!(buf, TEST_DATA);
+
+        let argon2 = Argon2::new(buf).unwrap();
+        assert_eq!(argon2.variant(), Algorithm::Argon2id);
+        assert_eq!(argon2.version(), Version::V0x13);
+
+        let params = abcrypt::Params::new(buf).unwrap();
+        assert_eq!(params.memory_cost(), 32);
+        assert_eq!(params.time_cost(), 3);
+        assert_eq!(params.parallelism(), 4);
+
+        let cipher = Decryptor::new(&buf, PASSPHRASE).unwrap();
+        let mut buf = [u8::default(); TEST_DATA.len()];
+        cipher.decrypt(&mut buf).unwrap();
+        assert_eq!(buf, TEST_DATA);
+    }
 }
 
 #[cfg(feature = "alloc")]
@@ -351,28 +493,160 @@ fn success_convenience_function_with_params() {
 #[cfg(feature = "alloc")]
 #[test]
 fn success_convenience_function_with_context() {
-    let ciphertext = abcrypt::encrypt_with_context(
-        TEST_DATA,
-        PASSPHRASE,
-        Algorithm::Argon2i,
-        Version::V0x10,
-        Params::new(32, 3, 4, None).unwrap(),
-    )
-    .unwrap();
-    assert_ne!(ciphertext, TEST_DATA);
-    assert_eq!(ciphertext.len(), TEST_DATA.len() + HEADER_SIZE + TAG_SIZE);
+    {
+        let ciphertext = abcrypt::encrypt_with_context(
+            TEST_DATA,
+            PASSPHRASE,
+            Algorithm::Argon2d,
+            Version::V0x10,
+            Params::new(47104, 1, 1, None).unwrap(),
+        )
+        .unwrap();
+        assert_ne!(ciphertext, TEST_DATA);
+        assert_eq!(ciphertext.len(), TEST_DATA.len() + HEADER_SIZE + TAG_SIZE);
 
-    let argon2 = Argon2::new(&ciphertext).unwrap();
-    assert_eq!(argon2.variant(), Algorithm::Argon2i);
-    assert_eq!(argon2.version(), Version::V0x10);
+        let argon2 = Argon2::new(&ciphertext).unwrap();
+        assert_eq!(argon2.variant(), Algorithm::Argon2d);
+        assert_eq!(argon2.version(), Version::V0x10);
 
-    let params = abcrypt::Params::new(&ciphertext).unwrap();
-    assert_eq!(params.memory_cost(), 32);
-    assert_eq!(params.time_cost(), 3);
-    assert_eq!(params.parallelism(), 4);
+        let params = abcrypt::Params::new(&ciphertext).unwrap();
+        assert_eq!(params.memory_cost(), 47104);
+        assert_eq!(params.time_cost(), 1);
+        assert_eq!(params.parallelism(), 1);
 
-    let cipher = Decryptor::new(&ciphertext, PASSPHRASE).unwrap();
-    let mut buf = [u8::default(); TEST_DATA.len()];
-    cipher.decrypt(&mut buf).unwrap();
-    assert_eq!(buf, TEST_DATA);
+        let cipher = Decryptor::new(&ciphertext, PASSPHRASE).unwrap();
+        let mut buf = [u8::default(); TEST_DATA.len()];
+        cipher.decrypt(&mut buf).unwrap();
+        assert_eq!(buf, TEST_DATA);
+    }
+    {
+        let ciphertext = abcrypt::encrypt_with_context(
+            TEST_DATA,
+            PASSPHRASE,
+            Algorithm::Argon2d,
+            Version::V0x13,
+            Params::new(19456, 2, 1, None).unwrap(),
+        )
+        .unwrap();
+        assert_ne!(ciphertext, TEST_DATA);
+        assert_eq!(ciphertext.len(), TEST_DATA.len() + HEADER_SIZE + TAG_SIZE);
+
+        let argon2 = Argon2::new(&ciphertext).unwrap();
+        assert_eq!(argon2.variant(), Algorithm::Argon2d);
+        assert_eq!(argon2.version(), Version::V0x13);
+
+        let params = abcrypt::Params::new(&ciphertext).unwrap();
+        assert_eq!(params.memory_cost(), 19456);
+        assert_eq!(params.time_cost(), 2);
+        assert_eq!(params.parallelism(), 1);
+
+        let cipher = Decryptor::new(&ciphertext, PASSPHRASE).unwrap();
+        let mut buf = [u8::default(); TEST_DATA.len()];
+        cipher.decrypt(&mut buf).unwrap();
+        assert_eq!(buf, TEST_DATA);
+    }
+    {
+        let ciphertext = abcrypt::encrypt_with_context(
+            TEST_DATA,
+            PASSPHRASE,
+            Algorithm::Argon2i,
+            Version::V0x10,
+            Params::new(12288, 3, 1, None).unwrap(),
+        )
+        .unwrap();
+        assert_ne!(ciphertext, TEST_DATA);
+        assert_eq!(ciphertext.len(), TEST_DATA.len() + HEADER_SIZE + TAG_SIZE);
+
+        let argon2 = Argon2::new(&ciphertext).unwrap();
+        assert_eq!(argon2.variant(), Algorithm::Argon2i);
+        assert_eq!(argon2.version(), Version::V0x10);
+
+        let params = abcrypt::Params::new(&ciphertext).unwrap();
+        assert_eq!(params.memory_cost(), 12288);
+        assert_eq!(params.time_cost(), 3);
+        assert_eq!(params.parallelism(), 1);
+
+        let cipher = Decryptor::new(&ciphertext, PASSPHRASE).unwrap();
+        let mut buf = [u8::default(); TEST_DATA.len()];
+        cipher.decrypt(&mut buf).unwrap();
+        assert_eq!(buf, TEST_DATA);
+    }
+    {
+        let ciphertext = abcrypt::encrypt_with_context(
+            TEST_DATA,
+            PASSPHRASE,
+            Algorithm::Argon2i,
+            Version::V0x13,
+            Params::new(9216, 4, 1, None).unwrap(),
+        )
+        .unwrap();
+        assert_ne!(ciphertext, TEST_DATA);
+        assert_eq!(ciphertext.len(), TEST_DATA.len() + HEADER_SIZE + TAG_SIZE);
+
+        let argon2 = Argon2::new(&ciphertext).unwrap();
+        assert_eq!(argon2.variant(), Algorithm::Argon2i);
+        assert_eq!(argon2.version(), Version::V0x13);
+
+        let params = abcrypt::Params::new(&ciphertext).unwrap();
+        assert_eq!(params.memory_cost(), 9216);
+        assert_eq!(params.time_cost(), 4);
+        assert_eq!(params.parallelism(), 1);
+
+        let cipher = Decryptor::new(&ciphertext, PASSPHRASE).unwrap();
+        let mut buf = [u8::default(); TEST_DATA.len()];
+        cipher.decrypt(&mut buf).unwrap();
+        assert_eq!(buf, TEST_DATA);
+    }
+    {
+        let ciphertext = abcrypt::encrypt_with_context(
+            TEST_DATA,
+            PASSPHRASE,
+            Algorithm::Argon2id,
+            Version::V0x10,
+            Params::new(7168, 5, 1, None).unwrap(),
+        )
+        .unwrap();
+        assert_ne!(ciphertext, TEST_DATA);
+        assert_eq!(ciphertext.len(), TEST_DATA.len() + HEADER_SIZE + TAG_SIZE);
+
+        let argon2 = Argon2::new(&ciphertext).unwrap();
+        assert_eq!(argon2.variant(), Algorithm::Argon2id);
+        assert_eq!(argon2.version(), Version::V0x10);
+
+        let params = abcrypt::Params::new(&ciphertext).unwrap();
+        assert_eq!(params.memory_cost(), 7168);
+        assert_eq!(params.time_cost(), 5);
+        assert_eq!(params.parallelism(), 1);
+
+        let cipher = Decryptor::new(&ciphertext, PASSPHRASE).unwrap();
+        let mut buf = [u8::default(); TEST_DATA.len()];
+        cipher.decrypt(&mut buf).unwrap();
+        assert_eq!(buf, TEST_DATA);
+    }
+    {
+        let ciphertext = abcrypt::encrypt_with_context(
+            TEST_DATA,
+            PASSPHRASE,
+            Algorithm::Argon2id,
+            Version::V0x13,
+            Params::new(32, 3, 4, None).unwrap(),
+        )
+        .unwrap();
+        assert_ne!(ciphertext, TEST_DATA);
+        assert_eq!(ciphertext.len(), TEST_DATA.len() + HEADER_SIZE + TAG_SIZE);
+
+        let argon2 = Argon2::new(&ciphertext).unwrap();
+        assert_eq!(argon2.variant(), Algorithm::Argon2id);
+        assert_eq!(argon2.version(), Version::V0x13);
+
+        let params = abcrypt::Params::new(&ciphertext).unwrap();
+        assert_eq!(params.memory_cost(), 32);
+        assert_eq!(params.time_cost(), 3);
+        assert_eq!(params.parallelism(), 4);
+
+        let cipher = Decryptor::new(&ciphertext, PASSPHRASE).unwrap();
+        let mut buf = [u8::default(); TEST_DATA.len()];
+        cipher.decrypt(&mut buf).unwrap();
+        assert_eq!(buf, TEST_DATA);
+    }
 }

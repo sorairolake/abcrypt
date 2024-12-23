@@ -35,7 +35,7 @@ impl Argon2 {
     /// ```
     /// # use abcrypt::Argon2;
     /// #
-    /// let ciphertext = include_bytes!("../tests/data/v1/data.txt.abcrypt");
+    /// let ciphertext = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
     ///
     /// assert!(Argon2::new(ciphertext).is_ok());
     /// ```
@@ -57,7 +57,7 @@ impl Argon2 {
     /// ```
     /// # use abcrypt::{argon2::Algorithm, Argon2};
     /// #
-    /// let ciphertext = include_bytes!("../tests/data/v1/data.txt.abcrypt");
+    /// let ciphertext = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
     ///
     /// let argon2 = Argon2::new(ciphertext).unwrap();
     /// assert_eq!(argon2.variant(), Algorithm::Argon2id);
@@ -75,7 +75,7 @@ impl Argon2 {
     /// ```
     /// # use abcrypt::{argon2::Version, Argon2};
     /// #
-    /// let ciphertext = include_bytes!("../tests/data/v1/data.txt.abcrypt");
+    /// let ciphertext = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
     ///
     /// let argon2 = Argon2::new(ciphertext).unwrap();
     /// assert_eq!(argon2.version(), Version::V0x13);

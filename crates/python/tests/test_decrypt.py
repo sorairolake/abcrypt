@@ -12,11 +12,53 @@ PASSPHRASE: Final[bytes] = b"passphrase"
 TEST_DIR: Final[Path] = Path(__file__).resolve().parent
 TEST_DATA: Final[bytes] = Path(TEST_DIR / "data/data.txt").read_bytes()
 TEST_DATA_ENC: Final[bytes] = Path(
-    TEST_DIR / "data/v1/data.txt.abcrypt"
+    TEST_DIR / "data/v1/argon2id/v0x13/data.txt.abcrypt"
 ).read_bytes()
 
 
-def test_success() -> None:
+def test_success_from_argon2d_and_v0x10() -> None:
+    plaintext = abcrypt_py.decrypt(
+        Path(TEST_DIR / "data/v1/argon2d/v0x10/data.txt.abcrypt").read_bytes(),
+        PASSPHRASE,
+    )
+    assert plaintext == TEST_DATA
+
+
+def test_success_from_argon2d_and_v0x13() -> None:
+    plaintext = abcrypt_py.decrypt(
+        Path(TEST_DIR / "data/v1/argon2d/v0x13/data.txt.abcrypt").read_bytes(),
+        PASSPHRASE,
+    )
+    assert plaintext == TEST_DATA
+
+
+def test_success_from_argon2i_and_v0x10() -> None:
+    plaintext = abcrypt_py.decrypt(
+        Path(TEST_DIR / "data/v1/argon2i/v0x10/data.txt.abcrypt").read_bytes(),
+        PASSPHRASE,
+    )
+    assert plaintext == TEST_DATA
+
+
+def test_success_from_argon2i_and_v0x13() -> None:
+    plaintext = abcrypt_py.decrypt(
+        Path(TEST_DIR / "data/v1/argon2i/v0x13/data.txt.abcrypt").read_bytes(),
+        PASSPHRASE,
+    )
+    assert plaintext == TEST_DATA
+
+
+def test_success_from_argon2id_and_v0x10() -> None:
+    plaintext = abcrypt_py.decrypt(
+        Path(
+            TEST_DIR / "data/v1/argon2id/v0x10/data.txt.abcrypt"
+        ).read_bytes(),
+        PASSPHRASE,
+    )
+    assert plaintext == TEST_DATA
+
+
+def test_success_from_argon2id_and_v0x13() -> None:
     plaintext = abcrypt_py.decrypt(TEST_DATA_ENC, PASSPHRASE)
     assert plaintext == TEST_DATA
 
