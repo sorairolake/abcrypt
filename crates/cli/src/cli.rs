@@ -196,7 +196,6 @@ pub struct Encrypt {
 }
 
 #[derive(Args, Debug)]
-#[allow(clippy::struct_excessive_bools)]
 #[command(group(ArgGroup::new("passphrase")))]
 pub struct Decrypt {
     /// Output the result to a file.

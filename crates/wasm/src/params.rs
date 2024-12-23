@@ -13,7 +13,6 @@ pub struct Params(abcrypt::Params);
 
 #[wasm_bindgen]
 impl Params {
-    #[allow(clippy::use_self)]
     /// Creates a new instance of the Argon2 parameters from `ciphertext`.
     ///
     /// # Errors
@@ -29,7 +28,7 @@ impl Params {
     /// - The Argon2 parameters are invalid.
     #[inline]
     #[wasm_bindgen(constructor)]
-    pub fn new(ciphertext: &[u8]) -> Result<Params, JsError> {
+    pub fn new(ciphertext: &[u8]) -> Result<Self, JsError> {
         abcrypt::Params::new(ciphertext)
             .map(Self)
             .map_err(JsError::from)

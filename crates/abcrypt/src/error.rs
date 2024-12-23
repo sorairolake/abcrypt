@@ -272,7 +272,6 @@ mod tests {
     }
 
     #[test]
-    #[allow(clippy::cognitive_complexity, clippy::too_many_lines)]
     fn equality() {
         assert_eq!(Error::InvalidLength, Error::InvalidLength);
         assert_ne!(Error::InvalidLength, Error::InvalidMagicNumber);

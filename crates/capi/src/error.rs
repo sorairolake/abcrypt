@@ -51,7 +51,6 @@ pub enum ErrorCode {
 }
 
 impl ErrorCode {
-    #[allow(clippy::missing_panics_doc)]
     /// Gets a detailed error message.
     ///
     /// # Errors
@@ -121,7 +120,6 @@ impl From<Error> for ErrorCode {
     }
 }
 
-#[allow(clippy::missing_panics_doc)]
 /// Gets a detailed error message.
 ///
 /// # Errors
@@ -322,7 +320,6 @@ mod tests {
     }
 
     #[test]
-    #[allow(clippy::cognitive_complexity, clippy::too_many_lines)]
     fn equality() {
         assert_eq!(ErrorCode::Ok, ErrorCode::Ok);
         assert_ne!(ErrorCode::Ok, ErrorCode::Error);
@@ -592,7 +589,6 @@ mod tests {
     }
 
     #[test]
-    #[allow(clippy::too_many_lines)]
     fn error_message() {
         {
             let expected = CString::new("everything is ok").unwrap();

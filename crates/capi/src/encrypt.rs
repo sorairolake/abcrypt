@@ -70,7 +70,6 @@ pub unsafe extern "C-unwind" fn abcrypt_encrypt(
     ErrorCode::Ok
 }
 
-#[allow(clippy::module_name_repetitions)]
 /// Encrypts `plaintext` with the specified Argon2 parameters and write to
 /// `out`.
 ///
@@ -134,7 +133,6 @@ pub unsafe extern "C-unwind" fn abcrypt_encrypt_with_params(
     ErrorCode::Ok
 }
 
-#[allow(clippy::module_name_repetitions)]
 /// Encrypts `plaintext` with the specified Argon2 type, Argon2 version and
 /// Argon2 parameters and write to `out`.
 ///
