@@ -215,6 +215,48 @@ fn out_len() {
 #[cfg(feature = "alloc")]
 #[test]
 fn success_convenience_function() {
-    let plaintext = abcrypt::decrypt(TEST_DATA_ENC, PASSPHRASE).unwrap();
-    assert_eq!(plaintext, TEST_DATA);
+    {
+        let plaintext = abcrypt::decrypt(
+            include_bytes!("data/v1/argon2d/v0x10/data.txt.abcrypt"),
+            PASSPHRASE,
+        )
+        .unwrap();
+        assert_eq!(plaintext, TEST_DATA);
+    }
+    {
+        let plaintext = abcrypt::decrypt(
+            include_bytes!("data/v1/argon2d/v0x13/data.txt.abcrypt"),
+            PASSPHRASE,
+        )
+        .unwrap();
+        assert_eq!(plaintext, TEST_DATA);
+    }
+    {
+        let plaintext = abcrypt::decrypt(
+            include_bytes!("data/v1/argon2i/v0x10/data.txt.abcrypt"),
+            PASSPHRASE,
+        )
+        .unwrap();
+        assert_eq!(plaintext, TEST_DATA);
+    }
+    {
+        let plaintext = abcrypt::decrypt(
+            include_bytes!("data/v1/argon2i/v0x13/data.txt.abcrypt"),
+            PASSPHRASE,
+        )
+        .unwrap();
+        assert_eq!(plaintext, TEST_DATA);
+    }
+    {
+        let plaintext = abcrypt::decrypt(
+            include_bytes!("data/v1/argon2id/v0x10/data.txt.abcrypt"),
+            PASSPHRASE,
+        )
+        .unwrap();
+        assert_eq!(plaintext, TEST_DATA);
+    }
+    {
+        let plaintext = abcrypt::decrypt(TEST_DATA_ENC, PASSPHRASE).unwrap();
+        assert_eq!(plaintext, TEST_DATA);
+    }
 }
