@@ -78,6 +78,10 @@ https://github.com/sorairolake/abcrypt.git.
 
 Please see link:CONTRIBUTING.adoc[].
 
+== Home page
+
+https://sorairolake.github.io/abcrypt/
+
 == License
 
 Copyright (C) 2022-2024 Shun Sakai (see link:AUTHORS.adoc[])

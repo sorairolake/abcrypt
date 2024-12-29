@@ -74,6 +74,10 @@ Please see [CHANGELOG.adoc].
 
 Please see [CONTRIBUTING.adoc].
 
+## Home page
+
+<https://sorairolake.github.io/abcrypt/>
+
 ## License
 
 Copyright (C) 2022-2024 Shun Sakai (see [AUTHORS.adoc])
