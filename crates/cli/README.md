@@ -133,7 +133,7 @@ Please see [CONTRIBUTING.adoc].
 
 ## License
 
-Copyright (C) 2022-2024 Shun Sakai (see [AUTHORS.adoc])
+Copyright (C) 2022 Shun Sakai (see [AUTHORS.adoc])
 
 1.  This program is distributed under the terms of the _GNU General Public
     License v3.0 or later_.

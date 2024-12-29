@@ -23,7 +23,7 @@ use clap_complete::Generator;
 const LONG_VERSION: &str = concat!(
     env!("CARGO_PKG_VERSION"),
     '\n',
-    "Copyright (C) 2022-2024 Shun Sakai\n",
+    "Copyright (C) 2022 Shun Sakai\n",
     '\n',
     "This program is distributed under the terms of the GNU General Public License\n",
     "v3.0 or later.\n",
