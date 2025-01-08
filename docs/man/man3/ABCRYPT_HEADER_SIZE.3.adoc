@@ -5,9 +5,9 @@
 = ABCRYPT_HEADER_SIZE(3)
 // Specify in UTC.
 :docdate: 2024-12-07
+:revnumber: 0.3.2
 :doctype: manpage
-ifdef::revnumber[:mansource: abcrypt-capi {revnumber}]
-ifndef::revnumber[:mansource: abcrypt-capi]
+:mansource: abcrypt-capi {revnumber}
 :manmanual: Library Functions Manual
 ifndef::site-gen-antora[:includedir: ./include]
 

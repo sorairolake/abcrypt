@@ -5,9 +5,9 @@
 = abcrypt(5)
 // Specify in UTC.
 :docdate: 2024-12-09
+:revnumber: 0.3.3
 :doctype: manpage
-ifdef::revnumber[:mansource: abcrypt {revnumber}]
-ifndef::revnumber[:mansource: abcrypt]
+:mansource: abcrypt {revnumber}
 :manmanual: File Formats Manual
 :includedir: ./include
 :scrypt-encrypted-data-format: https://www.tarsnap.com/scrypt.html

@@ -5,9 +5,9 @@
 = abcrypt(1)
 // Specify in UTC.
 :docdate: 2024-12-07
+:revnumber: 0.3.3
 :doctype: manpage
-ifdef::revnumber[:mansource: abcrypt {revnumber}]
-ifndef::revnumber[:mansource: abcrypt]
+:mansource: abcrypt {revnumber}
 :manmanual: General Commands Manual
 ifndef::site-gen-antora[:includedir: ./include]
 

@@ -21,6 +21,11 @@ project adheres to https://semver.org/[Semantic Versioning].
 * Supports the abcrypt version 1 file format ({pull-request-url}/619[#619])
 * Add `argon2` command to get the Argon2 context ({pull-request-url}/619[#619])
 
+=== Changed
+
+* Description of options which depends on the features are always available
+  ({pull-request-url}/648[#648])
+
 === Removed
 
 * Remove the abcrypt version 0 file format support

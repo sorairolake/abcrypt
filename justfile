@@ -160,6 +160,7 @@ publish-wasm: build-wasm
 
 # Increment the version of the command-line utility
 @bump-cli part:
+    bump-my-version bump --config-file .bumpversion-cli.toml {{part}}
     cargo set-version --bump {{part}} -p abcrypt-cli
 
 # Increment the version of the C API

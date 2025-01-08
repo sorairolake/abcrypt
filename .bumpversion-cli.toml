@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: 2024 Shun Sakai
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+[tool.bumpversion]
+current_version = "0.3.3"
+
+[[tool.bumpversion.files]]
+glob = "docs/man/man1/*.1.adoc"
+
+[[tool.bumpversion.files]]
+filename = "docs/man/man5/abcrypt.5.adoc"

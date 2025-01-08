@@ -4,10 +4,10 @@
 
 = abcrypt-information(1)
 // Specify in UTC.
-:docdate: 2024-12-07
+:docdate: 2025-01-08
+:revnumber: 0.3.3
 :doctype: manpage
-ifdef::revnumber[:mansource: abcrypt {revnumber}]
-ifndef::revnumber[:mansource: abcrypt]
+:mansource: abcrypt {revnumber}
 :manmanual: General Commands Manual
 ifndef::site-gen-antora[:includedir: ./include]
 :ietf-datatracker: https://datatracker.ietf.org
@@ -56,11 +56,10 @@ _FILE_::
 
 == OPTIONS
 
-ifdef::json,env-github,site-gen-antora[]
 *-j*, *--json*::
 
-  Output the encryption parameters as JSON.
-endif::[]
+  Output the encryption parameters as JSON. This option is available if the
+  `json` feature is enabled at compile time.
 
 *-h*, *--help*::
 
@@ -84,11 +83,9 @@ Print the encryption parameters:{blank}::
 
   $ *abcrypt information data.txt.abcrypt*
 
-ifdef::json,env-github,site-gen-antora[]
 Print the encryption parameters as JSON:{blank}::
 
   $ *abcrypt information -j data.txt.abcrypt*
-endif::[]
 
 ifndef::site-gen-antora[include::{includedir}/section-reporting-bugs.adoc[]]
 ifdef::site-gen-antora[include::partial$man/man1/include/section-reporting-bugs.adoc[]]
