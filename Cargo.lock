@@ -20,7 +20,7 @@ dependencies = [
 
 [[package]]
 name = "abcrypt-capi"
-version = "0.3.2"
+version = "0.4.0"
 dependencies = [
  "abcrypt",
  "cbindgen",
@@ -45,7 +45,7 @@ dependencies = [
 
 [[package]]
 name = "abcrypt-py"
-version = "0.1.4"
+version = "0.2.0"
 dependencies = [
  "abcrypt",
  "pyo3",
@@ -53,7 +53,7 @@ dependencies = [
 
 [[package]]
 name = "abcrypt-wasm"
-version = "0.3.2"
+version = "0.4.0"
 dependencies = [
  "abcrypt",
  "getrandom",

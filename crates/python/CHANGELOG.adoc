@@ -14,7 +14,7 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
 
-== {compare-url}/abcrypt-py-v0.1.4\...HEAD[Unreleased]
+== {compare-url}/abcrypt-py-v0.1.4\...abcrypt-py-v0.2.0[0.2.0] - 2025-01-09
 
 === Added
 
