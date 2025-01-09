@@ -2,14 +2,6 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-// Lint levels of rustc.
-#![forbid(unsafe_code)]
-#![deny(missing_debug_implementations)]
-#![warn(rust_2018_idioms)]
-// Lint levels of Clippy.
-#![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
-#![allow(clippy::multiple_crate_versions)]
-
 mod utils;
 
 use predicates::prelude::predicate;
@@ -19,7 +11,47 @@ fn basic_decrypt() {
     utils::command::command()
         .arg("decrypt")
         .arg("--passphrase-from-stdin")
-        .arg("data/data.txt.abcrypt")
+        .arg("data/v1/argon2d/v0x10/data.txt.abcrypt")
+        .write_stdin("passphrase")
+        .assert()
+        .success()
+        .stdout(predicate::eq("Hello, world!\n"));
+    utils::command::command()
+        .arg("decrypt")
+        .arg("--passphrase-from-stdin")
+        .arg("data/v1/argon2d/v0x13/data.txt.abcrypt")
+        .write_stdin("passphrase")
+        .assert()
+        .success()
+        .stdout(predicate::eq("Hello, world!\n"));
+    utils::command::command()
+        .arg("decrypt")
+        .arg("--passphrase-from-stdin")
+        .arg("data/v1/argon2i/v0x10/data.txt.abcrypt")
+        .write_stdin("passphrase")
+        .assert()
+        .success()
+        .stdout(predicate::eq("Hello, world!\n"));
+    utils::command::command()
+        .arg("decrypt")
+        .arg("--passphrase-from-stdin")
+        .arg("data/v1/argon2i/v0x13/data.txt.abcrypt")
+        .write_stdin("passphrase")
+        .assert()
+        .success()
+        .stdout(predicate::eq("Hello, world!\n"));
+    utils::command::command()
+        .arg("decrypt")
+        .arg("--passphrase-from-stdin")
+        .arg("data/v1/argon2id/v0x10/data.txt.abcrypt")
+        .write_stdin("passphrase")
+        .assert()
+        .success()
+        .stdout(predicate::eq("Hello, world!\n"));
+    utils::command::command()
+        .arg("decrypt")
+        .arg("--passphrase-from-stdin")
+        .arg("data/v1/argon2id/v0x13/data.txt.abcrypt")
         .write_stdin("passphrase")
         .assert()
         .success()
@@ -71,7 +103,7 @@ fn decrypt_if_output_is_directory() {
         .arg("-o")
         .arg("data/dummy")
         .arg("--passphrase-from-stdin")
-        .arg("data/data.txt.abcrypt")
+        .arg("data/v1/argon2id/v0x13/data.txt.abcrypt")
         .write_stdin("passphrase")
         .assert()
         .failure()
@@ -112,7 +144,7 @@ fn decrypt_if_input_file_is_invalid() {
             "data is not a valid abcrypt encrypted file",
         ))
         .stderr(predicate::str::contains(
-            "encrypted data is shorter than 156 bytes",
+            "encrypted data is shorter than 164 bytes",
         ));
 }
 
@@ -121,7 +153,7 @@ fn decrypt_if_passphrase_is_incorrect() {
     utils::command::command()
         .arg("decrypt")
         .arg("--passphrase-from-stdin")
-        .arg("data/data.txt.abcrypt")
+        .arg("data/v1/argon2id/v0x13/data.txt.abcrypt")
         .write_stdin("password")
         .assert()
         .failure()
@@ -132,12 +164,88 @@ fn decrypt_if_passphrase_is_incorrect() {
 }
 
 #[test]
+fn decrypt_from_unsupported_version() {
+    utils::command::command()
+        .arg("decrypt")
+        .arg("--passphrase-from-stdin")
+        .arg("data/v0/data.txt.abcrypt")
+        .write_stdin("passphrase")
+        .assert()
+        .failure()
+        .code(65)
+        .stderr(predicate::str::contains(
+            "data is not a valid abcrypt encrypted file",
+        ))
+        .stderr(predicate::str::contains("unsupported version number `0`"));
+}
+
+#[test]
 fn decrypt_verbose() {
     utils::command::command()
         .arg("decrypt")
         .arg("--passphrase-from-stdin")
         .arg("-v")
-        .arg("data/data.txt.abcrypt")
+        .arg("data/v1/argon2d/v0x10/data.txt.abcrypt")
+        .write_stdin("passphrase")
+        .assert()
+        .success()
+        .stdout(predicate::eq("Hello, world!\n"))
+        .stderr(predicate::str::starts_with(
+            "Parameters used: memoryCost = 47104; timeCost = 1; parallelism = 1;",
+        ));
+    utils::command::command()
+        .arg("decrypt")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/v1/argon2d/v0x13/data.txt.abcrypt")
+        .write_stdin("passphrase")
+        .assert()
+        .success()
+        .stdout(predicate::eq("Hello, world!\n"))
+        .stderr(predicate::str::starts_with(
+            "Parameters used: memoryCost = 19456; timeCost = 2; parallelism = 1;",
+        ));
+    utils::command::command()
+        .arg("decrypt")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/v1/argon2i/v0x10/data.txt.abcrypt")
+        .write_stdin("passphrase")
+        .assert()
+        .success()
+        .stdout(predicate::eq("Hello, world!\n"))
+        .stderr(predicate::str::starts_with(
+            "Parameters used: memoryCost = 12288; timeCost = 3; parallelism = 1;",
+        ));
+    utils::command::command()
+        .arg("decrypt")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/v1/argon2i/v0x13/data.txt.abcrypt")
+        .write_stdin("passphrase")
+        .assert()
+        .success()
+        .stdout(predicate::eq("Hello, world!\n"))
+        .stderr(predicate::str::starts_with(
+            "Parameters used: memoryCost = 9216; timeCost = 4; parallelism = 1;",
+        ));
+    utils::command::command()
+        .arg("decrypt")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/v1/argon2id/v0x10/data.txt.abcrypt")
+        .write_stdin("passphrase")
+        .assert()
+        .success()
+        .stdout(predicate::eq("Hello, world!\n"))
+        .stderr(predicate::str::starts_with(
+            "Parameters used: memoryCost = 7168; timeCost = 5; parallelism = 1;",
+        ));
+    utils::command::command()
+        .arg("decrypt")
+        .arg("--passphrase-from-stdin")
+        .arg("-v")
+        .arg("data/v1/argon2id/v0x13/data.txt.abcrypt")
         .write_stdin("passphrase")
         .assert()
         .success()

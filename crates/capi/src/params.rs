@@ -46,9 +46,12 @@ impl Params {
     ///
     /// Returns an error if any of the following are true:
     ///
-    /// - `ciphertext` is shorter than 156 bytes.
+    /// - `ciphertext` is shorter than 164 bytes.
     /// - The magic number is invalid.
+    /// - The version number is the unsupported abcrypt version number.
     /// - The version number is the unrecognized abcrypt version number.
+    /// - The Argon2 type is invalid.
+    /// - The Argon2 version is invalid.
     /// - The Argon2 parameters are invalid.
     /// - One of the parameters is null.
     ///
@@ -122,6 +125,7 @@ impl Params {
 }
 
 impl Default for Params {
+    #[inline]
     fn default() -> Self {
         let (memory_cost, time_cost, parallelism) = (
             argon2::Params::DEFAULT_M_COST,
@@ -137,6 +141,7 @@ impl Default for Params {
 }
 
 impl From<abcrypt::Params> for Params {
+    #[inline]
     fn from(params: abcrypt::Params) -> Self {
         let (memory_cost, time_cost, parallelism) = (
             params.memory_cost(),
@@ -176,7 +181,7 @@ pub unsafe extern "C-unwind" fn abcrypt_params_free(params: Option<NonNull<Param
 ///
 /// Returns an error if any of the following are true:
 ///
-/// - `ciphertext` is shorter than 156 bytes.
+/// - `ciphertext` is shorter than 164 bytes.
 /// - The magic number is invalid.
 /// - The version number is the unrecognized abcrypt version number.
 /// - The Argon2 parameters are invalid.
@@ -188,6 +193,7 @@ pub unsafe extern "C-unwind" fn abcrypt_params_free(params: Option<NonNull<Param
 /// safety conditions of `slice::from_raw_parts`.
 #[must_use]
 #[no_mangle]
+#[inline]
 pub unsafe extern "C-unwind" fn abcrypt_params_read(
     ciphertext: Option<NonNull<u8>>,
     ciphertext_len: usize,
@@ -230,8 +236,8 @@ pub extern "C-unwind" fn abcrypt_params_parallelism(params: Option<NonNull<Param
 mod tests {
     use super::*;
 
-    // Generated using `abcrypt` crate version 0.1.0.
-    const TEST_DATA_ENC: &[u8] = include_bytes!("../tests/data/data.txt.abcrypt");
+    // Generated using `abcrypt` crate version 0.4.0.
+    const TEST_DATA_ENC: &[u8] = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
 
     #[test]
     fn success() {
@@ -245,34 +251,205 @@ mod tests {
 
     #[test]
     fn memory_cost() {
-        let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
-        let params = abcrypt_params_new();
-        let code =
-            unsafe { abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params) };
-        assert_eq!(code, ErrorCode::Ok);
-        assert_eq!(abcrypt_params_memory_cost(params), 32);
-        unsafe { abcrypt_params_free(params) };
+        {
+            const TEST_DATA_ENC: &[u8] =
+                include_bytes!("../tests/data/v1/argon2d/v0x10/data.txt.abcrypt");
+            let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
+            let params = abcrypt_params_new();
+            let code =
+                unsafe { abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params) };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(abcrypt_params_memory_cost(params), 47104);
+            unsafe { abcrypt_params_free(params) };
+        }
+        {
+            const TEST_DATA_ENC: &[u8] =
+                include_bytes!("../tests/data/v1/argon2d/v0x13/data.txt.abcrypt");
+            let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
+            let params = abcrypt_params_new();
+            let code =
+                unsafe { abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params) };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(abcrypt_params_memory_cost(params), 19456);
+            unsafe { abcrypt_params_free(params) };
+        }
+        {
+            const TEST_DATA_ENC: &[u8] =
+                include_bytes!("../tests/data/v1/argon2i/v0x10/data.txt.abcrypt");
+            let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
+            let params = abcrypt_params_new();
+            let code =
+                unsafe { abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params) };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(abcrypt_params_memory_cost(params), 12288);
+            unsafe { abcrypt_params_free(params) };
+        }
+        {
+            const TEST_DATA_ENC: &[u8] =
+                include_bytes!("../tests/data/v1/argon2i/v0x13/data.txt.abcrypt");
+            let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
+            let params = abcrypt_params_new();
+            let code =
+                unsafe { abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params) };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(abcrypt_params_memory_cost(params), 9216);
+            unsafe { abcrypt_params_free(params) };
+        }
+        {
+            const TEST_DATA_ENC: &[u8] =
+                include_bytes!("../tests/data/v1/argon2id/v0x10/data.txt.abcrypt");
+            let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
+            let params = abcrypt_params_new();
+            let code =
+                unsafe { abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params) };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(abcrypt_params_memory_cost(params), 7168);
+            unsafe { abcrypt_params_free(params) };
+        }
+        {
+            let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
+            let params = abcrypt_params_new();
+            let code =
+                unsafe { abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params) };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(abcrypt_params_memory_cost(params), 32);
+            unsafe { abcrypt_params_free(params) };
+        }
     }
 
     #[test]
     fn time_cost() {
-        let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
-        let params = abcrypt_params_new();
-        let code =
-            unsafe { abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params) };
-        assert_eq!(code, ErrorCode::Ok);
-        assert_eq!(abcrypt_params_time_cost(params), 3);
-        unsafe { abcrypt_params_free(params) };
+        {
+            const TEST_DATA_ENC: &[u8] =
+                include_bytes!("../tests/data/v1/argon2d/v0x10/data.txt.abcrypt");
+            let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
+            let params = abcrypt_params_new();
+            let code =
+                unsafe { abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params) };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(abcrypt_params_time_cost(params), 1);
+            unsafe { abcrypt_params_free(params) };
+        }
+        {
+            const TEST_DATA_ENC: &[u8] =
+                include_bytes!("../tests/data/v1/argon2d/v0x13/data.txt.abcrypt");
+            let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
+            let params = abcrypt_params_new();
+            let code =
+                unsafe { abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params) };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(abcrypt_params_time_cost(params), 2);
+            unsafe { abcrypt_params_free(params) };
+        }
+        {
+            const TEST_DATA_ENC: &[u8] =
+                include_bytes!("../tests/data/v1/argon2i/v0x10/data.txt.abcrypt");
+            let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
+            let params = abcrypt_params_new();
+            let code =
+                unsafe { abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params) };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(abcrypt_params_time_cost(params), 3);
+            unsafe { abcrypt_params_free(params) };
+        }
+        {
+            const TEST_DATA_ENC: &[u8] =
+                include_bytes!("../tests/data/v1/argon2i/v0x13/data.txt.abcrypt");
+            let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
+            let params = abcrypt_params_new();
+            let code =
+                unsafe { abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params) };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(abcrypt_params_time_cost(params), 4);
+            unsafe { abcrypt_params_free(params) };
+        }
+        {
+            const TEST_DATA_ENC: &[u8] =
+                include_bytes!("../tests/data/v1/argon2id/v0x10/data.txt.abcrypt");
+            let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
+            let params = abcrypt_params_new();
+            let code =
+                unsafe { abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params) };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(abcrypt_params_time_cost(params), 5);
+            unsafe { abcrypt_params_free(params) };
+        }
+        {
+            let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
+            let params = abcrypt_params_new();
+            let code =
+                unsafe { abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params) };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(abcrypt_params_time_cost(params), 3);
+            unsafe { abcrypt_params_free(params) };
+        }
     }
 
     #[test]
     fn parallelism() {
-        let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
-        let params = abcrypt_params_new();
-        let code =
-            unsafe { abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params) };
-        assert_eq!(code, ErrorCode::Ok);
-        assert_eq!(abcrypt_params_parallelism(params), 4);
-        unsafe { abcrypt_params_free(params) };
+        {
+            const TEST_DATA_ENC: &[u8] =
+                include_bytes!("../tests/data/v1/argon2d/v0x10/data.txt.abcrypt");
+            let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
+            let params = abcrypt_params_new();
+            let code =
+                unsafe { abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params) };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(abcrypt_params_parallelism(params), 1);
+            unsafe { abcrypt_params_free(params) };
+        }
+        {
+            const TEST_DATA_ENC: &[u8] =
+                include_bytes!("../tests/data/v1/argon2d/v0x13/data.txt.abcrypt");
+            let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
+            let params = abcrypt_params_new();
+            let code =
+                unsafe { abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params) };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(abcrypt_params_parallelism(params), 1);
+            unsafe { abcrypt_params_free(params) };
+        }
+        {
+            const TEST_DATA_ENC: &[u8] =
+                include_bytes!("../tests/data/v1/argon2i/v0x10/data.txt.abcrypt");
+            let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
+            let params = abcrypt_params_new();
+            let code =
+                unsafe { abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params) };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(abcrypt_params_parallelism(params), 1);
+            unsafe { abcrypt_params_free(params) };
+        }
+        {
+            const TEST_DATA_ENC: &[u8] =
+                include_bytes!("../tests/data/v1/argon2i/v0x13/data.txt.abcrypt");
+            let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
+            let params = abcrypt_params_new();
+            let code =
+                unsafe { abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params) };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(abcrypt_params_parallelism(params), 1);
+            unsafe { abcrypt_params_free(params) };
+        }
+        {
+            const TEST_DATA_ENC: &[u8] =
+                include_bytes!("../tests/data/v1/argon2id/v0x10/data.txt.abcrypt");
+            let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
+            let params = abcrypt_params_new();
+            let code =
+                unsafe { abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params) };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(abcrypt_params_parallelism(params), 1);
+            unsafe { abcrypt_params_free(params) };
+        }
+        {
+            let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
+            let params = abcrypt_params_new();
+            let code =
+                unsafe { abcrypt_params_read(NonNull::new(data.as_mut_ptr()), data.len(), params) };
+            assert_eq!(code, ErrorCode::Ok);
+            assert_eq!(abcrypt_params_parallelism(params), 4);
+            unsafe { abcrypt_params_free(params) };
+        }
     }
 }

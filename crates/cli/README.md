@@ -14,8 +14,6 @@ SPDX-License-Identifier: GPL-3.0-or-later
 **abcrypt** ([`abcrypt-cli`][version-url]) is a command-line utility for
 encrypt and decrypt files using the [abcrypt encrypted data format].
 
-![Screenshot of abcrypt](assets/screenshot.webp)
-
 ## Installation
 
 ### From source
@@ -107,6 +105,7 @@ Please see the following:
 - [`abcrypt(1)`]
 - [`abcrypt-encrypt(1)`]
 - [`abcrypt-decrypt(1)`]
+- [`abcrypt-argon2(1)`]
 - [`abcrypt-information(1)`]
 - [`abcrypt-help(1)`]
 
@@ -128,9 +127,13 @@ Please see [CHANGELOG.adoc].
 
 Please see [CONTRIBUTING.adoc].
 
+## Home page
+
+<https://sorairolake.github.io/abcrypt/>
+
 ## License
 
-Copyright &copy; 2022&ndash;2024 Shun Sakai (see [AUTHORS.adoc])
+Copyright (C) 2022 Shun Sakai (see [AUTHORS.adoc])
 
 1.  This program is distributed under the terms of the _GNU General Public
     License v3.0 or later_.
@@ -154,6 +157,7 @@ licensing information.
 [`abcrypt(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt.1.html
 [`abcrypt-encrypt(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt-encrypt.1.html
 [`abcrypt-decrypt(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt-decrypt.1.html
+[`abcrypt-argon2(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt-argon2.1.html
 [`abcrypt-information(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt-information.1.html
 [`abcrypt-help(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt-help.1.html
 [CHANGELOG.adoc]: CHANGELOG.adoc

@@ -14,25 +14,81 @@ on:
     - cron: "0 0 * * 0"
 
 jobs:
+  check:
+    name: Check
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os-alias:
+          - ubuntu
+          - macos
+          - windows
+        toolchain-alias:
+          - msrv
+          - stable
+        include:
+          - os-alias: ubuntu
+            os: ubuntu-24.04
+            target: x86_64-unknown-linux-gnu
+          - os-alias: macos
+            os: macos-14
+            target: aarch64-apple-darwin
+          - os-alias: windows
+            os: windows-2022
+            target: x86_64-pc-windows-msvc
+          - toolchain-alias: msrv
+            toolchain: 1.74.0
+          - toolchain-alias: stable
+            toolchain: stable
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: ${{ matrix.toolchain }}
+          targets: ${{ matrix.target }}
+      - name: Cache build artifacts
+        uses: Swatinem/rust-cache@v2.7.7
+        with:
+          key: ${{ matrix.target }}
+      - name: Check packages
+        run: cargo check --target ${{ matrix.target }}
+      - name: Check packages (no default features)
+        run: cargo check -p abcrypt -p abcrypt-cli --target ${{ matrix.target }} --no-default-features
+      - name: Check packages (`alloc` feature)
+        run: cargo check -p abcrypt --target ${{ matrix.target }} --no-default-features -F alloc
+      - name: Check packages (`serde` feature)
+        run: cargo check -p abcrypt --target ${{ matrix.target }} -F serde
+      - name: Check packages (`serde` feature with no default features)
+        run: cargo check -p abcrypt --target ${{ matrix.target }} --no-default-features -F serde
+
   test:
     name: Test
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        target:
-          - x86_64-unknown-linux-gnu
-          - aarch64-apple-darwin
-          - x86_64-pc-windows-msvc
-        toolchain:
-          - 1.74.0 # MSRV
+        os-alias:
+          - ubuntu
+          - macos
+          - windows
+        toolchain-alias:
+          - msrv
           - stable
         include:
-          - target: x86_64-unknown-linux-gnu
-            os: ubuntu-22.04
-          - target: aarch64-apple-darwin
+          - os-alias: ubuntu
+            os: ubuntu-24.04
+            target: x86_64-unknown-linux-gnu
+          - os-alias: macos
             os: macos-14
-          - target: x86_64-pc-windows-msvc
+            target: aarch64-apple-darwin
+          - os-alias: windows
             os: windows-2022
+            target: x86_64-pc-windows-msvc
+          - toolchain-alias: msrv
+            toolchain: 1.74.0
+          - toolchain-alias: stable
+            toolchain: stable
     steps:
       - name: Set Git to use LF
         if: matrix.os == 'windows-2022'
@@ -47,11 +103,11 @@ jobs:
           toolchain: ${{ matrix.toolchain }}
           targets: ${{ matrix.target }}
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.5
+        uses: Swatinem/rust-cache@v2.7.7
         with:
           key: ${{ matrix.target }}
       - name: Run tests
-        run: cargo test --target ${{ matrix.target }}
+        run: cargo test -p abcrypt -p abcrypt-cli -p abcrypt-capi --target ${{ matrix.target }}
       - name: Run tests (no default features)
         run: cargo test -p abcrypt -p abcrypt-cli --target ${{ matrix.target }} --no-default-features
       - name: Run tests (`alloc` feature)
@@ -63,14 +119,19 @@ jobs:
       - name: Check if the header file is up-to-date
         run: git diff --exit-code
 
-  wasm-test:
-    name: Test Wasm bindings
-    runs-on: ubuntu-22.04
+  wasm-check:
+    name: Check Wasm bindings
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
-        toolchain:
-          - 1.74.0 # MSRV
+        toolchain-alias:
+          - msrv
           - stable
+        include:
+          - toolchain-alias: msrv
+            toolchain: 1.74.0
+          - toolchain-alias: stable
+            toolchain: stable
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -85,9 +146,42 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.5
+        uses: Swatinem/rust-cache@v2.7.7
+      - name: Check a package
+        run: wasm-pack build -s sorairolake -t nodejs --dev crates/wasm
+
+  wasm-test:
+    name: Test Wasm bindings
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        toolchain-alias:
+          - msrv
+          - stable
+        include:
+          - toolchain-alias: msrv
+            toolchain: 1.74.0
+          - toolchain-alias: stable
+            toolchain: stable
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: ${{ matrix.toolchain }}
+      - name: Install wasm-pack
+        uses: jetli/wasm-pack-action@v0.4.0
+        with:
+          version: "latest"
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Cache build artifacts
+        uses: Swatinem/rust-cache@v2.7.7
       - name: Run tests
         run: wasm-pack test --node crates/wasm
 
@@ -96,16 +190,31 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os:
-          - ubuntu-22.04
-          - macos-14
-          - windows-2022
-        rust-version:
-          - 1.74.0 # MSRV
+        os-alias:
+          - ubuntu
+          - macos
+          - windows
+        rust-version-alias:
+          - msrv
           - stable
-        python-version:
-          - "3.8"
-          - "3.x" # latest stable version of Python 3
+        python-version-alias:
+          - minimum
+          - latest
+        include:
+          - os-alias: ubuntu
+            os: ubuntu-24.04
+          - os-alias: macos
+            os: macos-14
+          - os-alias: windows
+            os: windows-2022
+          - rust-version-alias: msrv
+            rust-version: 1.74.0
+          - rust-version-alias: stable
+            rust-version: stable
+          - python-version-alias: minimum
+            python-version: "3.8"
+          - python-version-alias: latest
+            python-version: "3.x"
     steps:
       - name: Set Git to use LF
         if: matrix.os == 'windows-2022'
@@ -130,7 +239,7 @@ jobs:
 
   rustfmt:
     name: Rustfmt
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -140,13 +249,13 @@ jobs:
           toolchain: stable
           components: rustfmt
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.5
+        uses: Swatinem/rust-cache@v2.7.7
       - name: Check code formatted
         run: cargo fmt --all -- --check
 
   clippy:
     name: Clippy
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -156,7 +265,7 @@ jobs:
           toolchain: stable
           components: clippy
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.5
+        uses: Swatinem/rust-cache@v2.7.7
       - name: Check no lint warnings
         run: cargo clippy --workspace -- -D warnings
       - name: Check no lint warnings (no default features)
@@ -164,7 +273,7 @@ jobs:
 
   doc:
     name: Documentation
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -173,13 +282,13 @@ jobs:
         with:
           toolchain: stable
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.5
+        uses: Swatinem/rust-cache@v2.7.7
       - name: Check no `rustdoc` lint warnings
         run: RUSTDOCFLAGS="-D warnings" cargo doc --workspace --exclude abcrypt-cli --no-deps --document-private-items
 
   benchmark:
     name: Benchmark
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -188,13 +297,13 @@ jobs:
         with:
           toolchain: nightly
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.5
+        uses: Swatinem/rust-cache@v2.7.7
       - name: Run benchmarks
         run: cargo bench -p abcrypt
 
   python-lint:
     name: Lint Python bindings
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -218,12 +327,17 @@ jobs:
 
   capi-examples:
     name: Examples for the C API
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
-        toolchain:
-          - 1.74.0 # MSRV
+        toolchain-alias:
+          - msrv
           - stable
+        include:
+          - toolchain-alias: msrv
+            toolchain: 1.74.0
+          - toolchain-alias: stable
+            toolchain: stable
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -234,12 +348,12 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install libcli11-dev libfmt-dev meson
+          sudo apt-get install libcli11-dev meson
           meson -v
       - name: Setup just
         uses: extractions/setup-just@v2
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.5
+        uses: Swatinem/rust-cache@v2.7.7
       - name: Build examples for the C API
         run: just build-capi-examples
       - name: Check code formatted
@@ -251,7 +365,7 @@ jobs:
 
   wasm-examples:
     name: Examples for the Wasm bindings
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -268,7 +382,7 @@ jobs:
         with:
           version: "latest"
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.5
+        uses: Swatinem/rust-cache@v2.7.7
       - name: Check code formatted
         run: deno fmt --check crates/wasm/examples/*.ts
       - name: Check no lint warnings

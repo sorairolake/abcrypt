@@ -4,10 +4,10 @@
 
 = abcrypt-encrypt(1)
 // Specify in UTC.
-:docdate: 2024-08-02
+:docdate: 2024-12-07
+:revnumber: 0.3.3
 :doctype: manpage
-ifdef::revnumber[:mansource: abcrypt {revnumber}]
-ifndef::revnumber[:mansource: abcrypt]
+:mansource: abcrypt {revnumber}
 :manmanual: General Commands Manual
 ifndef::site-gen-antora[:includedir: ./include]
 
@@ -41,6 +41,38 @@ _FILE_::
 *-o*, *--output* _FILE_::
 
   Output the result to a file.
+
+*--argon2-type* _TYPE_::
+
+  Set the Argon2 type.
+
+  The possible values are:{blank}:::
+
+    *argon2d*::::
+
+      Argon2d.
+
+    *argon2i*::::
+
+      Argon2i.
+
+    *argon2id*::::
+
+      Argon2id. This is the default value.
+
+*--argon2-version* _VERSION_::
+
+  Set the Argon2 version.
+
+  The possible values are:{blank}:::
+
+    *0x10*::::
+
+      Version 0x10. *16* is an alias for this value.
+
+    *0x13*::::
+
+      Version 0x13. *19* is an alias for this value. This is the default value.
 
 *-m*, *--memory-cost* _BYTE_::
 
@@ -134,4 +166,5 @@ ifdef::site-gen-antora[include::partial$man/man1/include/section-copyright.adoc[
 
 == SEE ALSO
 
-*abcrypt*(1), *abcrypt-decrypt*(1), *abcrypt-help*(1), *abcrypt-information*(1)
+*abcrypt*(1), *abcrypt-argon2*(1), *abcrypt-decrypt*(1), *abcrypt-help*(1),
+*abcrypt-information*(1)

@@ -5,7 +5,7 @@
 = Abcrypt Encrypted Data Format
 Shun Sakai <sorairolake@protonmail.ch>
 // Specify in UTC.
-v0.3.7, 2024-07-02
+v0.4.0, 2024-12-09
 :icons: font
 :idprefix:
 :idseparator: -
@@ -26,8 +26,8 @@ document describes the abcrypt encrypted data format.
 
 abcrypt is a modern file encryption format inspired by the
 {scrypt-encrypted-data-format}[scrypt encrypted data format]. abcrypt uses
-<<argon2,Argon2id>> for key derivation, <<blake2b-512-mac>> for header
-integrity checking and <<xchacha20-poly1305>> for encryption.
+<<argon2>> for key derivation, <<blake2b-512-mac>> for header integrity
+checking and <<xchacha20-poly1305>> for encryption.
 
 == Conventions used in this document
 
@@ -47,8 +47,6 @@ XChaCha20-Poly1305 is the AEAD algorithm from
 An abcrypt file is composed of two parts: a <<header-format,header>> containing
 the required data and a <<file-body,file body>> encrypted with the derived key.
 
-abcrypt files may use the extension `.abcrypt`.
-
 .The structure of the abcrypt encrypted data format
 |===
 |Offset |Bytes |Description |Detail
@@ -56,7 +54,7 @@ abcrypt files may use the extension `.abcrypt`.
 |stem:[0]
 |stem:[7]
 |Magic number ("abcrypt").
-|<<header-format>>
+|<<magic-number>>
 
 |stem:[7]
 |stem:[1]
@@ -65,40 +63,50 @@ abcrypt files may use the extension `.abcrypt`.
 
 |stem:[8]
 |stem:[4]
+|Argon2 type.
+|<<argon2-type>>
+
+|stem:[12]
+|stem:[4]
+|Argon2 version.
+|<<argon2-version>>
+
+|stem:[16]
+|stem:[4]
 |Memory size `m` (`memoryCost`).
 |<<argon2-parameters>>
 
-|stem:[12]
+|stem:[20]
 |stem:[4]
 |Number of iterations `t` (`timeCost`).
 |<<argon2-parameters>>
 
-|stem:[16]
+|stem:[24]
 |stem:[4]
 |Degree of parallelism `p` (`parallelism`).
 |<<argon2-parameters>>
 
-|stem:[20]
+|stem:[28]
 |stem:[32]
-|Salt.
-|<<salt>>
+|Salt for <<argon2>>.
+|<<salt-for-argon2>>
 
-|stem:[52]
+|stem:[60]
 |stem:[24]
-|Nonce.
-|<<nonce>>
+|Nonce for <<xchacha20-poly1305>>.
+|<<nonce-for-xchacha20-poly1305>>
 
-|stem:[76]
+|stem:[84]
 |stem:[64]
 |MAC of the header.
 |<<header-mac>>
 
-|stem:[140]
+|stem:[148]
 |stem:[n]
 |Ciphertext.
 |<<file-body>>
 
-|stem:[140 + n]
+|stem:[148 + n]
 |stem:[16]
 |MAC of the ciphertext.
 |<<file-body>>
@@ -109,30 +117,43 @@ All multibyte values are stored in little-endian.
 == Key derivation
 
 The derived key for computing the header MAC and the derived key for encryption
-are produced by <<argon2>>. The abcrypt encrypted data format uses Argon2id as
-the type and 0x13 (19) as the version.
+are produced by <<argon2>>.
 
 .The derived key is produced as follows
 ----
-derived_key = Argon2(
-    memoryCost = header[8..12],
-    timeCost = header[12..16],
-    parallelism = header[16..20],
-    output_len = 96,
-    algorithm = Argon2id,
-    version = 0x13,
-    pwd = password,
-    salt = header[20..52],
+derivedKey = Argon2(
+    password = password,
+    salt = header[28..60],
+    parallelism = header[24..28],
+    tagLength = 96,
+    memoryCost = header[16..20],
+    timeCost = header[20..24],
+    version = header[12..16],
+    secretKey = [],
+    associatedData = [],
+    type = header[8..12],
 )
 ----
 
-The resulting derived key (`derived_key`) length is 96 bytes. The first 32
-bytes of `derived_key` are for encryption (<<xchacha20-poly1305>> key), and the
-last 64 bytes are for computing the header MAC (<<blake2b-512-mac>> key).
+The size of `secretKey` (pepper) and `associatedData` (associated data) are
+zero (empty).
 
+The resulting derived key (`derivedKey`) length is 96 bytes. The first 32 bytes
+of `derivedKey` are the <<xchacha20-poly1305>> key (`encryptionKey`) for
+encryption, and the last 64 bytes are the <<blake2b-512-mac>> key
+(`headerMacKey`) for computing the header MAC.
+
+.The derived key is split as follows
+----
+encryptionKey = derivedKey[..32]
+headerMacKey = derivedKey[32..]
+----
+
+<<argon2-type,`type`>>, <<argon2-version,`version`>>,
 <<argon2-parameters,`memoryCost`>>, <<argon2-parameters,`timeCost`>>,
-<<argon2-parameters,`parallelism`>>, and <<salt,`salt`>> used when encrypting
-are stored in the header, and these stored values are used when decrypting.
+<<argon2-parameters,`parallelism`>>, and <<salt-for-argon2,`salt`>> used when
+encrypting are stored in the header, and these stored values are used when
+decrypting.
 
 == Header format
 
@@ -144,7 +165,40 @@ A 7-byte string for identifying the abcrypt encrypted data format. The value is
 === Version number
 
 A 1-byte version number of the abcrypt encrypted data format. The current value
-is 0.
+is 1.
+
+=== Argon2 type
+
+.The following Argon2 types are valid
+|===
+|Value |Description
+
+|stem:[0]
+|Argon2d.
+
+|stem:[1]
+|Argon2i.
+
+|stem:[2]
+|Argon2id.
+|===
+
+The Argon2 type is represented as 4 bytes in little-endian.
+
+=== Argon2 version
+
+.The following Argon2 versions are valid
+|===
+|Value |Description
+
+|stem:[16]
+|Version 0x10 (16 in decimal).
+
+|stem:[19]
+|Version 0x13 (19 in decimal).
+|===
+
+The Argon2 version is represented as 4 bytes in little-endian.
 
 === Argon2 parameters
 
@@ -170,13 +224,13 @@ is 0.
 
 Each parameter is represented as 4 bytes in little-endian.
 
-=== Salt
+=== Salt for Argon2
 
 A 32-byte salt for <<argon2>>.
 
 NOTE: The salt should be generated from a CSPRNG.
 
-=== Nonce
+=== Nonce for XChaCha20-Poly1305
 
 A 24-byte nonce for <<xchacha20-poly1305>>.
 
@@ -186,20 +240,21 @@ NOTE: The nonce should be generated from a CSPRNG.
 
 The MAC (authentication tag) of the header. The MAC is computed with
 <<blake2b-512-mac>> over the whole header up to and including the nonce (first
-76 bytes of the header).
+84 bytes of the header).
 
 .The MAC is computed as follows
 ----
 mac = BLAKE2b(
-    data = header[..76],
-    output_size = 64,
-    key = derived_key[32..],
+    data = header[..84],
+    digestLength = 64,
+    key = headerMacKey,
     salt = [],
-    person = [],
+    personalization = [],
 )
 ----
 
-The size of `salt` and `person` (personalization string) is zero (empty).
+The size of `salt` and `personalization` (personalization string) are zero
+(empty).
 
 == File body
 
@@ -208,16 +263,28 @@ The file body is encrypted with XChaCha20-Poly1305.
 .The ciphertext is computed as follows
 ----
 ciphertext = XChaCha20-Poly1305(
-    key = derived_key[..32],
-    nonce = header[20..52],
     plaintext = plaintext,
     aad = [],
+    key = encryptionKey,
+    nonce = header[60..84],
 )
 ----
 
 The size of `aad` (additional authenticated data) is zero (empty).
 
+<<nonce-for-xchacha20-poly1305,`nonce`>> used when encrypting is stored in the
+header, and the stored value is used when decrypting.
+
 IMPORTANT: The abcrypt encrypted data format uses a postfix tag.
+
+== Filename extension
+
+abcrypt files should use the extension `.abcrypt`.
+
+== MIME type
+
+When transferring abcrypt files over the Internet, the appropriate MIME type is
+`application/x-abcrypt`.
 
 == ABNF definition of the file format
 
@@ -233,6 +300,11 @@ endif::[]
 
 == Format changelog
 
+Version 1::
+
+  * Add the Argon2 type field to allow choosing the Argon2 type.
+  * Add the Argon2 version field to allow choosing the Argon2 version.
+
 Version 0::
 
-  Initial release.
+  * Initial release.

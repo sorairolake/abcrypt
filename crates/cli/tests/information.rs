@@ -2,14 +2,6 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-// Lint levels of rustc.
-#![forbid(unsafe_code)]
-#![deny(missing_debug_implementations)]
-#![warn(rust_2018_idioms)]
-// Lint levels of Clippy.
-#![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
-#![allow(clippy::multiple_crate_versions)]
-
 mod utils;
 
 use predicates::prelude::predicate;
@@ -18,7 +10,47 @@ use predicates::prelude::predicate;
 fn basic_information() {
     utils::command::command()
         .arg("information")
-        .arg("data/data.txt.abcrypt")
+        .arg("data/v1/argon2d/v0x10/data.txt.abcrypt")
+        .assert()
+        .success()
+        .stderr(predicate::str::starts_with(
+            "Parameters used: memoryCost = 47104; timeCost = 1; parallelism = 1;",
+        ));
+    utils::command::command()
+        .arg("information")
+        .arg("data/v1/argon2d/v0x13/data.txt.abcrypt")
+        .assert()
+        .success()
+        .stderr(predicate::str::starts_with(
+            "Parameters used: memoryCost = 19456; timeCost = 2; parallelism = 1;",
+        ));
+    utils::command::command()
+        .arg("information")
+        .arg("data/v1/argon2i/v0x10/data.txt.abcrypt")
+        .assert()
+        .success()
+        .stderr(predicate::str::starts_with(
+            "Parameters used: memoryCost = 12288; timeCost = 3; parallelism = 1;",
+        ));
+    utils::command::command()
+        .arg("information")
+        .arg("data/v1/argon2i/v0x13/data.txt.abcrypt")
+        .assert()
+        .success()
+        .stderr(predicate::str::starts_with(
+            "Parameters used: memoryCost = 9216; timeCost = 4; parallelism = 1;",
+        ));
+    utils::command::command()
+        .arg("information")
+        .arg("data/v1/argon2id/v0x10/data.txt.abcrypt")
+        .assert()
+        .success()
+        .stderr(predicate::str::starts_with(
+            "Parameters used: memoryCost = 7168; timeCost = 5; parallelism = 1;",
+        ));
+    utils::command::command()
+        .arg("information")
+        .arg("data/v1/argon2id/v0x13/data.txt.abcrypt")
         .assert()
         .success()
         .stderr(predicate::str::starts_with(
@@ -68,7 +100,7 @@ fn information_command_without_default_feature() {
     utils::command::command()
         .arg("information")
         .arg("-j")
-        .arg("data/data.txt.abcrypt")
+        .arg("data/v1/argon2id/v0x13/data.txt.abcrypt")
         .assert()
         .failure()
         .code(2)
@@ -81,7 +113,7 @@ fn information_as_json() {
     utils::command::command()
         .arg("information")
         .arg("-j")
-        .arg("data/data.txt.abcrypt")
+        .arg("data/v1/argon2id/v0x13/data.txt.abcrypt")
         .assert()
         .success()
         .stdout(predicate::eq(concat!(
@@ -102,7 +134,7 @@ fn information_if_input_file_is_invalid() {
             "data is not a valid abcrypt encrypted file",
         ))
         .stderr(predicate::str::contains(
-            "encrypted data is shorter than 156 bytes",
+            "encrypted data is shorter than 164 bytes",
         ));
 }
 

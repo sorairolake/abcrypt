@@ -2,13 +2,6 @@
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-// Lint levels of rustc.
-#![forbid(unsafe_code)]
-#![deny(missing_debug_implementations)]
-#![warn(rust_2018_idioms)]
-// Lint levels of Clippy.
-#![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
-
 use std::{
     env, fs, io,
     path::Path,
@@ -20,7 +13,6 @@ fn generate_man_page(out_dir: &str) -> io::Result<ExitStatus> {
     let mut command = Command::new("asciidoctor");
     command
         .args(["-b", "manpage"])
-        .args(["-a", concat!("revnumber=", env!("CARGO_PKG_VERSION"))])
         .args(["-D", out_dir])
         .arg(man_dir.join("*.3.adoc"))
         .status()

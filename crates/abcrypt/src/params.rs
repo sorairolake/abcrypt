@@ -23,9 +23,12 @@ impl Params {
     ///
     /// Returns [`Err`] if any of the following are true:
     ///
-    /// - `ciphertext` is shorter than 156 bytes.
+    /// - `ciphertext` is shorter than 164 bytes.
     /// - The magic number is invalid.
+    /// - The version number is the unsupported abcrypt version number.
     /// - The version number is the unrecognized abcrypt version number.
+    /// - The Argon2 type is invalid.
+    /// - The Argon2 version is invalid.
     /// - The Argon2 parameters are invalid.
     ///
     /// # Examples
@@ -33,10 +36,11 @@ impl Params {
     /// ```
     /// # use abcrypt::Params;
     /// #
-    /// let ciphertext = include_bytes!("../tests/data/data.txt.abcrypt");
+    /// let ciphertext = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
     ///
     /// assert!(Params::new(ciphertext).is_ok());
     /// ```
+    #[inline]
     pub fn new(ciphertext: impl AsRef<[u8]>) -> Result<Self> {
         let inner = |ciphertext: &[u8]| -> Result<Self> {
             let params = Header::parse(ciphertext).map(|h| h.params())?;
@@ -52,7 +56,7 @@ impl Params {
     /// ```
     /// # use abcrypt::Params;
     /// #
-    /// let ciphertext = include_bytes!("../tests/data/data.txt.abcrypt");
+    /// let ciphertext = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
     ///
     /// let params = Params::new(ciphertext).unwrap();
     /// assert_eq!(params.memory_cost(), 32);
@@ -70,7 +74,7 @@ impl Params {
     /// ```
     /// # use abcrypt::Params;
     /// #
-    /// let ciphertext = include_bytes!("../tests/data/data.txt.abcrypt");
+    /// let ciphertext = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
     ///
     /// let params = Params::new(ciphertext).unwrap();
     /// assert_eq!(params.time_cost(), 3);
@@ -88,7 +92,7 @@ impl Params {
     /// ```
     /// # use abcrypt::Params;
     /// #
-    /// let ciphertext = include_bytes!("../tests/data/data.txt.abcrypt");
+    /// let ciphertext = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
     ///
     /// let params = Params::new(ciphertext).unwrap();
     /// assert_eq!(params.parallelism(), 4);
@@ -101,6 +105,7 @@ impl Params {
 }
 
 impl From<Params> for argon2::Params {
+    #[inline]
     fn from(params: Params) -> Self {
         Self::new(
             params.memory_cost(),
@@ -113,6 +118,7 @@ impl From<Params> for argon2::Params {
 }
 
 impl From<argon2::Params> for Params {
+    #[inline]
     fn from(params: argon2::Params) -> Self {
         let (memory_cost, time_cost, parallelism) =
             (params.m_cost(), params.t_cost(), params.p_cost());

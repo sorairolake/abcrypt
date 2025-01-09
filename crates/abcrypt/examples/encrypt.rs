@@ -4,22 +4,15 @@
 
 //! An example of encrypting a file to the abcrypt encrypted data format.
 
-// Lint levels of rustc.
-#![forbid(unsafe_code)]
-#![deny(missing_debug_implementations)]
-#![warn(rust_2018_idioms)]
-// Lint levels of Clippy.
-#![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
-
 use std::{
     fs,
     io::{self, Read, Write},
     path::PathBuf,
 };
 
-use abcrypt::argon2::Params;
+use abcrypt::argon2::{Algorithm, Params, Version};
 use anyhow::Context;
-use clap::Parser;
+use clap::{Parser, ValueEnum};
 use dialoguer::{theme::ColorfulTheme, Password};
 
 #[derive(Debug, Parser)]
@@ -28,6 +21,26 @@ struct Opt {
     /// Output the result to a file.
     #[arg(short, long, value_name("FILE"))]
     output: Option<PathBuf>,
+
+    /// Set the Argon2 type.
+    #[arg(
+        long,
+        value_enum,
+        default_value_t,
+        value_name("TYPE"),
+        ignore_case(true)
+    )]
+    argon2_type: Argon2Type,
+
+    /// Set the Argon2 version.
+    #[arg(
+        long,
+        value_enum,
+        default_value_t,
+        value_name("VERSION"),
+        ignore_case(true)
+    )]
+    argon2_version: Argon2Version,
 
     /// Set the memory size in KiB.
     #[arg(short, long, default_value("19456"), value_name("NUM"))]
@@ -46,6 +59,50 @@ struct Opt {
     /// If [FILE] is not specified, data will be read from standard input.
     #[arg(value_name("FILE"))]
     input: Option<PathBuf>,
+}
+
+#[derive(Clone, Debug, Default, ValueEnum)]
+enum Argon2Type {
+    /// Argon2d.
+    Argon2d,
+
+    /// Argon2i.
+    Argon2i,
+
+    /// Argon2id.
+    #[default]
+    Argon2id,
+}
+
+impl From<Argon2Type> for Algorithm {
+    fn from(argon2_type: Argon2Type) -> Self {
+        match argon2_type {
+            Argon2Type::Argon2d => Self::Argon2d,
+            Argon2Type::Argon2i => Self::Argon2i,
+            Argon2Type::Argon2id => Self::Argon2id,
+        }
+    }
+}
+
+#[derive(Clone, Debug, Default, ValueEnum)]
+enum Argon2Version {
+    /// Version 0x10.
+    #[value(name = "0x10", alias("16"))]
+    V0x10,
+
+    /// Version 0x13.
+    #[default]
+    #[value(name = "0x13", alias("19"))]
+    V0x13,
+}
+
+impl From<Argon2Version> for Version {
+    fn from(argon2_version: Argon2Version) -> Self {
+        match argon2_version {
+            Argon2Version::V0x10 => Self::V0x10,
+            Argon2Version::V0x13 => Self::V0x13,
+        }
+    }
 }
 
 fn main() -> anyhow::Result<()> {
@@ -67,7 +124,13 @@ fn main() -> anyhow::Result<()> {
         .interact()
         .context("could not read passphrase")?;
     let params = Params::new(opt.memory_cost, opt.time_cost, opt.parallelism, None)?;
-    let ciphertext = abcrypt::encrypt_with_params(plaintext, passphrase, params)?;
+    let ciphertext = abcrypt::encrypt_with_context(
+        plaintext,
+        passphrase,
+        opt.argon2_type.into(),
+        opt.argon2_version.into(),
+        params,
+    )?;
 
     if let Some(file) = opt.output {
         fs::write(&file, ciphertext)

@@ -22,7 +22,7 @@ default: build
 
 # Run tests
 @test:
-    cargo test
+    cargo test -p abcrypt -p abcrypt-cli -p abcrypt-capi
 
 # Run the formatter
 @fmt:
@@ -64,6 +64,10 @@ clang-tidy: setup-meson
     #!/usr/bin/env bash
     cd crates/capi/examples
     ninja -C builddir clang-tidy
+
+# Run tests for the Wasm bindings
+@wasm-test:
+    wasm-pack test --node crates/wasm
 
 # Build examples for the Wasm bindings
 @build-wasm-examples:
@@ -156,6 +160,7 @@ publish-wasm: build-wasm
 
 # Increment the version of the command-line utility
 @bump-cli part:
+    bump-my-version bump --config-file .bumpversion-cli.toml {{part}}
     cargo set-version --bump {{part}} -p abcrypt-cli
 
 # Increment the version of the C API

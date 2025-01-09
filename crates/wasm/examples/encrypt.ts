@@ -16,6 +16,12 @@ const { args, options } = await new command.Command()
   .name("encrypt")
   .version(VERSION)
   .description("An example of encrypting to the abcrypt encrypted data format.")
+  .option("--argon2-type <TYPE:integer>", "Set the Argon2 type.", {
+    default: 2,
+  })
+  .option("--argon2-version <VERSION:integer>", "Set the Argon2 version.", {
+    default: 0x13,
+  })
   .option("-m, --memory-cost <NUM:integer>", "Set the memory size in KiB.", {
     default: 19456,
   })
@@ -32,9 +38,11 @@ const plaintext = Deno.readFileSync(args[0]);
 
 const passphrase = new TextEncoder()
   .encode(cli.promptSecret("Enter passphrase: ")!);
-const ciphertext = abcrypt.encryptWithParams(
+const ciphertext = abcrypt.encryptWithContext(
   plaintext,
   passphrase,
+  options.argon2Type,
+  options.argon2Version,
   options.memoryCost,
   options.timeCost,
   options.parallelism,

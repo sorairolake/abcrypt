@@ -4,10 +4,10 @@
 
 = abcrypt_error_code(3)
 // Specify in UTC.
-:docdate: 2024-04-13
+:docdate: 2024-12-07
+:revnumber: 0.3.2
 :doctype: manpage
-ifdef::revnumber[:mansource: abcrypt-capi {revnumber}]
-ifndef::revnumber[:mansource: abcrypt-capi]
+:mansource: abcrypt-capi {revnumber}
 :manmanual: Library Functions Manual
 ifndef::site-gen-antora[:includedir: ./include]
 
@@ -26,7 +26,10 @@ typedef enum abcrypt_error_code {
   ABCRYPT_ERROR_CODE_ERROR,
   ABCRYPT_ERROR_CODE_INVALID_LENGTH,
   ABCRYPT_ERROR_CODE_INVALID_MAGIC_NUMBER,
+  ABCRYPT_ERROR_CODE_UNSUPPORTED_VERSION,
   ABCRYPT_ERROR_CODE_UNKNOWN_VERSION,
+  ABCRYPT_ERROR_CODE_INVALID_ARGON2_TYPE,
+  ABCRYPT_ERROR_CODE_INVALID_ARGON2_VERSION,
   ABCRYPT_ERROR_CODE_INVALID_ARGON2_PARAMS,
   ABCRYPT_ERROR_CODE_INVALID_ARGON2_CONTEXT,
   ABCRYPT_ERROR_CODE_INVALID_HEADER_MAC,
@@ -50,15 +53,27 @@ _ABCRYPT_ERROR_CODE_ERROR_::
 
 _ABCRYPT_ERROR_CODE_INVALID_LENGTH_::
 
-  The encrypted data was shorter than 156 bytes.
+  The encrypted data was shorter than 164 bytes.
 
 _ABCRYPT_ERROR_CODE_INVALID_MAGIC_NUMBER_::
 
   The magic number (file signature) was invalid.
 
+_ABCRYPT_ERROR_CODE_UNSUPPORTED_VERSION_::
+
+  The version was the unsupported abcrypt version number.
+
 _ABCRYPT_ERROR_CODE_UNKNOWN_VERSION_::
 
   The version was the unrecognized abcrypt version number.
+
+_ABCRYPT_ERROR_CODE_INVALID_ARGON2_TYPE_::
+
+  The Argon2 type were invalid.
+
+_ABCRYPT_ERROR_CODE_INVALID_ARGON2_VERSION_::
+
+  The Argon2 version were invalid.
 
 _ABCRYPT_ERROR_CODE_INVALID_ARGON2_PARAMS_::
 

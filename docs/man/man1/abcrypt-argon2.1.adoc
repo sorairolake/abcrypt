@@ -1,0 +1,66 @@
+// SPDX-FileCopyrightText: 2024 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= abcrypt-argon2(1)
+// Specify in UTC.
+:docdate: 2024-12-07
+:revnumber: 0.3.3
+:doctype: manpage
+:mansource: abcrypt {revnumber}
+:manmanual: General Commands Manual
+ifndef::site-gen-antora[:includedir: ./include]
+
+== NAME
+
+abcrypt-argon2 - provides information about the Argon2 context
+
+== SYNOPSIS
+
+*abcrypt argon2* [_OPTION_]... [_FILE_]
+
+== DESCRIPTION
+
+This command provides information about the Argon2 context from _FILE_. If
+_FILE_ is not specified, data will be read from standard input.
+
+== POSITIONAL ARGUMENTS
+
+_FILE_::
+
+  Input file. If _FILE_ is not specified, data will be read from standard input.
+
+== OPTIONS
+
+*-h*, *--help*::
+
+  Print help message. The short flag (*-h*) will print a condensed help message
+  while the long flag (*--help*) will print a detailed help message.
+
+*-V*, *--version*::
+
+  Print version number. The long flag (*--version*) will also print the
+  copyright notice, the license notice and where to report bugs.
+
+ifndef::site-gen-antora[include::{includedir}/section-exit-status.adoc[]]
+ifdef::site-gen-antora[include::partial$man/man1/include/section-exit-status.adoc[]]
+
+ifndef::site-gen-antora[include::{includedir}/section-notes.adoc[]]
+ifdef::site-gen-antora[include::partial$man/man1/include/section-notes.adoc[]]
+
+== EXAMPLES
+
+Print the Argon2 context:{blank}::
+
+  $ *abcrypt argon2 data.txt.abcrypt*
+
+ifndef::site-gen-antora[include::{includedir}/section-reporting-bugs.adoc[]]
+ifdef::site-gen-antora[include::partial$man/man1/include/section-reporting-bugs.adoc[]]
+
+ifndef::site-gen-antora[include::{includedir}/section-copyright.adoc[]]
+ifdef::site-gen-antora[include::partial$man/man1/include/section-copyright.adoc[]]
+
+== SEE ALSO
+
+*abcrypt*(1), *abcrypt-decrypt*(1), *abcrypt-encrypt*(1), *abcrypt-help*(1),
+*abcrypt-information*(1)

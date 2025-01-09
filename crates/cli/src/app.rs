@@ -4,7 +4,7 @@
 
 use std::path::Path;
 
-use abcrypt::{argon2, Decryptor};
+use abcrypt::{argon2, Argon2, Decryptor};
 use anyhow::{bail, Context};
 use clap::Parser;
 
@@ -62,7 +62,13 @@ pub fn run() -> anyhow::Result<()> {
                     params::displayln(params.m_cost(), params.t_cost(), params.p_cost());
                 }
 
-                let ciphertext = abcrypt::encrypt_with_params(input, passphrase, params)?;
+                let ciphertext = abcrypt::encrypt_with_context(
+                    input,
+                    passphrase,
+                    arg.argon2_type.into(),
+                    arg.argon2_version.into(),
+                    params,
+                )?;
 
                 if let Some(file) = arg.output {
                     output::write_to_file(&file, &ciphertext)?;
@@ -112,6 +118,14 @@ pub fn run() -> anyhow::Result<()> {
                 } else {
                     output::write_to_stdout(&plaintext)?;
                 }
+            }
+            Command::Argon2(arg) => {
+                let input = input::read(arg.input.as_deref())?;
+
+                let argon2 =
+                    Argon2::new(input).context("data is not a valid abcrypt encrypted file")?;
+                eprintln!("Type: {:?}", argon2.variant());
+                eprintln!("Version: {:#x}", u32::from(argon2.version()));
             }
             Command::Information(arg) => {
                 let input = input::read(arg.input.as_deref())?;

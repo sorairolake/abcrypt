@@ -4,7 +4,7 @@
 
 [package]
 name = "abcrypt"
-version = "0.3.7"
+version = "0.4.0"
 authors.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -26,30 +26,30 @@ all-features = true
 [[example]]
 name = "decrypt"
 path = "examples/decrypt.rs"
-required-features = ["default"]
+required-features = ["std"]
 
 [[example]]
 name = "encrypt"
 path = "examples/encrypt.rs"
-required-features = ["default"]
+required-features = ["std"]
 
 [[example]]
 name = "info"
 path = "examples/info.rs"
-required-features = ["default", "serde"]
+required-features = ["std", "serde"]
 
 [dependencies]
 argon2 = { version = "0.5.3", default-features = false }
 blake2 = { version = "0.10.6", default-features = false }
 chacha20poly1305 = { version = "0.10.1", default-features = false, features = ["getrandom"] }
 rand = { version = "0.8.5", default-features = false, features = ["getrandom", "std_rng"] }
-serde = { version = "1.0.210", default-features = false, features = ["derive"], optional = true }
+serde = { version = "1.0.217", default-features = false, features = ["derive"], optional = true }
 
 [dev-dependencies]
 anyhow.workspace = true
 clap.workspace = true
 dialoguer.workspace = true
-serde_json = "1.0.131"
+serde_json = "1.0.135"
 serde_test = "1.0.177"
 
 [features]
@@ -57,3 +57,6 @@ default = ["std"]
 alloc = ["argon2/alloc"]
 std = ["alloc", "argon2/std", "blake2/std", "chacha20poly1305/std"]
 serde = ["dep:serde"]
+
+[lints]
+workspace = true

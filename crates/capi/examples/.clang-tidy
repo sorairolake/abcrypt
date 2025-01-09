@@ -6,7 +6,6 @@
 Checks: "clang-diagnostic-*,clang-analyzer-*"
 WarningsAsErrors: ""
 HeaderFilterRegex: ""
-AnalyzeTemporaryDtors: false
 FormatStyle: none
 User: user
 CheckOptions:

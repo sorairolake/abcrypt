@@ -1,0 +1,30 @@
+# abcrypt: file(1) magic for abcrypt encrypted file
+# <https://github.com/sorairolake/abcrypt/blob/develop/docs/spec/FORMAT.adoc>
+0		string	abcrypt	abcrypt encrypted data
+!:mime	application/x-abcrypt
+!:ext	abcrypt
+>7		ubyte	x		- version %d
+# version 0
+>7		ubyte	0
+>>8		use		argon2-parameters
+# version 1
+>7		ubyte	1
+>>8		use		argon2-type
+>>12	use		argon2-version
+>>16	use		argon2-parameters
+
+# Argon2 type
+0		name	argon2-type
+>0		ulelong	0		\b, Argon2d
+>0		ulelong	1		\b, Argon2i
+>0		ulelong	2		\b, Argon2id
+
+# Argon2 version
+0		name	argon2-version
+>0		ulelong	x		\b, Argon2 version %#x
+
+# Argon2 parameters
+0		name	argon2-parameters
+>0		ulelong	x		\b, m=%u
+>4		ulelong	x		\b, t=%u
+>8		ulelong	x		\b, p=%u

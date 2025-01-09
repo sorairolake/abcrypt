@@ -13,19 +13,22 @@ pub struct Params(abcrypt::Params);
 
 #[wasm_bindgen]
 impl Params {
-    #[allow(clippy::use_self)]
     /// Creates a new instance of the Argon2 parameters from `ciphertext`.
     ///
     /// # Errors
     ///
     /// Returns an error if any of the following are true:
     ///
-    /// - `ciphertext` is shorter than 156 bytes.
+    /// - `ciphertext` is shorter than 164 bytes.
     /// - The magic number is invalid.
+    /// - The version number is the unsupported abcrypt version number.
     /// - The version number is the unrecognized abcrypt version number.
+    /// - The Argon2 type is invalid.
+    /// - The Argon2 version is invalid.
     /// - The Argon2 parameters are invalid.
+    #[inline]
     #[wasm_bindgen(constructor)]
-    pub fn new(ciphertext: &[u8]) -> Result<Params, JsError> {
+    pub fn new(ciphertext: &[u8]) -> Result<Self, JsError> {
         abcrypt::Params::new(ciphertext)
             .map(Self)
             .map_err(JsError::from)

@@ -24,7 +24,10 @@ include = ["/LICENSES", "/README.md", "/src"]
 crate-type = ["staticlib", "cdylib"]
 
 [dependencies]
-abcrypt = { version = "0.3.7", path = "../abcrypt" }
+abcrypt = { version = "0.4.0", path = "../abcrypt" }
 
 [build-dependencies]
 cbindgen = { version = "0.27.0", default-features = false }
+
+[lints]
+workspace = true

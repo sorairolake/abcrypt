@@ -6,7 +6,7 @@ import abcrypt_py
 
 
 def test_header_size() -> None:
-    assert abcrypt_py.Format.HEADER_SIZE == 140
+    assert abcrypt_py.Format.HEADER_SIZE == 148
 
 
 def test_tag_size() -> None:

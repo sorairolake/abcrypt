@@ -35,8 +35,6 @@ image:{ci-badge}[CI,link={ci-url}]
 *abcrypt* is a simple, modern and secure file encryption tool, file format and
 Rust library.
 
-image::crates/cli/assets/screenshot.webp[Screenshot of abcrypt]
-
 == Crates
 
 |===
@@ -80,9 +78,13 @@ https://github.com/sorairolake/abcrypt.git.
 
 Please see link:CONTRIBUTING.adoc[].
 
+== Home page
+
+https://sorairolake.github.io/abcrypt/
+
 == License
 
-Copyright (C) 2022&ndash;2024 Shun Sakai (see link:AUTHORS.adoc[])
+Copyright (C) 2022 Shun Sakai (see link:AUTHORS.adoc[])
 
 . Unless otherwise noted, each file is distributed under the terms of either
   the _Apache License 2.0_ or the _MIT License_.

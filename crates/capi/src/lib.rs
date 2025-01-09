@@ -6,10 +6,7 @@
 
 #![doc(html_root_url = "https://docs.rs/abcrypt-capi/0.3.2/")]
 // Lint levels of rustc.
-#![deny(missing_debug_implementations, missing_docs)]
-#![warn(rust_2018_idioms)]
-// Lint levels of Clippy.
-#![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
+#![deny(missing_docs)]
 
 mod decrypt;
 mod encrypt;
@@ -18,7 +15,7 @@ mod params;
 
 pub use crate::{
     decrypt::abcrypt_decrypt,
-    encrypt::{abcrypt_encrypt, abcrypt_encrypt_with_params},
+    encrypt::{abcrypt_encrypt, abcrypt_encrypt_with_context, abcrypt_encrypt_with_params},
     error::{abcrypt_error_message, abcrypt_error_message_out_len, ErrorCode},
     params::{
         abcrypt_params_free, abcrypt_params_memory_cost, abcrypt_params_new,
@@ -27,7 +24,7 @@ pub use crate::{
 };
 
 /// The number of bytes of the header.
-pub const HEADER_SIZE: usize = 140;
+pub const HEADER_SIZE: usize = 148;
 
 /// The number of bytes of the MAC (authentication tag) of the ciphertext.
 pub const TAG_SIZE: usize = 16;
@@ -38,7 +35,7 @@ mod tests {
 
     #[test]
     fn header_size() {
-        assert_eq!(HEADER_SIZE, 140);
+        assert_eq!(HEADER_SIZE, 148);
         assert_eq!(HEADER_SIZE, abcrypt::HEADER_SIZE);
     }
 

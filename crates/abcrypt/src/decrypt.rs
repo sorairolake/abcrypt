@@ -9,7 +9,7 @@ use chacha20poly1305::{AeadInPlace, KeyInit, Tag, XChaCha20Poly1305};
 
 use crate::{
     format::{DerivedKey, Header},
-    Error, Result, AAD, ARGON2_ALGORITHM, ARGON2_VERSION, HEADER_SIZE, TAG_SIZE,
+    Error, Result, AAD, HEADER_SIZE, TAG_SIZE,
 };
 
 /// Decryptor for the abcrypt encrypted data format.
@@ -28,9 +28,12 @@ impl<'c> Decryptor<'c> {
     ///
     /// Returns [`Err`] if any of the following are true:
     ///
-    /// - `ciphertext` is shorter than 156 bytes.
+    /// - `ciphertext` is shorter than 164 bytes.
     /// - The magic number is invalid.
+    /// - The version number is the unsupported abcrypt version number.
     /// - The version number is the unrecognized abcrypt version number.
+    /// - The Argon2 type is invalid.
+    /// - The Argon2 version is invalid.
     /// - The Argon2 parameters are invalid.
     /// - The Argon2 context is invalid.
     /// - The MAC (authentication tag) of the header is invalid.
@@ -40,7 +43,7 @@ impl<'c> Decryptor<'c> {
     /// ```
     /// # use abcrypt::Decryptor;
     /// #
-    /// let ciphertext = include_bytes!("../tests/data/data.txt.abcrypt");
+    /// let ciphertext = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
     /// let passphrase = "passphrase";
     ///
     /// let cipher = Decryptor::new(&ciphertext, passphrase).unwrap();
@@ -52,7 +55,11 @@ impl<'c> Decryptor<'c> {
             // The derived key size is 96 bytes. The first 256 bits are for
             // XChaCha20-Poly1305 key, and the last 512 bits are for BLAKE2b-512-MAC key.
             let mut dk = [u8::default(); DerivedKey::SIZE];
-            let argon2 = Argon2::new(ARGON2_ALGORITHM, ARGON2_VERSION, header.params().into());
+            let argon2 = Argon2::new(
+                header.argon2_type().into(),
+                header.argon2_version().into(),
+                header.params().into(),
+            );
             #[cfg(feature = "alloc")]
             argon2
                 .hash_password_into(passphrase, &header.salt(), &mut dk)
@@ -71,7 +78,7 @@ impl<'c> Decryptor<'c> {
             }
             let dk = DerivedKey::new(dk);
 
-            header.verify_mac(&dk.mac(), ciphertext[76..HEADER_SIZE].into())?;
+            header.verify_mac(&dk.mac(), ciphertext[84..HEADER_SIZE].into())?;
             let (ciphertext, tag) =
                 ciphertext[HEADER_SIZE..].split_at(ciphertext.len() - HEADER_SIZE - TAG_SIZE);
             let tag = *Tag::from_slice(tag);
@@ -102,13 +109,13 @@ impl<'c> Decryptor<'c> {
     /// # use abcrypt::Decryptor;
     /// #
     /// let data = b"Hello, world!\n";
-    /// let ciphertext = include_bytes!("../tests/data/data.txt.abcrypt");
+    /// let ciphertext = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
     /// let passphrase = "passphrase";
     ///
     /// let cipher = Decryptor::new(&ciphertext, passphrase).unwrap();
     /// let mut buf = [u8::default(); 14];
     /// cipher.decrypt(&mut buf).unwrap();
-    /// # assert_eq!(buf, data.as_slice());
+    /// # assert_eq!(buf, *data);
     /// ```
     pub fn decrypt(&self, buf: &mut (impl AsMut<[u8]> + ?Sized)) -> Result<()> {
         let inner = |decryptor: &Self, buf: &mut [u8]| -> Result<()> {
@@ -140,7 +147,7 @@ impl<'c> Decryptor<'c> {
     /// # use abcrypt::Decryptor;
     /// #
     /// let data = b"Hello, world!\n";
-    /// let ciphertext = include_bytes!("../tests/data/data.txt.abcrypt");
+    /// let ciphertext = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
     /// let passphrase = "passphrase";
     ///
     /// let cipher = Decryptor::new(&ciphertext, passphrase).unwrap();
@@ -148,6 +155,7 @@ impl<'c> Decryptor<'c> {
     /// # assert_eq!(plaintext, data);
     /// ```
     #[cfg(feature = "alloc")]
+    #[inline]
     pub fn decrypt_to_vec(&self) -> Result<alloc::vec::Vec<u8>> {
         let mut buf = vec![u8::default(); self.out_len()];
         self.decrypt(&mut buf)?;
@@ -161,7 +169,7 @@ impl<'c> Decryptor<'c> {
     /// ```
     /// # use abcrypt::Decryptor;
     /// #
-    /// let ciphertext = include_bytes!("../tests/data/data.txt.abcrypt");
+    /// let ciphertext = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
     /// let passphrase = "passphrase";
     ///
     /// let cipher = Decryptor::new(&ciphertext, passphrase).unwrap();
@@ -183,9 +191,12 @@ impl<'c> Decryptor<'c> {
 ///
 /// Returns [`Err`] if any of the following are true:
 ///
-/// - `ciphertext` is shorter than 156 bytes.
+/// - `ciphertext` is shorter than 164 bytes.
 /// - The magic number is invalid.
+/// - The version number is the unsupported abcrypt version number.
 /// - The version number is the unrecognized abcrypt version number.
+/// - The Argon2 type is invalid.
+/// - The Argon2 version is invalid.
 /// - The Argon2 parameters are invalid.
 /// - The Argon2 context is invalid.
 /// - The MAC (authentication tag) of the header is invalid.
@@ -195,13 +206,14 @@ impl<'c> Decryptor<'c> {
 ///
 /// ```
 /// let data = b"Hello, world!\n";
-/// let ciphertext = include_bytes!("../tests/data/data.txt.abcrypt");
+/// let ciphertext = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
 /// let passphrase = "passphrase";
 ///
 /// let plaintext = abcrypt::decrypt(ciphertext, passphrase).unwrap();
 /// # assert_eq!(plaintext, data);
 /// ```
 #[cfg(feature = "alloc")]
+#[inline]
 pub fn decrypt(
     ciphertext: impl AsRef<[u8]>,
     passphrase: impl AsRef<[u8]>,

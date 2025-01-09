@@ -5,6 +5,8 @@
 //! The `abcrypt` crate is an implementation of the [abcrypt encrypted data
 //! format].
 //!
+//! This crate supports the abcrypt version 1 file format.
+//!
 //! # Examples
 //!
 //! ## Encryption and decryption
@@ -41,7 +43,10 @@
 //! limited to 256 KiB when the `alloc` feature is disabled.
 //!
 //! ```
-//! use abcrypt::{argon2::Params, Decryptor, Encryptor};
+//! use abcrypt::{
+//!     argon2::{Algorithm, Params, Version},
+//!     Argon2, Decryptor, Encryptor,
+//! };
 //!
 //! let data = b"Hello, world!\n";
 //! let passphrase = "passphrase";
@@ -49,15 +54,19 @@
 //! // Encrypt `data` using `passphrase`.
 //! let params = Params::new(32, 3, 4, None).unwrap();
 //! let cipher = Encryptor::with_params(data, passphrase, params).unwrap();
-//! let mut buf = [u8::default(); 170];
+//! let mut buf = [u8::default(); 178];
 //! cipher.encrypt(&mut buf);
-//! assert_ne!(buf, data.as_slice());
+//! assert_ne!(buf.as_slice(), data);
+//!
+//! let argon2 = Argon2::new(buf).unwrap();
+//! assert_eq!(argon2.variant(), Algorithm::Argon2id);
+//! assert_eq!(argon2.version(), Version::V0x13);
 //!
 //! // And decrypt it back.
 //! let cipher = Decryptor::new(&buf, passphrase).unwrap();
 //! let mut buf = [u8::default(); 14];
 //! cipher.decrypt(&mut buf).unwrap();
-//! assert_eq!(buf, data.as_slice());
+//! assert_eq!(buf, *data);
 //! ```
 //!
 //! ## Extracting the Argon2 parameters in the encrypted data
@@ -85,15 +94,12 @@
 //!
 //! [abcrypt encrypted data format]: https://sorairolake.github.io/abcrypt/book/format.html
 
-#![doc(html_root_url = "https://docs.rs/abcrypt/0.3.7/")]
+#![doc(html_root_url = "https://docs.rs/abcrypt/0.4.0/")]
 #![no_std]
 #![cfg_attr(docsrs, feature(doc_auto_cfg, doc_cfg))]
 // Lint levels of rustc.
 #![forbid(unsafe_code)]
-#![deny(missing_debug_implementations, missing_docs)]
-#![warn(rust_2018_idioms)]
-// Lint levels of Clippy.
-#![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
+#![deny(missing_docs)]
 
 #[cfg(feature = "alloc")]
 #[macro_use]
@@ -101,6 +107,7 @@ extern crate alloc;
 #[cfg(feature = "std")]
 extern crate std;
 
+mod argon2_context;
 mod decrypt;
 mod encrypt;
 mod error;
@@ -111,21 +118,19 @@ pub use argon2;
 pub use blake2;
 pub use chacha20poly1305;
 
-#[cfg(feature = "alloc")]
 pub use crate::{
-    decrypt::decrypt,
-    encrypt::{encrypt, encrypt_with_params},
-};
-pub use crate::{
+    argon2_context::Argon2,
     decrypt::Decryptor,
     encrypt::Encryptor,
     error::{Error, Result},
     format::{HEADER_SIZE, TAG_SIZE},
     params::Params,
 };
-
-const ARGON2_ALGORITHM: argon2::Algorithm = argon2::Algorithm::Argon2id;
-const ARGON2_VERSION: argon2::Version = argon2::Version::V0x13;
+#[cfg(feature = "alloc")]
+pub use crate::{
+    decrypt::decrypt,
+    encrypt::{encrypt, encrypt_with_context, encrypt_with_params},
+};
 
 #[cfg(not(feature = "alloc"))]
 // 1 MiB.

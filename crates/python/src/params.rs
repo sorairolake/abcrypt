@@ -21,10 +21,14 @@ impl Params {
     ///
     /// Returns an error if any of the following are true:
     ///
-    /// - `ciphertext` is shorter than 156 bytes.
+    /// - `ciphertext` is shorter than 164 bytes.
     /// - The magic number is invalid.
+    /// - The version number is the unsupported abcrypt version number.
     /// - The version number is the unrecognized abcrypt version number.
+    /// - The Argon2 type is invalid.
+    /// - The Argon2 version is invalid.
     /// - The Argon2 parameters are invalid.
+    #[inline]
     #[new]
     pub fn new(ciphertext: &[u8]) -> PyResult<Self> {
         let params = abcrypt::Params::new(ciphertext)

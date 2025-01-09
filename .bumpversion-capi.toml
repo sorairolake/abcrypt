@@ -13,3 +13,6 @@ filename = "crates/capi/examples/version.hpp"
 
 [[tool.bumpversion.files]]
 filename = "crates/capi/src/lib.rs"
+
+[[tool.bumpversion.files]]
+glob = "docs/man/man3/*.3.adoc"

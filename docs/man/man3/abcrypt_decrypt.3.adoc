@@ -4,11 +4,11 @@
 
 = abcrypt_decrypt(3)
 // Specify in UTC.
-:docdate: 2024-04-13
+:docdate: 2024-12-10
+:revnumber: 0.3.2
 :doctype: manpage
 :icons: font
-ifdef::revnumber[:mansource: abcrypt-capi {revnumber}]
-ifndef::revnumber[:mansource: abcrypt-capi]
+:mansource: abcrypt-capi {revnumber}
 :manmanual: Library Functions Manual
 ifndef::site-gen-antora[:includedir: ./include]
 
@@ -85,4 +85,5 @@ ifdef::site-gen-antora[include::partial$man/man3/include/section-copyright.adoc[
 
 == SEE ALSO
 
-*abcrypt_encrypt*(3), *abcrypt_encrypt_with_params*(3)
+*abcrypt_encrypt*(3), *abcrypt_encrypt_with_params*(3),
+*abcrypt_encrypt_with_context*(3)

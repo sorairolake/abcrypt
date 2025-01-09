@@ -1,0 +1,114 @@
+// SPDX-FileCopyrightText: 2024 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= abcrypt_encrypt_with_context(3)
+// Specify in UTC.
+:docdate: 2024-12-10
+:revnumber: 0.3.2
+:doctype: manpage
+:icons: font
+:mansource: abcrypt-capi {revnumber}
+:manmanual: Library Functions Manual
+ifndef::site-gen-antora[:includedir: ./include]
+
+== NAME
+
+abcrypt_encrypt_with_context - API function
+
+== SYNOPSIS
+
+[source,c]
+----
+#include <abcrypt.h>
+
+enum abcrypt_error_code abcrypt_encrypt_with_context(uint8_t *plaintext,
+                                                     uintptr_t plaintext_len,
+                                                     uint8_t *passphrase,
+                                                     uintptr_t passphrase_len,
+                                                     uint8_t *out,
+                                                     uintptr_t out_len,
+                                                     uint32_t argon2_type,
+                                                     uint32_t argon2_version,
+                                                     uint32_t memory_cost,
+                                                     uint32_t time_cost,
+                                                     uint32_t parallelism);
+----
+
+== DESCRIPTION
+
+This function encrypts _plaintext_ with the specified Argon2 type, Argon2
+version and Argon2 parameters and write to _out_.
+
+=== Arguments
+
+_plaintext_::
+
+  A pointer to the plaintext to encrypt.
+
+_plaintext_len_::
+
+  Length of _plaintext_.
+
+_passphrase_::
+
+  A pointer to the passphrase used for encryption.
+
+_passphrase_len_::
+
+  Length of _passphrase_.
+
+_out_::
+
+  A pointer to where to write the ciphertext.
+
+_out_len_::
+
+  Length of _out_.
+
+_argon2_type_::
+
+  The Argon2 type.
+
+_argon2_version_::
+
+  The Argon2 version.
+
+_memory_cost_::
+
+  The memory size in KiB.
+
+_time_cost_::
+
+  The number of iterations.
+
+_parallelism_::
+
+  The degree of parallelism.
+
+[CAUTION]
+.Behavior is undefined if any of the following are true:
+====
+* _plaintext_ or _plaintext_len_ is invalid.
+* _passphrase_ or _passphrase_len_ is invalid.
+* _out_ or _out_len_ is invalid.
+====
+
+== RETURN VALUE
+
+Returns `ABCRYPT_ERROR_CODE_OK` if successful, otherwise returns an error value
+defined in *abcrypt_error_code*(3).
+
+== VERSIONS
+
+This function was added in version 0.4.0.
+
+ifndef::site-gen-antora[include::{includedir}/section-reporting-bugs.adoc[]]
+ifdef::site-gen-antora[include::partial$man/man3/include/section-reporting-bugs.adoc[]]
+
+ifndef::site-gen-antora[include::{includedir}/section-copyright.adoc[]]
+ifdef::site-gen-antora[include::partial$man/man3/include/section-copyright.adoc[]]
+
+== SEE ALSO
+
+*abcrypt_decrypt*(3), *abcrypt_encrypt*(3), *abcrypt_encrypt_with_params*(3)

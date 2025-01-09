@@ -14,13 +14,15 @@ SPDX-License-Identifier: Apache-2.0 OR MIT
 
 **abcrypt** is an implementation of the [abcrypt encrypted data format].
 
+This crate supports the abcrypt version 1 file format.
+
 ## Usage
 
 Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-abcrypt = "0.3.7"
+abcrypt = "0.4.0"
 ```
 
 ### Crate features
@@ -72,9 +74,13 @@ Please see [CHANGELOG.adoc].
 
 Please see [CONTRIBUTING.adoc].
 
+## Home page
+
+<https://sorairolake.github.io/abcrypt/>
+
 ## License
 
-Copyright &copy; 2022&ndash;2024 Shun Sakai (see [AUTHORS.adoc])
+Copyright (C) 2022 Shun Sakai (see [AUTHORS.adoc])
 
 This library is distributed under the terms of either the _Apache License 2.0_
 or the _MIT License_.

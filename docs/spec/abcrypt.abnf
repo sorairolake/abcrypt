@@ -6,13 +6,15 @@ abcrypt = header payload
 
 ; Header
 
-header = signature version-number argon2-parameters salt nonce header-mac
+header = signature version-number argon2-type argon2-version argon2-parameters argon2-salt xchacha20-poly1305-nonce header-mac
 
-signature      = %s"abcrypt" ; magic number
-version-number = OCTET
-salt           = 32OCTET     ; 32-byte salt for Argon2
-nonce          = 24OCTET     ; 24-byte nonce for XChaCha20-Poly1305
-header-mac     = 64OCTET     ; BLAKE2b-512-MAC of the header
+signature                = %s"abcrypt"             ; magic number
+version-number           = %x01                    ; current version number
+argon2-type              = %x00000001-00000003     ; Argon2 type
+argon2-version           = %x00000010 / %x00000013 ; Argon2 version
+argon2-salt              = 32OCTET                 ; 32-byte salt for Argon2
+xchacha20-poly1305-nonce = 24OCTET                 ; 24-byte nonce for XChaCha20-Poly1305
+header-mac               = 64OCTET                 ; BLAKE2b-512-MAC of the header
 
 ; Argon2 parameters
 

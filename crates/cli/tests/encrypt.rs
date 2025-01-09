@@ -2,14 +2,6 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-// Lint levels of rustc.
-#![forbid(unsafe_code)]
-#![deny(missing_debug_implementations)]
-#![warn(rust_2018_idioms)]
-// Lint levels of Clippy.
-#![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
-#![allow(clippy::multiple_crate_versions)]
-
 mod utils;
 
 use predicates::prelude::predicate;
@@ -82,6 +74,164 @@ fn encrypt_if_output_is_directory() {
     } else {
         command.stderr(predicate::str::contains("Is a directory (os error 21)"));
     }
+}
+
+#[test]
+fn encrypt_with_argon2_type() {
+    {
+        let output = utils::command::command()
+            .arg("encrypt")
+            .arg("--argon2-type")
+            .arg("argon2d")
+            .arg("--passphrase-from-stdin")
+            .arg("data/data.txt")
+            .write_stdin("passphrase")
+            .output()
+            .unwrap();
+        assert_eq!(&output.stdout[8..12], u32::to_le_bytes(0));
+    }
+    {
+        let output = utils::command::command()
+            .arg("encrypt")
+            .arg("--argon2-type")
+            .arg("argon2i")
+            .arg("--passphrase-from-stdin")
+            .arg("data/data.txt")
+            .write_stdin("passphrase")
+            .output()
+            .unwrap();
+        assert_eq!(&output.stdout[8..12], u32::to_le_bytes(1));
+    }
+    {
+        let output = utils::command::command()
+            .arg("encrypt")
+            .arg("--argon2-type")
+            .arg("argon2id")
+            .arg("--passphrase-from-stdin")
+            .arg("data/data.txt")
+            .write_stdin("passphrase")
+            .output()
+            .unwrap();
+        assert_eq!(&output.stdout[8..12], u32::to_le_bytes(2));
+    }
+}
+
+#[test]
+fn encrypt_with_default_argon2_type() {
+    let output = utils::command::command()
+        .arg("encrypt")
+        .arg("--argon2-type")
+        .arg("argon2id")
+        .arg("--passphrase-from-stdin")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .output()
+        .unwrap();
+    assert_eq!(&output.stdout[8..12], u32::to_le_bytes(2));
+}
+
+#[test]
+fn encrypt_with_invalid_argon2_type() {
+    utils::command::command()
+        .arg("encrypt")
+        .arg("--argon2-type")
+        .arg("scrypt")
+        .arg("--passphrase-from-stdin")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .failure()
+        .code(2)
+        .stderr(predicate::str::contains(
+            "invalid value 'scrypt' for '--argon2-type <TYPE>'",
+        ));
+}
+
+#[test]
+fn encrypt_with_argon2_version() {
+    {
+        let output = utils::command::command()
+            .arg("encrypt")
+            .arg("--argon2-version")
+            .arg("0x10")
+            .arg("--passphrase-from-stdin")
+            .arg("data/data.txt")
+            .write_stdin("passphrase")
+            .output()
+            .unwrap();
+        assert_eq!(&output.stdout[12..16], u32::to_le_bytes(0x10));
+    }
+    {
+        let output = utils::command::command()
+            .arg("encrypt")
+            .arg("--argon2-version")
+            .arg("0x13")
+            .arg("--passphrase-from-stdin")
+            .arg("data/data.txt")
+            .write_stdin("passphrase")
+            .output()
+            .unwrap();
+        assert_eq!(&output.stdout[12..16], u32::to_le_bytes(0x13));
+    }
+}
+
+#[test]
+fn encrypt_with_default_argon2_version() {
+    let output = utils::command::command()
+        .arg("encrypt")
+        .arg("--argon2-version")
+        .arg("0x13")
+        .arg("--passphrase-from-stdin")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .output()
+        .unwrap();
+    assert_eq!(&output.stdout[12..16], u32::to_le_bytes(0x13));
+}
+
+#[test]
+fn encrypt_with_alias_for_argon2_version() {
+    {
+        let output = utils::command::command()
+            .arg("encrypt")
+            .arg("--argon2-version")
+            .arg("16")
+            .arg("--passphrase-from-stdin")
+            .arg("data/data.txt")
+            .write_stdin("passphrase")
+            .output()
+            .unwrap();
+        assert_eq!(&output.stdout[12..16], u32::to_le_bytes(0x10));
+    }
+    {
+        let output = utils::command::command()
+            .arg("encrypt")
+            .arg("--argon2-version")
+            .arg("19")
+            .arg("--passphrase-from-stdin")
+            .arg("data/data.txt")
+            .write_stdin("passphrase")
+            .output()
+            .unwrap();
+        assert_eq!(&output.stdout[12..16], u32::to_le_bytes(0x13));
+    }
+}
+
+#[test]
+fn encrypt_with_invalid_argon2_version() {
+    utils::command::command()
+        .arg("encrypt")
+        .arg("--argon2-version")
+        .arg("a")
+        .arg("--passphrase-from-stdin")
+        .arg("data/data.txt")
+        .write_stdin("passphrase")
+        .assert()
+        .failure()
+        .code(2)
+        .stderr(predicate::str::contains(
+            "invalid value 'a' for '--argon2-version <VERSION>'",
+        ));
 }
 
 #[test]

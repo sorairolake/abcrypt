@@ -5,10 +5,10 @@
 = abcrypt_params_free(3)
 // Specify in UTC.
 :docdate: 2024-04-13
+:revnumber: 0.3.2
 :doctype: manpage
 :icons: font
-ifdef::revnumber[:mansource: abcrypt-capi {revnumber}]
-ifndef::revnumber[:mansource: abcrypt-capi]
+:mansource: abcrypt-capi {revnumber}
 :manmanual: Library Functions Manual
 ifndef::site-gen-antora[:includedir: ./include]
 
