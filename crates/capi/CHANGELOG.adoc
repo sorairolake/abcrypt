@@ -14,7 +14,7 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
 
-== {compare-url}/abcrypt-capi-v0.3.2\...HEAD[Unreleased]
+== {compare-url}/abcrypt-capi-v0.3.2\...abcrypt-capi-v0.4.0[0.4.0] - 2025-01-09
 
 === Added
 

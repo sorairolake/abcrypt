@@ -5,7 +5,7 @@
 = abcrypt_params_free(3)
 // Specify in UTC.
 :docdate: 2024-04-13
-:revnumber: 0.3.2
+:revnumber: 0.4.0
 :doctype: manpage
 :icons: font
 :mansource: abcrypt-capi {revnumber}
