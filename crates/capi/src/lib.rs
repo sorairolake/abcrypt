@@ -4,7 +4,7 @@
 
 //! The `abcrypt-capi` crate is the C API for the `abcrypt` crate.
 
-#![doc(html_root_url = "https://docs.rs/abcrypt-capi/0.3.2/")]
+#![doc(html_root_url = "https://docs.rs/abcrypt-capi/0.4.0/")]
 // Lint levels of rustc.
 #![deny(missing_docs)]
 
