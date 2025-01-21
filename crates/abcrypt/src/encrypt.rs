@@ -191,12 +191,12 @@ impl<'m> Encryptor<'m> {
     pub fn encrypt(&self, buf: &mut (impl AsMut<[u8]> + ?Sized)) {
         let inner = |encryptor: &Self, buf: &mut [u8]| {
             buf[..HEADER_SIZE].copy_from_slice(&encryptor.header.as_bytes());
-            let body = &mut buf[HEADER_SIZE..(self.out_len() - TAG_SIZE)];
-            body.copy_from_slice(encryptor.plaintext);
+            let payload = &mut buf[HEADER_SIZE..(self.out_len() - TAG_SIZE)];
+            payload.copy_from_slice(encryptor.plaintext);
 
             let cipher = XChaCha20Poly1305::new(&encryptor.dk.encrypt());
             let tag = cipher
-                .encrypt_in_place_detached(&encryptor.header.nonce(), AAD, body)
+                .encrypt_in_place_detached(&encryptor.header.nonce(), AAD, payload)
                 .expect("data too long");
             buf[(self.out_len() - TAG_SIZE)..].copy_from_slice(&tag);
         };

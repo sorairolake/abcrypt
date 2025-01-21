@@ -4,7 +4,7 @@
 
 = abcrypt(5)
 // Specify in UTC.
-:docdate: 2024-12-09
+:docdate: 2025-01-21
 :revnumber: 0.4.0
 :doctype: manpage
 :mansource: abcrypt {revnumber}
@@ -33,8 +33,8 @@ and XChaCha20-Poly1305 as defined in
 
 === File format structure
 
-An {manname} file is composed of two parts: a header containing the required
-data and a file body encrypted with the derived key.
+An {manname} file is composed of two parts: the header containing the required
+data and the payload encrypted with the derived key.
 
 .The structure of the abcrypt encrypted data format
 |===

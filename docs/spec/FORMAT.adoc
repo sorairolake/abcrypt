@@ -5,7 +5,7 @@
 = Abcrypt Encrypted Data Format
 Shun Sakai <sorairolake@protonmail.ch>
 // Specify in UTC.
-v0.4.0, 2024-12-09
+v0.4.0, 2025-01-21
 :icons: font
 :idprefix:
 :idseparator: -
@@ -44,8 +44,9 @@ XChaCha20-Poly1305 is the AEAD algorithm from
 
 == Format overview
 
-An abcrypt file is composed of two parts: a <<header-format,header>> containing
-the required data and a <<file-body,file body>> encrypted with the derived key.
+An abcrypt file is composed of two parts: the <<header-format,header>>
+containing the required data and the <<payload,payload>> encrypted with the
+derived key.
 
 .The structure of the abcrypt encrypted data format
 |===
@@ -104,12 +105,12 @@ the required data and a <<file-body,file body>> encrypted with the derived key.
 |stem:[148]
 |stem:[n]
 |Ciphertext.
-|<<file-body>>
+|<<payload>>
 
 |stem:[148 + n]
 |stem:[16]
 |MAC of the ciphertext.
-|<<file-body>>
+|<<payload>>
 |===
 
 All multibyte values are stored in little-endian.
@@ -256,9 +257,9 @@ mac = BLAKE2b(
 The size of `salt` and `personalization` (personalization string) are zero
 (empty).
 
-== File body
+== Payload
 
-The file body is encrypted with XChaCha20-Poly1305.
+The payload is encrypted with XChaCha20-Poly1305.
 
 .The ciphertext is computed as follows
 ----
