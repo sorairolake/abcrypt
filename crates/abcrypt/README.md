@@ -32,14 +32,14 @@ abcrypt = "0.4.0"
 Enables features that require an allocator. This is enabled by default (implied
 by `std`).
 
+#### `serde`
+
+Enables serialization support for `Params`.
+
 #### `std`
 
 Enables features that depend on the standard library. This is enabled by
 default.
-
-#### `serde`
-
-Enables serialization support for `Params`.
 
 ### `no_std` support
 

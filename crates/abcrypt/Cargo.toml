@@ -55,8 +55,8 @@ serde_test = "1.0.177"
 [features]
 default = ["std"]
 alloc = ["argon2/alloc"]
-std = ["alloc", "argon2/std", "blake2/std", "chacha20poly1305/std"]
 serde = ["dep:serde"]
+std = ["alloc", "argon2/std", "blake2/std", "chacha20poly1305/std"]
 
 [lints]
 workspace = true
