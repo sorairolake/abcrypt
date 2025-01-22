@@ -259,7 +259,7 @@ The size of `salt` and `personalization` (personalization string) are zero
 
 == Payload
 
-The payload is encrypted with XChaCha20-Poly1305.
+The payload is encrypted with <<xchacha20-poly1305>>.
 
 .The ciphertext is computed as follows
 ----
