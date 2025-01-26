@@ -90,7 +90,7 @@ fn success_to_vec() {
 fn invalid_output_length() {
     let cipher = Decryptor::new(&TEST_DATA_ENC, PASSPHRASE).unwrap();
     let mut buf = [u8::default(); TEST_DATA.len() + 1];
-    cipher.decrypt(&mut buf);
+    let _ = cipher.decrypt(&mut buf);
 }
 
 #[test]
