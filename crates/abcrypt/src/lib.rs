@@ -5,7 +5,7 @@
 //! The `abcrypt` crate is an implementation of the [abcrypt encrypted data
 //! format].
 //!
-//! This crate supports the abcrypt version 1 file format.
+//! This crate supports version 1 of the abcrypt format.
 //!
 //! # Examples
 //!
