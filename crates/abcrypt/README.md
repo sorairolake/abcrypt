@@ -18,11 +18,10 @@ This crate supports version 1 of the abcrypt format.
 
 ## Usage
 
-Add this to your `Cargo.toml`:
+Run the following command in your project directory:
 
-```toml
-[dependencies]
-abcrypt = "0.4.0"
+```sh
+cargo add abcrypt
 ```
 
 ### Crate features

@@ -6,13 +6,7 @@
 current_version = "0.4.0"
 
 [[tool.bumpversion.files]]
-filename = "crates/abcrypt/README.md"
-
-[[tool.bumpversion.files]]
 filename = "crates/abcrypt/src/lib.rs"
-
-[[tool.bumpversion.files]]
-filename = "docs/book/modules/lib/pages/usage.adoc"
 
 [[tool.bumpversion.files]]
 filename = "docs/spec/FORMAT.adoc"

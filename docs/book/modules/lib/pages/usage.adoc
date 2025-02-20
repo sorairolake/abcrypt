@@ -4,11 +4,10 @@
 
 = Usage
 
-.Add this to your `Cargo.toml`
-[source,toml]
+.Run the following command in your project directory
+[source,sh]
 ----
-[dependencies]
-abcrypt = "0.4.0"
+cargo add abcrypt
 ----
 
 == Crate features

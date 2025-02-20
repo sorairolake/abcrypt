@@ -18,8 +18,6 @@ keywords = ["abcrypt", "crypto"]
 categories = ["cryptography"]
 include = ["/LICENSES", "/README.md", "/src"]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [lib]
 name = "abcrypt_py"
 crate-type = ["cdylib", "rlib"]
