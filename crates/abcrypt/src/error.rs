@@ -123,6 +123,8 @@ pub type Result<T> = result::Result<T, Error>;
 
 #[cfg(test)]
 mod tests {
+    use core::any;
+
     use super::*;
 
     #[test]
@@ -718,8 +720,6 @@ mod tests {
 
     #[test]
     fn result_type() {
-        use core::any;
-
         assert_eq!(
             any::type_name::<Result<()>>(),
             any::type_name::<result::Result<(), Error>>()
