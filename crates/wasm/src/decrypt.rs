@@ -4,7 +4,7 @@
 
 //! Decrypts from the abcrypt encrypted data format.
 
-use wasm_bindgen::{prelude::wasm_bindgen, JsError};
+use wasm_bindgen::{JsError, prelude::wasm_bindgen};
 
 /// Decrypts `ciphertext` and into a newly allocated `Uint8Array`.
 ///

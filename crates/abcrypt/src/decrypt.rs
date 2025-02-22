@@ -8,8 +8,8 @@ use argon2::Argon2;
 use chacha20poly1305::{AeadInPlace, KeyInit, Tag, XChaCha20Poly1305};
 
 use crate::{
+    AAD, Error, HEADER_SIZE, Result, TAG_SIZE,
     format::{DerivedKey, Header},
-    Error, Result, AAD, HEADER_SIZE, TAG_SIZE,
 };
 
 /// Decryptor for the abcrypt encrypted data format.

@@ -5,10 +5,10 @@
 //! Encrypts to the abcrypt encrypted data format.
 
 use abcrypt::{
-    argon2::{Algorithm, Params},
     Error,
+    argon2::{Algorithm, Params},
 };
-use wasm_bindgen::{prelude::wasm_bindgen, JsError};
+use wasm_bindgen::{JsError, prelude::wasm_bindgen};
 
 /// Encrypts `plaintext` and into a newly allocated `Uint8Array`.
 ///

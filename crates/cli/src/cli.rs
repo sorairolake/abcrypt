@@ -15,8 +15,9 @@ use abcrypt::argon2::{Algorithm, Params, Version};
 use anyhow::anyhow;
 use byte_unit::{Byte, Unit};
 use clap::{
+    ArgGroup, Args, CommandFactory, Parser, Subcommand, ValueEnum, ValueHint,
     builder::{TypedValueParser, ValueParserFactory},
-    value_parser, ArgGroup, Args, CommandFactory, Parser, Subcommand, ValueEnum, ValueHint,
+    value_parser,
 };
 use clap_complete::Generator;
 
@@ -266,9 +267,9 @@ pub struct Information {
 
 impl Opt {
     /// Generates shell completion and print it.
-    pub fn print_completion(gen: impl Generator) {
+    pub fn print_completion(generator: impl Generator) {
         clap_complete::generate(
-            gen,
+            generator,
             &mut Self::command(),
             Self::command().get_name(),
             &mut io::stdout(),
@@ -709,19 +710,25 @@ mod tests {
             }
         );
 
-        assert!(Opt::try_parse_from(["test", "-tn"])
-            .unwrap_err()
-            .to_string()
-            .contains("invalid digit found in string"));
+        assert!(
+            Opt::try_parse_from(["test", "-tn"])
+                .unwrap_err()
+                .to_string()
+                .contains("invalid digit found in string")
+        );
 
-        assert!(Opt::try_parse_from(["test", "-t0"])
-            .unwrap_err()
-            .to_string()
-            .contains("0 is not in 1..=4294967295"));
-        assert!(Opt::try_parse_from(["test", "-t4294967296"])
-            .unwrap_err()
-            .to_string()
-            .contains("4294967296 is not in 1..=4294967295"));
+        assert!(
+            Opt::try_parse_from(["test", "-t0"])
+                .unwrap_err()
+                .to_string()
+                .contains("0 is not in 1..=4294967295")
+        );
+        assert!(
+            Opt::try_parse_from(["test", "-t4294967296"])
+                .unwrap_err()
+                .to_string()
+                .contains("4294967296 is not in 1..=4294967295")
+        );
     }
 
     #[test]
@@ -749,34 +756,40 @@ mod tests {
             TimeCost::MAX
         );
 
-        assert!(TypedValueParser::parse_ref(
-            &TimeCostValueParser,
-            &clap::Command::new("test"),
-            None,
-            OsStr::new("n")
-        )
-        .unwrap_err()
-        .to_string()
-        .contains("invalid digit found in string"));
+        assert!(
+            TypedValueParser::parse_ref(
+                &TimeCostValueParser,
+                &clap::Command::new("test"),
+                None,
+                OsStr::new("n")
+            )
+            .unwrap_err()
+            .to_string()
+            .contains("invalid digit found in string")
+        );
 
-        assert!(TypedValueParser::parse_ref(
-            &TimeCostValueParser,
-            &clap::Command::new("test"),
-            None,
-            OsStr::new("0")
-        )
-        .unwrap_err()
-        .to_string()
-        .contains("0 is not in 1..=4294967295"));
-        assert!(TypedValueParser::parse_ref(
-            &TimeCostValueParser,
-            &clap::Command::new("test"),
-            None,
-            OsStr::new("4294967296")
-        )
-        .unwrap_err()
-        .to_string()
-        .contains("4294967296 is not in 1..=4294967295"));
+        assert!(
+            TypedValueParser::parse_ref(
+                &TimeCostValueParser,
+                &clap::Command::new("test"),
+                None,
+                OsStr::new("0")
+            )
+            .unwrap_err()
+            .to_string()
+            .contains("0 is not in 1..=4294967295")
+        );
+        assert!(
+            TypedValueParser::parse_ref(
+                &TimeCostValueParser,
+                &clap::Command::new("test"),
+                None,
+                OsStr::new("4294967296")
+            )
+            .unwrap_err()
+            .to_string()
+            .contains("4294967296 is not in 1..=4294967295")
+        );
     }
 
     impl Parallelism {
@@ -834,19 +847,25 @@ mod tests {
             }
         );
 
-        assert!(Opt::try_parse_from(["test", "-pn"])
-            .unwrap_err()
-            .to_string()
-            .contains("invalid digit found in string"));
+        assert!(
+            Opt::try_parse_from(["test", "-pn"])
+                .unwrap_err()
+                .to_string()
+                .contains("invalid digit found in string")
+        );
 
-        assert!(Opt::try_parse_from(["test", "-p0"])
-            .unwrap_err()
-            .to_string()
-            .contains("0 is not in 1..=16777215"));
-        assert!(Opt::try_parse_from(["test", "-p16777216"])
-            .unwrap_err()
-            .to_string()
-            .contains("16777216 is not in 1..=16777215"));
+        assert!(
+            Opt::try_parse_from(["test", "-p0"])
+                .unwrap_err()
+                .to_string()
+                .contains("0 is not in 1..=16777215")
+        );
+        assert!(
+            Opt::try_parse_from(["test", "-p16777216"])
+                .unwrap_err()
+                .to_string()
+                .contains("16777216 is not in 1..=16777215")
+        );
     }
 
     #[test]
@@ -872,33 +891,39 @@ mod tests {
             Parallelism::MAX
         );
 
-        assert!(TypedValueParser::parse_ref(
-            &ParallelismValueParser,
-            &clap::Command::new("test"),
-            None,
-            OsStr::new("n")
-        )
-        .unwrap_err()
-        .to_string()
-        .contains("invalid digit found in string"));
+        assert!(
+            TypedValueParser::parse_ref(
+                &ParallelismValueParser,
+                &clap::Command::new("test"),
+                None,
+                OsStr::new("n")
+            )
+            .unwrap_err()
+            .to_string()
+            .contains("invalid digit found in string")
+        );
 
-        assert!(TypedValueParser::parse_ref(
-            &ParallelismValueParser,
-            &clap::Command::new("test"),
-            None,
-            OsStr::new("0")
-        )
-        .unwrap_err()
-        .to_string()
-        .contains("0 is not in 1..=16777215"));
-        assert!(TypedValueParser::parse_ref(
-            &ParallelismValueParser,
-            &clap::Command::new("test"),
-            None,
-            OsStr::new("16777216")
-        )
-        .unwrap_err()
-        .to_string()
-        .contains("16777216 is not in 1..=16777215"));
+        assert!(
+            TypedValueParser::parse_ref(
+                &ParallelismValueParser,
+                &clap::Command::new("test"),
+                None,
+                OsStr::new("0")
+            )
+            .unwrap_err()
+            .to_string()
+            .contains("0 is not in 1..=16777215")
+        );
+        assert!(
+            TypedValueParser::parse_ref(
+                &ParallelismValueParser,
+                &clap::Command::new("test"),
+                None,
+                OsStr::new("16777216")
+            )
+            .unwrap_err()
+            .to_string()
+            .contains("16777216 is not in 1..=16777215")
+        );
     }
 }

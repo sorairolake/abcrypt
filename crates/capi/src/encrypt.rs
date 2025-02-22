@@ -7,8 +7,8 @@
 use std::{ptr::NonNull, slice};
 
 use abcrypt::{
-    argon2::{Algorithm, Params},
     Encryptor,
+    argon2::{Algorithm, Params},
 };
 
 use crate::ErrorCode;
@@ -35,7 +35,7 @@ use crate::ErrorCode;
 /// - `plaintext` and `plaintext_len`.
 /// - `passphrase` and `passphrase_len`.
 /// - `out` and `out_len`.
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub unsafe extern "C-unwind" fn abcrypt_encrypt(
     plaintext: Option<NonNull<u8>>,
     plaintext_len: usize,
@@ -92,7 +92,7 @@ pub unsafe extern "C-unwind" fn abcrypt_encrypt(
 /// - `plaintext` and `plaintext_len`.
 /// - `passphrase` and `passphrase_len`.
 /// - `out` and `out_len`.
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub unsafe extern "C-unwind" fn abcrypt_encrypt_with_params(
     plaintext: Option<NonNull<u8>>,
     plaintext_len: usize,
@@ -154,7 +154,7 @@ pub unsafe extern "C-unwind" fn abcrypt_encrypt_with_params(
 /// - `plaintext` and `plaintext_len`.
 /// - `passphrase` and `passphrase_len`.
 /// - `out` and `out_len`.
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub unsafe extern "C-unwind" fn abcrypt_encrypt_with_context(
     plaintext: Option<NonNull<u8>>,
     plaintext_len: usize,
@@ -214,10 +214,10 @@ pub unsafe extern "C-unwind" fn abcrypt_encrypt_with_context(
 
 #[cfg(test)]
 mod tests {
-    use abcrypt::{argon2::Version, Argon2};
+    use abcrypt::{Argon2, argon2::Version};
 
     use super::*;
-    use crate::{abcrypt_decrypt, HEADER_SIZE, TAG_SIZE};
+    use crate::{HEADER_SIZE, TAG_SIZE, abcrypt_decrypt};
 
     const PASSPHRASE: &str = "passphrase";
     const TEST_DATA: &[u8] = include_bytes!("../tests/data/data.txt");

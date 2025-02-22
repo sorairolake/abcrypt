@@ -8,15 +8,15 @@ use core::mem;
 
 use argon2::Algorithm;
 use blake2::{
-    digest::{self, typenum::Unsigned, Mac, Output, OutputSizeUser},
     Blake2bMac512,
+    digest::{self, Mac, Output, OutputSizeUser, typenum::Unsigned},
 };
 use chacha20poly1305::{
     AeadCore, Key as XChaCha20Poly1305Key, KeySizeUser, XChaCha20Poly1305, XNonce,
 };
-use rand::{rngs::StdRng, Rng, SeedableRng};
+use rand::{Rng, SeedableRng, rngs::StdRng};
 
-use crate::{argon2_context, Error, Params, Result};
+use crate::{Error, Params, Result, argon2_context};
 
 /// A type alias for magic number of the abcrypt encrypted data format.
 type MagicNumber = [u8; 7];
@@ -107,7 +107,7 @@ impl Header {
         let argon2_type = argon2_type.into();
         let argon2_version = argon2_version.into();
         let params = params.into();
-        let salt = StdRng::from_entropy().gen();
+        let salt = StdRng::from_entropy().r#gen();
         let nonce = XChaCha20Poly1305::generate_nonce(StdRng::from_entropy());
         let mac = Blake2bMac512Output::default();
         Self {

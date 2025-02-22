@@ -13,7 +13,7 @@ use std::{
 use abcrypt::{Decryptor, Error};
 use anyhow::Context;
 use clap::Parser;
-use dialoguer::{theme::ColorfulTheme, Password};
+use dialoguer::{Password, theme::ColorfulTheme};
 
 #[derive(Debug, Parser)]
 #[command(version, about)]

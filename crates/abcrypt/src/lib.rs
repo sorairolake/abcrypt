@@ -14,7 +14,7 @@
 //! ```
 //! # #[cfg(feature = "alloc")]
 //! # {
-//! use abcrypt::{argon2::Params, Decryptor, Encryptor};
+//! use abcrypt::{Decryptor, Encryptor, argon2::Params};
 //!
 //! let data = b"Hello, world!\n";
 //! let passphrase = "passphrase";
@@ -44,8 +44,8 @@
 //!
 //! ```
 //! use abcrypt::{
-//!     argon2::{Algorithm, Params, Version},
 //!     Argon2, Decryptor, Encryptor,
+//!     argon2::{Algorithm, Params, Version},
 //! };
 //!
 //! let data = b"Hello, world!\n";
@@ -74,7 +74,7 @@
 //! ```
 //! # #[cfg(feature = "alloc")]
 //! # {
-//! use abcrypt::{argon2, Encryptor};
+//! use abcrypt::{Encryptor, argon2};
 //!
 //! let data = b"Hello, world!\n";
 //! let passphrase = "passphrase";

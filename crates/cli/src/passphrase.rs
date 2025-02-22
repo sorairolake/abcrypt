@@ -10,7 +10,7 @@ use std::{
 };
 
 use anyhow::Context;
-use dialoguer::{theme::ColorfulTheme, Password};
+use dialoguer::{Password, theme::ColorfulTheme};
 
 use crate::utils::StringExt;
 

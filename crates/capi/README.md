@@ -42,7 +42,7 @@ fd -t directory out ./target/*/build/abcrypt-capi-*
 
 ## Minimum supported Rust version
 
-The minimum supported Rust version (MSRV) of this library is v1.74.0.
+The minimum supported Rust version (MSRV) of this library is v1.85.0.
 
 ## Source code
 

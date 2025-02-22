@@ -6,7 +6,7 @@
 
 use argon2::Algorithm;
 
-use crate::{format::Header, Error, Result};
+use crate::{Error, Result, format::Header};
 
 /// The Argon2 context used for the encrypted data.
 #[derive(Clone, Copy, Debug)]
@@ -55,7 +55,7 @@ impl Argon2 {
     /// # Examples
     ///
     /// ```
-    /// # use abcrypt::{argon2::Algorithm, Argon2};
+    /// # use abcrypt::{Argon2, argon2::Algorithm};
     /// #
     /// let ciphertext = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
     ///
@@ -73,7 +73,7 @@ impl Argon2 {
     /// # Examples
     ///
     /// ```
-    /// # use abcrypt::{argon2::Version, Argon2};
+    /// # use abcrypt::{Argon2, argon2::Version};
     /// #
     /// let ciphertext = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
     ///

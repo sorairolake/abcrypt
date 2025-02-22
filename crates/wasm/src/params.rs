@@ -4,7 +4,7 @@
 
 //! The Argon2 parameters.
 
-use wasm_bindgen::{prelude::wasm_bindgen, JsError};
+use wasm_bindgen::{JsError, prelude::wasm_bindgen};
 
 /// The Argon2 parameters used for the encrypted data.
 #[derive(Clone, Copy, Debug)]

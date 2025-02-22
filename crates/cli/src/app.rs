@@ -4,8 +4,8 @@
 
 use std::path::Path;
 
-use abcrypt::{argon2, Argon2, Decryptor};
-use anyhow::{bail, Context};
+use abcrypt::{Argon2, Decryptor, argon2};
+use anyhow::{Context, bail};
 use clap::Parser;
 
 use crate::{

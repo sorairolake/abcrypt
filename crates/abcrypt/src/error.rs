@@ -677,22 +677,30 @@ mod tests {
         assert!(Error::UnknownVersion(u8::MAX).source().is_none());
         assert!(Error::InvalidArgon2Type(u32::MAX).source().is_none());
         assert!(Error::InvalidArgon2Version(u32::MAX).source().is_none());
-        assert!(Error::InvalidArgon2Params(argon2::Error::AdTooLong)
-            .source()
-            .unwrap()
-            .is::<argon2::Error>());
-        assert!(Error::InvalidArgon2Context(argon2::Error::AdTooLong)
-            .source()
-            .unwrap()
-            .is::<argon2::Error>());
-        assert!(Error::InvalidHeaderMac(MacError)
-            .source()
-            .unwrap()
-            .is::<MacError>());
-        assert!(Error::InvalidMac(chacha20poly1305::Error)
-            .source()
-            .unwrap()
-            .is::<chacha20poly1305::Error>());
+        assert!(
+            Error::InvalidArgon2Params(argon2::Error::AdTooLong)
+                .source()
+                .unwrap()
+                .is::<argon2::Error>()
+        );
+        assert!(
+            Error::InvalidArgon2Context(argon2::Error::AdTooLong)
+                .source()
+                .unwrap()
+                .is::<argon2::Error>()
+        );
+        assert!(
+            Error::InvalidHeaderMac(MacError)
+                .source()
+                .unwrap()
+                .is::<MacError>()
+        );
+        assert!(
+            Error::InvalidMac(chacha20poly1305::Error)
+                .source()
+                .unwrap()
+                .is::<chacha20poly1305::Error>()
+        );
     }
 
     #[test]

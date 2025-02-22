@@ -158,7 +158,7 @@ impl From<abcrypt::Params> for Params {
 
 /// Creates a new Argon2 parameters.
 #[must_use]
-#[no_mangle]
+#[unsafe(no_mangle)]
 #[inline]
 pub extern "C-unwind" fn abcrypt_params_new() -> Option<NonNull<Params>> {
     Params::new()
@@ -169,10 +169,12 @@ pub extern "C-unwind" fn abcrypt_params_new() -> Option<NonNull<Params>> {
 /// # Safety
 ///
 /// This must not violate the safety conditions of `Box::from_raw`.
-#[no_mangle]
+#[unsafe(no_mangle)]
 #[inline]
 pub unsafe extern "C-unwind" fn abcrypt_params_free(params: Option<NonNull<Params>>) {
-    Params::free(params);
+    unsafe {
+        Params::free(params);
+    }
 }
 
 /// Reads the Argon2 parameters from `ciphertext`.
@@ -192,21 +194,21 @@ pub unsafe extern "C-unwind" fn abcrypt_params_free(params: Option<NonNull<Param
 /// Behavior is undefined if `ciphertext` and `ciphertext_len` violates the
 /// safety conditions of `slice::from_raw_parts`.
 #[must_use]
-#[no_mangle]
+#[unsafe(no_mangle)]
 #[inline]
 pub unsafe extern "C-unwind" fn abcrypt_params_read(
     ciphertext: Option<NonNull<u8>>,
     ciphertext_len: usize,
     params: Option<NonNull<Params>>,
 ) -> ErrorCode {
-    Params::read(ciphertext, ciphertext_len, params)
+    unsafe { Params::read(ciphertext, ciphertext_len, params) }
 }
 
 /// Gets memory size in KiB.
 ///
 /// Returns `0` if `params` is null.
 #[must_use]
-#[no_mangle]
+#[unsafe(no_mangle)]
 #[inline]
 pub extern "C-unwind" fn abcrypt_params_memory_cost(params: Option<NonNull<Params>>) -> u32 {
     Params::memory_cost(params)
@@ -216,7 +218,7 @@ pub extern "C-unwind" fn abcrypt_params_memory_cost(params: Option<NonNull<Param
 ///
 /// Returns `0` if `params` is null.
 #[must_use]
-#[no_mangle]
+#[unsafe(no_mangle)]
 #[inline]
 pub extern "C-unwind" fn abcrypt_params_time_cost(params: Option<NonNull<Params>>) -> u32 {
     Params::time_cost(params)
@@ -226,7 +228,7 @@ pub extern "C-unwind" fn abcrypt_params_time_cost(params: Option<NonNull<Params>
 ///
 /// Returns `0` if `params` is null.
 #[must_use]
-#[no_mangle]
+#[unsafe(no_mangle)]
 #[inline]
 pub extern "C-unwind" fn abcrypt_params_parallelism(params: Option<NonNull<Params>>) -> u32 {
     Params::parallelism(params)
