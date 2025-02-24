@@ -44,8 +44,9 @@ default.
 
 This supports `no_std` mode. Disables the `default` feature to enable this.
 
-Note that the memory blocks used by Argon2 when calculating a derived key is
-limited to 256 KiB when the `alloc` feature is disabled.
+> [!IMPORTANT]
+> Note that the memory blocks used by Argon2 when calculating a derived key is
+> limited to 256 KiB when the `alloc` feature is disabled.
 
 ### Documentation
 

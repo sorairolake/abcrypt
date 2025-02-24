@@ -39,8 +39,12 @@
 //! This crate supports `no_std` mode and can be used without the `alloc` crate
 //! and the `std` crate. Disables the `default` feature to enable this.
 //!
+//! <div class="warning">
+//!
 //! Note that the memory blocks used by Argon2 when calculating a derived key is
 //! limited to 256 KiB when the `alloc` feature is disabled.
+//!
+//! </div>
 //!
 //! ```
 //! use abcrypt::{
