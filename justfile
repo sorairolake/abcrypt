@@ -24,6 +24,10 @@ default: build
 @test:
     cargo test -p abcrypt -p abcrypt-cli -p abcrypt-capi
 
+# Run benchmarks
+@bench:
+    cargo +nightly bench -p abcrypt
+
 # Run the formatter
 @fmt:
     cargo fmt --all
@@ -39,6 +43,10 @@ default: build
 # Apply lint suggestions
 @clippy-fix:
     cargo +nightly clippy --workspace --fix --allow-dirty --allow-staged -- -D warnings
+
+# Build the library package documentation
+@doc $RUSTDOCFLAGS="--cfg docsrs":
+    cargo +nightly doc -p abcrypt --all-features
 
 # Configure the Meson project
 setup-meson:
@@ -155,25 +163,25 @@ publish-wasm: build-wasm
 
 # Increment the version of the library
 @bump-lib part:
-    bump-my-version bump --config-file .bumpversion-lib.toml {{part}}
-    cargo set-version --bump {{part}} -p abcrypt
+    bump-my-version bump --config-file .bumpversion-lib.toml {{ part }}
+    cargo set-version --bump {{ part }} -p abcrypt
 
 # Increment the version of the command-line utility
 @bump-cli part:
-    bump-my-version bump --config-file .bumpversion-cli.toml {{part}}
-    cargo set-version --bump {{part}} -p abcrypt-cli
+    bump-my-version bump --config-file .bumpversion-cli.toml {{ part }}
+    cargo set-version --bump {{ part }} -p abcrypt-cli
 
 # Increment the version of the C API
 @bump-capi part:
-    bump-my-version bump --config-file .bumpversion-capi.toml {{part}}
-    cargo set-version --bump {{part}} -p abcrypt-capi
+    bump-my-version bump --config-file .bumpversion-capi.toml {{ part }}
+    cargo set-version --bump {{ part }} -p abcrypt-capi
 
 # Increment the version of the Wasm bindings
 @bump-wasm part:
-    bump-my-version bump --config-file .bumpversion-wasm.toml {{part}}
-    cargo set-version --bump {{part}} -p abcrypt-wasm
+    bump-my-version bump --config-file .bumpversion-wasm.toml {{ part }}
+    cargo set-version --bump {{ part }} -p abcrypt-wasm
 
 # Increment the version of the Python bindings
 @bump-python part:
-    bump-my-version bump --config-file .bumpversion-python.toml {{part}}
-    cargo set-version --bump {{part}} -p abcrypt-py
+    bump-my-version bump --config-file .bumpversion-python.toml {{ part }}
+    cargo set-version --bump {{ part }} -p abcrypt-py
