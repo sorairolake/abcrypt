@@ -2,11 +2,11 @@
 #
 # SPDX-License-Identifier: Apache-2.0 OR MIT
 
-alias all := default
 alias lint := clippy
 
 # Run default recipe
-default: build
+@_default:
+    just -l
 
 # Build packages
 @build:
@@ -49,28 +49,24 @@ default: build
     cargo +nightly doc -p abcrypt --all-features
 
 # Configure the Meson project
-setup-meson:
-    #!/usr/bin/env bash
+[working-directory("crates/capi/examples")]
+@setup-meson:
     cargo build -p abcrypt-capi
-    cd crates/capi/examples
     meson setup builddir
 
 # Build examples for the C API
-build-capi-examples: setup-meson
-    #!/usr/bin/env bash
-    cd crates/capi/examples
+[working-directory("crates/capi/examples")]
+@build-capi-examples: setup-meson
     meson compile -C builddir
 
 # Run clang-format
-clang-format: setup-meson
-    #!/usr/bin/env bash
-    cd crates/capi/examples
+[working-directory("crates/capi/examples")]
+@clang-format: setup-meson
     ninja -C builddir clang-format
 
 # Run clang-tidy
-clang-tidy: setup-meson
-    #!/usr/bin/env bash
-    cd crates/capi/examples
+[working-directory("crates/capi/examples")]
+@clang-tidy: setup-meson
     ninja -C builddir clang-tidy
 
 # Run tests for the Wasm bindings
@@ -94,46 +90,52 @@ clang-tidy: setup-meson
     deno check crates/wasm/examples/*.ts
 
 # Configure a development environment for the Python bindings
+[working-directory("crates/python")]
 setup-python:
     #!/usr/bin/env bash
-    cd crates/python
+    set -euo pipefail
     python3 -m venv venv
     source venv/bin/activate
     maturin develop
     pip3 install abcrypt-py[test,dev]
 
 # Run tests for the Python bindings
+[working-directory("crates/python")]
 python-test:
     #!/usr/bin/env bash
-    cd crates/python
+    set -euo pipefail
     source venv/bin/activate
     pytest
 
 # Run the formatter for the Python bindings
+[working-directory("crates/python")]
 python-fmt:
     #!/usr/bin/env bash
-    cd crates/python
+    set -euo pipefail
     source venv/bin/activate
     ruff format .
 
 # Run the linter for the Python bindings
+[working-directory("crates/python")]
 python-lint:
     #!/usr/bin/env bash
-    cd crates/python
+    set -euo pipefail
     source venv/bin/activate
     ruff check .
 
 # Apply lint suggestions for the Python bindings
+[working-directory("crates/python")]
 python-lint-fix:
     #!/usr/bin/env bash
-    cd crates/python
+    set -euo pipefail
     source venv/bin/activate
     ruff check --fix .
 
 # Run `mypy`
+[working-directory("crates/python")]
 python-type-check:
     #!/usr/bin/env bash
-    cd crates/python
+    set -euo pipefail
     source venv/bin/activate
     mypy .
 
@@ -150,15 +152,13 @@ python-type-check:
     npx antora antora-playbook.yml
 
 # Build the Wasm bindings
-build-wasm $CARGO_PROFILE_RELEASE_CODEGEN_UNITS="1" $CARGO_PROFILE_RELEASE_STRIP="true":
-    #!/usr/bin/env bash
-    cd crates/wasm
+[working-directory("crates/wasm")]
+@build-wasm $CARGO_PROFILE_RELEASE_CODEGEN_UNITS="1" $CARGO_PROFILE_RELEASE_STRIP="true":
     wasm-pack build -s sorairolake -t nodejs --release
 
 # Publish the Wasm bindings
-publish-wasm: build-wasm
-    #!/usr/bin/env bash
-    cd crates/wasm
+[working-directory("crates/wasm")]
+@publish-wasm: build-wasm
     wasm-pack publish -a public
 
 # Increment the version of the library
