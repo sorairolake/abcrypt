@@ -351,7 +351,7 @@ jobs:
           sudo apt-get install libcli11-dev meson
           meson -v
       - name: Setup just
-        uses: extractions/setup-just@v2
+        uses: extractions/setup-just@v3
       - name: Cache build artifacts
         uses: Swatinem/rust-cache@v2.7.7
       - name: Build examples for the C API
