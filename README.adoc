@@ -28,7 +28,7 @@
 :abcrypt-py-repo-url: {project-url}/tree/develop/crates/python
 :abcrypt-py-badge: {shields-url}/pypi/v/abcrypt-py?style=for-the-badge&logo=pypi
 :abcrypt-py-pypi: {pypi-project}/abcrypt-py/
-:reuse-spec-url: https://reuse.software/spec/
+:reuse-spec-url: https://reuse.software/spec-3.3/
 
 image:{ci-badge}[CI,link={ci-url}]
 
