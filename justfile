@@ -5,88 +5,88 @@
 alias lint := clippy
 
 # Run default recipe
-@_default:
+_default:
     just -l
 
 # Build packages
-@build:
+build:
     cargo build --workspace
 
 # Remove generated artifacts
-@clean:
+clean:
     cargo clean
 
 # Check packages
-@check:
+check:
     cargo check --workspace
 
 # Run tests
-@test:
+test:
     cargo test -p abcrypt -p abcrypt-cli -p abcrypt-capi
 
 # Run benchmarks
-@bench:
+bench:
     cargo +nightly bench -p abcrypt
 
 # Run the formatter
-@fmt:
+fmt:
     cargo fmt --all
 
 # Run the formatter with options
-@fmt-with-options:
+fmt-with-options:
     cargo +nightly fmt --all
 
 # Run the linter
-@clippy:
+clippy:
     cargo clippy --workspace -- -D warnings
 
 # Apply lint suggestions
-@clippy-fix:
+clippy-fix:
     cargo +nightly clippy --workspace --fix --allow-dirty --allow-staged -- -D warnings
 
 # Build the library package documentation
-@doc $RUSTDOCFLAGS="--cfg docsrs":
+doc $RUSTDOCFLAGS="--cfg docsrs":
     cargo +nightly doc -p abcrypt --all-features
 
 # Configure the Meson project
 [working-directory("crates/capi/examples")]
-@setup-meson:
+setup-meson:
     cargo build -p abcrypt-capi
     meson setup builddir
 
 # Build examples for the C API
 [working-directory("crates/capi/examples")]
-@build-capi-examples: setup-meson
+build-capi-examples: setup-meson
     meson compile -C builddir
 
 # Run clang-format
 [working-directory("crates/capi/examples")]
-@clang-format: setup-meson
+clang-format: setup-meson
     ninja -C builddir clang-format
 
 # Run clang-tidy
 [working-directory("crates/capi/examples")]
-@clang-tidy: setup-meson
+clang-tidy: setup-meson
     ninja -C builddir clang-tidy
 
 # Run tests for the Wasm bindings
-@wasm-test:
+wasm-test:
     wasm-pack test --node crates/wasm
 
 # Build examples for the Wasm bindings
-@build-wasm-examples:
+build-wasm-examples:
     wasm-pack build -t deno crates/wasm
 
 # Run `deno fmt`
-@fmt-wasm-examples:
+fmt-wasm-examples:
     deno fmt crates/wasm/examples/*.ts
 
 # Run `deno lint`
-@lint-wasm-examples:
+lint-wasm-examples:
     deno lint crates/wasm/examples/*.ts
 
 # Run `deno check`
-@type-check-wasm-examples:
+type-check-wasm-examples:
     deno check crates/wasm/examples/*.ts
 
 # Configure a development environment for the Python bindings
@@ -140,48 +140,48 @@ python-type-check:
     mypy .
 
 # Run the linter for GitHub Actions workflow files
-@lint-github-actions:
+lint-github-actions:
     actionlint -verbose
 
 # Run the formatter for the README
-@fmt-readme:
+fmt-readme:
     npx prettier -w crates/*/README.md
 
 # Build the book
-@build-book:
+build-book:
     npx antora antora-playbook.yml
 
 # Build the Wasm bindings
 [working-directory("crates/wasm")]
-@build-wasm $CARGO_PROFILE_RELEASE_CODEGEN_UNITS="1" $CARGO_PROFILE_RELEASE_STRIP="true":
+build-wasm $CARGO_PROFILE_RELEASE_CODEGEN_UNITS="1" $CARGO_PROFILE_RELEASE_STRIP="true":
     wasm-pack build -s sorairolake -t nodejs --release
 
 # Publish the Wasm bindings
 [working-directory("crates/wasm")]
-@publish-wasm: build-wasm
+publish-wasm: build-wasm
     wasm-pack publish -a public
 
 # Increment the version of the library
-@bump-lib part:
+bump-lib part:
     bump-my-version bump --config-file .bumpversion-lib.toml {{ part }}
     cargo set-version --bump {{ part }} -p abcrypt
 
 # Increment the version of the command-line utility
-@bump-cli part:
+bump-cli part:
     bump-my-version bump --config-file .bumpversion-cli.toml {{ part }}
     cargo set-version --bump {{ part }} -p abcrypt-cli
 
 # Increment the version of the C API
-@bump-capi part:
+bump-capi part:
     bump-my-version bump --config-file .bumpversion-capi.toml {{ part }}
     cargo set-version --bump {{ part }} -p abcrypt-capi
 
 # Increment the version of the Wasm bindings
-@bump-wasm part:
+bump-wasm part:
     bump-my-version bump --config-file .bumpversion-wasm.toml {{ part }}
     cargo set-version --bump {{ part }} -p abcrypt-wasm
 
 # Increment the version of the Python bindings
-@bump-python part:
+bump-python part:
     bump-my-version bump --config-file .bumpversion-python.toml {{ part }}
     cargo set-version --bump {{ part }} -p abcrypt-py
