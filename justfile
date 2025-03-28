@@ -93,7 +93,7 @@ type-check-wasm-examples:
 [working-directory("crates/python")]
 setup-python:
     #!/usr/bin/env bash
-    set -euo pipefail
+    set -euCo pipefail
     python3 -m venv venv
     source venv/bin/activate
     maturin develop
@@ -103,7 +103,7 @@ setup-python:
 [working-directory("crates/python")]
 python-test:
     #!/usr/bin/env bash
-    set -euo pipefail
+    set -euCo pipefail
     source venv/bin/activate
     pytest
 
@@ -111,7 +111,7 @@ python-test:
 [working-directory("crates/python")]
 python-fmt:
     #!/usr/bin/env bash
-    set -euo pipefail
+    set -euCo pipefail
     source venv/bin/activate
     ruff format .
 
@@ -119,7 +119,7 @@ python-fmt:
 [working-directory("crates/python")]
 python-lint:
     #!/usr/bin/env bash
-    set -euo pipefail
+    set -euCo pipefail
     source venv/bin/activate
     ruff check .
 
@@ -127,7 +127,7 @@ python-lint:
 [working-directory("crates/python")]
 python-lint-fix:
     #!/usr/bin/env bash
-    set -euo pipefail
+    set -euCo pipefail
     source venv/bin/activate
     ruff check --fix .
 
@@ -135,7 +135,7 @@ python-lint-fix:
 [working-directory("crates/python")]
 python-type-check:
     #!/usr/bin/env bash
-    set -euo pipefail
+    set -euCo pipefail
     source venv/bin/activate
     mypy .
 
