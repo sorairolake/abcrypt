@@ -1,0 +1,52 @@
+# SPDX-FileCopyrightText: 2025 Shun Sakai
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+settings:
+  width: 120
+  height: 30
+  title: abcrypt demo
+
+instructions:
+  - !Command
+    command: rsync -ac ../../../assets/abcrypt.magic .
+    hidden: true
+  - !Command
+    command: echo "Hello, world!" > file.txt
+    hidden: true
+
+  - !Marker Encrypt a file
+  - !Command
+    command: cat file.txt
+  - !Wait 1s
+  - !Command
+    command: echo "passphrase" | abcrypt encrypt -m 19MiB -t 2 -p 1 --passphrase-from-stdin file.txt > file.txt.abcrypt
+  - !Wait 1s
+  - !Command
+    command: file -m abcrypt.magic file.txt*
+  - !Wait 1s
+  - !Command
+    command: hexyl file.txt.abcrypt
+  - !Wait 3s
+  - !Clear
+
+  - !Marker Print the encryption parameters
+  - !Command
+    command: abcrypt information -j file.txt.abcrypt | jq
+  - !Wait 3s
+  - !Clear
+
+  - !Marker Decrypt a file
+  - !Command
+    command: echo "password" | abcrypt decrypt --passphrase-from-stdin file.txt.abcrypt > /dev/null
+  - !Wait 1s
+  - !Command
+    command: echo "passphrase" | abcrypt decrypt --passphrase-from-stdin file.txt.abcrypt > file.txt.dec
+  - !Wait 1s
+  - !Command
+    command: diff -s file.txt file.txt.dec
+  - !Wait 3s
+
+  - !Command
+    command: git clean -f
+    hidden: true

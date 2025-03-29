@@ -30,6 +30,8 @@ image:{ci-badge}[CI,link={ci-url}]
 *abcrypt* is a simple, modern and secure file encryption tool, file format and
 Rust library.
 
+image::demo.gif[Demo animation]
+
 == Crates
 
 |===
