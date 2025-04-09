@@ -31,9 +31,35 @@ type Blake2bMac512Output = Output<Blake2bMac512>;
 type Blake2bMac512Key = digest::Key<Blake2bMac512>;
 
 /// The number of bytes of the header.
+///
+/// # Examples
+///
+/// ```
+/// assert_eq!(abcrypt::HEADER_SIZE, 148);
+///
+/// let ciphertext = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
+/// let plaintext = include_bytes!("../tests/data/data.txt");
+/// assert_eq!(
+///     abcrypt::HEADER_SIZE,
+///     ciphertext.len() - (plaintext.len() + abcrypt::TAG_SIZE)
+/// );
+/// ```
 pub const HEADER_SIZE: usize = Header::SIZE;
 
 /// The number of bytes of the MAC (authentication tag) of the ciphertext.
+///
+/// # Examples
+///
+/// ```
+/// assert_eq!(abcrypt::TAG_SIZE, 16);
+///
+/// let ciphertext = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
+/// let plaintext = include_bytes!("../tests/data/data.txt");
+/// assert_eq!(
+///     abcrypt::TAG_SIZE,
+///     ciphertext.len() - (abcrypt::HEADER_SIZE + plaintext.len())
+/// );
+/// ```
 pub const TAG_SIZE: usize = <XChaCha20Poly1305 as AeadCore>::TagSize::USIZE;
 
 /// Version of the abcrypt encrypted data format.
