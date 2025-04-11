@@ -10,6 +10,8 @@ v0.4.0, 2025-04-11
 :idprefix:
 :idseparator: -
 :sectanchors:
+:sectlinks:
+:sectnums:
 :toc: preamble
 :stem:
 :icons: font
