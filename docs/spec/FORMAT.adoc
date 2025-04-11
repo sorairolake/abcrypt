@@ -5,13 +5,14 @@
 = Abcrypt Encrypted Data Format
 Shun Sakai <sorairolake@protonmail.ch>
 // Specify in UTC.
-v0.4.0, 2025-01-22
-:icons: font
+v0.4.0, 2025-04-11
+:lang: en
 :idprefix:
 :idseparator: -
 :sectanchors:
 :toc: preamble
 :stem:
+:icons: font
 :scrypt-encrypted-data-format: https://www.tarsnap.com/scrypt.html
 :ietf-datatracker: https://datatracker.ietf.org
 :datatracker-html-doc: {ietf-datatracker}/doc/html
