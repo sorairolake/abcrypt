@@ -5,12 +5,11 @@
 = Abcrypt Encrypted Data Format
 Shun Sakai <sorairolake@protonmail.ch>
 // Specify in UTC.
-v0.4.0, 2025-04-11
+v0.4.0, 2025-04-12
 :lang: en
 :idprefix:
 :idseparator: -
 :sectanchors:
-:sectlinks:
 :sectnums:
 :toc: preamble
 :stem:
