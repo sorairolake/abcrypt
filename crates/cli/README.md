@@ -116,11 +116,6 @@ Please see the following:
 The upstream repository is available at
 <https://github.com/sorairolake/abcrypt.git>.
 
-The source code is also available at:
-
-- <https://gitlab.com/sorairolake/abcrypt.git>
-- <https://codeberg.org/sorairolake/abcrypt.git>
-
 ## Changelog
 
 Please see [CHANGELOG.adoc].
