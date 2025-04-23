@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2022 Shun Sakai
 //
-// SPDX-License-Identifier: Apache-2.0 OR MIT
+// SPDX-License-Identifier: CC-BY-4.0
 
 = Changelog
 :toc: preamble
@@ -19,6 +19,8 @@ project adheres to https://semver.org/[Semantic Versioning].
 === Changed
 
 * Bump MSRV to 1.85.0 ({pull-request-url}/677[#677])
+* Change the license for documents and assets to CC BY 4.0
+  ({pull-request-url}/718[#718])
 
 == {compare-url}/abcrypt-py-v0.1.4\...abcrypt-py-v0.2.0[0.2.0] - 2025-01-09
 

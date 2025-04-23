@@ -1,7 +1,7 @@
 <!--
 SPDX-FileCopyrightText: 2022 Shun Sakai
 
-SPDX-License-Identifier: GPL-3.0-or-later
+SPDX-License-Identifier: CC-BY-4.0
 -->
 
 # abcrypt
