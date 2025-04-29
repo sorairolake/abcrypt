@@ -12,3 +12,11 @@ nav:
   - modules/wasm/nav.adoc
   - modules/python/nav.adoc
   - modules/ROOT/nav.adoc
+ext:
+  collector:
+    run:
+      - command: asciidoctor-pdf -r asciidoctor-mathematical -a mathematical-format=svg docs/spec/FORMAT.adoc
+      - command: asciidoctor-epub3 -r asciidoctor-mathematical -a mathematical-format=svg docs/spec/FORMAT.adoc
+    scan:
+      dir: docs/spec
+      into: modules/ROOT/attachments

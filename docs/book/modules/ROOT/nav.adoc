@@ -2,7 +2,11 @@
 //
 // SPDX-License-Identifier: CC-BY-4.0
 
-* xref:format.adoc[Format Specification]
+.Format Specification
+* xref:format.adoc[]
+* xref:download-ebook.adoc[]
+** xref:attachment$FORMAT.pdf[PDF]
+** xref:attachment$FORMAT.epub[EPUB]
 
 .Resources
 * xref:awesome.adoc[]

@@ -28,4 +28,5 @@ runtime:
 
 antora:
   extensions:
+    - "@antora/collector-extension"
     - "@antora/lunr-extension"
