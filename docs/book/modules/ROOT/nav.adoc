@@ -2,8 +2,7 @@
 //
 // SPDX-License-Identifier: CC-BY-4.0
 
-.Format Specification
-* xref:format.adoc[]
+* xref:format.adoc[Format Specification]
 
 .Resources
 * xref:awesome.adoc[]
