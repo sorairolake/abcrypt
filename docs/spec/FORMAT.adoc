@@ -15,7 +15,7 @@ v0.4.0, 2025-04-29
 :doctype: book
 :stem:
 :icons: font
-:cc0-url: https://creativecommons.org/publicdomain/zero/1.0
+:cc0-url: https://creativecommons.org/publicdomain/zero/1.0/
 :scrypt-encrypted-data-format: https://www.tarsnap.com/scrypt.html
 :ietf-datatracker: https://datatracker.ietf.org
 :datatracker-html-doc: {ietf-datatracker}/doc/html
