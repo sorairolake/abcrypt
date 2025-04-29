@@ -88,6 +88,8 @@ Copyright (C) 2022 Shun Sakai (see link:AUTHORS.adoc[])
   the _Apache License 2.0_ or the _MIT License_.
 . Each file in the `crates/cli` directory and some other files are distributed
   under the terms of the _GNU General Public License v3.0 or later_.
+. The format specification is distributed under the terms of the _CC0 1.0
+  Universal_.
 . Some documents are distributed under the terms of the _Creative Commons
   Attribution 4.0 International Public License_.
 
