@@ -61,3 +61,10 @@ image::demo.gif[Demo animation]
 == Format specification
 
 Please see xref:format.adoc[].
+
+[NOTE]
+.The format specification is also available in the following ebook formats
+====
+* xref:attachment$FORMAT.pdf[PDF]
+* xref:attachment$FORMAT.epub[EPUB 3]
+====

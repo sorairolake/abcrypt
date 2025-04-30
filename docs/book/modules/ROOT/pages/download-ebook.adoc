@@ -6,4 +6,4 @@
 
 .The format specification is also available in the following ebook formats
 * xref:attachment$FORMAT.pdf[PDF]
-* xref:attachment$FORMAT.epub[EPUB]
+* xref:attachment$FORMAT.epub[EPUB 3]

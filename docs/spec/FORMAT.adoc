@@ -5,7 +5,7 @@
 = Abcrypt Encrypted Data Format
 Shun Sakai <sorairolake@protonmail.ch>
 // Specify in UTC.
-v0.4.0, 2025-04-29
+v0.4.0, 2025-04-30
 :lang: en
 :idprefix:
 :idseparator: -
@@ -26,10 +26,10 @@ v0.4.0, 2025-04-29
 abcrypt is a modern file encryption format with the data authenticity. This
 document describes the abcrypt encrypted data format.
 
-IMPORTANT: This document and the abcrypt encrypted data format are distributed
-under the terms of the {cc0-url}[CC0 1.0 Universal] (CC0 1.0). You can copy,
-modify, distribute and perform these, even for commercial purposes, all without
-asking permission.
+This document and the abcrypt encrypted data format are distributed under the
+terms of the {cc0-url}[CC0 1.0 Universal] (CC0 1.0). You can copy, modify,
+distribute and perform these, even for commercial purposes, all without asking
+permission.
 
 == Introduction
 
