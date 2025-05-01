@@ -26,7 +26,7 @@ abcrypt - abcrypt encrypted data format
 
 *{manname}* is a modern file encryption format with the data authenticity
 inspired by the {scrypt-encrypted-data-format}[scrypt encrypted data format],
-which is produced by the {tarsnap-scrypt}[`scrypt` encryption utility].
+which is produced by the {tarsnap-scrypt}[scrypt encryption utility].
 
 It uses Argon2 as defined in {rfc9106}[RFC 9106] for key derivation,
 BLAKE2b-512-MAC as defined in {rfc7693}[RFC 7693] for header integrity checking

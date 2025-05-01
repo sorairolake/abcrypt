@@ -36,8 +36,8 @@ permission.
 
 abcrypt is a modern file encryption format inspired by the
 {scrypt-encrypted-data-format}[scrypt encrypted data format], which is produced
-by the {tarsnap-scrypt}[`scrypt` encryption utility]. abcrypt uses <<argon2>>
-for key derivation, <<blake2b-512-mac>> for header integrity checking and
+by the {tarsnap-scrypt}[scrypt encryption utility]. abcrypt uses <<argon2>> for
+key derivation, <<blake2b-512-mac>> for header integrity checking and
 <<xchacha20-poly1305>> for encryption.
 
 == Conventions used in this document
