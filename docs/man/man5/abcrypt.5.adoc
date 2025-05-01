@@ -4,13 +4,14 @@
 
 = abcrypt(5)
 // Specify in UTC.
-:docdate: 2025-01-22
+:docdate: 2025-05-01
 :revnumber: 0.4.0
 :doctype: manpage
 :mansource: abcrypt {revnumber}
 :manmanual: File Formats Manual
 :includedir: ./include
-:scrypt-encrypted-data-format: https://www.tarsnap.com/scrypt.html
+:scrypt-encrypted-data-format: https://github.com/Tarsnap/scrypt/blob/1.3.3/FORMAT
+:tarsnap-scrypt: https://www.tarsnap.com/scrypt.html
 :ietf-datatracker: https://datatracker.ietf.org
 :datatracker-html-doc: {ietf-datatracker}/doc/html
 :rfc9106: {datatracker-html-doc}/rfc9106
@@ -24,7 +25,8 @@ abcrypt - abcrypt encrypted data format
 == DESCRIPTION
 
 *{manname}* is a modern file encryption format with the data authenticity
-inspired by the {scrypt-encrypted-data-format}[scrypt encrypted data format].
+inspired by the {scrypt-encrypted-data-format}[scrypt encrypted data format],
+which is produced by the {tarsnap-scrypt}[`scrypt` encryption utility].
 
 It uses Argon2 as defined in {rfc9106}[RFC 9106] for key derivation,
 BLAKE2b-512-MAC as defined in {rfc7693}[RFC 7693] for header integrity checking
