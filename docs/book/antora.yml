@@ -15,8 +15,8 @@ nav:
 ext:
   collector:
     run:
-      - command: asciidoctor-pdf -r asciidoctor-mathematical -a mathematical-format=svg -a compress docs/spec/FORMAT.adoc
-      - command: asciidoctor-epub3 -r asciidoctor-mathematical -a mathematical-format=svg docs/spec/FORMAT.adoc
+      - command: asciidoctor-pdf -r asciidoctor-mathematical -a source-highlighter=pygments -a mathematical-format=svg -a compress docs/spec/FORMAT.adoc
+      - command: asciidoctor-epub3 -r asciidoctor-mathematical -a source-highlighter=pygments -a mathematical-format=svg docs/spec/FORMAT.adoc
     scan:
       dir: docs/spec
       into: modules/ROOT/attachments

@@ -41,11 +41,15 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.3
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
       - name: Install Asciidoctor
         run: |
           sudo apt-get update
           sudo apt-get install fonts-lyx libcairo2-dev libffi-dev libgdk-pixbuf2.0-dev libpango1.0-dev libxml2-dev
-          gem install asciidoctor-epub3 asciidoctor-mathematical asciidoctor-pdf
+          gem install asciidoctor-epub3 asciidoctor-mathematical asciidoctor-pdf pygments.rb
           asciidoctor-pdf -V
           asciidoctor-epub3 -V
       - name: Setup just
