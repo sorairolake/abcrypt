@@ -303,10 +303,10 @@ When transferring abcrypt files over the Internet, the appropriate MIME type is
 [source,abnf]
 ----
 ifdef::site-gen-antora[]
-include::example$abcrypt.abnf[lines=5..-1]
+include::example$abcrypt.abnf[lines=5..]
 endif::[]
 ifndef::site-gen-antora[]
-include::abcrypt.abnf[lines=5..-1]
+include::abcrypt.abnf[lines=5..]
 endif::[]
 ----
 

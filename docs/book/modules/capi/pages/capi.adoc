@@ -6,5 +6,5 @@
 
 [source,c]
 ----
-include::example$abcrypt.h[]
+include::example$abcrypt.h[lines=5..]
 ----
