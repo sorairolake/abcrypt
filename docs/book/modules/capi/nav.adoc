@@ -9,68 +9,20 @@
 ** xref:capi.adoc[]
 ** https://docs.rs/abcrypt-capi[Rust API]
 * Man pages
-** `ABCRYPT_HEADER_SIZE(3)`
-*** xref:man/man3/ABCRYPT_HEADER_SIZE.3.adoc[HTML]
-*** xref:attachment$ABCRYPT_HEADER_SIZE.3.pdf[PDF]
-*** xref:attachment$ABCRYPT_HEADER_SIZE.3.epub[EPUB 3]
-** `ABCRYPT_TAG_SIZE(3)`
-*** xref:man/man3/ABCRYPT_TAG_SIZE.3.adoc[HTML]
-*** xref:attachment$ABCRYPT_TAG_SIZE.3.pdf[PDF]
-*** xref:attachment$ABCRYPT_TAG_SIZE.3.epub[EPUB 3]
-** `abcrypt_error_code(3)`
-*** xref:man/man3/abcrypt_error_code.3.adoc[HTML]
-*** xref:attachment$abcrypt_error_code.3.pdf[PDF]
-*** xref:attachment$abcrypt_error_code.3.epub[EPUB 3]
-** `abcrypt_params(3)`
-*** xref:man/man3/abcrypt_params.3.adoc[HTML]
-*** xref:attachment$abcrypt_params.3.pdf[PDF]
-*** xref:attachment$abcrypt_params.3.epub[EPUB 3]
-** `abcrypt_decrypt(3)`
-*** xref:man/man3/abcrypt_decrypt.3.adoc[HTML]
-*** xref:attachment$abcrypt_decrypt.3.pdf[PDF]
-*** xref:attachment$abcrypt_decrypt.3.epub[EPUB 3]
-** `abcrypt_encrypt(3)`
-*** xref:man/man3/abcrypt_encrypt.3.adoc[HTML]
-*** xref:attachment$abcrypt_encrypt.3.pdf[PDF]
-*** xref:attachment$abcrypt_encrypt.3.epub[EPUB 3]
-** `abcrypt_encrypt_with_params(3)`
-*** xref:man/man3/abcrypt_encrypt_with_params.3.adoc[HTML]
-*** xref:attachment$abcrypt_encrypt_with_params.3.pdf[PDF]
-*** xref:attachment$abcrypt_encrypt_with_params.3.epub[EPUB 3]
-** `abcrypt_encrypt_with_context(3)`
-*** xref:man/man3/abcrypt_encrypt_with_context.3.adoc[HTML]
-*** xref:attachment$abcrypt_encrypt_with_context.3.pdf[PDF]
-*** xref:attachment$abcrypt_encrypt_with_context.3.epub[EPUB 3]
-** `abcrypt_error_message(3)`
-*** xref:man/man3/abcrypt_error_message.3.adoc[HTML]
-*** xref:attachment$abcrypt_error_message.3.pdf[PDF]
-*** xref:attachment$abcrypt_error_message.3.epub[EPUB 3]
-** `abcrypt_error_message_out_len(3)`
-*** xref:man/man3/abcrypt_error_message_out_len.3.adoc[HTML]
-*** xref:attachment$abcrypt_error_message_out_len.3.pdf[PDF]
-*** xref:attachment$abcrypt_error_message_out_len.3.epub[EPUB 3]
-** `abcrypt_params_new(3)`
-*** xref:man/man3/abcrypt_params_new.3.adoc[HTML]
-*** xref:attachment$abcrypt_params_new.3.pdf[PDF]
-*** xref:attachment$abcrypt_params_new.3.epub[EPUB 3]
-** `abcrypt_params_free(3)`
-*** xref:man/man3/abcrypt_params_free.3.adoc[HTML]
-*** xref:attachment$abcrypt_params_free.3.pdf[PDF]
-*** xref:attachment$abcrypt_params_free.3.epub[EPUB 3]
-** `abcrypt_params_read(3)`
-*** xref:man/man3/abcrypt_params_read.3.adoc[HTML]
-*** xref:attachment$abcrypt_params_read.3.pdf[PDF]
-*** xref:attachment$abcrypt_params_read.3.epub[EPUB 3]
-** `abcrypt_params_memory_cost(3)`
-*** xref:man/man3/abcrypt_params_memory_cost.3.adoc[HTML]
-*** xref:attachment$abcrypt_params_memory_cost.3.pdf[PDF]
-*** xref:attachment$abcrypt_params_memory_cost.3.epub[EPUB 3]
-** `abcrypt_params_time_cost(3)`
-*** xref:man/man3/abcrypt_params_time_cost.3.adoc[HTML]
-*** xref:attachment$abcrypt_params_time_cost.3.pdf[PDF]
-*** xref:attachment$abcrypt_params_time_cost.3.epub[EPUB 3]
-** `abcrypt_params_parallelism(3)`
-*** xref:man/man3/abcrypt_params_parallelism.3.adoc[HTML]
-*** xref:attachment$abcrypt_params_parallelism.3.pdf[PDF]
-*** xref:attachment$abcrypt_params_parallelism.3.epub[EPUB 3]
+** xref:man/man3/ABCRYPT_HEADER_SIZE.3.adoc[`ABCRYPT_HEADER_SIZE(3)`]
+** xref:man/man3/ABCRYPT_TAG_SIZE.3.adoc[`ABCRYPT_TAG_SIZE(3)`]
+** xref:man/man3/abcrypt_error_code.3.adoc[`abcrypt_error_code(3)`]
+** xref:man/man3/abcrypt_params.3.adoc[`abcrypt_params(3)`]
+** xref:man/man3/abcrypt_decrypt.3.adoc[`abcrypt_decrypt(3)`]
+** xref:man/man3/abcrypt_encrypt.3.adoc[`abcrypt_encrypt(3)`]
+** xref:man/man3/abcrypt_encrypt_with_params.3.adoc[`abcrypt_encrypt_with_params(3)`]
+** xref:man/man3/abcrypt_encrypt_with_context.3.adoc[`abcrypt_encrypt_with_context(3)`]
+** xref:man/man3/abcrypt_error_message.3.adoc[`abcrypt_error_message(3)`]
+** xref:man/man3/abcrypt_error_message_out_len.3.adoc[`abcrypt_error_message_out_len(3)`]
+** xref:man/man3/abcrypt_params_new.3.adoc[`abcrypt_params_new(3)`]
+** xref:man/man3/abcrypt_params_free.3.adoc[`abcrypt_params_free(3)`]
+** xref:man/man3/abcrypt_params_read.3.adoc[`abcrypt_params_read(3)`]
+** xref:man/man3/abcrypt_params_memory_cost.3.adoc[`abcrypt_params_memory_cost(3)`]
+** xref:man/man3/abcrypt_params_time_cost.3.adoc[`abcrypt_params_time_cost(3)`]
+** xref:man/man3/abcrypt_params_parallelism.3.adoc[`abcrypt_params_parallelism(3)`]
 * xref:changelog.adoc[]

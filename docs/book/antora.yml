@@ -14,21 +14,9 @@ nav:
   - modules/ROOT/nav.adoc
 ext:
   collector:
-    - run:
-        - command: asciidoctor-pdf -a compress docs/man/man1/*.1.adoc
-        - command: asciidoctor-epub3 docs/man/man1/*.1.adoc
-    - scan:
-      dir: docs/man/man1
-      into: modules/cli/attachments
-    - run:
-        - command: asciidoctor-pdf -a source-highlighter=rouge -a compress docs/man/man3/*.3.adoc
-        - command: asciidoctor-epub3 -a source-highlighter=rouge docs/man/man3/*.3.adoc
-    - scan:
-      dir: docs/man/man3
-      into: modules/capi/attachments
-    - run:
-        - command: asciidoctor-pdf -r asciidoctor-mathematical -a source-highlighter=pygments -a mathematical-format=svg -a compress docs/spec/FORMAT.adoc
-        - command: asciidoctor-epub3 -r asciidoctor-mathematical -a source-highlighter=pygments -a mathematical-format=svg docs/spec/FORMAT.adoc
-    - scan:
+    run:
+      - command: asciidoctor-pdf -r asciidoctor-mathematical -a source-highlighter=pygments -a mathematical-format=svg -a compress docs/spec/FORMAT.adoc
+      - command: asciidoctor-epub3 -r asciidoctor-mathematical -a source-highlighter=pygments -a mathematical-format=svg docs/spec/FORMAT.adoc
+    scan:
       dir: docs/spec
       into: modules/ROOT/attachments

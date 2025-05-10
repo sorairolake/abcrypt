@@ -49,7 +49,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install fonts-lyx libcairo2-dev libffi-dev libgdk-pixbuf2.0-dev libpango1.0-dev libxml2-dev
-          gem install asciidoctor-epub3 asciidoctor-mathematical asciidoctor-pdf pygments.rb rouge
+          gem install asciidoctor-epub3 asciidoctor-mathematical asciidoctor-pdf pygments.rb
           asciidoctor-pdf -V
           asciidoctor-epub3 -V
       - name: Setup just
