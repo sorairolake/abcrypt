@@ -22,6 +22,8 @@ project adheres to https://semver.org/[Semantic Versioning].
 * Restore demo animation ({pull-request-url}/702[#702])
 * Change the license for documents and assets to CC BY 4.0
   ({pull-request-url}/718[#718])
+* Replace `--generate-completion` with `completion` subcommand
+  ({pull-request-url}/727[#727])
 
 == {compare-url}/abcrypt-cli-v0.3.3\...abcrypt-cli-v0.4.0[0.4.0] - 2025-01-09
 

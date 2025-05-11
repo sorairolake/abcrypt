@@ -13,5 +13,6 @@
 ** xref:man/man1/abcrypt-decrypt.1.adoc[`abcrypt-decrypt(1)`]
 ** xref:man/man1/abcrypt-argon2.1.adoc[`abcrypt-argon2(1)`]
 ** xref:man/man1/abcrypt-information.1.adoc[`abcrypt-information(1)`]
+** xref:man/man1/abcrypt-completion.1.adoc[`abcrypt-completion(1)`]
 ** xref:man/man1/abcrypt-help.1.adoc[`abcrypt-help(1)`]
 * xref:changelog.adoc[]

@@ -83,7 +83,7 @@ Output:
 
 ### Generate shell completion
 
-`--generate-completion` option generates shell completions to standard output.
+`completion` subcommand generates shell completions to standard output.
 
 The following shells are supported:
 
@@ -97,7 +97,7 @@ The following shells are supported:
 Example:
 
 ```sh
-abcrypt --generate-completion bash > abcrypt.bash
+abcrypt completion bash > abcrypt.bash
 ```
 
 ## Command-line options
@@ -109,6 +109,7 @@ Please see the following:
 - [`abcrypt-decrypt(1)`]
 - [`abcrypt-argon2(1)`]
 - [`abcrypt-information(1)`]
+- [`abcrypt-completion(1)`]
 - [`abcrypt-help(1)`]
 
 ## Source code
@@ -156,6 +157,7 @@ licensing information.
 [`abcrypt-decrypt(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt-decrypt.1.html
 [`abcrypt-argon2(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt-argon2.1.html
 [`abcrypt-information(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt-information.1.html
+[`abcrypt-completion(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt-completion.1.html
 [`abcrypt-help(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt-help.1.html
 [CHANGELOG.adoc]: CHANGELOG.adoc
 [CONTRIBUTING.adoc]: ../../CONTRIBUTING.adoc

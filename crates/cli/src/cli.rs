@@ -53,6 +53,12 @@ const ARGON2_AFTER_LONG_HELP: &str = "See `abcrypt-argon2(1)` for more details."
 
 const INFORMATION_AFTER_LONG_HELP: &str = "See `abcrypt-information(1)` for more details.";
 
+const COMPLETION_AFTER_LONG_HELP: &str = concat!(
+    "The completion is output to standard output.\n",
+    '\n',
+    "See `abcrypt-completion(1)` for more details."
+);
+
 #[derive(Debug, Parser)]
 #[command(
     name("abcrypt"),
@@ -61,19 +67,11 @@ const INFORMATION_AFTER_LONG_HELP: &str = "See `abcrypt-information(1)` for more
     about,
     max_term_width(100),
     propagate_version(true),
-    after_long_help(AFTER_LONG_HELP),
-    arg_required_else_help(true),
-    args_conflicts_with_subcommands(true)
+    after_long_help(AFTER_LONG_HELP)
 )]
 pub struct Opt {
-    /// Generate shell completion.
-    ///
-    /// The completion is output to standard output.
-    #[arg(long, value_enum, value_name("SHELL"))]
-    pub generate_completion: Option<Shell>,
-
     #[command(subcommand)]
-    pub command: Option<Command>,
+    pub command: Command,
 }
 
 #[derive(Debug, Subcommand)]
@@ -105,6 +103,10 @@ pub enum Command {
         visible_alias("i")
     )]
     Information(Information),
+
+    /// Generate shell completion.
+    #[command(after_long_help(COMPLETION_AFTER_LONG_HELP))]
+    Completion(Completion),
 }
 
 #[derive(Args, Debug)]
@@ -275,6 +277,13 @@ impl Opt {
             &mut io::stdout(),
         );
     }
+}
+
+#[derive(Args, Debug)]
+pub struct Completion {
+    /// Shell to generate completion for.
+    #[arg(value_enum, ignore_case(true))]
+    pub shell: Shell,
 }
 
 #[derive(Clone, Debug, ValueEnum)]

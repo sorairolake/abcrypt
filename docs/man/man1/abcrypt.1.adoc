@@ -4,7 +4,7 @@
 
 = abcrypt(1)
 // Specify in UTC.
-:docdate: 2025-03-10
+:docdate: 2025-05-11
 :revnumber: 0.4.0
 :doctype: manpage
 :mansource: abcrypt {revnumber}
@@ -42,6 +42,10 @@ abcrypt - an utility for encrypt and decrypt files
 
   Provides information about the encryption parameters.
 
+*abcrypt-completion*(1)::
+
+  Generate shell completion.
+
 *abcrypt-help*(1)::
 
   Print the help for a command.
@@ -57,36 +61,6 @@ abcrypt - an utility for encrypt and decrypt files
 
   Print version number. The long flag (*--version*) will also print the
   copyright notice, the license notice and where to report bugs.
-
-*--generate-completion* _SHELL_::
-
-  Generate shell completion. The completion is output to standard output.
-
-  The possible values are:{blank}:::
-
-    *bash*::::
-
-      Bash.
-
-    *elvish*::::
-
-      Elvish.
-
-    *fish*::::
-
-      fish.
-
-    *nushell*::::
-
-      Nushell.
-
-    *powershell*::::
-
-      PowerShell.
-
-    *zsh*::::
-
-      Zsh.
 
 ifndef::site-gen-antora[include::{includedir}/section-exit-status.adoc[]]
 ifdef::site-gen-antora[include::partial$man/man1/include/section-exit-status.adoc[]]
