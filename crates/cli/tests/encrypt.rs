@@ -567,27 +567,3 @@ fn encrypt_verbose() {
             "Parameters used: memoryCost = 19456; timeCost = 2; parallelism = 1;",
         ));
 }
-
-#[test]
-fn long_version_for_encrypt_command() {
-    utils::command::command()
-        .arg("encrypt")
-        .arg("--version")
-        .assert()
-        .success()
-        .stdout(predicate::str::contains(include_str!(
-            "assets/long-version.md"
-        )));
-}
-
-#[test]
-fn after_long_help_for_encrypt_command() {
-    utils::command::command()
-        .arg("encrypt")
-        .arg("--help")
-        .assert()
-        .success()
-        .stdout(predicate::str::contains(include_str!(
-            "assets/encrypt-after-long-help.md"
-        )));
-}

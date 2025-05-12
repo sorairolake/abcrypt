@@ -137,27 +137,3 @@ fn information_if_input_file_is_invalid() {
             "encrypted data is shorter than 164 bytes",
         ));
 }
-
-#[test]
-fn long_version_for_information_command() {
-    utils::command::command()
-        .arg("information")
-        .arg("--version")
-        .assert()
-        .success()
-        .stdout(predicate::str::contains(include_str!(
-            "assets/long-version.md"
-        )));
-}
-
-#[test]
-fn after_long_help_for_information_command() {
-    utils::command::command()
-        .arg("information")
-        .arg("--help")
-        .assert()
-        .success()
-        .stdout(predicate::str::contains(include_str!(
-            "assets/information-after-long-help.md"
-        )));
-}

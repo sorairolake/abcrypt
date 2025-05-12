@@ -254,27 +254,3 @@ fn decrypt_verbose() {
             "Parameters used: memoryCost = 32; timeCost = 3; parallelism = 4;",
         ));
 }
-
-#[test]
-fn long_version_for_decrypt_command() {
-    utils::command::command()
-        .arg("decrypt")
-        .arg("--version")
-        .assert()
-        .success()
-        .stdout(predicate::str::contains(include_str!(
-            "assets/long-version.md"
-        )));
-}
-
-#[test]
-fn after_long_help_for_decrypt_command() {
-    utils::command::command()
-        .arg("decrypt")
-        .arg("--help")
-        .assert()
-        .success()
-        .stdout(predicate::str::contains(include_str!(
-            "assets/decrypt-after-long-help.md"
-        )));
-}

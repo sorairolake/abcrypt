@@ -24,6 +24,10 @@ project adheres to https://semver.org/[Semantic Versioning].
   ({pull-request-url}/718[#718])
 * Replace `--generate-completion` with `completion` subcommand
   ({pull-request-url}/727[#727])
+* Remove help text for after auto-generated `--help`
+  ({pull-request-url}/732[#732])
+* Make the message for `--version` the same as the message for `-V`
+  ({pull-request-url}/732[#732])
 
 == {compare-url}/abcrypt-cli-v0.3.3\...abcrypt-cli-v0.4.0[0.4.0] - 2025-01-09
 

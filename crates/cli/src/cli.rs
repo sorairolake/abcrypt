@@ -21,53 +21,13 @@ use clap::{
 };
 use clap_complete::Generator;
 
-const LONG_VERSION: &str = concat!(
-    env!("CARGO_PKG_VERSION"),
-    '\n',
-    "Copyright (C) 2022 Shun Sakai\n",
-    '\n',
-    "This program is distributed under the terms of the GNU General Public License\n",
-    "v3.0 or later.\n",
-    '\n',
-    "This is free software: you are free to change and redistribute it. There is NO\n",
-    "WARRANTY, to the extent permitted by law.\n",
-    '\n',
-    "Report bugs to <https://github.com/sorairolake/abcrypt/issues>."
-);
-
-const AFTER_LONG_HELP: &str = "See `abcrypt(1)` for more details.";
-
-const ENCRYPT_AFTER_LONG_HELP: &str = concat!(
-    "By default, the result will be write to standard output.\n",
-    '\n',
-    "See `abcrypt-encrypt(1)` for more details."
-);
-
-const DECRYPT_AFTER_LONG_HELP: &str = concat!(
-    "By default, the result will be write to standard output.\n",
-    '\n',
-    "See `abcrypt-decrypt(1)` for more details."
-);
-
-const ARGON2_AFTER_LONG_HELP: &str = "See `abcrypt-argon2(1)` for more details.";
-
-const INFORMATION_AFTER_LONG_HELP: &str = "See `abcrypt-information(1)` for more details.";
-
-const COMPLETION_AFTER_LONG_HELP: &str = concat!(
-    "The completion is output to standard output.\n",
-    '\n',
-    "See `abcrypt-completion(1)` for more details."
-);
-
 #[derive(Debug, Parser)]
 #[command(
     name("abcrypt"),
     version,
-    long_version(LONG_VERSION),
     about,
     max_term_width(100),
     propagate_version(true),
-    after_long_help(AFTER_LONG_HELP),
     arg_required_else_help(false)
 )]
 pub struct Opt {
@@ -78,35 +38,27 @@ pub struct Opt {
 #[derive(Debug, Subcommand)]
 pub enum Command {
     /// Encrypt files.
-    #[command(
-        after_long_help(ENCRYPT_AFTER_LONG_HELP),
-        visible_alias("enc"),
-        visible_alias("e")
-    )]
+    ///
+    /// By default, the result will be write to standard output.
+    #[command(visible_alias("enc"), visible_alias("e"))]
     Encrypt(Encrypt),
 
     /// Decrypt files.
-    #[command(
-        after_long_help(DECRYPT_AFTER_LONG_HELP),
-        visible_alias("dec"),
-        visible_alias("d")
-    )]
+    ///
+    /// By default, the result will be write to standard output.
+    #[command(visible_alias("dec"), visible_alias("d"))]
     Decrypt(Decrypt),
 
     /// Provides information about the Argon2 context.
-    #[command(after_long_help(ARGON2_AFTER_LONG_HELP))]
     Argon2(Argon2),
 
     /// Provides information about the encryption parameters.
-    #[command(
-        after_long_help(INFORMATION_AFTER_LONG_HELP),
-        visible_alias("info"),
-        visible_alias("i")
-    )]
+    #[command(visible_alias("info"), visible_alias("i"))]
     Information(Information),
 
     /// Generate shell completion.
-    #[command(after_long_help(COMPLETION_AFTER_LONG_HELP))]
+    ///
+    /// The completion is output to standard output.
     Completion(Completion),
 }
 

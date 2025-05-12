@@ -89,27 +89,3 @@ fn argon2_if_input_file_is_invalid() {
             "encrypted data is shorter than 164 bytes",
         ));
 }
-
-#[test]
-fn long_version_for_argon2_command() {
-    utils::command::command()
-        .arg("argon2")
-        .arg("--version")
-        .assert()
-        .success()
-        .stdout(predicate::str::contains(include_str!(
-            "assets/long-version.md"
-        )));
-}
-
-#[test]
-fn after_long_help_for_argon2_command() {
-    utils::command::command()
-        .arg("argon2")
-        .arg("--help")
-        .assert()
-        .success()
-        .stdout(predicate::str::contains(include_str!(
-            "assets/argon2-after-long-help.md"
-        )));
-}
