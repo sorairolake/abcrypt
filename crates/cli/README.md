@@ -152,13 +152,13 @@ licensing information.
 [environment variables]: https://doc.rust-lang.org/cargo/reference/environment-variables.html#configuration-environment-variables
 [release page]: https://github.com/sorairolake/abcrypt/releases
 [BUILD.adoc]: BUILD.adoc
-[`abcrypt(1)`]: docs/man/man1/abcrypt.1.adoc
-[`abcrypt-encrypt(1)`]: docs/man/man1/abcrypt-encrypt.1.adoc
-[`abcrypt-decrypt(1)`]: docs/man/man1/abcrypt-decrypt.1.adoc
-[`abcrypt-argon2(1)`]: docs/man/man1/abcrypt-argon2.1.adoc
-[`abcrypt-information(1)`]: docs/man/man1/abcrypt-information.1.adoc
-[`abcrypt-completion(1)`]: docs/man/man1/abcrypt-completion.1.adoc
-[`abcrypt-help(1)`]: docs/man/man1/abcrypt-help.1.adoc
+[`abcrypt(1)`]: ../../docs/man/man1/abcrypt.1.adoc
+[`abcrypt-encrypt(1)`]: ../../docs/man/man1/abcrypt-encrypt.1.adoc
+[`abcrypt-decrypt(1)`]: ../../docs/man/man1/abcrypt-decrypt.1.adoc
+[`abcrypt-argon2(1)`]: ../../docs/man/man1/abcrypt-argon2.1.adoc
+[`abcrypt-information(1)`]: ../../docs/man/man1/abcrypt-information.1.adoc
+[`abcrypt-completion(1)`]: ../../docs/man/man1/abcrypt-completion.1.adoc
+[`abcrypt-help(1)`]: ../../docs/man/man1/abcrypt-help.1.adoc
 [CHANGELOG.adoc]: CHANGELOG.adoc
 [CONTRIBUTING.adoc]: ../../CONTRIBUTING.adoc
 [AUTHORS.adoc]: ../../AUTHORS.adoc
