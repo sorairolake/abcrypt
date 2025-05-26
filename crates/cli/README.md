@@ -110,7 +110,6 @@ Please see the following:
 - [`abcrypt-argon2(1)`]
 - [`abcrypt-information(1)`]
 - [`abcrypt-completion(1)`]
-- [`abcrypt-help(1)`]
 
 ## Source code
 
@@ -158,7 +157,6 @@ licensing information.
 [`abcrypt-argon2(1)`]: ../../docs/man/man1/abcrypt-argon2.1.adoc
 [`abcrypt-information(1)`]: ../../docs/man/man1/abcrypt-information.1.adoc
 [`abcrypt-completion(1)`]: ../../docs/man/man1/abcrypt-completion.1.adoc
-[`abcrypt-help(1)`]: ../../docs/man/man1/abcrypt-help.1.adoc
 [CHANGELOG.adoc]: CHANGELOG.adoc
 [CONTRIBUTING.adoc]: ../../CONTRIBUTING.adoc
 [AUTHORS.adoc]: ../../AUTHORS.adoc

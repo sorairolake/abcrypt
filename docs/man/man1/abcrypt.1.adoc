@@ -4,7 +4,7 @@
 
 = abcrypt(1)
 // Specify in UTC.
-:docdate: 2025-05-12
+:docdate: 2025-05-26
 :revnumber: 0.4.0
 :doctype: manpage
 :mansource: abcrypt {revnumber}
@@ -45,10 +45,6 @@ abcrypt - an utility for encrypt and decrypt files
 *abcrypt-completion*(1)::
 
   Generate shell completion.
-
-*abcrypt-help*(1)::
-
-  Print the help for a command.
 
 == OPTIONS
 
