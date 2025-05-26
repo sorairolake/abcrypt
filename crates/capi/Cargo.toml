@@ -25,7 +25,7 @@ crate-type = ["staticlib", "cdylib"]
 abcrypt = { version = "0.4.0", path = "../abcrypt" }
 
 [build-dependencies]
-cbindgen = { version = "0.28.0", default-features = false }
+cbindgen = { version = "0.29.0", default-features = false }
 
 [lints]
 workspace = true
