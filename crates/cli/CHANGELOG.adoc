@@ -29,6 +29,10 @@ project adheres to https://semver.org/[Semantic Versioning].
 * Make the message for `--version` the same as the message for `-V`
   ({pull-request-url}/732[#732])
 
+=== Removed
+
+* Remove `abcrypt-help(1)`
+
 == {compare-url}/abcrypt-cli-v0.3.3\...abcrypt-cli-v0.4.0[0.4.0] - 2025-01-09
 
 === Added
