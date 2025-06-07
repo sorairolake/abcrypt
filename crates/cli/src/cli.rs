@@ -28,7 +28,9 @@ use clap_complete::Generator;
     about,
     max_term_width(100),
     propagate_version(true),
-    arg_required_else_help(false)
+    infer_subcommands(true),
+    arg_required_else_help(false),
+    args_conflicts_with_subcommands(true)
 )]
 pub struct Opt {
     #[command(subcommand)]
@@ -40,20 +42,17 @@ pub enum Command {
     /// Encrypt files.
     ///
     /// By default, the result will be write to standard output.
-    #[command(visible_alias("enc"), visible_alias("e"))]
     Encrypt(Encrypt),
 
     /// Decrypt files.
     ///
     /// By default, the result will be write to standard output.
-    #[command(visible_alias("dec"), visible_alias("d"))]
     Decrypt(Decrypt),
 
     /// Provides information about the Argon2 context.
     Argon2(Argon2),
 
     /// Provides information about the encryption parameters.
-    #[command(visible_alias("info"), visible_alias("i"))]
     Information(Information),
 
     /// Generate shell completion.

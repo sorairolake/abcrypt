@@ -4,7 +4,7 @@
 
 = abcrypt-decrypt(1)
 // Specify in UTC.
-:docdate: 2025-05-26
+:docdate: 2025-06-07
 :revnumber: 0.4.0
 :doctype: manpage
 :mansource: abcrypt {revnumber}
@@ -27,8 +27,6 @@ output. If _FILE_ is not specified, data will be read from standard input. If
 
 The passphrase used for decryption can be read from either `/dev/tty`, standard
 input, an environment variable, or a file.
-
-*abcrypt dec* and *abcrypt d* are aliases for this command.
 
 == POSITIONAL ARGUMENTS
 

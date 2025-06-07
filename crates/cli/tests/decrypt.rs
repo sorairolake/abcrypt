@@ -59,17 +59,19 @@ fn basic_decrypt() {
 }
 
 #[test]
-fn validate_aliases_for_decrypt_command() {
+fn infer_subcommand_name_for_decrypt_command() {
     utils::command::command()
         .arg("dec")
         .arg("-V")
         .assert()
-        .success();
+        .success()
+        .stdout(predicate::str::contains("abcrypt-decrypt"));
     utils::command::command()
         .arg("d")
         .arg("-V")
         .assert()
-        .success();
+        .success()
+        .stdout(predicate::str::contains("abcrypt-decrypt"));
 }
 
 #[test]

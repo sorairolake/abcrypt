@@ -59,17 +59,19 @@ fn basic_information() {
 }
 
 #[test]
-fn validate_aliases_for_information_command() {
+fn infer_subcommand_name_for_information_command() {
     utils::command::command()
         .arg("info")
         .arg("-V")
         .assert()
-        .success();
+        .success()
+        .stdout(predicate::str::contains("abcrypt-information"));
     utils::command::command()
         .arg("i")
         .arg("-V")
         .assert()
-        .success();
+        .success()
+        .stdout(predicate::str::contains("abcrypt-information"));
 }
 
 #[test]

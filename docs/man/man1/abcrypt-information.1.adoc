@@ -4,7 +4,7 @@
 
 = abcrypt-information(1)
 // Specify in UTC.
-:docdate: 2025-05-26
+:docdate: 2025-06-07
 :revnumber: 0.4.0
 :doctype: manpage
 :mansource: abcrypt {revnumber}
@@ -45,8 +45,6 @@ The encryption parameters outputs either a human-readable string or JSON.
 
 The encryption parameters represents the same thing as the Argon2 parameters as
 defined in {rfc9106}[RFC 9106].
-
-*abcrypt info* and *abcrypt i* are aliases for this command.
 
 == POSITIONAL ARGUMENTS
 
