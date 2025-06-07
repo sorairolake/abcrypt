@@ -53,6 +53,16 @@ fn basic_argon2() {
 }
 
 #[test]
+fn infer_subcommand_name_for_argon2_command() {
+    utils::command::command()
+        .arg("a")
+        .arg("-V")
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("abcrypt-argon2"));
+}
+
+#[test]
 fn argon2_if_non_existent_input_file() {
     let command = utils::command::command()
         .arg("argon2")
