@@ -92,52 +92,32 @@ type-check-wasm-examples:
 # Configure a development environment for the Python bindings
 [working-directory("crates/python")]
 setup-python:
-    #!/usr/bin/env bash
-    set -euCo pipefail
-    python3 -m venv venv
-    source venv/bin/activate
-    maturin develop
-    pip3 install abcrypt-py[test,dev]
+    uv sync
 
 # Run tests for the Python bindings
 [working-directory("crates/python")]
 python-test:
-    #!/usr/bin/env bash
-    set -euCo pipefail
-    source venv/bin/activate
-    pytest
+    uv run pytest
 
 # Run the formatter for the Python bindings
 [working-directory("crates/python")]
 python-fmt:
-    #!/usr/bin/env bash
-    set -euCo pipefail
-    source venv/bin/activate
-    ruff format .
+    uv run ruff format .
 
 # Run the linter for the Python bindings
 [working-directory("crates/python")]
 python-lint:
-    #!/usr/bin/env bash
-    set -euCo pipefail
-    source venv/bin/activate
-    ruff check .
+    uv run ruff check .
 
 # Apply lint suggestions for the Python bindings
 [working-directory("crates/python")]
 python-lint-fix:
-    #!/usr/bin/env bash
-    set -euCo pipefail
-    source venv/bin/activate
-    ruff check --fix .
+    uv run ruff check --fix .
 
 # Run `mypy`
 [working-directory("crates/python")]
 python-type-check:
-    #!/usr/bin/env bash
-    set -euCo pipefail
-    source venv/bin/activate
-    mypy .
+    uv run mypy .
 
 # Run the linter for GitHub Actions workflow files
 lint-github-actions:

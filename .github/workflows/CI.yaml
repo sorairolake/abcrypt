@@ -214,7 +214,11 @@ jobs:
           - python-version-alias: minimum
             python-version: "3.8"
           - python-version-alias: latest
-            python-version: "3.x"
+            python-version: "3.13"
+        exclude:
+          - os-alias: windows
+            rust-version-alias: msrv
+            python-version-alias: minimum
     steps:
       - name: Set Git to use LF
         if: matrix.os == 'windows-2022'
@@ -227,15 +231,14 @@ jobs:
         uses: dtolnay/rust-toolchain@v1
         with:
           toolchain: ${{ matrix.rust-version }}
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v6.1.0
         with:
           python-version: ${{ matrix.python-version }}
-          cache: "pip"
-      - name: Install dependencies
-        run: pip install "crates/python[test]"
+          working-directory: crates/python
+          enable-cache: true
       - name: Run tests
-        run: pytest crates/python
+        run: uv run --directory crates/python pytest
 
   rustfmt:
     name: Rustfmt
@@ -311,19 +314,18 @@ jobs:
         uses: dtolnay/rust-toolchain@v1
         with:
           toolchain: stable
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v6.1.0
         with:
-          python-version: "3.x" # latest stable version of Python 3
-          cache: "pip"
-      - name: Install dependencies
-        run: pip install "crates/python[dev,test]"
+          python-version: "3.13" # latest stable version of Python 3
+          working-directory: crates/python
+          enable-cache: true
       - name: Check code formatted
-        run: ruff format --check crates/python
+        run: uv run --directory crates/python ruff format --check .
       - name: Check no lint warnings
-        run: ruff check crates/python
+        run: uv run --directory crates/python ruff check .
       - name: Type-check
-        run: mypy crates/python
+        run: uv run --directory crates/python mypy .
 
   capi-examples:
     name: Examples for the C API
