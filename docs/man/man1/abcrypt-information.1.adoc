@@ -5,7 +5,7 @@
 = abcrypt-information(1)
 // Specify in UTC.
 :docdate: 2025-06-07
-:revnumber: 0.4.0
+:revnumber: 0.5.0
 :doctype: manpage
 :mansource: abcrypt {revnumber}
 :manmanual: General Commands Manual
