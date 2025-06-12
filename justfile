@@ -142,26 +142,31 @@ publish-wasm: build-wasm
     wasm-pack publish -a public
 
 # Increment the version of the library
+[working-directory("crates/abcrypt")]
 bump-lib part:
-    bump-my-version bump --config-file .bumpversion-lib.toml {{ part }}
+    bump-my-version bump {{ part }}
     cargo set-version --bump {{ part }} -p abcrypt
 
 # Increment the version of the command-line utility
+[working-directory("crates/cli")]
 bump-cli part:
-    bump-my-version bump --config-file .bumpversion-cli.toml {{ part }}
+    bump-my-version bump {{ part }}
     cargo set-version --bump {{ part }} -p abcrypt-cli
 
 # Increment the version of the C API
+[working-directory("crates/capi")]
 bump-capi part:
-    bump-my-version bump --config-file .bumpversion-capi.toml {{ part }}
+    bump-my-version bump {{ part }}
     cargo set-version --bump {{ part }} -p abcrypt-capi
 
 # Increment the version of the Wasm bindings
+[working-directory("crates/wasm")]
 bump-wasm part:
-    bump-my-version bump --config-file .bumpversion-wasm.toml {{ part }}
+    bump-my-version bump {{ part }}
     cargo set-version --bump {{ part }} -p abcrypt-wasm
 
 # Increment the version of the Python bindings
+[working-directory("crates/python")]
 bump-python part:
-    bump-my-version bump --config-file .bumpversion-python.toml {{ part }}
+    bump-my-version bump {{ part }}
     cargo set-version --bump {{ part }} -p abcrypt-py

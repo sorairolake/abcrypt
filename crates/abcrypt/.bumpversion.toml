@@ -6,7 +6,7 @@
 current_version = "0.4.0"
 
 [[tool.bumpversion.files]]
-filename = "crates/abcrypt/src/lib.rs"
+filename = "docs/spec/FORMAT.adoc"
 
 [[tool.bumpversion.files]]
-filename = "docs/spec/FORMAT.adoc"
+filename = "src/lib.rs"
