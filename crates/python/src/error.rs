@@ -4,7 +4,7 @@
 
 //! Error types for this crate.
 
-use pyo3::{exceptions::PyValueError, PyErr};
+use pyo3::{PyErr, exceptions::PyValueError};
 
 /// The error type for the abcrypt encrypted data format.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]

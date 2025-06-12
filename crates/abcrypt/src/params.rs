@@ -4,7 +4,7 @@
 
 //! The Argon2 parameters.
 
-use crate::{format::Header, Result};
+use crate::{Result, format::Header};
 
 /// The Argon2 parameters used for the encrypted data.
 #[derive(Clone, Copy, Debug)]

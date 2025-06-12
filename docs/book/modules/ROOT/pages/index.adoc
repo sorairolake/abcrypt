@@ -30,6 +30,8 @@ image:{ci-badge}[CI,link={ci-url}]
 *abcrypt* is a simple, modern and secure file encryption tool, file format and
 Rust library.
 
+image::demo.gif[Demo animation]
+
 == Crates
 
 |===
@@ -59,3 +61,10 @@ Rust library.
 == Format specification
 
 Please see xref:format.adoc[].
+
+[NOTE]
+.The format specification is also available in the following ebook formats
+====
+* xref:attachment$FORMAT.pdf[PDF]
+* xref:attachment$FORMAT.epub[EPUB 3]
+====

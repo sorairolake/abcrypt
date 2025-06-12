@@ -4,7 +4,7 @@
 
 [package]
 name = "abcrypt-cli"
-version = "0.4.0"
+version = "0.5.0"
 authors.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -17,8 +17,6 @@ keywords = ["abcrypt"]
 categories = ["command-line-utilities"]
 include = ["/LICENSES", "/README.md", "/src"]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [[bin]]
 name = "abcrypt"
 path = "src/main.rs"
@@ -28,14 +26,14 @@ abcrypt = { version = "0.4.0", path = "../abcrypt", features = ["serde"] }
 anyhow.workspace = true
 byte-unit = "5.1.6"
 clap = { workspace = true, features = ["wrap_help"] }
-clap_complete = "4.5.41"
-clap_complete_nushell = "4.5.5"
+clap_complete = "4.5.54"
+clap_complete_nushell = "4.5.7"
 dialoguer.workspace = true
-serde_json = { version = "1.0.135", optional = true }
-sysexits = "0.8.5"
+serde_json = { version = "1.0.140", optional = true }
+sysexits = "0.9.0"
 
 [dev-dependencies]
-assert_cmd = "2.0.16"
+assert_cmd = "2.0.17"
 predicates = "3.1.3"
 
 [features]

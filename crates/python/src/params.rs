@@ -4,7 +4,7 @@
 
 //! The Argon2 parameters.
 
-use pyo3::{pyclass, pymethods, PyResult};
+use pyo3::{PyResult, pyclass, pymethods};
 
 use crate::error::Error;
 

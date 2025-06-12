@@ -131,18 +131,18 @@ impl From<Error> for ErrorCode {
 /// Behavior is undefined if `buf` and `buf_len` violates the safety conditions
 /// of `slice::from_raw_parts`.
 #[must_use]
-#[no_mangle]
+#[unsafe(no_mangle)]
 #[inline]
 pub unsafe extern "C-unwind" fn abcrypt_error_message(
     error_code: ErrorCode,
     buf: Option<NonNull<u8>>,
     buf_len: usize,
 ) -> ErrorCode {
-    ErrorCode::error_message(error_code, buf, buf_len)
+    unsafe { ErrorCode::error_message(error_code, buf, buf_len) }
 }
 
 /// Returns the number of output bytes of the error message.
-#[no_mangle]
+#[unsafe(no_mangle)]
 #[inline]
 pub extern "C-unwind" fn abcrypt_error_message_out_len(error_code: ErrorCode) -> usize {
     error_code.error_message_out_len()

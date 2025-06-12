@@ -1,33 +1,44 @@
 // SPDX-FileCopyrightText: 2023 Shun Sakai
 //
-// SPDX-License-Identifier: CC-BY-4.0
+// SPDX-License-Identifier: CC0-1.0
 
 = Abcrypt Encrypted Data Format
 Shun Sakai <sorairolake@protonmail.ch>
 // Specify in UTC.
-v0.4.0, 2024-12-09
-:icons: font
+v0.4.0, 2025-05-01
+:lang: en
 :idprefix:
 :idseparator: -
 :sectanchors:
+:sectnums:
 :toc: preamble
+:doctype: book
 :stem:
-:scrypt-encrypted-data-format: https://www.tarsnap.com/scrypt.html
+:icons: font
+:cc0-url: https://creativecommons.org/publicdomain/zero/1.0/
+:scrypt-encrypted-data-format: https://github.com/Tarsnap/scrypt/blob/1.3.3/FORMAT
+:tarsnap-scrypt: https://www.tarsnap.com/scrypt.html
 :ietf-datatracker: https://datatracker.ietf.org
 :datatracker-html-doc: {ietf-datatracker}/doc/html
 :rfc9106: {datatracker-html-doc}/rfc9106
 :rfc7693: {datatracker-html-doc}/rfc7693
-:draft-arciszewski-xchacha-03: {datatracker-html-doc}/draft-arciszewski-xchacha-03
+:draft-irtf-cfrg-xchacha: {datatracker-html-doc}/draft-irtf-cfrg-xchacha
 
 abcrypt is a modern file encryption format with the data authenticity. This
 document describes the abcrypt encrypted data format.
 
+This document and the abcrypt encrypted data format are distributed under the
+terms of the {cc0-url}[CC0 1.0 Universal] (CC0 1.0). You can copy, modify,
+distribute and perform these, even for commercial purposes, all without asking
+permission.
+
 == Introduction
 
 abcrypt is a modern file encryption format inspired by the
-{scrypt-encrypted-data-format}[scrypt encrypted data format]. abcrypt uses
-<<argon2>> for key derivation, <<blake2b-512-mac>> for header integrity
-checking and <<xchacha20-poly1305>> for encryption.
+{scrypt-encrypted-data-format}[scrypt encrypted data format], which is produced
+by the {tarsnap-scrypt}[scrypt encryption utility]. abcrypt uses <<argon2>> for
+key derivation, <<blake2b-512-mac>> for header integrity checking and
+<<xchacha20-poly1305>> for encryption.
 
 == Conventions used in this document
 
@@ -40,12 +51,13 @@ BLAKE2b-512-MAC is the keyed hash function based on BLAKE2 standardized in
 
 [#xchacha20-poly1305,reftext=XChaCha20-Poly1305]
 XChaCha20-Poly1305 is the AEAD algorithm from
-{draft-arciszewski-xchacha-03}[draft-arciszewski-xchacha-03].
+{draft-irtf-cfrg-xchacha}[draft-irtf-cfrg-xchacha].
 
 == Format overview
 
-An abcrypt file is composed of two parts: a <<header-format,header>> containing
-the required data and a <<file-body,file body>> encrypted with the derived key.
+An abcrypt file is composed of two parts: the <<header-format,header>>
+containing the required data and the <<payload,payload>> encrypted with the
+derived key.
 
 .The structure of the abcrypt encrypted data format
 |===
@@ -104,12 +116,12 @@ the required data and a <<file-body,file body>> encrypted with the derived key.
 |stem:[148]
 |stem:[n]
 |Ciphertext.
-|<<file-body>>
+|<<payload>>
 
 |stem:[148 + n]
 |stem:[16]
 |MAC of the ciphertext.
-|<<file-body>>
+|<<payload>>
 |===
 
 All multibyte values are stored in little-endian.
@@ -256,9 +268,9 @@ mac = BLAKE2b(
 The size of `salt` and `personalization` (personalization string) are zero
 (empty).
 
-== File body
+== Payload
 
-The file body is encrypted with XChaCha20-Poly1305.
+The payload is encrypted with <<xchacha20-poly1305>>.
 
 .The ciphertext is computed as follows
 ----
@@ -291,10 +303,10 @@ When transferring abcrypt files over the Internet, the appropriate MIME type is
 [source,abnf]
 ----
 ifdef::site-gen-antora[]
-include::example$abcrypt.abnf[lines=5..-1]
+include::example$abcrypt.abnf[lines=5..]
 endif::[]
 ifndef::site-gen-antora[]
-include::abcrypt.abnf[lines=5..-1]
+include::abcrypt.abnf[lines=5..]
 endif::[]
 ----
 

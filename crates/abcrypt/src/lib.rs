@@ -5,7 +5,7 @@
 //! The `abcrypt` crate is an implementation of the [abcrypt encrypted data
 //! format].
 //!
-//! This crate supports the abcrypt version 1 file format.
+//! This crate supports version 1 of the abcrypt format.
 //!
 //! # Examples
 //!
@@ -14,7 +14,7 @@
 //! ```
 //! # #[cfg(feature = "alloc")]
 //! # {
-//! use abcrypt::{argon2::Params, Decryptor, Encryptor};
+//! use abcrypt::{Decryptor, Encryptor, argon2::Params};
 //!
 //! let data = b"Hello, world!\n";
 //! let passphrase = "passphrase";
@@ -39,13 +39,17 @@
 //! This crate supports `no_std` mode and can be used without the `alloc` crate
 //! and the `std` crate. Disables the `default` feature to enable this.
 //!
+//! <div class="warning">
+//!
 //! Note that the memory blocks used by Argon2 when calculating a derived key is
 //! limited to 256 KiB when the `alloc` feature is disabled.
 //!
+//! </div>
+//!
 //! ```
 //! use abcrypt::{
-//!     argon2::{Algorithm, Params, Version},
 //!     Argon2, Decryptor, Encryptor,
+//!     argon2::{Algorithm, Params, Version},
 //! };
 //!
 //! let data = b"Hello, world!\n";
@@ -74,7 +78,7 @@
 //! ```
 //! # #[cfg(feature = "alloc")]
 //! # {
-//! use abcrypt::{argon2, Encryptor};
+//! use abcrypt::{Encryptor, argon2};
 //!
 //! let data = b"Hello, world!\n";
 //! let passphrase = "passphrase";

@@ -18,8 +18,6 @@ keywords = ["abcrypt", "crypto"]
 categories = ["cryptography"]
 include = ["/LICENSES", "/README.md", "/src"]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [lib]
 crate-type = ["staticlib", "cdylib"]
 
@@ -27,7 +25,7 @@ crate-type = ["staticlib", "cdylib"]
 abcrypt = { version = "0.4.0", path = "../abcrypt" }
 
 [build-dependencies]
-cbindgen = { version = "0.27.0", default-features = false }
+cbindgen = { version = "0.29.0", default-features = false }
 
 [lints]
 workspace = true

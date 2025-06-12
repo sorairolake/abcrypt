@@ -6,7 +6,7 @@
 
 extern crate test;
 
-use abcrypt::{argon2::Params, Encryptor};
+use abcrypt::{Encryptor, argon2::Params};
 use test::Bencher;
 
 const PASSPHRASE: &str = "passphrase";

@@ -4,6 +4,9 @@
 
 .Format Specification
 * xref:format.adoc[]
+* xref:download-ebook.adoc[]
+** xref:attachment$FORMAT.pdf[PDF]
+** xref:attachment$FORMAT.epub[EPUB 3]
 
 .Resources
 * xref:awesome.adoc[]

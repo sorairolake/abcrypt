@@ -4,11 +4,10 @@
 
 = Usage
 
-.Add this to your `Cargo.toml`
-[source,toml]
+.Run the following command in your project directory
+[source,sh]
 ----
-[dependencies]
-abcrypt = "0.4.0"
+cargo add abcrypt
 ----
 
 == Crate features
@@ -18,18 +17,18 @@ abcrypt = "0.4.0"
   Enables features that require an allocator. This is enabled by default
   (implied by `std`).
 
+`serde`::
+
+  Enables serialization support for `Params`.
+
 `std`::
 
   Enables features that depend on the standard library. This is enabled by
   default.
 
-`serde`::
-
-  Enables serialization support for `Params`.
-
 == `no_std` support
 
 This supports `no_std` mode. Disables the `default` feature to enable this.
 
-Note that the memory blocks used by Argon2 when calculating a derived key is
-limited to 256 KiB when the `alloc` feature is disabled.
+IMPORTANT: Note that the memory blocks used by Argon2 when calculating a
+derived key is limited to 256 KiB when the `alloc` feature is disabled.

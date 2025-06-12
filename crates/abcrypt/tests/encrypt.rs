@@ -3,8 +3,8 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
 use abcrypt::{
-    argon2::{Algorithm, Params, Version},
     Argon2, Decryptor, Encryptor, HEADER_SIZE, TAG_SIZE,
+    argon2::{Algorithm, Params, Version},
 };
 
 const PASSPHRASE: &str = "passphrase";

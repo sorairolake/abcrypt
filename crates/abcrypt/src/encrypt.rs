@@ -8,8 +8,8 @@ use argon2::{Algorithm, Argon2, Params, Version};
 use chacha20poly1305::{AeadInPlace, KeyInit, XChaCha20Poly1305};
 
 use crate::{
+    AAD, Error, HEADER_SIZE, Result, TAG_SIZE,
     format::{DerivedKey, Header},
-    Error, Result, AAD, HEADER_SIZE, TAG_SIZE,
 };
 
 /// Encryptor for the abcrypt encrypted data format.
@@ -62,7 +62,7 @@ impl<'m> Encryptor<'m> {
     /// # Examples
     ///
     /// ```
-    /// # use abcrypt::{argon2::Params, Encryptor};
+    /// # use abcrypt::{Encryptor, argon2::Params};
     /// #
     /// let data = b"Hello, world!\n";
     /// let passphrase = "passphrase";
@@ -96,8 +96,8 @@ impl<'m> Encryptor<'m> {
     ///
     /// ```
     /// # use abcrypt::{
-    /// #     argon2::{Algorithm, Params, Version},
     /// #     Encryptor,
+    /// #     argon2::{Algorithm, Params, Version},
     /// # };
     /// #
     /// let data = b"Hello, world!\n";
@@ -177,7 +177,7 @@ impl<'m> Encryptor<'m> {
     /// # Examples
     ///
     /// ```
-    /// # use abcrypt::{argon2::Params, Encryptor};
+    /// # use abcrypt::{Encryptor, argon2::Params};
     /// #
     /// let data = b"Hello, world!\n";
     /// let passphrase = "passphrase";
@@ -191,12 +191,12 @@ impl<'m> Encryptor<'m> {
     pub fn encrypt(&self, buf: &mut (impl AsMut<[u8]> + ?Sized)) {
         let inner = |encryptor: &Self, buf: &mut [u8]| {
             buf[..HEADER_SIZE].copy_from_slice(&encryptor.header.as_bytes());
-            let body = &mut buf[HEADER_SIZE..(self.out_len() - TAG_SIZE)];
-            body.copy_from_slice(encryptor.plaintext);
+            let payload = &mut buf[HEADER_SIZE..(self.out_len() - TAG_SIZE)];
+            payload.copy_from_slice(encryptor.plaintext);
 
             let cipher = XChaCha20Poly1305::new(&encryptor.dk.encrypt());
             let tag = cipher
-                .encrypt_in_place_detached(&encryptor.header.nonce(), AAD, body)
+                .encrypt_in_place_detached(&encryptor.header.nonce(), AAD, payload)
                 .expect("data too long");
             buf[(self.out_len() - TAG_SIZE)..].copy_from_slice(&tag);
         };
@@ -209,7 +209,7 @@ impl<'m> Encryptor<'m> {
     /// # Examples
     ///
     /// ```
-    /// # use abcrypt::{argon2::Params, Encryptor};
+    /// # use abcrypt::{Encryptor, argon2::Params};
     /// #
     /// let data = b"Hello, world!\n";
     /// let passphrase = "passphrase";
@@ -233,7 +233,7 @@ impl<'m> Encryptor<'m> {
     /// # Examples
     ///
     /// ```
-    /// # use abcrypt::{argon2::Params, Encryptor};
+    /// # use abcrypt::{Encryptor, argon2::Params};
     /// #
     /// let data = b"Hello, world!\n";
     /// let passphrase = "passphrase";

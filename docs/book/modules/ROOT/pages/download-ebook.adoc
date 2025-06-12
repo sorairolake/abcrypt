@@ -1,0 +1,9 @@
+// SPDX-FileCopyrightText: 2025 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= Download Ebook
+
+.The format specification is also available in the following ebook formats
+* xref:attachment$FORMAT.pdf[PDF]
+* xref:attachment$FORMAT.epub[EPUB 3]

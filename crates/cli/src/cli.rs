@@ -15,95 +15,50 @@ use abcrypt::argon2::{Algorithm, Params, Version};
 use anyhow::anyhow;
 use byte_unit::{Byte, Unit};
 use clap::{
+    ArgGroup, Args, CommandFactory, Parser, Subcommand, ValueEnum, ValueHint,
     builder::{TypedValueParser, ValueParserFactory},
-    value_parser, ArgGroup, Args, CommandFactory, Parser, Subcommand, ValueEnum, ValueHint,
+    value_parser,
 };
 use clap_complete::Generator;
-
-const LONG_VERSION: &str = concat!(
-    env!("CARGO_PKG_VERSION"),
-    '\n',
-    "Copyright (C) 2022 Shun Sakai\n",
-    '\n',
-    "This program is distributed under the terms of the GNU General Public License\n",
-    "v3.0 or later.\n",
-    '\n',
-    "This is free software: you are free to change and redistribute it. There is NO\n",
-    "WARRANTY, to the extent permitted by law.\n",
-    '\n',
-    "Report bugs to <https://github.com/sorairolake/abcrypt/issues>."
-);
-
-const AFTER_LONG_HELP: &str = "See `abcrypt(1)` for more details.";
-
-const ENCRYPT_AFTER_LONG_HELP: &str = concat!(
-    "By default, the result will be write to standard output.\n",
-    '\n',
-    "See `abcrypt-encrypt(1)` for more details."
-);
-
-const DECRYPT_AFTER_LONG_HELP: &str = concat!(
-    "By default, the result will be write to standard output.\n",
-    '\n',
-    "See `abcrypt-decrypt(1)` for more details."
-);
-
-const ARGON2_AFTER_LONG_HELP: &str = "See `abcrypt-argon2(1)` for more details.";
-
-const INFORMATION_AFTER_LONG_HELP: &str = "See `abcrypt-information(1)` for more details.";
 
 #[derive(Debug, Parser)]
 #[command(
     name("abcrypt"),
     version,
-    long_version(LONG_VERSION),
     about,
     max_term_width(100),
     propagate_version(true),
-    after_long_help(AFTER_LONG_HELP),
-    arg_required_else_help(true),
+    infer_subcommands(true),
+    arg_required_else_help(false),
     args_conflicts_with_subcommands(true)
 )]
 pub struct Opt {
-    /// Generate shell completion.
-    ///
-    /// The completion is output to standard output.
-    #[arg(long, value_enum, value_name("SHELL"))]
-    pub generate_completion: Option<Shell>,
-
     #[command(subcommand)]
-    pub command: Option<Command>,
+    pub command: Command,
 }
 
 #[derive(Debug, Subcommand)]
 pub enum Command {
     /// Encrypt files.
-    #[command(
-        after_long_help(ENCRYPT_AFTER_LONG_HELP),
-        visible_alias("enc"),
-        visible_alias("e")
-    )]
+    ///
+    /// By default, the result will be write to standard output.
     Encrypt(Encrypt),
 
     /// Decrypt files.
-    #[command(
-        after_long_help(DECRYPT_AFTER_LONG_HELP),
-        visible_alias("dec"),
-        visible_alias("d")
-    )]
+    ///
+    /// By default, the result will be write to standard output.
     Decrypt(Decrypt),
 
     /// Provides information about the Argon2 context.
-    #[command(after_long_help(ARGON2_AFTER_LONG_HELP))]
     Argon2(Argon2),
 
     /// Provides information about the encryption parameters.
-    #[command(
-        after_long_help(INFORMATION_AFTER_LONG_HELP),
-        visible_alias("info"),
-        visible_alias("i")
-    )]
     Information(Information),
+
+    /// Generate shell completion.
+    ///
+    /// The completion is output to standard output.
+    Completion(Completion),
 }
 
 #[derive(Args, Debug)]
@@ -266,14 +221,21 @@ pub struct Information {
 
 impl Opt {
     /// Generates shell completion and print it.
-    pub fn print_completion(gen: impl Generator) {
+    pub fn print_completion(generator: impl Generator) {
         clap_complete::generate(
-            gen,
+            generator,
             &mut Self::command(),
             Self::command().get_name(),
             &mut io::stdout(),
         );
     }
+}
+
+#[derive(Args, Debug)]
+pub struct Completion {
+    /// Shell to generate completion for.
+    #[arg(value_enum, ignore_case(true))]
+    pub shell: Shell,
 }
 
 #[derive(Clone, Debug, ValueEnum)]
@@ -709,19 +671,25 @@ mod tests {
             }
         );
 
-        assert!(Opt::try_parse_from(["test", "-tn"])
-            .unwrap_err()
-            .to_string()
-            .contains("invalid digit found in string"));
+        assert!(
+            Opt::try_parse_from(["test", "-tn"])
+                .unwrap_err()
+                .to_string()
+                .contains("invalid digit found in string")
+        );
 
-        assert!(Opt::try_parse_from(["test", "-t0"])
-            .unwrap_err()
-            .to_string()
-            .contains("0 is not in 1..=4294967295"));
-        assert!(Opt::try_parse_from(["test", "-t4294967296"])
-            .unwrap_err()
-            .to_string()
-            .contains("4294967296 is not in 1..=4294967295"));
+        assert!(
+            Opt::try_parse_from(["test", "-t0"])
+                .unwrap_err()
+                .to_string()
+                .contains("0 is not in 1..=4294967295")
+        );
+        assert!(
+            Opt::try_parse_from(["test", "-t4294967296"])
+                .unwrap_err()
+                .to_string()
+                .contains("4294967296 is not in 1..=4294967295")
+        );
     }
 
     #[test]
@@ -749,34 +717,40 @@ mod tests {
             TimeCost::MAX
         );
 
-        assert!(TypedValueParser::parse_ref(
-            &TimeCostValueParser,
-            &clap::Command::new("test"),
-            None,
-            OsStr::new("n")
-        )
-        .unwrap_err()
-        .to_string()
-        .contains("invalid digit found in string"));
+        assert!(
+            TypedValueParser::parse_ref(
+                &TimeCostValueParser,
+                &clap::Command::new("test"),
+                None,
+                OsStr::new("n")
+            )
+            .unwrap_err()
+            .to_string()
+            .contains("invalid digit found in string")
+        );
 
-        assert!(TypedValueParser::parse_ref(
-            &TimeCostValueParser,
-            &clap::Command::new("test"),
-            None,
-            OsStr::new("0")
-        )
-        .unwrap_err()
-        .to_string()
-        .contains("0 is not in 1..=4294967295"));
-        assert!(TypedValueParser::parse_ref(
-            &TimeCostValueParser,
-            &clap::Command::new("test"),
-            None,
-            OsStr::new("4294967296")
-        )
-        .unwrap_err()
-        .to_string()
-        .contains("4294967296 is not in 1..=4294967295"));
+        assert!(
+            TypedValueParser::parse_ref(
+                &TimeCostValueParser,
+                &clap::Command::new("test"),
+                None,
+                OsStr::new("0")
+            )
+            .unwrap_err()
+            .to_string()
+            .contains("0 is not in 1..=4294967295")
+        );
+        assert!(
+            TypedValueParser::parse_ref(
+                &TimeCostValueParser,
+                &clap::Command::new("test"),
+                None,
+                OsStr::new("4294967296")
+            )
+            .unwrap_err()
+            .to_string()
+            .contains("4294967296 is not in 1..=4294967295")
+        );
     }
 
     impl Parallelism {
@@ -834,19 +808,25 @@ mod tests {
             }
         );
 
-        assert!(Opt::try_parse_from(["test", "-pn"])
-            .unwrap_err()
-            .to_string()
-            .contains("invalid digit found in string"));
+        assert!(
+            Opt::try_parse_from(["test", "-pn"])
+                .unwrap_err()
+                .to_string()
+                .contains("invalid digit found in string")
+        );
 
-        assert!(Opt::try_parse_from(["test", "-p0"])
-            .unwrap_err()
-            .to_string()
-            .contains("0 is not in 1..=16777215"));
-        assert!(Opt::try_parse_from(["test", "-p16777216"])
-            .unwrap_err()
-            .to_string()
-            .contains("16777216 is not in 1..=16777215"));
+        assert!(
+            Opt::try_parse_from(["test", "-p0"])
+                .unwrap_err()
+                .to_string()
+                .contains("0 is not in 1..=16777215")
+        );
+        assert!(
+            Opt::try_parse_from(["test", "-p16777216"])
+                .unwrap_err()
+                .to_string()
+                .contains("16777216 is not in 1..=16777215")
+        );
     }
 
     #[test]
@@ -872,33 +852,39 @@ mod tests {
             Parallelism::MAX
         );
 
-        assert!(TypedValueParser::parse_ref(
-            &ParallelismValueParser,
-            &clap::Command::new("test"),
-            None,
-            OsStr::new("n")
-        )
-        .unwrap_err()
-        .to_string()
-        .contains("invalid digit found in string"));
+        assert!(
+            TypedValueParser::parse_ref(
+                &ParallelismValueParser,
+                &clap::Command::new("test"),
+                None,
+                OsStr::new("n")
+            )
+            .unwrap_err()
+            .to_string()
+            .contains("invalid digit found in string")
+        );
 
-        assert!(TypedValueParser::parse_ref(
-            &ParallelismValueParser,
-            &clap::Command::new("test"),
-            None,
-            OsStr::new("0")
-        )
-        .unwrap_err()
-        .to_string()
-        .contains("0 is not in 1..=16777215"));
-        assert!(TypedValueParser::parse_ref(
-            &ParallelismValueParser,
-            &clap::Command::new("test"),
-            None,
-            OsStr::new("16777216")
-        )
-        .unwrap_err()
-        .to_string()
-        .contains("16777216 is not in 1..=16777215"));
+        assert!(
+            TypedValueParser::parse_ref(
+                &ParallelismValueParser,
+                &clap::Command::new("test"),
+                None,
+                OsStr::new("0")
+            )
+            .unwrap_err()
+            .to_string()
+            .contains("0 is not in 1..=16777215")
+        );
+        assert!(
+            TypedValueParser::parse_ref(
+                &ParallelismValueParser,
+                &clap::Command::new("test"),
+                None,
+                OsStr::new("16777216")
+            )
+            .unwrap_err()
+            .to_string()
+            .contains("16777216 is not in 1..=16777215")
+        );
     }
 }

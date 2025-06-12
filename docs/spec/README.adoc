@@ -1,0 +1,25 @@
+// SPDX-FileCopyrightText: 2025 Shun Sakai
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
+= How to Convert
+:asciidoc-url: https://asciidoc.org/
+:asciidoctor-url: https://asciidoctor.org/
+
+link:FORMAT.adoc[] is written in {asciidoc-url}[AsciiDoc]. This can be
+converted to other formats using {asciidoctor-url}[Asciidoctor].
+
+.Convert AsciiDoc to HTML
+[source,sh]
+----
+asciidoctor FORMAT.adoc
+----
+
+.Convert AsciiDoc to PDF
+[source,sh]
+----
+asciidoctor-pdf FORMAT.adoc
+----
+
+For details about the available converters, see
+https://docs.asciidoctor.org/asciidoctor/latest/convert/available/.

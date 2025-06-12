@@ -1,13 +1,13 @@
 // SPDX-FileCopyrightText: 2022 Shun Sakai
 //
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: CC-BY-4.0
 
 = How to Build
 
 == Prerequisites
 
 .To build *abcrypt*, you will need the following dependencies
-* https://doc.rust-lang.org/stable/cargo/[Cargo] (v1.74.0 or later)
+* https://doc.rust-lang.org/stable/cargo/[Cargo] (v1.85.0 or later)
 
 .To build man pages, you will need the following additional dependencies
 * https://asciidoctor.org/[Asciidoctor]

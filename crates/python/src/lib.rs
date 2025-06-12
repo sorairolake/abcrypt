@@ -18,8 +18,8 @@ use std::borrow::Cow;
 
 use abcrypt::argon2::{self, Algorithm, Version};
 use pyo3::{
-    exceptions::PyValueError, prelude::PyModuleMethods, pyclass, pyfunction, pymethods, pymodule,
-    types::PyModule, wrap_pyfunction, Bound, PyResult,
+    Bound, PyResult, exceptions::PyValueError, prelude::PyModuleMethods, pyclass, pyfunction,
+    pymethods, pymodule, types::PyModule, wrap_pyfunction,
 };
 
 use crate::error::Error;

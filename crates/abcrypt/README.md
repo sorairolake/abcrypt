@@ -1,7 +1,7 @@
 <!--
 SPDX-FileCopyrightText: 2022 Shun Sakai
 
-SPDX-License-Identifier: Apache-2.0 OR MIT
+SPDX-License-Identifier: CC-BY-4.0
 -->
 
 # abcrypt
@@ -14,15 +14,14 @@ SPDX-License-Identifier: Apache-2.0 OR MIT
 
 **abcrypt** is an implementation of the [abcrypt encrypted data format].
 
-This crate supports the abcrypt version 1 file format.
+This crate supports version 1 of the abcrypt format.
 
 ## Usage
 
-Add this to your `Cargo.toml`:
+Run the following command in your project directory:
 
-```toml
-[dependencies]
-abcrypt = "0.4.0"
+```sh
+cargo add abcrypt
 ```
 
 ### Crate features
@@ -32,21 +31,22 @@ abcrypt = "0.4.0"
 Enables features that require an allocator. This is enabled by default (implied
 by `std`).
 
+#### `serde`
+
+Enables serialization support for `Params`.
+
 #### `std`
 
 Enables features that depend on the standard library. This is enabled by
 default.
 
-#### `serde`
-
-Enables serialization support for `Params`.
-
 ### `no_std` support
 
 This supports `no_std` mode. Disables the `default` feature to enable this.
 
-Note that the memory blocks used by Argon2 when calculating a derived key is
-limited to 256 KiB when the `alloc` feature is disabled.
+> [!IMPORTANT]
+> Note that the memory blocks used by Argon2 when calculating a derived key is
+> limited to 256 KiB when the `alloc` feature is disabled.
 
 ### Documentation
 
@@ -54,17 +54,12 @@ See the [documentation][docs-url] for more details.
 
 ## Minimum supported Rust version
 
-The minimum supported Rust version (MSRV) of this library is v1.74.0.
+The minimum supported Rust version (MSRV) of this library is v1.85.0.
 
 ## Source code
 
 The upstream repository is available at
 <https://github.com/sorairolake/abcrypt.git>.
-
-The source code is also available at:
-
-- <https://gitlab.com/sorairolake/abcrypt.git>
-- <https://codeberg.org/sorairolake/abcrypt.git>
 
 ## Changelog
 
@@ -85,7 +80,7 @@ Copyright (C) 2022 Shun Sakai (see [AUTHORS.adoc])
 This library is distributed under the terms of either the _Apache License 2.0_
 or the _MIT License_.
 
-This project is compliant with version 3.2 of the [_REUSE Specification_]. See
+This project is compliant with version 3.3 of the [_REUSE Specification_]. See
 copyright notices of individual files for more details on copyright and
 licensing information.
 
@@ -101,4 +96,4 @@ licensing information.
 [CHANGELOG.adoc]: CHANGELOG.adoc
 [CONTRIBUTING.adoc]: ../../CONTRIBUTING.adoc
 [AUTHORS.adoc]: ../../AUTHORS.adoc
-[_REUSE Specification_]: https://reuse.software/spec/
+[_REUSE Specification_]: https://reuse.software/spec-3.3/

@@ -1,7 +1,7 @@
 <!--
 SPDX-FileCopyrightText: 2022 Shun Sakai
 
-SPDX-License-Identifier: GPL-3.0-or-later
+SPDX-License-Identifier: CC-BY-4.0
 -->
 
 # abcrypt
@@ -13,6 +13,8 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 **abcrypt** ([`abcrypt-cli`][version-url]) is a command-line utility for
 encrypt and decrypt files using the [abcrypt encrypted data format].
+
+![Demo animation](assets/demo.gif)
 
 ## Installation
 
@@ -81,7 +83,7 @@ Output:
 
 ### Generate shell completion
 
-`--generate-completion` option generates shell completions to standard output.
+`completion` subcommand generates shell completions to standard output.
 
 The following shells are supported:
 
@@ -95,7 +97,7 @@ The following shells are supported:
 Example:
 
 ```sh
-abcrypt --generate-completion bash > abcrypt.bash
+abcrypt completion bash > abcrypt.bash
 ```
 
 ## Command-line options
@@ -107,17 +109,12 @@ Please see the following:
 - [`abcrypt-decrypt(1)`]
 - [`abcrypt-argon2(1)`]
 - [`abcrypt-information(1)`]
-- [`abcrypt-help(1)`]
+- [`abcrypt-completion(1)`]
 
 ## Source code
 
 The upstream repository is available at
 <https://github.com/sorairolake/abcrypt.git>.
-
-The source code is also available at:
-
-- <https://gitlab.com/sorairolake/abcrypt.git>
-- <https://codeberg.org/sorairolake/abcrypt.git>
 
 ## Changelog
 
@@ -140,7 +137,7 @@ Copyright (C) 2022 Shun Sakai (see [AUTHORS.adoc])
 2.  Some files are distributed under the terms of the _Creative Commons
     Attribution 4.0 International Public License_.
 
-This project is compliant with version 3.2 of the [_REUSE Specification_]. See
+This project is compliant with version 3.3 of the [_REUSE Specification_]. See
 copyright notices of individual files for more details on copyright and
 licensing information.
 
@@ -154,13 +151,13 @@ licensing information.
 [environment variables]: https://doc.rust-lang.org/cargo/reference/environment-variables.html#configuration-environment-variables
 [release page]: https://github.com/sorairolake/abcrypt/releases
 [BUILD.adoc]: BUILD.adoc
-[`abcrypt(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt.1.html
-[`abcrypt-encrypt(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt-encrypt.1.html
-[`abcrypt-decrypt(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt-decrypt.1.html
-[`abcrypt-argon2(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt-argon2.1.html
-[`abcrypt-information(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt-information.1.html
-[`abcrypt-help(1)`]: https://sorairolake.github.io/abcrypt/book/cli/man/man1/abcrypt-help.1.html
+[`abcrypt(1)`]: ../../docs/man/man1/abcrypt.1.adoc
+[`abcrypt-encrypt(1)`]: ../../docs/man/man1/abcrypt-encrypt.1.adoc
+[`abcrypt-decrypt(1)`]: ../../docs/man/man1/abcrypt-decrypt.1.adoc
+[`abcrypt-argon2(1)`]: ../../docs/man/man1/abcrypt-argon2.1.adoc
+[`abcrypt-information(1)`]: ../../docs/man/man1/abcrypt-information.1.adoc
+[`abcrypt-completion(1)`]: ../../docs/man/man1/abcrypt-completion.1.adoc
 [CHANGELOG.adoc]: CHANGELOG.adoc
 [CONTRIBUTING.adoc]: ../../CONTRIBUTING.adoc
 [AUTHORS.adoc]: ../../AUTHORS.adoc
-[_REUSE Specification_]: https://reuse.software/spec/
+[_REUSE Specification_]: https://reuse.software/spec-3.3/

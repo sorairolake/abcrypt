@@ -3,8 +3,8 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
 use abcrypt::{
-    argon2::{Algorithm, Version},
     Argon2,
+    argon2::{Algorithm, Version},
 };
 
 // Generated using `abcrypt` crate version 0.4.0.

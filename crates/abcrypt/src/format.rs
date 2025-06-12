@@ -8,15 +8,15 @@ use core::mem;
 
 use argon2::Algorithm;
 use blake2::{
-    digest::{self, typenum::Unsigned, Mac, Output, OutputSizeUser},
     Blake2bMac512,
+    digest::{self, Mac, Output, OutputSizeUser, typenum::Unsigned},
 };
 use chacha20poly1305::{
     AeadCore, Key as XChaCha20Poly1305Key, KeySizeUser, XChaCha20Poly1305, XNonce,
 };
-use rand::{rngs::StdRng, Rng, SeedableRng};
+use rand::{Rng, SeedableRng, rngs::StdRng};
 
-use crate::{argon2_context, Error, Params, Result};
+use crate::{Error, Params, Result, argon2_context};
 
 /// A type alias for magic number of the abcrypt encrypted data format.
 type MagicNumber = [u8; 7];
@@ -31,9 +31,35 @@ type Blake2bMac512Output = Output<Blake2bMac512>;
 type Blake2bMac512Key = digest::Key<Blake2bMac512>;
 
 /// The number of bytes of the header.
+///
+/// # Examples
+///
+/// ```
+/// assert_eq!(abcrypt::HEADER_SIZE, 148);
+///
+/// let ciphertext = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
+/// let plaintext = include_bytes!("../tests/data/data.txt");
+/// assert_eq!(
+///     abcrypt::HEADER_SIZE,
+///     ciphertext.len() - (plaintext.len() + abcrypt::TAG_SIZE)
+/// );
+/// ```
 pub const HEADER_SIZE: usize = Header::SIZE;
 
 /// The number of bytes of the MAC (authentication tag) of the ciphertext.
+///
+/// # Examples
+///
+/// ```
+/// assert_eq!(abcrypt::TAG_SIZE, 16);
+///
+/// let ciphertext = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
+/// let plaintext = include_bytes!("../tests/data/data.txt");
+/// assert_eq!(
+///     abcrypt::TAG_SIZE,
+///     ciphertext.len() - (abcrypt::HEADER_SIZE + plaintext.len())
+/// );
+/// ```
 pub const TAG_SIZE: usize = <XChaCha20Poly1305 as AeadCore>::TagSize::USIZE;
 
 /// Version of the abcrypt encrypted data format.
@@ -107,7 +133,7 @@ impl Header {
         let argon2_type = argon2_type.into();
         let argon2_version = argon2_version.into();
         let params = params.into();
-        let salt = StdRng::from_entropy().gen();
+        let salt = StdRng::from_entropy().r#gen();
         let nonce = XChaCha20Poly1305::generate_nonce(StdRng::from_entropy());
         let mac = Blake2bMac512Output::default();
         Self {

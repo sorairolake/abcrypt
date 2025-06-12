@@ -4,8 +4,8 @@
 
 = abcrypt-information(1)
 // Specify in UTC.
-:docdate: 2025-01-08
-:revnumber: 0.4.0
+:docdate: 2025-06-07
+:revnumber: 0.5.0
 :doctype: manpage
 :mansource: abcrypt {revnumber}
 :manmanual: General Commands Manual
@@ -46,8 +46,6 @@ The encryption parameters outputs either a human-readable string or JSON.
 The encryption parameters represents the same thing as the Argon2 parameters as
 defined in {rfc9106}[RFC 9106].
 
-*abcrypt info* and *abcrypt i* are aliases for this command.
-
 == POSITIONAL ARGUMENTS
 
 _FILE_::
@@ -68,8 +66,7 @@ _FILE_::
 
 *-V*, *--version*::
 
-  Print version number. The long flag (*--version*) will also print the
-  copyright notice, the license notice and where to report bugs.
+  Print version number.
 
 ifndef::site-gen-antora[include::{includedir}/section-exit-status.adoc[]]
 ifdef::site-gen-antora[include::partial$man/man1/include/section-exit-status.adoc[]]
@@ -95,5 +92,5 @@ ifdef::site-gen-antora[include::partial$man/man1/include/section-copyright.adoc[
 
 == SEE ALSO
 
-*abcrypt*(1), *abcrypt-argon2*(1), *abcrypt-decrypt*(1), *abcrypt-encrypt*(1),
-*abcrypt-help*(1)
+*abcrypt*(1), *abcrypt-argon2*(1), *abcrypt-completion*(1),
+*abcrypt-decrypt*(1), *abcrypt-encrypt*(1)

@@ -13,7 +13,7 @@ use std::{
 use abcrypt::argon2::{Algorithm, Params, Version};
 use anyhow::Context;
 use clap::{Parser, ValueEnum};
-use dialoguer::{theme::ColorfulTheme, Password};
+use dialoguer::{Password, theme::ColorfulTheme};
 
 #[derive(Debug, Parser)]
 #[command(version, about)]

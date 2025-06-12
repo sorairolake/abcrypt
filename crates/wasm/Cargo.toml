@@ -18,18 +18,16 @@ keywords = ["abcrypt", "crypto"]
 categories = ["cryptography", "wasm"]
 include = ["/LICENSES", "/README.md", "/src"]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [lib]
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 abcrypt = { version = "0.4.0", path = "../abcrypt" }
 getrandom = { version = "0.2.15", features = ["js"] }
-wasm-bindgen = "0.2.99"
+wasm-bindgen = "0.2.100"
 
 [dev-dependencies]
-wasm-bindgen-test = "0.3.49"
+wasm-bindgen-test = "0.3.50"
 
 [lints]
 workspace = true

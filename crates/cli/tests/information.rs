@@ -59,17 +59,19 @@ fn basic_information() {
 }
 
 #[test]
-fn validate_aliases_for_information_command() {
+fn infer_subcommand_name_for_information_command() {
     utils::command::command()
         .arg("info")
         .arg("-V")
         .assert()
-        .success();
+        .success()
+        .stdout(predicate::str::contains("abcrypt-information"));
     utils::command::command()
         .arg("i")
         .arg("-V")
         .assert()
-        .success();
+        .success()
+        .stdout(predicate::str::contains("abcrypt-information"));
 }
 
 #[test]
@@ -136,28 +138,4 @@ fn information_if_input_file_is_invalid() {
         .stderr(predicate::str::contains(
             "encrypted data is shorter than 164 bytes",
         ));
-}
-
-#[test]
-fn long_version_for_information_command() {
-    utils::command::command()
-        .arg("information")
-        .arg("--version")
-        .assert()
-        .success()
-        .stdout(predicate::str::contains(include_str!(
-            "assets/long-version.md"
-        )));
-}
-
-#[test]
-fn after_long_help_for_information_command() {
-    utils::command::command()
-        .arg("information")
-        .arg("--help")
-        .assert()
-        .success()
-        .stdout(predicate::str::contains(include_str!(
-            "assets/information-after-long-help.md"
-        )));
 }

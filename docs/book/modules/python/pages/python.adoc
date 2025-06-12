@@ -6,5 +6,5 @@
 
 [source,py]
 ----
-include::example$abcrypt_py.pyi[]
+include::example$abcrypt_py.pyi[lines=5..]
 ----

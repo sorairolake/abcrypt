@@ -30,3 +30,8 @@ venv.bak/
 
 # Generated files by Antora
 build/
+docs/spec/FORMAT.epub
+docs/spec/FORMAT.pdf
+
+# Files generated when generating demo animation
+crates/cli/assets/*.cast

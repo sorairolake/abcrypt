@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: CC-BY-4.0
 
 = License
-:reuse-spec-url: https://reuse.software/spec/
+:reuse-spec-url: https://reuse.software/spec-3.3/
 
 Copyright (C) 2022 Shun Sakai
 
@@ -11,10 +11,12 @@ Copyright (C) 2022 Shun Sakai
   the _Apache License 2.0_ or the _MIT License_.
 . Each file related to the command-line utility and some other files are
   distributed under the terms of the _GNU General Public License v3.0 or later_.
+. The format specification is distributed under the terms of the _CC0 1.0
+  Universal_.
 . Some documents are distributed under the terms of the _Creative Commons
   Attribution 4.0 International Public License_.
 
-This project is compliant with version 3.2 of the
+This project is compliant with version 3.3 of the
 {reuse-spec-url}[_REUSE Specification_].
 
 == Apache License 2.0
@@ -33,6 +35,12 @@ include::example$LICENSES/MIT.txt[]
 
 ....
 include::example$LICENSES/GPL-3.0-or-later.txt[]
+....
+
+== CC0 1.0 Universal
+
+....
+include::example$LICENSES/CC0-1.0.txt[]
 ....
 
 == Creative Commons Attribution 4.0 International Public License

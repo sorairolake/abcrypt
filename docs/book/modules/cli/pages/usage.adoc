@@ -49,7 +49,7 @@ abcrypt information -j data.txt.abcrypt | jq
 
 == Generate shell completion
 
-`--generate-completion` option generates shell completions to standard output.
+`completion` subcommand generates shell completions to standard output.
 
 .The following shells are supported
 * `bash`
@@ -62,5 +62,5 @@ abcrypt information -j data.txt.abcrypt | jq
 .Example
 [source,sh]
 ----
-abcrypt --generate-completion bash > abcrypt.bash
+abcrypt completion bash > abcrypt.bash
 ----

@@ -6,13 +6,13 @@
 current_version = "0.4.0"
 
 [[tool.bumpversion.files]]
-filename = "crates/abcrypt/README.md"
+glob = "docs/man/man3/*.3.adoc"
 
 [[tool.bumpversion.files]]
-filename = "crates/abcrypt/src/lib.rs"
+filename = "examples/meson.build"
 
 [[tool.bumpversion.files]]
-filename = "docs/book/modules/lib/pages/usage.adoc"
+filename = "examples/version.hpp"
 
 [[tool.bumpversion.files]]
-filename = "docs/spec/FORMAT.adoc"
+filename = "src/lib.rs"

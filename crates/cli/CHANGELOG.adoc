@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2022 Shun Sakai
 //
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: CC-BY-4.0
 
 = Changelog
 :toc: preamble
@@ -13,6 +13,26 @@ All notable changes to this project will be documented in this file.
 
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
+
+== {compare-url}/abcrypt-cli-v0.4.0\...abcrypt-cli-v0.5.0[0.5.0] - 2025-06-12
+
+=== Changed
+
+* Bump MSRV to 1.85.0 ({pull-request-url}/677[#677])
+* Restore demo animation ({pull-request-url}/702[#702])
+* Change the license for documents and assets to CC BY 4.0
+  ({pull-request-url}/718[#718])
+* Replace `--generate-completion` with `completion` subcommand
+  ({pull-request-url}/727[#727])
+* Remove help text for after auto-generated `--help`
+  ({pull-request-url}/732[#732])
+* Make the message for `--version` the same as the message for `-V`
+  ({pull-request-url}/732[#732])
+* Allow partial matches of subcommand names ({pull-request-url}/743[#743])
+
+=== Removed
+
+* Remove `abcrypt-help(1)`
 
 == {compare-url}/abcrypt-cli-v0.3.3\...abcrypt-cli-v0.4.0[0.4.0] - 2025-01-09
 

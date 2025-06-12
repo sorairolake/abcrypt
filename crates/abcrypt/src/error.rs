@@ -123,6 +123,8 @@ pub type Result<T> = result::Result<T, Error>;
 
 #[cfg(test)]
 mod tests {
+    use core::any;
+
     use super::*;
 
     #[test]
@@ -677,22 +679,30 @@ mod tests {
         assert!(Error::UnknownVersion(u8::MAX).source().is_none());
         assert!(Error::InvalidArgon2Type(u32::MAX).source().is_none());
         assert!(Error::InvalidArgon2Version(u32::MAX).source().is_none());
-        assert!(Error::InvalidArgon2Params(argon2::Error::AdTooLong)
-            .source()
-            .unwrap()
-            .is::<argon2::Error>());
-        assert!(Error::InvalidArgon2Context(argon2::Error::AdTooLong)
-            .source()
-            .unwrap()
-            .is::<argon2::Error>());
-        assert!(Error::InvalidHeaderMac(MacError)
-            .source()
-            .unwrap()
-            .is::<MacError>());
-        assert!(Error::InvalidMac(chacha20poly1305::Error)
-            .source()
-            .unwrap()
-            .is::<chacha20poly1305::Error>());
+        assert!(
+            Error::InvalidArgon2Params(argon2::Error::AdTooLong)
+                .source()
+                .unwrap()
+                .is::<argon2::Error>()
+        );
+        assert!(
+            Error::InvalidArgon2Context(argon2::Error::AdTooLong)
+                .source()
+                .unwrap()
+                .is::<argon2::Error>()
+        );
+        assert!(
+            Error::InvalidHeaderMac(MacError)
+                .source()
+                .unwrap()
+                .is::<MacError>()
+        );
+        assert!(
+            Error::InvalidMac(chacha20poly1305::Error)
+                .source()
+                .unwrap()
+                .is::<chacha20poly1305::Error>()
+        );
     }
 
     #[test]
@@ -710,8 +720,6 @@ mod tests {
 
     #[test]
     fn result_type() {
-        use core::any;
-
         assert_eq!(
             any::type_name::<Result<()>>(),
             any::type_name::<result::Result<(), Error>>()
