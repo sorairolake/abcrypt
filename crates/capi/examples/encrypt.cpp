@@ -10,12 +10,13 @@
 #include <CLI/CLI.hpp>
 #include <cerrno>
 #include <cstdint>
+#include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <format>
 #include <fstream>
 #include <iostream>
 #include <iterator>
+#include <print>
 #include <string>
 #include <vector>
 
@@ -49,9 +50,8 @@ int main(int argc, char *argv[]) {
 
   std::ifstream input_file(input_filename);
   if (!input_file) {
-    std::clog << std::format("Error: could not open {}: {}", input_filename,
-                             std::strerror(errno))
-              << std::endl;
+    std::println(stderr, "Error: could not open {}: {}", input_filename,
+                 std::strerror(errno));
     return EXIT_FAILURE;
   }
   std::vector<std::uint8_t> plaintext(
@@ -67,14 +67,14 @@ int main(int argc, char *argv[]) {
   std::string passphrase;
   std::string confirm_passphrase;
   do {
-    std::cout << "Enter passphrase: " << std::flush;
+    std::print("Enter passphrase: ");
     std::cin >> passphrase;
-    std::endl(std::cout);
-    std::cout << "Confirm passphrase: " << std::flush;
+    std::println();
+    std::print("Confirm passphrase: ");
     std::cin >> confirm_passphrase;
-    std::endl(std::cout);
+    std::println();
     if (passphrase != confirm_passphrase) {
-      std::clog << "Passphrases mismatch, try again" << std::endl;
+      std::println(stderr, "Passphrases mismatch, try again");
     }
   } while (passphrase != confirm_passphrase);
   tcsetattr(STDIN_FILENO, TCSANOW, &old_term);
@@ -90,15 +90,14 @@ int main(int argc, char *argv[]) {
     std::vector<std::uint8_t> buf(abcrypt_error_message_out_len(error_code));
     abcrypt_error_message(error_code, buf.data(), buf.size());
     std::string error_message(buf.cbegin(), buf.cend());
-    std::clog << std::format("Error: {}", error_message) << std::endl;
+    std::println(stderr, "Error: {}", error_message);
     return EXIT_FAILURE;
   }
 
   std::ofstream output_file(output_filename);
   if (!output_file) {
-    std::clog << std::format("Error: could not open {}: {}", output_filename,
-                             std::strerror(errno))
-              << std::endl;
+    std::println(stderr, "Error: could not open {}: {}", output_filename,
+                 std::strerror(errno));
     return EXIT_FAILURE;
   }
   std::copy(ciphertext.cbegin(), ciphertext.cend(),

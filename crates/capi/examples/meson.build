@@ -4,7 +4,7 @@
 
 project('abcrypt_capi_examples',
   'cpp',
-  default_options: ['warning_level=3', 'cpp_std=c++20'],
+  default_options: ['warning_level=3', 'cpp_std=c++23'],
   license: 'Apache-2.0 OR MIT',
   meson_version: '>=0.53.0',
   version: '0.4.0',
