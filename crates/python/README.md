@@ -36,13 +36,10 @@ The minimum supported Rust version (MSRV) of this library is v1.85.0.
 
 ## Development
 
-[maturin] is required for development of this library.
+[uv] is required for development of this library.
 
 ```sh
-python3 -m venv venv
-source venv/bin/activate
-maturin develop
-pip3 install abcrypt-py[test,dev]
+uv sync
 ```
 
 ## Source code
@@ -85,7 +82,7 @@ licensing information.
 [docs-url]: https://docs.rs/abcrypt-py
 [license-badge]: https://img.shields.io/crates/l/abcrypt-py?style=for-the-badge
 [`abcrypt`]: https://crates.io/crates/abcrypt
-[maturin]: https://www.maturin.rs/
+[uv]: https://docs.astral.sh/uv/
 [CHANGELOG.adoc]: https://github.com/sorairolake/abcrypt/blob/develop/crates/python/CHANGELOG.adoc
 [CONTRIBUTING.adoc]: https://github.com/sorairolake/abcrypt/blob/develop/CONTRIBUTING.adoc
 [AUTHORS.adoc]: https://github.com/sorairolake/abcrypt/blob/develop/AUTHORS.adoc
