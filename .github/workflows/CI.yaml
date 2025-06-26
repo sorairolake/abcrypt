@@ -381,7 +381,7 @@ jobs:
       - name: Setup Deno
         uses: denoland/setup-deno@v2.0.3
         with:
-          deno-version: v1.x
+          deno-version: v2.x
       - name: Install wasm-pack
         uses: jetli/wasm-pack-action@v0.4.0
         with:
