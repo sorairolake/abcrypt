@@ -389,10 +389,13 @@ jobs:
       - name: Cache build artifacts
         uses: Swatinem/rust-cache@v2.7.8
       - name: Check code formatted
-        run: deno fmt --check crates/wasm/examples/*.ts
+        run: deno fmt --check examples/*.ts
+        working-directory: crates/wasm
       - name: Check no lint warnings
-        run: deno lint crates/wasm/examples/*.ts
+        run: deno lint examples/*.ts
+        working-directory: crates/wasm
+      - name: Build a package
+        run: wasm-pack build -t deno crates/wasm
       - name: Type-check
-        run: |
-          wasm-pack build -t deno crates/wasm
-          deno check crates/wasm/examples/*.ts
+        run: deno check examples/*.ts
+        working-directory: crates/wasm

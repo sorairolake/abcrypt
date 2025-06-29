@@ -159,7 +159,6 @@ impl From<abcrypt::Params> for Params {
 /// Creates a new Argon2 parameters.
 #[must_use]
 #[unsafe(no_mangle)]
-#[inline]
 pub extern "C-unwind" fn abcrypt_params_new() -> Option<NonNull<Params>> {
     Params::new()
 }
@@ -170,7 +169,6 @@ pub extern "C-unwind" fn abcrypt_params_new() -> Option<NonNull<Params>> {
 ///
 /// This must not violate the safety conditions of `Box::from_raw`.
 #[unsafe(no_mangle)]
-#[inline]
 pub unsafe extern "C-unwind" fn abcrypt_params_free(params: Option<NonNull<Params>>) {
     unsafe {
         Params::free(params);
@@ -195,7 +193,6 @@ pub unsafe extern "C-unwind" fn abcrypt_params_free(params: Option<NonNull<Param
 /// safety conditions of `slice::from_raw_parts`.
 #[must_use]
 #[unsafe(no_mangle)]
-#[inline]
 pub unsafe extern "C-unwind" fn abcrypt_params_read(
     ciphertext: Option<NonNull<u8>>,
     ciphertext_len: usize,
@@ -209,7 +206,6 @@ pub unsafe extern "C-unwind" fn abcrypt_params_read(
 /// Returns `0` if `params` is null.
 #[must_use]
 #[unsafe(no_mangle)]
-#[inline]
 pub extern "C-unwind" fn abcrypt_params_memory_cost(params: Option<NonNull<Params>>) -> u32 {
     Params::memory_cost(params)
 }
@@ -219,7 +215,6 @@ pub extern "C-unwind" fn abcrypt_params_memory_cost(params: Option<NonNull<Param
 /// Returns `0` if `params` is null.
 #[must_use]
 #[unsafe(no_mangle)]
-#[inline]
 pub extern "C-unwind" fn abcrypt_params_time_cost(params: Option<NonNull<Params>>) -> u32 {
     Params::time_cost(params)
 }
@@ -229,7 +224,6 @@ pub extern "C-unwind" fn abcrypt_params_time_cost(params: Option<NonNull<Params>
 /// Returns `0` if `params` is null.
 #[must_use]
 #[unsafe(no_mangle)]
-#[inline]
 pub extern "C-unwind" fn abcrypt_params_parallelism(params: Option<NonNull<Params>>) -> u32 {
     Params::parallelism(params)
 }

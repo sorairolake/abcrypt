@@ -19,7 +19,6 @@ use wasm_bindgen::{JsError, prelude::wasm_bindgen};
 /// # Errors
 ///
 /// Returns an error if the Argon2 context is invalid.
-#[inline]
 #[wasm_bindgen]
 pub fn encrypt(plaintext: &[u8], passphrase: &[u8]) -> Result<Vec<u8>, JsError> {
     abcrypt::encrypt(plaintext, passphrase).map_err(JsError::from)
@@ -38,7 +37,6 @@ pub fn encrypt(plaintext: &[u8], passphrase: &[u8]) -> Result<Vec<u8>, JsError> 
 ///
 /// - The Argon2 parameters are invalid.
 /// - The Argon2 context is invalid.
-#[inline]
 #[wasm_bindgen(js_name = encryptWithParams)]
 pub fn encrypt_with_params(
     plaintext: &[u8],
@@ -63,7 +61,6 @@ pub fn encrypt_with_params(
 /// - The Argon2 version is invalid.
 /// - The Argon2 parameters are invalid.
 /// - The Argon2 context is invalid.
-#[inline]
 #[wasm_bindgen(js_name = encryptWithContext)]
 pub fn encrypt_with_context(
     plaintext: &[u8],
