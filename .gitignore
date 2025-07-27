@@ -28,6 +28,11 @@ __pycache__/
 venv/
 venv.bak/
 
+# Generated man pages
+*.1
+*.3
+*.5
+
 # Generated files by Antora
 build/
 docs/spec/FORMAT.epub

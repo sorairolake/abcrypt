@@ -122,6 +122,21 @@ python-lint-fix:
 python-type-check:
     uv run mypy .
 
+# Build man pages
+build-man: build-man1 build-man3 build-man5
+
+# Build man pages in section 1
+build-man1:
+    asciidoctor -b manpage docs/man/man1/*.1.adoc
+
+# Build man pages in section 3
+build-man3:
+    asciidoctor -b manpage docs/man/man3/*.3.adoc
+
+# Build `abcrypt(5)`
+build-man5:
+    asciidoctor -b manpage docs/man/man5/abcrypt.5.adoc
+
 # Run the linter for GitHub Actions workflow files
 lint-github-actions:
     actionlint -verbose
