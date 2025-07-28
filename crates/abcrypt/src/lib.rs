@@ -98,7 +98,7 @@
 //!
 //! [abcrypt encrypted data format]: https://sorairolake.github.io/abcrypt/book/format.html
 
-#![doc(html_root_url = "https://docs.rs/abcrypt/0.4.0/")]
+#![doc(html_root_url = "https://docs.rs/abcrypt/0.5.0/")]
 #![no_std]
 #![cfg_attr(docsrs, feature(doc_auto_cfg, doc_cfg))]
 // Lint levels of rustc.
