@@ -4,7 +4,7 @@
 
 [package]
 name = "abcrypt-py"
-version = "0.2.0"
+version = "0.3.0"
 authors.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -23,7 +23,7 @@ name = "abcrypt_py"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-abcrypt = { version = "0.4.0", path = "../abcrypt" }
+abcrypt = { version = "0.5.0", path = "../abcrypt" }
 pyo3 = "0.25.1"
 
 [lints]

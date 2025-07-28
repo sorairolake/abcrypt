@@ -4,7 +4,7 @@
 
 //! The `abcrypt-wasm` crate is the Wasm bindings for the `abcrypt` crate.
 
-#![doc(html_root_url = "https://docs.rs/abcrypt-wasm/0.4.0/")]
+#![doc(html_root_url = "https://docs.rs/abcrypt-wasm/0.5.0/")]
 // Lint levels of rustc.
 #![forbid(unsafe_code)]
 #![deny(missing_docs)]
