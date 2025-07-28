@@ -78,16 +78,19 @@ build-wasm-examples:
     wasm-pack build -t deno crates/wasm
 
 # Run `deno fmt`
+[working-directory("crates/wasm")]
 fmt-wasm-examples:
-    deno fmt crates/wasm/examples/*.ts
+    deno fmt examples/*.ts
 
 # Run `deno lint`
+[working-directory("crates/wasm")]
 lint-wasm-examples:
-    deno lint crates/wasm/examples/*.ts
+    deno lint examples/*.ts
 
 # Run `deno check`
+[working-directory("crates/wasm")]
 type-check-wasm-examples:
-    deno check crates/wasm/examples/*.ts
+    deno check examples/*.ts
 
 # Configure a development environment for the Python bindings
 [working-directory("crates/python")]
@@ -118,6 +121,21 @@ python-lint-fix:
 [working-directory("crates/python")]
 python-type-check:
     uv run mypy .
+
+# Build man pages
+build-man: build-man1 build-man3 build-man5
+
+# Build man pages in section 1
+build-man1:
+    asciidoctor -b manpage docs/man/man1/*.1.adoc
+
+# Build man pages in section 3
+build-man3:
+    asciidoctor -b manpage docs/man/man3/*.3.adoc
+
+# Build `abcrypt(5)`
+build-man5:
+    asciidoctor -b manpage docs/man/man5/abcrypt.5.adoc
 
 # Run the linter for GitHub Actions workflow files
 lint-github-actions:

@@ -10,13 +10,14 @@
 #include <CLI/CLI.hpp>
 #include <cerrno>
 #include <cstdint>
+#include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <format>
 #include <fstream>
 #include <iostream>
 #include <iterator>
 #include <optional>
+#include <print>
 #include <string>
 #include <vector>
 
@@ -35,9 +36,8 @@ int main(int argc, char *argv[]) {
 
   std::ifstream input_file(input_filename);
   if (!input_file) {
-    std::clog << std::format("Error: could not open {}: {}", input_filename,
-                             std::strerror(errno))
-              << std::endl;
+    std::println(stderr, "Error: could not open {}: {}", input_filename,
+                 std::strerror(errno));
     return EXIT_FAILURE;
   }
   std::vector<std::uint8_t> ciphertext(
@@ -51,9 +51,9 @@ int main(int argc, char *argv[]) {
   term.c_lflag &= ~ECHO;
   tcsetattr(STDIN_FILENO, TCSANOW, &term);
   std::string passphrase;
-  std::cout << "Enter passphrase: " << std::flush;
+  std::print("Enter passphrase: ");
   std::cin >> passphrase;
-  std::endl(std::cout);
+  std::println();
   tcsetattr(STDIN_FILENO, TCSANOW, &old_term);
 
   std::vector<std::uint8_t> plaintext(ciphertext.size() -
@@ -68,21 +68,17 @@ int main(int argc, char *argv[]) {
     std::string error_message(buf.cbegin(), buf.cend());
     switch (error_code) {
       case ABCRYPT_ERROR_CODE_INVALID_HEADER_MAC:
-        std::clog << std::format("Error: passphrase is incorrect: {}",
-                                 error_message)
-                  << std::endl;
+        std::println(stderr, "Error: passphrase is incorrect: {}",
+                     error_message);
         break;
       case ABCRYPT_ERROR_CODE_INVALID_MAC:
-        std::clog << std::format("Error: the encrypted data is corrupted: {}",
-                                 error_message)
-                  << std::endl;
+        std::println(stderr, "Error: the encrypted data is corrupted: {}",
+                     error_message);
         break;
       default:
-        std::clog
-            << std::format(
-                   "Error: the header in the encrypted data is invalid: {}",
-                   error_message)
-            << std::endl;
+        std::println(stderr,
+                     "Error: the header in the encrypted data is invalid: {}",
+                     error_message);
         break;
     }
     return EXIT_FAILURE;
@@ -92,9 +88,8 @@ int main(int argc, char *argv[]) {
     auto ofn = output_filename.value();
     std::ofstream output_file(ofn);
     if (!output_file) {
-      std::clog << std::format("Error: could not open {}: {}", ofn,
-                               std::strerror(errno))
-                << std::endl;
+      std::println(stderr, "Error: could not open {}: {}", ofn,
+                   std::strerror(errno));
       return EXIT_FAILURE;
     }
     std::copy(plaintext.cbegin(), plaintext.cend(),

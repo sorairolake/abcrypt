@@ -13,6 +13,9 @@ on:
   schedule:
     - cron: "0 0 * * 0"
 
+env:
+  CXX: "g++-14"
+
 jobs:
   check:
     name: Check
@@ -49,7 +52,7 @@ jobs:
           toolchain: ${{ matrix.toolchain }}
           targets: ${{ matrix.target }}
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.8
+        uses: Swatinem/rust-cache@v2.8.0
         with:
           key: ${{ matrix.target }}
       - name: Check packages
@@ -103,7 +106,7 @@ jobs:
           toolchain: ${{ matrix.toolchain }}
           targets: ${{ matrix.target }}
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.8
+        uses: Swatinem/rust-cache@v2.8.0
         with:
           key: ${{ matrix.target }}
       - name: Run tests
@@ -148,7 +151,7 @@ jobs:
         with:
           node-version: 22
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.8
+        uses: Swatinem/rust-cache@v2.8.0
       - name: Check a package
         run: wasm-pack build -s sorairolake -t nodejs --dev crates/wasm
 
@@ -181,7 +184,7 @@ jobs:
         with:
           node-version: 22
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.8
+        uses: Swatinem/rust-cache@v2.8.0
       - name: Run tests
         run: wasm-pack test --node crates/wasm
 
@@ -232,7 +235,7 @@ jobs:
         with:
           toolchain: ${{ matrix.rust-version }}
       - name: Setup uv
-        uses: astral-sh/setup-uv@v6.1.0
+        uses: astral-sh/setup-uv@v6.4.3
         with:
           python-version: ${{ matrix.python-version }}
           working-directory: crates/python
@@ -252,7 +255,7 @@ jobs:
           toolchain: stable
           components: rustfmt
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.8
+        uses: Swatinem/rust-cache@v2.8.0
       - name: Check code formatted
         run: cargo fmt --all -- --check
 
@@ -268,7 +271,7 @@ jobs:
           toolchain: stable
           components: clippy
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.8
+        uses: Swatinem/rust-cache@v2.8.0
       - name: Check no lint warnings
         run: cargo clippy --workspace -- -D warnings
       - name: Check no lint warnings (no default features)
@@ -285,7 +288,7 @@ jobs:
         with:
           toolchain: stable
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.8
+        uses: Swatinem/rust-cache@v2.8.0
       - name: Check no `rustdoc` lint warnings
         run: RUSTDOCFLAGS="-D warnings" cargo doc --workspace --exclude abcrypt-cli --no-deps --document-private-items
 
@@ -300,7 +303,7 @@ jobs:
         with:
           toolchain: nightly
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.8
+        uses: Swatinem/rust-cache@v2.8.0
       - name: Run benchmarks
         run: cargo bench -p abcrypt
 
@@ -315,7 +318,7 @@ jobs:
         with:
           toolchain: stable
       - name: Setup uv
-        uses: astral-sh/setup-uv@v6.1.0
+        uses: astral-sh/setup-uv@v6.4.3
         with:
           python-version: "3.13" # latest stable version of Python 3
           working-directory: crates/python
@@ -355,7 +358,7 @@ jobs:
       - name: Setup just
         uses: extractions/setup-just@v3
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.8
+        uses: Swatinem/rust-cache@v2.8.0
       - name: Build examples for the C API
         run: just build-capi-examples
       - name: Check code formatted
@@ -378,18 +381,21 @@ jobs:
       - name: Setup Deno
         uses: denoland/setup-deno@v2.0.3
         with:
-          deno-version: v1.x
+          deno-version: v2.x
       - name: Install wasm-pack
         uses: jetli/wasm-pack-action@v0.4.0
         with:
           version: "latest"
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.8
+        uses: Swatinem/rust-cache@v2.8.0
       - name: Check code formatted
-        run: deno fmt --check crates/wasm/examples/*.ts
+        run: deno fmt --check examples/*.ts
+        working-directory: crates/wasm
       - name: Check no lint warnings
-        run: deno lint crates/wasm/examples/*.ts
+        run: deno lint examples/*.ts
+        working-directory: crates/wasm
+      - name: Build a package
+        run: wasm-pack build -t deno crates/wasm
       - name: Type-check
-        run: |
-          wasm-pack build -t deno crates/wasm
-          deno check crates/wasm/examples/*.ts
+        run: deno check examples/*.ts
+        working-directory: crates/wasm

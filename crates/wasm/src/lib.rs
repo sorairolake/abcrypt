@@ -4,7 +4,7 @@
 
 //! The `abcrypt-wasm` crate is the Wasm bindings for the `abcrypt` crate.
 
-#![doc(html_root_url = "https://docs.rs/abcrypt-wasm/0.4.0/")]
+#![doc(html_root_url = "https://docs.rs/abcrypt-wasm/0.5.0/")]
 // Lint levels of rustc.
 #![forbid(unsafe_code)]
 #![deny(missing_docs)]
@@ -24,7 +24,6 @@ pub use crate::{
 #[allow(clippy::missing_const_for_fn)]
 /// Returns the number of bytes of the header.
 #[must_use]
-#[inline]
 #[wasm_bindgen(js_name = headerSize)]
 pub fn header_size() -> usize {
     abcrypt::HEADER_SIZE
@@ -34,7 +33,6 @@ pub fn header_size() -> usize {
 /// Returns the number of bytes of the MAC (authentication tag) of the
 /// ciphertext.
 #[must_use]
-#[inline]
 #[wasm_bindgen(js_name = tagSize)]
 pub fn tag_size() -> usize {
     abcrypt::TAG_SIZE

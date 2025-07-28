@@ -7,13 +7,14 @@
 #include <CLI/CLI.hpp>
 #include <cerrno>
 #include <cstdint>
+#include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <format>
 #include <fstream>
 #include <iostream>
 #include <iterator>
 #include <optional>
+#include <print>
 #include <string>
 #include <vector>
 
@@ -32,9 +33,8 @@ int main(int argc, char *argv[]) {
     auto ifn = input_filename.value();
     std::ifstream input_file(ifn);
     if (!input_file) {
-      std::clog << std::format("Error: could not open {}: {}", ifn,
-                               std::strerror(errno))
-                << std::endl;
+      std::println(stderr, "Error: could not open {}: {}", ifn,
+                   std::strerror(errno));
       return EXIT_FAILURE;
     }
     contents = {(std::istreambuf_iterator<char>(input_file)),
@@ -51,10 +51,9 @@ int main(int argc, char *argv[]) {
     std::vector<std::uint8_t> buf(abcrypt_error_message_out_len(error_code));
     abcrypt_error_message(error_code, buf.data(), buf.size());
     std::string error_message(buf.cbegin(), buf.cend());
-    std::clog << std::format(
-                     "Error: data is not a valid abcrypt encrypted file: {}",
-                     error_message)
-              << std::endl;
+    std::println(stderr,
+                 "Error: data is not a valid abcrypt encrypted file: {}",
+                 error_message);
     abcrypt_params_free(params);
     return EXIT_FAILURE;
   }
@@ -63,9 +62,7 @@ int main(int argc, char *argv[]) {
   auto parallelism = abcrypt_params_parallelism(params);
   abcrypt_params_free(params);
 
-  std::cout << std::format(
-                   "Parameters used: memoryCost = {}; timeCost = {}; "
-                   "parallelism = {};",
-                   memory_cost, time_cost, parallelism)
-            << std::endl;
+  std::println(
+      "Parameters used: memoryCost = {}; timeCost = {}; parallelism = {};",
+      memory_cost, time_cost, parallelism);
 }

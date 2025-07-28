@@ -26,7 +26,6 @@ impl Params {
     /// - The Argon2 type is invalid.
     /// - The Argon2 version is invalid.
     /// - The Argon2 parameters are invalid.
-    #[inline]
     #[wasm_bindgen(constructor)]
     pub fn new(ciphertext: &[u8]) -> Result<Self, JsError> {
         abcrypt::Params::new(ciphertext)
@@ -37,7 +36,6 @@ impl Params {
     #[allow(clippy::missing_const_for_fn)]
     /// Gets memory size in KiB.
     #[must_use]
-    #[inline]
     #[wasm_bindgen(js_name = memoryCost, getter)]
     pub fn memory_cost(&self) -> u32 {
         self.0.memory_cost()
@@ -46,7 +44,6 @@ impl Params {
     #[allow(clippy::missing_const_for_fn)]
     /// Gets number of iterations.
     #[must_use]
-    #[inline]
     #[wasm_bindgen(js_name = timeCost, getter)]
     pub fn time_cost(&self) -> u32 {
         self.0.time_cost()
@@ -55,7 +52,6 @@ impl Params {
     #[allow(clippy::missing_const_for_fn)]
     /// Gets degree of parallelism.
     #[must_use]
-    #[inline]
     #[wasm_bindgen(getter)]
     pub fn parallelism(&self) -> u32 {
         self.0.parallelism()

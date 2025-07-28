@@ -76,20 +76,20 @@ jobs:
           targets: ${{ matrix.target }}
       - name: Install cross
         if: ${{ matrix.use-cross }}
-        uses: taiki-e/install-action@v2.52.7
+        uses: taiki-e/install-action@v2.56.24
         with:
           tool: cross
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.7.8
+        uses: Swatinem/rust-cache@v2.8.0
         with:
           key: ${{ matrix.target }}
       - name: Setup Ruby
-        if: matrix.os != 'windows-2022' && !matrix.use-cross
+        if: matrix.os != 'windows-2022'
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.3
       - name: Install Asciidoctor
-        if: matrix.os != 'windows-2022' && !matrix.use-cross
+        if: matrix.os != 'windows-2022'
         run: |
           gem install asciidoctor
           asciidoctor -V
@@ -99,6 +99,9 @@ jobs:
       - name: Build a package with cross
         if: ${{ matrix.use-cross }}
         run: cross build -p abcrypt-cli --release --target ${{ matrix.target }}
+      - name: Build man pages
+        if: matrix.os != 'windows-2022'
+        run: asciidoctor -b manpage docs/man/man{1/*.1,5/abcrypt.5}.adoc
       - name: Create a package
         shell: bash
         run: |
@@ -115,7 +118,7 @@ jobs:
           cp crates/cli/{AUTHORS,BUILD,CHANGELOG,CONTRIBUTING}.adoc "${package}"/docs
           if [ "${{ matrix.os }}" != "windows-2022" ] ; then
             mkdir -p "${package}"/man
-            cp "$(find ./target -path '*/abcrypt-cli-*/out' -type d)"/* "${package}"/man
+            cp docs/man/man{1/*.1,5/abcrypt.5} "${package}"/man
           fi
 
           if [ "${{ matrix.os }}" != "windows-2022" ] ; then

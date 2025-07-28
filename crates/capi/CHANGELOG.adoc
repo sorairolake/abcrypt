@@ -14,13 +14,15 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/[Keep a Changelog], and this
 project adheres to https://semver.org/[Semantic Versioning].
 
-== {compare-url}/abcrypt-capi-v0.4.0\...HEAD[Unreleased]
+== {compare-url}/abcrypt-capi-v0.4.0\...abcrypt-capi-v0.5.0[0.5.0] - 2025-07-28
 
 === Changed
 
 * Bump MSRV to 1.85.0 ({pull-request-url}/677[#677])
 * Change the license for documents and assets to CC BY 4.0
   ({pull-request-url}/718[#718])
+* Stop building man pages when compiling a package
+  ({pull-request-url}/780[#780])
 
 == {compare-url}/abcrypt-capi-v0.3.2\...abcrypt-capi-v0.4.0[0.4.0] - 2025-01-09
 
