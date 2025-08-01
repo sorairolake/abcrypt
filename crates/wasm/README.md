@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: 2022 Shun Sakai
+SPDX-FileCopyrightText: 2023 Shun Sakai
 
 SPDX-License-Identifier: CC-BY-4.0
 -->
@@ -62,7 +62,7 @@ Please see [CONTRIBUTING.adoc].
 
 ## License
 
-Copyright (C) 2022 Shun Sakai (see [AUTHORS.adoc])
+Copyright (C) 2023 Shun Sakai (see [AUTHORS.adoc])
 
 This library is distributed under the terms of either the _Apache License 2.0_
 or the _MIT License_.
