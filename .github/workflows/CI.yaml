@@ -45,7 +45,7 @@ jobs:
             toolchain: stable
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Rust toolchain
         uses: dtolnay/rust-toolchain@v1
         with:
@@ -99,7 +99,7 @@ jobs:
           git config --global core.autocrlf false
           git config --global core.eol lf
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Rust toolchain
         uses: dtolnay/rust-toolchain@v1
         with:
@@ -137,7 +137,7 @@ jobs:
             toolchain: stable
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Rust toolchain
         uses: dtolnay/rust-toolchain@v1
         with:
@@ -170,7 +170,7 @@ jobs:
             toolchain: stable
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Rust toolchain
         uses: dtolnay/rust-toolchain@v1
         with:
@@ -229,7 +229,7 @@ jobs:
           git config --global core.autocrlf false
           git config --global core.eol lf
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Rust toolchain
         uses: dtolnay/rust-toolchain@v1
         with:
@@ -248,7 +248,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Rust toolchain
         uses: dtolnay/rust-toolchain@v1
         with:
@@ -264,7 +264,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Rust toolchain
         uses: dtolnay/rust-toolchain@v1
         with:
@@ -282,7 +282,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Rust toolchain
         uses: dtolnay/rust-toolchain@v1
         with:
@@ -297,7 +297,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Rust toolchain
         uses: dtolnay/rust-toolchain@v1
         with:
@@ -312,7 +312,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Rust toolchain
         uses: dtolnay/rust-toolchain@v1
         with:
@@ -345,7 +345,7 @@ jobs:
             toolchain: stable
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Rust toolchain
         uses: dtolnay/rust-toolchain@v1
         with:
@@ -373,7 +373,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Rust toolchain
         uses: dtolnay/rust-toolchain@v1
         with:
