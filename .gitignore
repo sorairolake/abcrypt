@@ -13,6 +13,11 @@ target/
 # Node.js dependency directory
 node_modules/
 
+# Meson
+crates/capi/examples/subprojects/*
+!crates/capi/examples/subprojects/*.wrap
+!crates/capi/examples/subprojects/*.wrap.license
+
 # Python
 
 ## Byte-compiled / optimized / DLL files
