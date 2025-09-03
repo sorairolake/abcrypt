@@ -57,6 +57,8 @@ jobs:
           key: ${{ matrix.target }}
       - name: Check packages
         run: cargo check --target ${{ matrix.target }}
+      - name: Check packages (all features)
+        run: cargo check -p abcrypt --target ${{ matrix.target }} --all-features
       - name: Check packages (no default features)
         run: cargo check -p abcrypt -p abcrypt-cli --target ${{ matrix.target }} --no-default-features
       - name: Check packages (`alloc` feature)
@@ -111,6 +113,8 @@ jobs:
           key: ${{ matrix.target }}
       - name: Run tests
         run: cargo test -p abcrypt -p abcrypt-cli -p abcrypt-capi --target ${{ matrix.target }}
+      - name: Run tests (all features)
+        run: cargo test -p abcrypt --target ${{ matrix.target }} --all-features
       - name: Run tests (no default features)
         run: cargo test -p abcrypt -p abcrypt-cli --target ${{ matrix.target }} --no-default-features
       - name: Run tests (`alloc` feature)
@@ -274,6 +278,8 @@ jobs:
         uses: Swatinem/rust-cache@v2.8.0
       - name: Check no lint warnings
         run: cargo clippy --workspace -- -D warnings
+      - name: Check no lint warnings (all features)
+        run: cargo clippy --workspace --all-features -- -D warnings
       - name: Check no lint warnings (no default features)
         run: cargo clippy --workspace --no-default-features -- -D warnings
 
@@ -290,7 +296,7 @@ jobs:
       - name: Cache build artifacts
         uses: Swatinem/rust-cache@v2.8.0
       - name: Check no `rustdoc` lint warnings
-        run: RUSTDOCFLAGS="-D warnings" cargo doc --workspace --exclude abcrypt-cli --no-deps --document-private-items
+        run: RUSTDOCFLAGS="-D warnings" cargo doc --workspace --exclude abcrypt-cli --no-deps --document-private-items --all-features
 
   benchmark:
     name: Benchmark
