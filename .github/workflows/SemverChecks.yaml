@@ -23,3 +23,4 @@ jobs:
         uses: obi1kenobi/cargo-semver-checks-action@v2.8
         with:
           package: abcrypt
+          feature-group: all-features
