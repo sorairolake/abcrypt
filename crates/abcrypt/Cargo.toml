@@ -23,17 +23,14 @@ all-features = true
 
 [[example]]
 name = "decrypt"
-path = "examples/decrypt.rs"
 required-features = ["std"]
 
 [[example]]
 name = "encrypt"
-path = "examples/encrypt.rs"
 required-features = ["std"]
 
 [[example]]
 name = "info"
-path = "examples/info.rs"
 required-features = ["std", "serde"]
 
 [dependencies]
