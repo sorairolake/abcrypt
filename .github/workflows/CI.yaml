@@ -239,7 +239,7 @@ jobs:
         with:
           toolchain: ${{ matrix.rust-version }}
       - name: Setup uv
-        uses: astral-sh/setup-uv@v6.6.1
+        uses: astral-sh/setup-uv@v6.7.0
         with:
           python-version: ${{ matrix.python-version }}
           working-directory: crates/python
@@ -324,7 +324,7 @@ jobs:
         with:
           toolchain: stable
       - name: Setup uv
-        uses: astral-sh/setup-uv@v6.6.1
+        uses: astral-sh/setup-uv@v6.7.0
         with:
           python-version: "3.13" # latest stable version of Python 3
           working-directory: crates/python
