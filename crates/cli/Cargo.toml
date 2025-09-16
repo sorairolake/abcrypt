@@ -5,11 +5,9 @@
 [package]
 name = "abcrypt-cli"
 version = "0.5.1"
-authors.workspace = true
 edition.workspace = true
 rust-version.workspace = true
 description = "An utility for encrypt and decrypt files"
-readme = "README.md"
 homepage.workspace = true
 repository.workspace = true
 license = "GPL-3.0-or-later"

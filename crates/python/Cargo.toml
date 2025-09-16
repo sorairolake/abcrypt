@@ -5,12 +5,10 @@
 [package]
 name = "abcrypt-py"
 version = "0.3.0"
-authors.workspace = true
 edition.workspace = true
 rust-version.workspace = true
 description = "Python bindings for abcrypt"
 documentation = "https://docs.rs/abcrypt-py"
-readme = "README.md"
 homepage.workspace = true
 repository.workspace = true
 license = "Apache-2.0 OR MIT"
