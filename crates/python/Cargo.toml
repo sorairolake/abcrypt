@@ -19,11 +19,11 @@ categories = ["cryptography"]
 include = ["/LICENSES", "/README.md", "/src"]
 
 [lib]
-name = "abcrypt_py"
 crate-type = ["cdylib", "rlib"]
+name = "abcrypt_py"
 
 [dependencies]
-abcrypt = { version = "0.5.0", path = "../abcrypt" }
+abcrypt = { path = "../abcrypt", version = "0.5.0" }
 pyo3 = "0.26.0"
 
 [lints]

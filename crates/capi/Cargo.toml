@@ -19,10 +19,10 @@ categories = ["cryptography"]
 include = ["/LICENSES", "/README.md", "/src"]
 
 [lib]
-crate-type = ["staticlib", "cdylib"]
+crate-type = ["cdylib", "staticlib"]
 
 [dependencies]
-abcrypt = { version = "0.5.0", path = "../abcrypt" }
+abcrypt = { path = "../abcrypt", version = "0.5.0" }
 
 [build-dependencies]
 cbindgen = { version = "0.29.0", default-features = false }
