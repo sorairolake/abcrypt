@@ -29,8 +29,4 @@ rust_2018_idioms = { level = "warn", priority = -1 }
 
 [profile.release.package.abcrypt-cli]
 codegen-units = 1
-# The `lto` setting cannot be specified yet, see https://github.com/rust-lang/cargo/issues/9330
-# lto = true
-# The `panic` setting cannot be specified yet, see https://github.com/rust-lang/cargo/issues/9330
-# panic = "abort"
 strip = true
