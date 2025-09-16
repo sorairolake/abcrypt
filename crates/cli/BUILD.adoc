@@ -27,6 +27,14 @@ cd abcrypt
 just build
 ----
 
+.To build man pages
+[source,sh]
+----
+just build-man1
+----
+
+The man pages are generated in `docs/man/man1`.
+
 == Crate features
 
 `json`::
