@@ -76,7 +76,7 @@ build-wasm-examples:
 # Run `deno fmt`
 [working-directory("crates/wasm")]
 fmt-wasm-examples:
-    deno fmt examples/*.ts
+    deno fmt deno.jsonc examples/*.ts
 
 # Run `deno lint`
 [working-directory("crates/wasm")]

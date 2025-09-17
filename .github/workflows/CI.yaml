@@ -395,7 +395,7 @@ jobs:
       - name: Cache build artifacts
         uses: Swatinem/rust-cache@v2.8.0
       - name: Check code formatted
-        run: deno fmt --check examples/*.ts
+        run: deno fmt --check deno.jsonc examples/*.ts
         working-directory: crates/wasm
       - name: Check no lint warnings
         run: deno lint examples/*.ts
@@ -405,3 +405,16 @@ jobs:
       - name: Type-check
         run: deno check examples/*.ts
         working-directory: crates/wasm
+
+  prettier:
+    name: Prettier
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Check files formatted
+        run: npx prettier -c "**.{hbs,json,md,yaml,yml}"
