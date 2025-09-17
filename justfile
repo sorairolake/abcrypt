@@ -30,10 +30,6 @@ bench:
 
 # Run the formatter
 fmt:
-    cargo fmt --all
-
-# Run the formatter with options
-fmt-with-options:
     cargo +nightly fmt --all
 
 # Run the linter
