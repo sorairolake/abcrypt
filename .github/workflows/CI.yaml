@@ -260,7 +260,7 @@ jobs:
           components: rustfmt
       - name: Cache build artifacts
         uses: Swatinem/rust-cache@v2.8.0
-      - name: Check code formatted
+      - name: Run formatter in check mode
         run: cargo fmt --all -- --check
 
   clippy:
@@ -276,11 +276,11 @@ jobs:
           components: clippy
       - name: Cache build artifacts
         uses: Swatinem/rust-cache@v2.8.0
-      - name: Check no lint warnings
+      - name: Run linter
         run: cargo clippy --workspace -- -D warnings
-      - name: Check no lint warnings (all features)
+      - name: Run linter (all features)
         run: cargo clippy --workspace --all-features -- -D warnings
-      - name: Check no lint warnings (no default features)
+      - name: Run linter (no default features)
         run: cargo clippy --workspace --no-default-features -- -D warnings
 
   doc:
@@ -295,7 +295,7 @@ jobs:
           toolchain: stable
       - name: Cache build artifacts
         uses: Swatinem/rust-cache@v2.8.0
-      - name: Check no `rustdoc` lint warnings
+      - name: Run linter
         run: RUSTDOCFLAGS="-D warnings" cargo doc --workspace --exclude abcrypt-cli --no-deps --document-private-items --all-features
 
   benchmark:
@@ -329,9 +329,9 @@ jobs:
           python-version: "3.13" # latest stable version of Python 3
           working-directory: crates/python
           enable-cache: true
-      - name: Check code formatted
+      - name: Run formatter in check mode
         run: uv run --directory crates/python ruff format --check .
-      - name: Check no lint warnings
+      - name: Run linter
         run: uv run --directory crates/python ruff check .
       - name: Type-check
         run: uv run --directory crates/python mypy .
@@ -367,11 +367,11 @@ jobs:
         uses: Swatinem/rust-cache@v2.8.0
       - name: Build examples for the C API
         run: just build-capi-examples
-      - name: Check code formatted
+      - name: Run formatter in check mode
         run: |
           just clang-format
           git diff --exit-code
-      - name: Check no lint warnings
+      - name: Run linter
         run: just clang-tidy
 
   wasm-examples:
@@ -394,10 +394,10 @@ jobs:
           version: "latest"
       - name: Cache build artifacts
         uses: Swatinem/rust-cache@v2.8.0
-      - name: Check code formatted
+      - name: Run formatter in check mode
         run: deno fmt --check deno.jsonc examples/*.ts
         working-directory: crates/wasm
-      - name: Check no lint warnings
+      - name: Run linter
         run: deno lint examples/*.ts
         working-directory: crates/wasm
       - name: Build a package
@@ -416,5 +416,5 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: Check files formatted
+      - name: Run formatter in check mode
         run: npx prettier -c "**.{hbs,json,md,yaml,yml}"
