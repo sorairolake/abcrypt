@@ -5,8 +5,9 @@
 from pathlib import Path
 from typing import Final
 
-import abcrypt_py
 import pytest
+
+import abcrypt_py
 
 PASSPHRASE: Final[bytes] = b"passphrase"
 TEST_DIR: Final[Path] = Path(__file__).resolve().parent

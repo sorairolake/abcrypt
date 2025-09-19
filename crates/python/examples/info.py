@@ -7,8 +7,9 @@
 import argparse
 import sys
 
-import abcrypt_py
 import version
+
+import abcrypt_py
 
 
 def main() -> None:
