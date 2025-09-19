@@ -1,0 +1,32 @@
+# SPDX-FileCopyrightText: 2025 Shun Sakai
+#
+# SPDX-License-Identifier: Apache-2.0 OR MIT
+
+name: Meson
+
+on:
+  pull_request:
+    paths:
+      - "**/meson.build"
+  push:
+    paths:
+      - "**/meson.build"
+
+jobs:
+  meson:
+    name: Meson
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: Install Meson
+        run: |
+          pip install meson ninja
+          meson -v
+      - name: Run formatter in check mode
+        run: meson format -q
+        working-directory: crates/capi/examples

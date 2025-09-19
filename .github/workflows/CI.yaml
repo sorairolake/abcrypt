@@ -356,10 +356,13 @@ jobs:
         uses: dtolnay/rust-toolchain@v1
         with:
           toolchain: ${{ matrix.toolchain }}
-      - name: Install dependencies
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: Install Meson
         run: |
-          sudo apt-get update
-          sudo apt-get install meson
+          pip install meson ninja
           meson -v
       - name: Setup just
         uses: extractions/setup-just@v3
