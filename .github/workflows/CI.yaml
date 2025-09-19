@@ -417,4 +417,4 @@ jobs:
         with:
           node-version: 22
       - name: Run formatter in check mode
-        run: npx prettier -c "**.{hbs,json,md,yaml,yml}"
+        run: npx prettier -c "**.{hbs,json,md,yaml,yml}" "**/.clang-{format,tidy}"
