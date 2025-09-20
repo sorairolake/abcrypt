@@ -10,7 +10,7 @@ _default:
 
 # Build packages
 build:
-    cargo build --workspace
+    cargo build
 
 # Remove generated artifacts
 clean:
@@ -18,11 +18,11 @@ clean:
 
 # Check packages
 check:
-    cargo check --workspace
+    cargo check --all-features
 
 # Run tests
 test:
-    cargo test -p abcrypt -p abcrypt-cli -p abcrypt-capi
+    cargo test -p abcrypt -p abcrypt-cli -p abcrypt-capi --all-features
 
 # Run benchmarks
 bench:
@@ -30,15 +30,15 @@ bench:
 
 # Run the formatter
 fmt:
-    cargo +nightly fmt --all
+    cargo +nightly fmt
 
 # Run the linter
 clippy:
-    cargo clippy --workspace -- -D warnings
+    cargo clippy --all-features -- -D warnings
 
 # Apply lint suggestions
 clippy-fix:
-    cargo +nightly clippy --workspace --fix --allow-dirty --allow-staged -- -D warnings
+    cargo +nightly clippy --all-features --fix --allow-dirty --allow-staged -- -D warnings
 
 # Build the library package documentation
 doc $RUSTDOCFLAGS="--cfg docsrs":
