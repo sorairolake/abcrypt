@@ -277,11 +277,11 @@ jobs:
       - name: Cache build artifacts
         uses: Swatinem/rust-cache@v2.8.0
       - name: Run linter
-        run: cargo clippy --workspace -- -D warnings
+        run: cargo clippy -- -D warnings
       - name: Run linter (all features)
-        run: cargo clippy --workspace --all-features -- -D warnings
+        run: cargo clippy --all-features -- -D warnings
       - name: Run linter (no default features)
-        run: cargo clippy --workspace --no-default-features -- -D warnings
+        run: cargo clippy --no-default-features -- -D warnings
 
   doc:
     name: Documentation
