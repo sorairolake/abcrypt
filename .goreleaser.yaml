@@ -1,0 +1,55 @@
+# SPDX-FileCopyrightText: 2025 Shun Sakai
+#
+# SPDX-License-Identifier: Apache-2.0 OR MIT
+
+version: 2
+
+before:
+  hooks:
+    - asciidoctor -b manpage docs/man/man{1/*.1,5/abcrypt.5}.adoc
+
+builds:
+  - builder: rust
+    targets:
+      - aarch64-apple-darwin
+      - aarch64-unknown-linux-musl
+      - x86_64-pc-windows-gnu
+      - x86_64-unknown-linux-musl
+    flags:
+      - --package=abcrypt-cli
+      - --release
+    env:
+      - CARGO_PROFILE_RELEASE_LTO=true
+      - CARGO_PROFILE_RELEASE_PANIC=abort
+
+archives:
+  - formats: [tar.zst]
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+    files:
+      - crates/cli/AUTHORS.adoc
+      - crates/cli/BUILD.adoc
+      - crates/cli/CHANGELOG.adoc
+      - crates/cli/CONTRIBUTING.adoc
+      - crates/cli/README.md
+      - docs/man/man1/*.1
+      - docs/man/man5/abcrypt.5
+      - LICENSES/*
+
+checksum:
+  name_template: "b2sums.txt"
+  algorithm: blake2b
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"

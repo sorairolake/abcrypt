@@ -45,3 +45,7 @@ docs/spec/FORMAT.pdf
 
 # Files generated when generating demo animation
 crates/cli/assets/*.cast
+
+# GoReleaser
+dist/
+.intentionally-empty-file.o
