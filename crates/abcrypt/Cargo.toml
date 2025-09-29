@@ -41,7 +41,7 @@ rand = { version = "0.8.5", default-features = false, features = [
   "getrandom",
   "std_rng",
 ] }
-serde = { version = "1.0.226", default-features = false, features = ["derive"], optional = true }
+serde = { version = "1.0.228", default-features = false, features = ["derive"], optional = true }
 
 [dev-dependencies]
 anyhow.workspace = true
