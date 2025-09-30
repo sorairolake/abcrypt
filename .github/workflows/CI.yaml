@@ -292,11 +292,13 @@ jobs:
       - name: Setup Rust toolchain
         uses: dtolnay/rust-toolchain@v1
         with:
-          toolchain: stable
+          toolchain: nightly
       - name: Cache build artifacts
         uses: Swatinem/rust-cache@v2.8.1
       - name: Run linter
-        run: RUSTDOCFLAGS="-D warnings" cargo doc --workspace --exclude abcrypt-cli --no-deps --document-private-items --all-features
+        env:
+          RUSTDOCFLAGS: "--cfg docsrs -D warnings"
+        run: cargo doc --workspace --exclude abcrypt-cli --no-deps --document-private-items --all-features
 
   benchmark:
     name: Benchmark
