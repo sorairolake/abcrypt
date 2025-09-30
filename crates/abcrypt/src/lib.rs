@@ -100,7 +100,7 @@
 
 #![doc(html_root_url = "https://docs.rs/abcrypt/0.5.0/")]
 #![no_std]
-#![cfg_attr(docsrs, feature(doc_auto_cfg))]
+#![cfg_attr(docsrs, feature(doc_cfg))]
 // Lint levels of rustc.
 #![forbid(unsafe_code)]
 #![deny(missing_docs)]
