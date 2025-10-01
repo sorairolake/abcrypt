@@ -4,11 +4,14 @@
 
 //! The Argon2 parameters.
 
+#[cfg(feature = "serde")]
+use serde::Serialize;
+
 use crate::{Result, format::Header};
 
 /// The Argon2 parameters used for the encrypted data.
 #[derive(Clone, Copy, Debug)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize))]
+#[cfg_attr(feature = "serde", derive(Serialize))]
 #[cfg_attr(feature = "serde", serde(rename_all = "camelCase"))]
 pub struct Params {
     memory_cost: u32,

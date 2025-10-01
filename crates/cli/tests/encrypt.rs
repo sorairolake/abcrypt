@@ -6,9 +6,11 @@ mod utils;
 
 use predicates::prelude::predicate;
 
+use crate::utils::command;
+
 #[test]
 fn basic_encrypt() {
-    utils::command::command()
+    command::command()
         .arg("encrypt")
         .arg("--passphrase-from-stdin")
         .arg("data/data.txt")
@@ -19,13 +21,13 @@ fn basic_encrypt() {
 
 #[test]
 fn infer_subcommand_name_for_encrypt_command() {
-    utils::command::command()
+    command::command()
         .arg("enc")
         .arg("-V")
         .assert()
         .success()
         .stdout(predicate::str::contains("abcrypt-encrypt"));
-    utils::command::command()
+    command::command()
         .arg("e")
         .arg("-V")
         .assert()
@@ -35,7 +37,7 @@ fn infer_subcommand_name_for_encrypt_command() {
 
 #[test]
 fn encrypt_if_non_existent_input_file() {
-    let command = utils::command::command()
+    let command = command::command()
         .arg("encrypt")
         .arg("--passphrase-from-stdin")
         .arg("non_existent.txt")
@@ -59,7 +61,7 @@ fn encrypt_if_non_existent_input_file() {
 
 #[test]
 fn encrypt_if_output_is_directory() {
-    let command = utils::command::command()
+    let command = command::command()
         .arg("encrypt")
         .arg("-o")
         .arg("data/dummy")
@@ -81,7 +83,7 @@ fn encrypt_if_output_is_directory() {
 #[test]
 fn encrypt_with_argon2_type() {
     {
-        let output = utils::command::command()
+        let output = command::command()
             .arg("encrypt")
             .arg("--argon2-type")
             .arg("argon2d")
@@ -93,7 +95,7 @@ fn encrypt_with_argon2_type() {
         assert_eq!(&output.stdout[8..12], u32::to_le_bytes(0));
     }
     {
-        let output = utils::command::command()
+        let output = command::command()
             .arg("encrypt")
             .arg("--argon2-type")
             .arg("argon2i")
@@ -105,7 +107,7 @@ fn encrypt_with_argon2_type() {
         assert_eq!(&output.stdout[8..12], u32::to_le_bytes(1));
     }
     {
-        let output = utils::command::command()
+        let output = command::command()
             .arg("encrypt")
             .arg("--argon2-type")
             .arg("argon2id")
@@ -120,7 +122,7 @@ fn encrypt_with_argon2_type() {
 
 #[test]
 fn encrypt_with_default_argon2_type() {
-    let output = utils::command::command()
+    let output = command::command()
         .arg("encrypt")
         .arg("--argon2-type")
         .arg("argon2id")
@@ -134,7 +136,7 @@ fn encrypt_with_default_argon2_type() {
 
 #[test]
 fn encrypt_with_invalid_argon2_type() {
-    utils::command::command()
+    command::command()
         .arg("encrypt")
         .arg("--argon2-type")
         .arg("scrypt")
@@ -152,7 +154,7 @@ fn encrypt_with_invalid_argon2_type() {
 #[test]
 fn encrypt_with_argon2_version() {
     {
-        let output = utils::command::command()
+        let output = command::command()
             .arg("encrypt")
             .arg("--argon2-version")
             .arg("0x10")
@@ -164,7 +166,7 @@ fn encrypt_with_argon2_version() {
         assert_eq!(&output.stdout[12..16], u32::to_le_bytes(0x10));
     }
     {
-        let output = utils::command::command()
+        let output = command::command()
             .arg("encrypt")
             .arg("--argon2-version")
             .arg("0x13")
@@ -179,7 +181,7 @@ fn encrypt_with_argon2_version() {
 
 #[test]
 fn encrypt_with_default_argon2_version() {
-    let output = utils::command::command()
+    let output = command::command()
         .arg("encrypt")
         .arg("--argon2-version")
         .arg("0x13")
@@ -194,7 +196,7 @@ fn encrypt_with_default_argon2_version() {
 #[test]
 fn encrypt_with_alias_for_argon2_version() {
     {
-        let output = utils::command::command()
+        let output = command::command()
             .arg("encrypt")
             .arg("--argon2-version")
             .arg("16")
@@ -206,7 +208,7 @@ fn encrypt_with_alias_for_argon2_version() {
         assert_eq!(&output.stdout[12..16], u32::to_le_bytes(0x10));
     }
     {
-        let output = utils::command::command()
+        let output = command::command()
             .arg("encrypt")
             .arg("--argon2-version")
             .arg("19")
@@ -221,7 +223,7 @@ fn encrypt_with_alias_for_argon2_version() {
 
 #[test]
 fn encrypt_with_invalid_argon2_version() {
-    utils::command::command()
+    command::command()
         .arg("encrypt")
         .arg("--argon2-version")
         .arg("a")
@@ -238,7 +240,7 @@ fn encrypt_with_invalid_argon2_version() {
 
 #[test]
 fn validate_memory_cost_with_unit_for_encrypt_command() {
-    utils::command::command()
+    command::command()
         .arg("encrypt")
         .arg("-m")
         .arg("19922944 B")
@@ -255,7 +257,7 @@ fn validate_memory_cost_with_unit_for_encrypt_command() {
 
 #[test]
 fn validate_memory_cost_without_unit_for_encrypt_command() {
-    utils::command::command()
+    command::command()
         .arg("encrypt")
         .arg("-m")
         .arg("19922944")
@@ -272,7 +274,7 @@ fn validate_memory_cost_without_unit_for_encrypt_command() {
 
 #[test]
 fn validate_memory_cost_with_byte_prefix_for_encrypt_command() {
-    utils::command::command()
+    command::command()
         .arg("encrypt")
         .arg("-m")
         .arg("19456 KiB")
@@ -285,7 +287,7 @@ fn validate_memory_cost_with_byte_prefix_for_encrypt_command() {
         .stderr(predicate::str::starts_with(
             "Parameters used: memoryCost = 19456; timeCost = 2; parallelism = 1;",
         ));
-    utils::command::command()
+    command::command()
         .arg("encrypt")
         .arg("-m")
         .arg("19.00 MiB")
@@ -298,7 +300,7 @@ fn validate_memory_cost_with_byte_prefix_for_encrypt_command() {
         .stderr(predicate::str::starts_with(
             "Parameters used: memoryCost = 19456; timeCost = 2; parallelism = 1;",
         ));
-    utils::command::command()
+    command::command()
         .arg("encrypt")
         .arg("-m")
         .arg("19MiB")
@@ -315,7 +317,7 @@ fn validate_memory_cost_with_byte_prefix_for_encrypt_command() {
 
 #[test]
 fn validate_memory_cost_with_invalid_unit_for_encrypt_command() {
-    utils::command::command()
+    command::command()
         .arg("encrypt")
         .arg("-m")
         .arg("19922944 A")
@@ -327,7 +329,7 @@ fn validate_memory_cost_with_invalid_unit_for_encrypt_command() {
         .failure()
         .code(2)
         .stderr(predicate::str::contains("the character 'A' is incorrect"));
-    utils::command::command()
+    command::command()
         .arg("encrypt")
         .arg("-m")
         .arg("19.00LiB")
@@ -343,7 +345,7 @@ fn validate_memory_cost_with_invalid_unit_for_encrypt_command() {
 
 #[test]
 fn validate_memory_cost_with_nan_for_encrypt_command() {
-    utils::command::command()
+    command::command()
         .arg("encrypt")
         .arg("-m")
         .arg("n B")
@@ -357,7 +359,7 @@ fn validate_memory_cost_with_nan_for_encrypt_command() {
         .stderr(predicate::str::contains(
             "the character 'n' is not a number",
         ));
-    utils::command::command()
+    command::command()
         .arg("encrypt")
         .arg("-m")
         .arg("n")
@@ -371,7 +373,7 @@ fn validate_memory_cost_with_nan_for_encrypt_command() {
         .stderr(predicate::str::contains(
             "the character 'n' is not a number",
         ));
-    utils::command::command()
+    command::command()
         .arg("encrypt")
         .arg("-m")
         .arg("nKiB")
@@ -389,7 +391,7 @@ fn validate_memory_cost_with_nan_for_encrypt_command() {
 
 #[test]
 fn validate_memory_cost_ranges_for_encrypt_command() {
-    utils::command::command()
+    command::command()
         .arg("encrypt")
         .arg("-m")
         .arg("7 KiB")
@@ -403,7 +405,7 @@ fn validate_memory_cost_ranges_for_encrypt_command() {
         .stderr(predicate::str::contains(
             "7 KiB is not in 8 KiB..=4294967295 KiB",
         ));
-    utils::command::command()
+    command::command()
         .arg("encrypt")
         .arg("-m")
         .arg("8 KiB")
@@ -416,7 +418,7 @@ fn validate_memory_cost_ranges_for_encrypt_command() {
         .stderr(predicate::str::starts_with(
             "Parameters used: memoryCost = 8; timeCost = 2; parallelism = 1;",
         ));
-    utils::command::command()
+    command::command()
         .arg("encrypt")
         .arg("-m")
         .arg("4294967296 KiB")
@@ -434,7 +436,7 @@ fn validate_memory_cost_ranges_for_encrypt_command() {
 
 #[test]
 fn validate_time_cost_with_nan_for_encrypt_command() {
-    utils::command::command()
+    command::command()
         .arg("encrypt")
         .arg("-t")
         .arg("n")
@@ -449,7 +451,7 @@ fn validate_time_cost_with_nan_for_encrypt_command() {
 
 #[test]
 fn validate_time_cost_ranges_for_encrypt_command() {
-    utils::command::command()
+    command::command()
         .arg("encrypt")
         .arg("-t")
         .arg("0")
@@ -460,7 +462,7 @@ fn validate_time_cost_ranges_for_encrypt_command() {
         .failure()
         .code(2)
         .stderr(predicate::str::contains("0 is not in 1..=4294967295"));
-    utils::command::command()
+    command::command()
         .arg("encrypt")
         .arg("-t")
         .arg("1")
@@ -473,7 +475,7 @@ fn validate_time_cost_ranges_for_encrypt_command() {
         .stderr(predicate::str::starts_with(
             "Parameters used: memoryCost = 19456; timeCost = 1; parallelism = 1;",
         ));
-    utils::command::command()
+    command::command()
         .arg("encrypt")
         .arg("-t")
         .arg("4294967296")
@@ -490,7 +492,7 @@ fn validate_time_cost_ranges_for_encrypt_command() {
 
 #[test]
 fn validate_parallelism_with_nan_for_encrypt_command() {
-    utils::command::command()
+    command::command()
         .arg("encrypt")
         .arg("-p")
         .arg("n")
@@ -505,7 +507,7 @@ fn validate_parallelism_with_nan_for_encrypt_command() {
 
 #[test]
 fn validate_parallelism_ranges_for_encrypt_command() {
-    utils::command::command()
+    command::command()
         .arg("encrypt")
         .arg("-p")
         .arg("0")
@@ -516,7 +518,7 @@ fn validate_parallelism_ranges_for_encrypt_command() {
         .failure()
         .code(2)
         .stderr(predicate::str::contains("0 is not in 1..=16777215"));
-    utils::command::command()
+    command::command()
         .arg("encrypt")
         .arg("-p")
         .arg("2")
@@ -529,7 +531,7 @@ fn validate_parallelism_ranges_for_encrypt_command() {
         .stderr(predicate::str::starts_with(
             "Parameters used: memoryCost = 19456; timeCost = 2; parallelism = 2;",
         ));
-    utils::command::command()
+    command::command()
         .arg("encrypt")
         .arg("-p")
         .arg("16777216")
@@ -544,7 +546,7 @@ fn validate_parallelism_ranges_for_encrypt_command() {
 
 #[test]
 fn validate_conflicts_if_reading_from_stdin_for_encrypt_command() {
-    utils::command::command()
+    command::command()
         .arg("encrypt")
         .arg("--passphrase-from-stdin")
         .write_stdin("passphrase")
@@ -557,7 +559,7 @@ fn validate_conflicts_if_reading_from_stdin_for_encrypt_command() {
 
 #[test]
 fn encrypt_verbose() {
-    utils::command::command()
+    command::command()
         .arg("encrypt")
         .arg("--passphrase-from-stdin")
         .arg("-v")

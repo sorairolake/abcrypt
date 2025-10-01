@@ -2,11 +2,12 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+use abcrypt::Params;
 use anyhow::Context;
 
 /// Gets the encryption parameters.
-pub fn get(data: &[u8]) -> anyhow::Result<abcrypt::Params> {
-    abcrypt::Params::new(data).context("data is not a valid abcrypt encrypted file")
+pub fn get(data: &[u8]) -> anyhow::Result<Params> {
+    Params::new(data).context("data is not a valid abcrypt encrypted file")
 }
 
 /// Prints the encryption parameters.

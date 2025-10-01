@@ -16,7 +16,10 @@ use chacha20poly1305::{
 };
 use rand::{Rng, SeedableRng, rngs::StdRng};
 
-use crate::{Error, Params, Result, argon2_context};
+use crate::{
+    Error, Params, Result,
+    argon2_context::{self, Variant},
+};
 
 /// A type alias for magic number of the abcrypt encrypted data format.
 type MagicNumber = [u8; 7];
@@ -98,7 +101,7 @@ impl TryFrom<u8> for Version {
 pub struct Header {
     magic_number: MagicNumber,
     version: Version,
-    argon2_type: argon2_context::Variant,
+    argon2_type: Variant,
     argon2_version: argon2_context::Version,
     params: Params,
     salt: Salt,
@@ -115,7 +118,7 @@ impl Header {
     /// The number of bytes of the header.
     const SIZE: usize = mem::size_of::<MagicNumber>()
         + mem::size_of::<Version>()
-        + mem::size_of::<argon2_context::Variant>()
+        + mem::size_of::<Variant>()
         + mem::size_of::<argon2_context::Version>()
         + mem::size_of::<Params>()
         + mem::size_of::<Salt>()
@@ -243,7 +246,7 @@ impl Header {
 
     /// Returns the Argon2 type stored in this header.
     #[inline]
-    pub const fn argon2_type(&self) -> argon2_context::Variant {
+    pub const fn argon2_type(&self) -> Variant {
         self.argon2_type
     }
 

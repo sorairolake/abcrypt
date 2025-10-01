@@ -6,9 +6,11 @@ mod utils;
 
 use predicates::prelude::predicate;
 
+use crate::utils::command;
+
 #[test]
 fn basic_information() {
-    utils::command::command()
+    command::command()
         .arg("information")
         .arg("data/v1/argon2d/v0x10/data.txt.abcrypt")
         .assert()
@@ -16,7 +18,7 @@ fn basic_information() {
         .stderr(predicate::str::starts_with(
             "Parameters used: memoryCost = 47104; timeCost = 1; parallelism = 1;",
         ));
-    utils::command::command()
+    command::command()
         .arg("information")
         .arg("data/v1/argon2d/v0x13/data.txt.abcrypt")
         .assert()
@@ -24,7 +26,7 @@ fn basic_information() {
         .stderr(predicate::str::starts_with(
             "Parameters used: memoryCost = 19456; timeCost = 2; parallelism = 1;",
         ));
-    utils::command::command()
+    command::command()
         .arg("information")
         .arg("data/v1/argon2i/v0x10/data.txt.abcrypt")
         .assert()
@@ -32,7 +34,7 @@ fn basic_information() {
         .stderr(predicate::str::starts_with(
             "Parameters used: memoryCost = 12288; timeCost = 3; parallelism = 1;",
         ));
-    utils::command::command()
+    command::command()
         .arg("information")
         .arg("data/v1/argon2i/v0x13/data.txt.abcrypt")
         .assert()
@@ -40,7 +42,7 @@ fn basic_information() {
         .stderr(predicate::str::starts_with(
             "Parameters used: memoryCost = 9216; timeCost = 4; parallelism = 1;",
         ));
-    utils::command::command()
+    command::command()
         .arg("information")
         .arg("data/v1/argon2id/v0x10/data.txt.abcrypt")
         .assert()
@@ -48,7 +50,7 @@ fn basic_information() {
         .stderr(predicate::str::starts_with(
             "Parameters used: memoryCost = 7168; timeCost = 5; parallelism = 1;",
         ));
-    utils::command::command()
+    command::command()
         .arg("information")
         .arg("data/v1/argon2id/v0x13/data.txt.abcrypt")
         .assert()
@@ -60,13 +62,13 @@ fn basic_information() {
 
 #[test]
 fn infer_subcommand_name_for_information_command() {
-    utils::command::command()
+    command::command()
         .arg("info")
         .arg("-V")
         .assert()
         .success()
         .stdout(predicate::str::contains("abcrypt-information"));
-    utils::command::command()
+    command::command()
         .arg("i")
         .arg("-V")
         .assert()
@@ -76,7 +78,7 @@ fn infer_subcommand_name_for_information_command() {
 
 #[test]
 fn information_if_non_existent_input_file() {
-    let command = utils::command::command()
+    let command = command::command()
         .arg("information")
         .arg("non_existent.txt.abcrypt")
         .assert()
@@ -99,7 +101,7 @@ fn information_if_non_existent_input_file() {
 #[cfg(not(feature = "json"))]
 #[test]
 fn information_command_without_default_feature() {
-    utils::command::command()
+    command::command()
         .arg("information")
         .arg("-j")
         .arg("data/v1/argon2id/v0x13/data.txt.abcrypt")
@@ -112,7 +114,7 @@ fn information_command_without_default_feature() {
 #[cfg(feature = "json")]
 #[test]
 fn information_as_json() {
-    utils::command::command()
+    command::command()
         .arg("information")
         .arg("-j")
         .arg("data/v1/argon2id/v0x13/data.txt.abcrypt")
@@ -126,7 +128,7 @@ fn information_as_json() {
 
 #[test]
 fn information_if_input_file_is_invalid() {
-    utils::command::command()
+    command::command()
         .arg("information")
         .arg("data/data.txt")
         .assert()

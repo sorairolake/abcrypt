@@ -124,6 +124,8 @@ pub type Result<T> = result::Result<T, Error>;
 #[cfg(test)]
 mod tests {
     use core::any;
+    #[cfg(feature = "std")]
+    use std::error::Error as _;
 
     use super::*;
 
@@ -671,8 +673,6 @@ mod tests {
     #[cfg(feature = "std")]
     #[test]
     fn source() {
-        use std::error::Error as _;
-
         assert!(Error::InvalidLength.source().is_none());
         assert!(Error::InvalidMagicNumber.source().is_none());
         assert!(Error::UnsupportedVersion(u8::MIN).source().is_none());

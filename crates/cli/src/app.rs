@@ -4,7 +4,7 @@
 
 use std::path::Path;
 
-use abcrypt::{Argon2, Decryptor, argon2};
+use abcrypt::{Argon2, Decryptor, argon2::Params};
 use anyhow::{Context, bail};
 use clap::Parser;
 
@@ -48,9 +48,8 @@ pub fn run() -> anyhow::Result<()> {
                 _ => passphrase::read_passphrase_from_tty(),
             }?;
 
-            let params =
-                argon2::Params::new(*arg.memory_cost, *arg.time_cost, *arg.parallelism, None)
-                    .map_err(abcrypt::Error::InvalidArgon2Params)?;
+            let params = Params::new(*arg.memory_cost, *arg.time_cost, *arg.parallelism, None)
+                .map_err(abcrypt::Error::InvalidArgon2Params)?;
 
             if arg.verbose {
                 params::displayln(params.m_cost(), params.t_cost(), params.p_cost());

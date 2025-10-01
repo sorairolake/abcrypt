@@ -6,44 +6,46 @@ mod utils;
 
 use predicates::prelude::predicate;
 
+use crate::utils::command;
+
 #[test]
 fn basic_argon2() {
-    utils::command::command()
+    command::command()
         .arg("argon2")
         .arg("data/v1/argon2d/v0x10/data.txt.abcrypt")
         .assert()
         .success()
         .stderr(predicate::str::contains("Type: Argon2d"))
         .stderr(predicate::str::contains("Version: 0x10"));
-    utils::command::command()
+    command::command()
         .arg("argon2")
         .arg("data/v1/argon2d/v0x13/data.txt.abcrypt")
         .assert()
         .success()
         .stderr(predicate::str::contains("Type: Argon2d"))
         .stderr(predicate::str::contains("Version: 0x13"));
-    utils::command::command()
+    command::command()
         .arg("argon2")
         .arg("data/v1/argon2i/v0x10/data.txt.abcrypt")
         .assert()
         .success()
         .stderr(predicate::str::contains("Type: Argon2i"))
         .stderr(predicate::str::contains("Version: 0x10"));
-    utils::command::command()
+    command::command()
         .arg("argon2")
         .arg("data/v1/argon2i/v0x13/data.txt.abcrypt")
         .assert()
         .success()
         .stderr(predicate::str::contains("Type: Argon2i"))
         .stderr(predicate::str::contains("Version: 0x13"));
-    utils::command::command()
+    command::command()
         .arg("argon2")
         .arg("data/v1/argon2id/v0x10/data.txt.abcrypt")
         .assert()
         .success()
         .stderr(predicate::str::contains("Type: Argon2id"))
         .stderr(predicate::str::contains("Version: 0x10"));
-    utils::command::command()
+    command::command()
         .arg("argon2")
         .arg("data/v1/argon2id/v0x13/data.txt.abcrypt")
         .assert()
@@ -54,7 +56,7 @@ fn basic_argon2() {
 
 #[test]
 fn infer_subcommand_name_for_argon2_command() {
-    utils::command::command()
+    command::command()
         .arg("a")
         .arg("-V")
         .assert()
@@ -64,7 +66,7 @@ fn infer_subcommand_name_for_argon2_command() {
 
 #[test]
 fn argon2_if_non_existent_input_file() {
-    let command = utils::command::command()
+    let command = command::command()
         .arg("argon2")
         .arg("non_existent.txt.abcrypt")
         .assert()
@@ -86,7 +88,7 @@ fn argon2_if_non_existent_input_file() {
 
 #[test]
 fn argon2_if_input_file_is_invalid() {
-    utils::command::command()
+    command::command()
         .arg("argon2")
         .arg("data/data.txt")
         .assert()

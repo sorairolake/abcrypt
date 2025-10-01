@@ -4,6 +4,9 @@
 
 //! Decrypts from the abcrypt encrypted data format.
 
+#[cfg(feature = "alloc")]
+use alloc::vec::Vec;
+
 use argon2::Argon2;
 use chacha20poly1305::{AeadInPlace, KeyInit, Tag, XChaCha20Poly1305};
 
@@ -133,8 +136,7 @@ impl<'c> Decryptor<'c> {
         inner(self, buf.as_mut())
     }
 
-    /// Decrypts the ciphertext and into a newly allocated
-    /// [`Vec`](alloc::vec::Vec).
+    /// Decrypts the ciphertext and into a newly allocated [`Vec`].
     ///
     /// # Errors
     ///
@@ -156,7 +158,7 @@ impl<'c> Decryptor<'c> {
     /// ```
     #[cfg(feature = "alloc")]
     #[inline]
-    pub fn decrypt_to_vec(&self) -> Result<alloc::vec::Vec<u8>> {
+    pub fn decrypt_to_vec(&self) -> Result<Vec<u8>> {
         let mut buf = vec![u8::default(); self.out_len()];
         self.decrypt(&mut buf)?;
         Ok(buf)
@@ -182,7 +184,7 @@ impl<'c> Decryptor<'c> {
     }
 }
 
-/// Decrypts `ciphertext` and into a newly allocated [`Vec`](alloc::vec::Vec).
+/// Decrypts `ciphertext` and into a newly allocated [`Vec`].
 ///
 /// This is a convenience function for using [`Decryptor::new`] and
 /// [`Decryptor::decrypt_to_vec`].
@@ -214,9 +216,6 @@ impl<'c> Decryptor<'c> {
 /// ```
 #[cfg(feature = "alloc")]
 #[inline]
-pub fn decrypt(
-    ciphertext: impl AsRef<[u8]>,
-    passphrase: impl AsRef<[u8]>,
-) -> Result<alloc::vec::Vec<u8>> {
+pub fn decrypt(ciphertext: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Vec<u8>> {
     Decryptor::new(&ciphertext, passphrase).and_then(|c| c.decrypt_to_vec())
 }

@@ -119,6 +119,8 @@ mod format;
 mod params;
 
 pub use argon2;
+#[cfg(not(feature = "alloc"))]
+use argon2::Block;
 pub use blake2;
 pub use chacha20poly1305;
 
@@ -138,7 +140,7 @@ pub use crate::{
 
 #[cfg(not(feature = "alloc"))]
 // 1 MiB.
-const MEMORY_BLOCKS: [argon2::Block; usize::pow(2, 8)] = [argon2::Block::new(); usize::pow(2, 8)];
+const MEMORY_BLOCKS: [Block; usize::pow(2, 8)] = [Block::new(); usize::pow(2, 8)];
 
 const AAD: &[u8] = &[];
 

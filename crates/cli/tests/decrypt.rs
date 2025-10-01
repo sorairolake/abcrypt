@@ -6,9 +6,11 @@ mod utils;
 
 use predicates::prelude::predicate;
 
+use crate::utils::command;
+
 #[test]
 fn basic_decrypt() {
-    utils::command::command()
+    command::command()
         .arg("decrypt")
         .arg("--passphrase-from-stdin")
         .arg("data/v1/argon2d/v0x10/data.txt.abcrypt")
@@ -16,7 +18,7 @@ fn basic_decrypt() {
         .assert()
         .success()
         .stdout(predicate::eq("Hello, world!\n"));
-    utils::command::command()
+    command::command()
         .arg("decrypt")
         .arg("--passphrase-from-stdin")
         .arg("data/v1/argon2d/v0x13/data.txt.abcrypt")
@@ -24,7 +26,7 @@ fn basic_decrypt() {
         .assert()
         .success()
         .stdout(predicate::eq("Hello, world!\n"));
-    utils::command::command()
+    command::command()
         .arg("decrypt")
         .arg("--passphrase-from-stdin")
         .arg("data/v1/argon2i/v0x10/data.txt.abcrypt")
@@ -32,7 +34,7 @@ fn basic_decrypt() {
         .assert()
         .success()
         .stdout(predicate::eq("Hello, world!\n"));
-    utils::command::command()
+    command::command()
         .arg("decrypt")
         .arg("--passphrase-from-stdin")
         .arg("data/v1/argon2i/v0x13/data.txt.abcrypt")
@@ -40,7 +42,7 @@ fn basic_decrypt() {
         .assert()
         .success()
         .stdout(predicate::eq("Hello, world!\n"));
-    utils::command::command()
+    command::command()
         .arg("decrypt")
         .arg("--passphrase-from-stdin")
         .arg("data/v1/argon2id/v0x10/data.txt.abcrypt")
@@ -48,7 +50,7 @@ fn basic_decrypt() {
         .assert()
         .success()
         .stdout(predicate::eq("Hello, world!\n"));
-    utils::command::command()
+    command::command()
         .arg("decrypt")
         .arg("--passphrase-from-stdin")
         .arg("data/v1/argon2id/v0x13/data.txt.abcrypt")
@@ -60,13 +62,13 @@ fn basic_decrypt() {
 
 #[test]
 fn infer_subcommand_name_for_decrypt_command() {
-    utils::command::command()
+    command::command()
         .arg("dec")
         .arg("-V")
         .assert()
         .success()
         .stdout(predicate::str::contains("abcrypt-decrypt"));
-    utils::command::command()
+    command::command()
         .arg("d")
         .arg("-V")
         .assert()
@@ -76,7 +78,7 @@ fn infer_subcommand_name_for_decrypt_command() {
 
 #[test]
 fn decrypt_if_non_existent_input_file() {
-    let command = utils::command::command()
+    let command = command::command()
         .arg("decrypt")
         .arg("--passphrase-from-stdin")
         .arg("non_existent.txt.abcrypt")
@@ -100,7 +102,7 @@ fn decrypt_if_non_existent_input_file() {
 
 #[test]
 fn decrypt_if_output_is_directory() {
-    let command = utils::command::command()
+    let command = command::command()
         .arg("decrypt")
         .arg("-o")
         .arg("data/dummy")
@@ -121,7 +123,7 @@ fn decrypt_if_output_is_directory() {
 
 #[test]
 fn validate_conflicts_if_reading_from_stdin_for_decrypt_command() {
-    utils::command::command()
+    command::command()
         .arg("decrypt")
         .arg("--passphrase-from-stdin")
         .write_stdin("passphrase")
@@ -134,7 +136,7 @@ fn validate_conflicts_if_reading_from_stdin_for_decrypt_command() {
 
 #[test]
 fn decrypt_if_input_file_is_invalid() {
-    utils::command::command()
+    command::command()
         .arg("decrypt")
         .arg("--passphrase-from-stdin")
         .arg("data/data.txt")
@@ -152,7 +154,7 @@ fn decrypt_if_input_file_is_invalid() {
 
 #[test]
 fn decrypt_if_passphrase_is_incorrect() {
-    utils::command::command()
+    command::command()
         .arg("decrypt")
         .arg("--passphrase-from-stdin")
         .arg("data/v1/argon2id/v0x13/data.txt.abcrypt")
@@ -167,7 +169,7 @@ fn decrypt_if_passphrase_is_incorrect() {
 
 #[test]
 fn decrypt_from_unsupported_version() {
-    utils::command::command()
+    command::command()
         .arg("decrypt")
         .arg("--passphrase-from-stdin")
         .arg("data/v0/data.txt.abcrypt")
@@ -183,7 +185,7 @@ fn decrypt_from_unsupported_version() {
 
 #[test]
 fn decrypt_verbose() {
-    utils::command::command()
+    command::command()
         .arg("decrypt")
         .arg("--passphrase-from-stdin")
         .arg("-v")
@@ -195,7 +197,7 @@ fn decrypt_verbose() {
         .stderr(predicate::str::starts_with(
             "Parameters used: memoryCost = 47104; timeCost = 1; parallelism = 1;",
         ));
-    utils::command::command()
+    command::command()
         .arg("decrypt")
         .arg("--passphrase-from-stdin")
         .arg("-v")
@@ -207,7 +209,7 @@ fn decrypt_verbose() {
         .stderr(predicate::str::starts_with(
             "Parameters used: memoryCost = 19456; timeCost = 2; parallelism = 1;",
         ));
-    utils::command::command()
+    command::command()
         .arg("decrypt")
         .arg("--passphrase-from-stdin")
         .arg("-v")
@@ -219,7 +221,7 @@ fn decrypt_verbose() {
         .stderr(predicate::str::starts_with(
             "Parameters used: memoryCost = 12288; timeCost = 3; parallelism = 1;",
         ));
-    utils::command::command()
+    command::command()
         .arg("decrypt")
         .arg("--passphrase-from-stdin")
         .arg("-v")
@@ -231,7 +233,7 @@ fn decrypt_verbose() {
         .stderr(predicate::str::starts_with(
             "Parameters used: memoryCost = 9216; timeCost = 4; parallelism = 1;",
         ));
-    utils::command::command()
+    command::command()
         .arg("decrypt")
         .arg("--passphrase-from-stdin")
         .arg("-v")
@@ -243,7 +245,7 @@ fn decrypt_verbose() {
         .stderr(predicate::str::starts_with(
             "Parameters used: memoryCost = 7168; timeCost = 5; parallelism = 1;",
         ));
-    utils::command::command()
+    command::command()
         .arg("decrypt")
         .arg("--passphrase-from-stdin")
         .arg("-v")

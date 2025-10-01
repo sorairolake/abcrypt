@@ -150,6 +150,8 @@ pub extern "C-unwind" fn abcrypt_error_message_out_len(error_code: ErrorCode) ->
 mod tests {
     use std::ffi::c_int;
 
+    use abcrypt::{argon2, blake2::digest::MacError, chacha20poly1305};
+
     use super::*;
 
     #[test]
@@ -825,23 +827,19 @@ mod tests {
             ErrorCode::InvalidArgon2Version
         );
         assert_eq!(
-            ErrorCode::from(Error::InvalidArgon2Params(
-                abcrypt::argon2::Error::AdTooLong
-            )),
+            ErrorCode::from(Error::InvalidArgon2Params(argon2::Error::AdTooLong)),
             ErrorCode::InvalidArgon2Params
         );
         assert_eq!(
-            ErrorCode::from(Error::InvalidArgon2Context(
-                abcrypt::argon2::Error::AdTooLong
-            )),
+            ErrorCode::from(Error::InvalidArgon2Context(argon2::Error::AdTooLong)),
             ErrorCode::InvalidArgon2Context
         );
         assert_eq!(
-            ErrorCode::from(Error::InvalidHeaderMac(abcrypt::blake2::digest::MacError)),
+            ErrorCode::from(Error::InvalidHeaderMac(MacError)),
             ErrorCode::InvalidHeaderMac
         );
         assert_eq!(
-            ErrorCode::from(Error::InvalidMac(abcrypt::chacha20poly1305::Error)),
+            ErrorCode::from(Error::InvalidMac(chacha20poly1305::Error)),
             ErrorCode::InvalidMac
         );
     }
