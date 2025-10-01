@@ -4,7 +4,7 @@
 
 use abcrypt::Params;
 #[cfg(feature = "serde")]
-use serde_test::{Token, assert_ser_tokens};
+use serde_test::Token;
 
 // Generated using `abcrypt` crate version 0.4.0.
 const TEST_DATA_ENC: &[u8] = include_bytes!("data/v1/argon2id/v0x13/data.txt.abcrypt");
@@ -105,7 +105,7 @@ fn parallelism() {
 #[cfg(feature = "serde")]
 #[test]
 fn serialize() {
-    assert_ser_tokens(
+    serde_test::assert_ser_tokens(
         &Params::new(TEST_DATA_ENC).unwrap(),
         &[
             Token::Struct {
