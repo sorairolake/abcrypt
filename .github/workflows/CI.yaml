@@ -219,7 +219,7 @@ jobs:
           - rust-version-alias: stable
             rust-version: stable
           - python-version-alias: minimum
-            python-version: "3.8"
+            python-version: "3.10"
           - python-version-alias: latest
             python-version: "3.14"
         exclude:
