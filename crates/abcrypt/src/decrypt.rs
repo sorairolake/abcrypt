@@ -120,7 +120,7 @@ impl<'c> Decryptor<'c> {
     /// cipher.decrypt(&mut buf).unwrap();
     /// # assert_eq!(buf, *data);
     /// ```
-    pub fn decrypt(&self, buf: &mut (impl AsMut<[u8]> + ?Sized)) -> Result<()> {
+    pub fn decrypt<B: AsMut<[u8]> + ?Sized>(&self, buf: &mut B) -> Result<()> {
         let inner = |decryptor: &Self, buf: &mut [u8]| -> Result<()> {
             buf.copy_from_slice(decryptor.ciphertext);
 
