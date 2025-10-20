@@ -151,7 +151,7 @@ jobs:
         with:
           version: "latest"
       - name: Setup Node.js environment
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: 22
       - name: Cache build artifacts
@@ -184,7 +184,7 @@ jobs:
         with:
           version: "latest"
       - name: Setup Node.js environment
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: 22
       - name: Cache build artifacts
@@ -418,7 +418,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
       - name: Setup Node.js environment
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: 22
       - name: Run formatter in check mode
