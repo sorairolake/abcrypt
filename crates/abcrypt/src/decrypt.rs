@@ -84,6 +84,7 @@ impl<'c> Decryptor<'c> {
             header.verify_mac(&dk.mac(), ciphertext[84..HEADER_SIZE].into())?;
             let (ciphertext, tag) =
                 ciphertext[HEADER_SIZE..].split_at(ciphertext.len() - HEADER_SIZE - TAG_SIZE);
+            #[allow(deprecated)]
             let tag = *Tag::from_slice(tag);
             Ok(Self {
                 header,
