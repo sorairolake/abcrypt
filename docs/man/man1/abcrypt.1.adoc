@@ -4,7 +4,7 @@
 
 = abcrypt(1)
 // Specify in UTC.
-:docdate: 2025-05-26
+:docdate: 2025-11-07
 :revnumber: 0.5.1
 :doctype: manpage
 :mansource: abcrypt {revnumber}
@@ -13,7 +13,7 @@ ifndef::site-gen-antora[:includedir: ./include]
 
 == NAME
 
-abcrypt - an utility for encrypt and decrypt files
+abcrypt - a command-line utility for encrypt and decrypt files
 
 == SYNOPSIS
 

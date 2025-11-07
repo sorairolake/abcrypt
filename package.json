@@ -2,7 +2,7 @@
   "private": true,
   "name": "abcrypt",
   "version": "1.0.0",
-  "description": "An utility for encrypt and decrypt files",
+  "description": "A command-line utility for encrypt and decrypt files",
   "license": "CC-BY-4.0",
   "author": "Shun Sakai <sorairolake@protonmail.ch>",
   "homepage": "https://github.com/sorairolake/abcrypt#readme",
