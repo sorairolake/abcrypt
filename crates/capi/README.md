@@ -7,10 +7,6 @@ SPDX-License-Identifier: CC-BY-4.0
 # C API for abcrypt
 
 [![CI][ci-badge]][ci-url]
-[![Version][version-badge]][version-url]
-![MSRV][msrv-badge]
-[![Docs][docs-badge]][docs-url]
-![License][license-badge]
 
 **abcrypt-capi** exposes a C API for the [`abcrypt`] crate.
 
@@ -66,12 +62,6 @@ licensing information.
 
 [ci-badge]: https://img.shields.io/github/actions/workflow/status/sorairolake/abcrypt/CI.yaml?branch=develop&style=for-the-badge&logo=github&label=CI
 [ci-url]: https://github.com/sorairolake/abcrypt/actions?query=branch%3Adevelop+workflow%3ACI++
-[version-badge]: https://img.shields.io/crates/v/abcrypt-capi?style=for-the-badge&logo=rust
-[version-url]: https://crates.io/crates/abcrypt-capi
-[msrv-badge]: https://img.shields.io/crates/msrv/abcrypt-capi?style=for-the-badge&logo=rust
-[docs-badge]: https://img.shields.io/docsrs/abcrypt-capi?style=for-the-badge&logo=docsdotrs&label=Docs.rs
-[docs-url]: https://docs.rs/abcrypt-capi
-[license-badge]: https://img.shields.io/crates/l/abcrypt-capi?style=for-the-badge
 [`abcrypt`]: https://crates.io/crates/abcrypt
 [`abcrypt.h`]: include/abcrypt.h
 [`cbindgen`]: https://crates.io/crates/cbindgen

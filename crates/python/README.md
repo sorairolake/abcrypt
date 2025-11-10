@@ -9,9 +9,6 @@ SPDX-License-Identifier: CC-BY-4.0
 [![CI][ci-badge]][ci-url]
 [![PyPI Version][pypi-version-badge]][pypi-version-url]
 ![PyPI Python Version][pypi-python-version-badge]
-[![crates.io Version][crates-version-badge]][crates-version-url]
-![MSRV][msrv-badge]
-[![Docs][docs-badge]][docs-url]
 ![License][license-badge]
 
 **abcrypt-py** is the Python bindings for the [`abcrypt`] crate.
@@ -75,12 +72,7 @@ licensing information.
 [pypi-version-badge]: https://img.shields.io/pypi/v/abcrypt-py?style=for-the-badge&logo=pypi
 [pypi-version-url]: https://pypi.org/project/abcrypt-py/
 [pypi-python-version-badge]: https://img.shields.io/pypi/pyversions/abcrypt-py?style=for-the-badge&logo=python
-[crates-version-badge]: https://img.shields.io/crates/v/abcrypt-py?style=for-the-badge&logo=rust
-[crates-version-url]: https://crates.io/crates/abcrypt-py
-[msrv-badge]: https://img.shields.io/crates/msrv/abcrypt-py?style=for-the-badge&logo=rust
-[docs-badge]: https://img.shields.io/docsrs/abcrypt-py?style=for-the-badge&logo=docsdotrs&label=Docs.rs
-[docs-url]: https://docs.rs/abcrypt-py
-[license-badge]: https://img.shields.io/crates/l/abcrypt-py?style=for-the-badge
+[license-badge]: https://img.shields.io/pypi/l/abcrypt-py?style=for-the-badge
 [`abcrypt`]: https://crates.io/crates/abcrypt
 [uv]: https://docs.astral.sh/uv/
 [CHANGELOG.adoc]: https://github.com/sorairolake/abcrypt/blob/develop/crates/python/CHANGELOG.adoc

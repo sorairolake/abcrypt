@@ -8,13 +8,13 @@ version = "0.5.0"
 edition.workspace = true
 rust-version.workspace = true
 description = "Wasm bindings for abcrypt"
-documentation = "https://docs.rs/abcrypt-wasm"
 homepage.workspace = true
 repository.workspace = true
 license = "Apache-2.0 OR MIT"
 keywords = ["abcrypt", "crypto"]
 categories = ["cryptography", "wasm"]
 include = ["/LICENSES", "/README.md", "/src"]
+publish = false
 
 [package.metadata.wasm-pack.profile.release]
 wasm-opt = ["--enable-bulk-memory", "--enable-nontrapping-float-to-int"]

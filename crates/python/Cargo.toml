@@ -8,13 +8,13 @@ version = "0.3.0"
 edition.workspace = true
 rust-version.workspace = true
 description = "Python bindings for abcrypt"
-documentation = "https://docs.rs/abcrypt-py"
 homepage.workspace = true
 repository.workspace = true
 license = "Apache-2.0 OR MIT"
 keywords = ["abcrypt", "crypto"]
 categories = ["cryptography"]
 include = ["/LICENSES", "/README.md", "/src"]
+publish = false
 
 [lib]
 crate-type = ["cdylib", "rlib"]

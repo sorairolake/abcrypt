@@ -13,6 +13,3 @@ filename = "examples/meson.build"
 
 [[tool.bumpversion.files]]
 filename = "examples/version.hpp"
-
-[[tool.bumpversion.files]]
-filename = "src/lib.rs"

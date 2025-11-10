@@ -5,6 +5,4 @@
 .Wasm Bindings
 * xref:index.adoc[Introduction]
 * xref:usage.adoc[]
-* API Reference
-** https://docs.rs/abcrypt-wasm[Rust API]
 * xref:changelog.adoc[]

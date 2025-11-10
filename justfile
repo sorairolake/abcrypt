@@ -182,5 +182,4 @@ bump-wasm part:
 # Increment the version of the Python bindings
 [working-directory("crates/python")]
 bump-python part:
-    bump-my-version bump {{ part }}
     cargo set-version --bump {{ part }} -p abcrypt-py

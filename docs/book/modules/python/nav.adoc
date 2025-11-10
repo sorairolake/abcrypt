@@ -5,8 +5,6 @@
 .Python Bindings
 * xref:index.adoc[Introduction]
 * xref:usage.adoc[]
-* API Reference
-** xref:python.adoc[]
-** https://docs.rs/abcrypt-py[Rust API]
+* xref:python.adoc[]
 * xref:development.adoc[]
 * xref:changelog.adoc[]

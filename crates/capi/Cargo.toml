@@ -8,13 +8,13 @@ version = "0.5.0"
 edition.workspace = true
 rust-version.workspace = true
 description = "C API for abcrypt"
-documentation = "https://docs.rs/abcrypt-capi"
 homepage.workspace = true
 repository.workspace = true
 license = "Apache-2.0 OR MIT"
 keywords = ["abcrypt", "crypto"]
 categories = ["cryptography"]
 include = ["/LICENSES", "/README.md", "/src"]
+publish = false
 
 [lib]
 crate-type = ["cdylib", "staticlib"]
