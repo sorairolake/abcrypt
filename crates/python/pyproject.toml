@@ -27,7 +27,7 @@ Issues = "https://github.com/sorairolake/abcrypt/issues"
 Repository = "https://github.com/sorairolake/abcrypt"
 
 [dependency-groups]
-dev = ["mypy", "pytest", "ruff"]
+dev = ["pytest", "ruff", "ty"]
 
 [build-system]
 requires = ["maturin>=1.4,<2.0"]

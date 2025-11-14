@@ -113,10 +113,10 @@ python-lint:
 python-lint-fix:
     uv run ruff check --fix .
 
-# Run `mypy`
+# Run the type checker for the Python bindings
 [working-directory("crates/python")]
 python-type-check:
-    uv run mypy .
+    uv run ty check
 
 # Build man pages
 build-man: build-man1 build-man3 build-man5

@@ -336,7 +336,7 @@ jobs:
       - name: Run linter
         run: uv run --directory crates/python ruff check .
       - name: Type-check
-        run: uv run --directory crates/python mypy .
+        run: uv run --directory crates/python ty check
 
   capi-examples:
     name: Examples for the C API
