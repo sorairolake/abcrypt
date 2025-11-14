@@ -21,7 +21,6 @@
 #include <vector>
 
 #include "abcrypt.h"
-#include "version.hpp"
 
 int main(int argc, char *argv[]) {
   CLI::App app{"An example of encrypting to the abcrypt encrypted data format"};
@@ -41,7 +40,6 @@ int main(int argc, char *argv[]) {
   app.add_option("-p,--parallelism", parallelism,
                  "Set the degree of parallelism")
       ->capture_default_str();
-  app.set_version_flag("-V,--version", VERSION, "Print version");
   std::string input_filename;
   app.add_option("INFILE", input_filename, "Input file")->required();
   std::string output_filename;

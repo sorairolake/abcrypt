@@ -7,8 +7,6 @@
 import argparse
 import sys
 
-import version
-
 import abcrypt_py
 
 
@@ -16,9 +14,6 @@ def main() -> None:
     parser = argparse.ArgumentParser(
         prog="info",
         description="An example of reading the Argon2 parameters from a file",
-    )
-    parser.add_argument(
-        "-V", "--version", action="version", version=version.VERSION
     )
     parser.add_argument(
         "input",

@@ -19,11 +19,9 @@
 #include <vector>
 
 #include "abcrypt.h"
-#include "version.hpp"
 
 int main(int argc, char *argv[]) {
   CLI::App app{"An example of reading the Argon2 parameters"};
-  app.set_version_flag("-V,--version", VERSION, "Print version");
   std::optional<std::string> input_filename;
   app.add_option("FILE", input_filename, "Input file");
   CLI11_PARSE(app, argc, argv);

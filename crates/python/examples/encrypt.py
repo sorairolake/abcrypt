@@ -8,8 +8,6 @@ import argparse
 import getpass
 import sys
 
-import version
-
 import abcrypt_py
 
 
@@ -17,9 +15,6 @@ def main() -> None:
     parser = argparse.ArgumentParser(
         prog="encrypt",
         description="An example of encrypting a file to the abcrypt encrypted data format",
-    )
-    parser.add_argument(
-        "-V", "--version", action="version", version=version.VERSION
     )
     parser.add_argument(
         "-o",

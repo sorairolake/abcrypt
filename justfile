@@ -176,7 +176,6 @@ bump-capi part:
 # Increment the version of the Wasm bindings
 [working-directory("crates/wasm")]
 bump-wasm part:
-    bump-my-version bump {{ part }}
     cargo set-version --bump {{ part }} -p abcrypt-wasm
 
 # Increment the version of the Python bindings

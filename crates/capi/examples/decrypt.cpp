@@ -22,14 +22,12 @@
 #include <vector>
 
 #include "abcrypt.h"
-#include "version.hpp"
 
 int main(int argc, char *argv[]) {
   CLI::App app{
       "An example of decrypting from the abcrypt encrypted data format"};
   std::optional<std::string> output_filename;
   app.add_option("-o,--output", output_filename, "Output the result to a file");
-  app.set_version_flag("-V,--version", VERSION, "Print version");
   std::string input_filename;
   app.add_option("FILE", input_filename, "Input file")->required();
   CLI11_PARSE(app, argc, argv);

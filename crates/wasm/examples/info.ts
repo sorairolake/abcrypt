@@ -10,11 +10,8 @@ import * as command from "@cliffy/command";
 
 import * as abcrypt from "../pkg/abcrypt_wasm.js";
 
-import { VERSION } from "./version.ts";
-
 const { args } = await new command.Command()
   .name("info")
-  .version(VERSION)
   .description("An example of reading the Argon2 parameters.")
   .arguments("[FILE:file]")
   .parse();

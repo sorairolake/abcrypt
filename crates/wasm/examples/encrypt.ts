@@ -10,11 +10,8 @@ import * as command from "@cliffy/command";
 
 import * as abcrypt from "../pkg/abcrypt_wasm.js";
 
-import { VERSION } from "./version.ts";
-
 const { args, options } = await new command.Command()
   .name("encrypt")
-  .version(VERSION)
   .description("An example of encrypting to the abcrypt encrypted data format.")
   .option("--argon2-type <TYPE:integer>", "Set the Argon2 type.", {
     default: 2,
