@@ -233,7 +233,8 @@ mod tests {
     use super::*;
 
     // Generated using `abcrypt` crate version 0.4.0.
-    const TEST_DATA_ENC: &[u8] = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
+    static TEST_DATA_ENC: &[u8] =
+        include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
 
     #[test]
     fn success() {
@@ -248,7 +249,7 @@ mod tests {
     #[test]
     fn memory_cost() {
         {
-            const TEST_DATA_ENC: &[u8] =
+            static TEST_DATA_ENC: &[u8] =
                 include_bytes!("../tests/data/v1/argon2d/v0x10/data.txt.abcrypt");
             let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
             let params = abcrypt_params_new();
@@ -259,7 +260,7 @@ mod tests {
             unsafe { abcrypt_params_free(params) };
         }
         {
-            const TEST_DATA_ENC: &[u8] =
+            static TEST_DATA_ENC: &[u8] =
                 include_bytes!("../tests/data/v1/argon2d/v0x13/data.txt.abcrypt");
             let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
             let params = abcrypt_params_new();
@@ -270,7 +271,7 @@ mod tests {
             unsafe { abcrypt_params_free(params) };
         }
         {
-            const TEST_DATA_ENC: &[u8] =
+            static TEST_DATA_ENC: &[u8] =
                 include_bytes!("../tests/data/v1/argon2i/v0x10/data.txt.abcrypt");
             let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
             let params = abcrypt_params_new();
@@ -281,7 +282,7 @@ mod tests {
             unsafe { abcrypt_params_free(params) };
         }
         {
-            const TEST_DATA_ENC: &[u8] =
+            static TEST_DATA_ENC: &[u8] =
                 include_bytes!("../tests/data/v1/argon2i/v0x13/data.txt.abcrypt");
             let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
             let params = abcrypt_params_new();
@@ -292,7 +293,7 @@ mod tests {
             unsafe { abcrypt_params_free(params) };
         }
         {
-            const TEST_DATA_ENC: &[u8] =
+            static TEST_DATA_ENC: &[u8] =
                 include_bytes!("../tests/data/v1/argon2id/v0x10/data.txt.abcrypt");
             let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
             let params = abcrypt_params_new();
@@ -316,7 +317,7 @@ mod tests {
     #[test]
     fn time_cost() {
         {
-            const TEST_DATA_ENC: &[u8] =
+            static TEST_DATA_ENC: &[u8] =
                 include_bytes!("../tests/data/v1/argon2d/v0x10/data.txt.abcrypt");
             let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
             let params = abcrypt_params_new();
@@ -327,7 +328,7 @@ mod tests {
             unsafe { abcrypt_params_free(params) };
         }
         {
-            const TEST_DATA_ENC: &[u8] =
+            static TEST_DATA_ENC: &[u8] =
                 include_bytes!("../tests/data/v1/argon2d/v0x13/data.txt.abcrypt");
             let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
             let params = abcrypt_params_new();
@@ -338,7 +339,7 @@ mod tests {
             unsafe { abcrypt_params_free(params) };
         }
         {
-            const TEST_DATA_ENC: &[u8] =
+            static TEST_DATA_ENC: &[u8] =
                 include_bytes!("../tests/data/v1/argon2i/v0x10/data.txt.abcrypt");
             let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
             let params = abcrypt_params_new();
@@ -349,7 +350,7 @@ mod tests {
             unsafe { abcrypt_params_free(params) };
         }
         {
-            const TEST_DATA_ENC: &[u8] =
+            static TEST_DATA_ENC: &[u8] =
                 include_bytes!("../tests/data/v1/argon2i/v0x13/data.txt.abcrypt");
             let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
             let params = abcrypt_params_new();
@@ -360,7 +361,7 @@ mod tests {
             unsafe { abcrypt_params_free(params) };
         }
         {
-            const TEST_DATA_ENC: &[u8] =
+            static TEST_DATA_ENC: &[u8] =
                 include_bytes!("../tests/data/v1/argon2id/v0x10/data.txt.abcrypt");
             let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
             let params = abcrypt_params_new();
@@ -384,7 +385,7 @@ mod tests {
     #[test]
     fn parallelism() {
         {
-            const TEST_DATA_ENC: &[u8] =
+            static TEST_DATA_ENC: &[u8] =
                 include_bytes!("../tests/data/v1/argon2d/v0x10/data.txt.abcrypt");
             let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
             let params = abcrypt_params_new();
@@ -395,7 +396,7 @@ mod tests {
             unsafe { abcrypt_params_free(params) };
         }
         {
-            const TEST_DATA_ENC: &[u8] =
+            static TEST_DATA_ENC: &[u8] =
                 include_bytes!("../tests/data/v1/argon2d/v0x13/data.txt.abcrypt");
             let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
             let params = abcrypt_params_new();
@@ -406,7 +407,7 @@ mod tests {
             unsafe { abcrypt_params_free(params) };
         }
         {
-            const TEST_DATA_ENC: &[u8] =
+            static TEST_DATA_ENC: &[u8] =
                 include_bytes!("../tests/data/v1/argon2i/v0x10/data.txt.abcrypt");
             let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
             let params = abcrypt_params_new();
@@ -417,7 +418,7 @@ mod tests {
             unsafe { abcrypt_params_free(params) };
         }
         {
-            const TEST_DATA_ENC: &[u8] =
+            static TEST_DATA_ENC: &[u8] =
                 include_bytes!("../tests/data/v1/argon2i/v0x13/data.txt.abcrypt");
             let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
             let params = abcrypt_params_new();
@@ -428,7 +429,7 @@ mod tests {
             unsafe { abcrypt_params_free(params) };
         }
         {
-            const TEST_DATA_ENC: &[u8] =
+            static TEST_DATA_ENC: &[u8] =
                 include_bytes!("../tests/data/v1/argon2id/v0x10/data.txt.abcrypt");
             let mut data: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
             let params = abcrypt_params_new();

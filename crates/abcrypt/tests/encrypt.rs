@@ -8,7 +8,7 @@ use abcrypt::{
 };
 
 const PASSPHRASE: &str = "passphrase";
-const TEST_DATA: &[u8] = include_bytes!("data/data.txt");
+static TEST_DATA: &[u8] = include_bytes!("data/data.txt");
 
 #[cfg(feature = "alloc")]
 #[test]

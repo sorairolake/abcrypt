@@ -79,14 +79,15 @@ mod tests {
     use crate::{HEADER_SIZE, TAG_SIZE};
 
     const PASSPHRASE: &str = "passphrase";
-    const TEST_DATA: &[u8] = include_bytes!("../tests/data/data.txt");
+    static TEST_DATA: &[u8] = include_bytes!("../tests/data/data.txt");
     // Generated using `abcrypt` crate version 0.4.0.
-    const TEST_DATA_ENC: &[u8] = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
+    static TEST_DATA_ENC: &[u8] =
+        include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
 
     #[test]
     fn success() {
         {
-            const TEST_DATA_ENC: &[u8] =
+            static TEST_DATA_ENC: &[u8] =
                 include_bytes!("../tests/data/v1/argon2d/v0x10/data.txt.abcrypt");
             let mut ciphertext: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
             let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
@@ -106,7 +107,7 @@ mod tests {
             assert_eq!(plaintext, TEST_DATA);
         }
         {
-            const TEST_DATA_ENC: &[u8] =
+            static TEST_DATA_ENC: &[u8] =
                 include_bytes!("../tests/data/v1/argon2d/v0x13/data.txt.abcrypt");
             let mut ciphertext: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
             let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
@@ -126,7 +127,7 @@ mod tests {
             assert_eq!(plaintext, TEST_DATA);
         }
         {
-            const TEST_DATA_ENC: &[u8] =
+            static TEST_DATA_ENC: &[u8] =
                 include_bytes!("../tests/data/v1/argon2i/v0x10/data.txt.abcrypt");
             let mut ciphertext: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
             let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
@@ -146,7 +147,7 @@ mod tests {
             assert_eq!(plaintext, TEST_DATA);
         }
         {
-            const TEST_DATA_ENC: &[u8] =
+            static TEST_DATA_ENC: &[u8] =
                 include_bytes!("../tests/data/v1/argon2i/v0x13/data.txt.abcrypt");
             let mut ciphertext: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
             let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
@@ -166,7 +167,7 @@ mod tests {
             assert_eq!(plaintext, TEST_DATA);
         }
         {
-            const TEST_DATA_ENC: &[u8] =
+            static TEST_DATA_ENC: &[u8] =
                 include_bytes!("../tests/data/v1/argon2id/v0x10/data.txt.abcrypt");
             let mut ciphertext: [u8; TEST_DATA_ENC.len()] = TEST_DATA_ENC.try_into().unwrap();
             let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
@@ -307,7 +308,7 @@ mod tests {
 
     #[test]
     fn unsupported_version() {
-        const TEST_DATA_V0: &[u8] = include_bytes!("../tests/data/v0/data.txt.abcrypt");
+        static TEST_DATA_V0: &[u8] = include_bytes!("../tests/data/v0/data.txt.abcrypt");
         let mut ciphertext: [u8; TEST_DATA_V0.len()] = TEST_DATA_V0.try_into().unwrap();
         let mut passphrase: [u8; PASSPHRASE.len()] = PASSPHRASE.as_bytes().try_into().unwrap();
         let mut plaintext = [u8::default(); TEST_DATA.len()];

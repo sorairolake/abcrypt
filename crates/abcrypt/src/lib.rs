@@ -140,7 +140,7 @@ pub use crate::{
 
 #[cfg(not(feature = "alloc"))]
 // 1 MiB.
-const MEMORY_BLOCKS: [Block; usize::pow(2, 8)] = [Block::new(); usize::pow(2, 8)];
+static MEMORY_BLOCKS: [Block; usize::pow(2, 8)] = [Block::new(); usize::pow(2, 8)];
 
 const AAD: &[u8] = &[];
 

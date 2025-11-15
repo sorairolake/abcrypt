@@ -7,7 +7,7 @@ use wasm_bindgen::JsValue;
 use wasm_bindgen_test::wasm_bindgen_test;
 
 const PASSPHRASE: &[u8] = b"passphrase";
-const TEST_DATA: &[u8] = include_bytes!("data/data.txt");
+static TEST_DATA: &[u8] = include_bytes!("data/data.txt");
 
 #[wasm_bindgen_test]
 fn success() {
