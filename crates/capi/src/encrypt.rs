@@ -220,7 +220,7 @@ mod tests {
     use crate::{HEADER_SIZE, TAG_SIZE, abcrypt_decrypt};
 
     const PASSPHRASE: &str = "passphrase";
-    static TEST_DATA: &[u8] = include_bytes!("../tests/data/data.txt");
+    const TEST_DATA: &[u8] = include_bytes!("../tests/data/data.txt");
 
     #[test]
     fn success() {

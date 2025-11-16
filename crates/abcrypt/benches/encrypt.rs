@@ -10,7 +10,7 @@ use abcrypt::{Encryptor, argon2::Params};
 use test::Bencher;
 
 const PASSPHRASE: &str = "passphrase";
-static TEST_DATA: &[u8] = include_bytes!("../tests/data/data.txt");
+const TEST_DATA: &[u8] = include_bytes!("../tests/data/data.txt");
 
 #[bench]
 fn encrypt(b: &mut Bencher) {

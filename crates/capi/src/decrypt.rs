@@ -79,7 +79,7 @@ mod tests {
     use crate::{HEADER_SIZE, TAG_SIZE};
 
     const PASSPHRASE: &str = "passphrase";
-    static TEST_DATA: &[u8] = include_bytes!("../tests/data/data.txt");
+    const TEST_DATA: &[u8] = include_bytes!("../tests/data/data.txt");
     // Generated using `abcrypt` crate version 0.4.0.
     static TEST_DATA_ENC: &[u8] =
         include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");

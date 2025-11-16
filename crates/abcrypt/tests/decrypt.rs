@@ -7,7 +7,7 @@ use abcrypt::{
 };
 
 const PASSPHRASE: &str = "passphrase";
-static TEST_DATA: &[u8] = include_bytes!("data/data.txt");
+const TEST_DATA: &[u8] = include_bytes!("data/data.txt");
 // Generated using `abcrypt` crate version 0.4.0.
 static TEST_DATA_ENC: &[u8] = include_bytes!("data/v1/argon2id/v0x13/data.txt.abcrypt");
 
