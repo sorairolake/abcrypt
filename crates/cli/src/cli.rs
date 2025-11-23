@@ -371,16 +371,17 @@ impl FromStr for MemoryCost {
         let byte = Byte::from_str(byte)
             .map(u64::from)
             .map_err(anyhow::Error::from)?;
-        match u32::try_from(byte / Byte::KIBIBYTE.as_u64()) {
-            Ok(kibibyte) if (Params::MIN_M_COST..=Params::MAX_M_COST).contains(&kibibyte) => {
-                Ok(Self(kibibyte))
-            }
-            _ => Err(anyhow!(
+        if let Ok(kibibyte) = u32::try_from(byte / Byte::KIBIBYTE.as_u64())
+            && (Params::MIN_M_COST..=Params::MAX_M_COST).contains(&kibibyte)
+        {
+            Ok(Self(kibibyte))
+        } else {
+            Err(anyhow!(
                 "{:.0} is not in {}..={}",
                 Byte::from(byte).get_adjusted_unit(Unit::KiB),
                 Self::MIN,
                 Self::MAX
-            )),
+            ))
         }
     }
 }

@@ -313,8 +313,6 @@ impl DerivedKey {
 
 #[cfg(test)]
 mod tests {
-    use core::str;
-
     use super::*;
 
     #[test]

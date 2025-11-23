@@ -20,6 +20,10 @@ project adheres to https://semver.org/[Semantic Versioning].
 
 * Add more archive formats for releases ({pull-request-url}/870[#870])
 
+=== Changed
+
+* Bump MSRV to 1.88.0 ({pull-request-url}/886[#886])
+
 == {compare-url}/abcrypt-cli-v0.5.0\...abcrypt-cli-v0.5.1[0.5.1] - 2025-07-28
 
 === Changed

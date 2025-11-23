@@ -40,7 +40,7 @@ jobs:
             os: windows-2025
             target: x86_64-pc-windows-msvc
           - toolchain-alias: msrv
-            toolchain: 1.85.0
+            toolchain: 1.88.0
           - toolchain-alias: stable
             toolchain: stable
     steps:
@@ -91,7 +91,7 @@ jobs:
             os: windows-2025
             target: x86_64-pc-windows-msvc
           - toolchain-alias: msrv
-            toolchain: 1.85.0
+            toolchain: 1.88.0
           - toolchain-alias: stable
             toolchain: stable
     steps:
@@ -136,7 +136,7 @@ jobs:
           - stable
         include:
           - toolchain-alias: msrv
-            toolchain: 1.85.0
+            toolchain: 1.88.0
           - toolchain-alias: stable
             toolchain: stable
     steps:
@@ -169,7 +169,7 @@ jobs:
           - stable
         include:
           - toolchain-alias: msrv
-            toolchain: 1.85.0
+            toolchain: 1.88.0
           - toolchain-alias: stable
             toolchain: stable
     steps:
@@ -215,7 +215,7 @@ jobs:
           - os-alias: windows
             os: windows-2025
           - rust-version-alias: msrv
-            rust-version: 1.85.0
+            rust-version: 1.88.0
           - rust-version-alias: stable
             rust-version: stable
           - python-version-alias: minimum
@@ -348,7 +348,7 @@ jobs:
           - stable
         include:
           - toolchain-alias: msrv
-            toolchain: 1.85.0
+            toolchain: 1.88.0
           - toolchain-alias: stable
             toolchain: stable
     steps:
