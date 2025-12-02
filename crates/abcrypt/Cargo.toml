@@ -29,7 +29,7 @@ required-features = ["std"]
 
 [[example]]
 name = "info"
-required-features = ["std", "serde"]
+required-features = ["serde", "std"]
 
 [dependencies]
 argon2 = { version = "0.5.3", default-features = false }
