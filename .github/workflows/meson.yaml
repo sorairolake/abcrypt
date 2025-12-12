@@ -11,6 +11,7 @@ on:
   push:
     paths:
       - "**/meson.build"
+  workflow_dispatch:
 
 jobs:
   meson:
