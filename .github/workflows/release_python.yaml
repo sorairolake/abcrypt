@@ -51,7 +51,7 @@ jobs:
           working-directory: "crates/python"
           sccache: "true"
       - name: Upload wheels
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: wheels-python-${{ matrix.python-version }}-linux-${{ matrix.target }}
           path: "crates/python/dist"
@@ -87,7 +87,7 @@ jobs:
           working-directory: "crates/python"
           sccache: "true"
       - name: Upload wheels
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: wheels-python-${{ matrix.python-version }}-macos-${{ matrix.target }}
           path: "crates/python/dist"
@@ -123,7 +123,7 @@ jobs:
           working-directory: "crates/python"
           sccache: "true"
       - name: Upload wheels
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: wheels-python-${{ matrix.python-version }}-windows-${{ matrix.target }}
           path: "crates/python/dist"
@@ -141,7 +141,7 @@ jobs:
           args: -o dist
           working-directory: "crates/python"
       - name: Upload sdist
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: wheels-sdist
           path: "crates/python/dist"
