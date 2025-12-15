@@ -135,7 +135,7 @@ jobs:
           fi
           rm -rv abcrypt-*/
       - name: Upload artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: "abcrypt-${{ needs.get-version.outputs.version }}-${{ matrix.target }}"
           path: "abcrypt-*-*"
