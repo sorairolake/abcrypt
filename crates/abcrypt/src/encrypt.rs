@@ -48,7 +48,6 @@ impl<'m> Encryptor<'m> {
     ///
     /// [OWASP Password Storage Cheat Sheet]: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html#argon2id
     #[cfg(feature = "alloc")]
-    #[inline]
     pub fn new(plaintext: &'m impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Self> {
         Self::with_params(plaintext, passphrase, Params::default())
     }
@@ -73,7 +72,6 @@ impl<'m> Encryptor<'m> {
     /// let params = Params::new(32, 3, 4, None).unwrap();
     /// let cipher = Encryptor::with_params(data, passphrase, params).unwrap();
     /// ```
-    #[inline]
     pub fn with_params(
         plaintext: &'m impl AsRef<[u8]>,
         passphrase: impl AsRef<[u8]>,
@@ -223,7 +221,6 @@ impl<'m> Encryptor<'m> {
     /// ```
     #[cfg(feature = "alloc")]
     #[must_use]
-    #[inline]
     pub fn encrypt_to_vec(&self) -> Vec<u8> {
         let mut buf = vec![u8::default(); self.out_len()];
         self.encrypt(&mut buf);
@@ -246,7 +243,6 @@ impl<'m> Encryptor<'m> {
     /// assert_eq!(cipher.out_len(), 178);
     /// ```
     #[must_use]
-    #[inline]
     pub const fn out_len(&self) -> usize {
         assert!(self.plaintext.len() <= (usize::MAX - HEADER_SIZE - TAG_SIZE));
         HEADER_SIZE + self.plaintext.len() + TAG_SIZE
@@ -279,12 +275,10 @@ impl<'m> Encryptor<'m> {
 ///
 /// [OWASP Password Storage Cheat Sheet]: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html#argon2id
 #[cfg(feature = "alloc")]
-#[inline]
 pub fn encrypt(plaintext: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Vec<u8>> {
     Encryptor::new(&plaintext, passphrase).map(|c| c.encrypt_to_vec())
 }
 
-#[allow(clippy::module_name_repetitions)]
 /// Encrypts `plaintext` with the specified [`Params`] and into a newly
 /// allocated [`Vec`].
 ///
@@ -311,7 +305,6 @@ pub fn encrypt(plaintext: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Res
 /// # assert_ne!(ciphertext, data);
 /// ```
 #[cfg(feature = "alloc")]
-#[inline]
 pub fn encrypt_with_params(
     plaintext: impl AsRef<[u8]>,
     passphrase: impl AsRef<[u8]>,
@@ -320,7 +313,6 @@ pub fn encrypt_with_params(
     Encryptor::with_params(&plaintext, passphrase, params).map(|c| c.encrypt_to_vec())
 }
 
-#[allow(clippy::module_name_repetitions)]
 /// Encrypts `plaintext` with the specified [`Algorithm`], [`Version`] and
 /// [`Params`] and into a newly allocated [`Vec`].
 ///
@@ -346,7 +338,6 @@ pub fn encrypt_with_params(
 /// # assert_ne!(ciphertext, data);
 /// ```
 #[cfg(feature = "alloc")]
-#[inline]
 pub fn encrypt_with_context(
     plaintext: impl AsRef<[u8]>,
     passphrase: impl AsRef<[u8]>,

@@ -7,8 +7,6 @@
 // Lint levels of rustc.
 #![forbid(unsafe_code)]
 #![deny(missing_docs)]
-// Lint levels of Clippy.
-#![allow(clippy::redundant_pub_crate)]
 
 mod error;
 mod params;
@@ -49,7 +47,6 @@ impl Format {
 /// # Errors
 ///
 /// Returns an error if the Argon2 context is invalid.
-#[inline]
 #[pyfunction]
 pub fn encrypt<'a>(plaintext: &[u8], passphrase: &[u8]) -> PyResult<Cow<'a, [u8]>> {
     let ciphertext = abcrypt::encrypt(plaintext, passphrase).map_err(Error::from)?;
@@ -68,7 +65,6 @@ pub fn encrypt<'a>(plaintext: &[u8], passphrase: &[u8]) -> PyResult<Cow<'a, [u8]
 ///
 /// - The Argon2 parameters are invalid.
 /// - The Argon2 context is invalid.
-#[inline]
 #[pyfunction]
 pub fn encrypt_with_params<'a>(
     plaintext: &[u8],
@@ -95,7 +91,6 @@ pub fn encrypt_with_params<'a>(
 /// - The Argon2 version is invalid.
 /// - The Argon2 parameters are invalid.
 /// - The Argon2 context is invalid.
-#[inline]
 #[pyfunction]
 pub fn encrypt_with_context<'a>(
     plaintext: &[u8],
@@ -139,7 +134,6 @@ pub fn encrypt_with_context<'a>(
 /// - The Argon2 context is invalid.
 /// - The MAC (authentication tag) of the header is invalid.
 /// - The MAC (authentication tag) of the ciphertext is invalid.
-#[inline]
 #[pyfunction]
 pub fn decrypt<'a>(ciphertext: &[u8], passphrase: &[u8]) -> PyResult<Cow<'a, [u8]>> {
     let plaintext = abcrypt::decrypt(ciphertext, passphrase).map_err(Error::from)?;

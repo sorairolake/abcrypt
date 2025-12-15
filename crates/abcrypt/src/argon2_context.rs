@@ -39,7 +39,6 @@ impl Argon2 {
     ///
     /// assert!(Argon2::new(ciphertext).is_ok());
     /// ```
-    #[inline]
     pub fn new(ciphertext: impl AsRef<[u8]>) -> Result<Self> {
         let inner = |ciphertext: &[u8]| -> Result<Self> {
             let header = Header::parse(ciphertext)?;
@@ -63,7 +62,6 @@ impl Argon2 {
     /// assert_eq!(argon2.variant(), Algorithm::Argon2id);
     /// ```
     #[must_use]
-    #[inline]
     pub const fn variant(&self) -> Algorithm {
         self.variant
     }
@@ -81,7 +79,6 @@ impl Argon2 {
     /// assert_eq!(argon2.version(), Version::V0x13);
     /// ```
     #[must_use]
-    #[inline]
     pub const fn version(&self) -> argon2::Version {
         self.version
     }
@@ -102,14 +99,12 @@ pub enum Variant {
 }
 
 impl From<Variant> for u32 {
-    #[inline]
     fn from(variant: Variant) -> Self {
         variant as Self
     }
 }
 
 impl From<Variant> for Algorithm {
-    #[inline]
     fn from(variant: Variant) -> Self {
         match variant {
             Variant::Argon2d => Self::Argon2d,
@@ -122,7 +117,6 @@ impl From<Variant> for Algorithm {
 impl TryFrom<u32> for Variant {
     type Error = Error;
 
-    #[inline]
     fn try_from(variant: u32) -> Result<Self> {
         match variant {
             0 => Ok(Self::Argon2d),
@@ -134,7 +128,6 @@ impl TryFrom<u32> for Variant {
 }
 
 impl From<Algorithm> for Variant {
-    #[inline]
     fn from(algorithm: Algorithm) -> Self {
         match algorithm {
             Algorithm::Argon2d => Self::Argon2d,
@@ -156,14 +149,12 @@ pub enum Version {
 }
 
 impl From<Version> for u32 {
-    #[inline]
     fn from(version: Version) -> Self {
         version as Self
     }
 }
 
 impl From<Version> for argon2::Version {
-    #[inline]
     fn from(version: Version) -> Self {
         match version {
             Version::V0x10 => Self::V0x10,
@@ -175,7 +166,6 @@ impl From<Version> for argon2::Version {
 impl TryFrom<u32> for Version {
     type Error = Error;
 
-    #[inline]
     fn try_from(version: u32) -> Result<Self> {
         match version {
             0x10 => Ok(Self::V0x10),
@@ -186,7 +176,6 @@ impl TryFrom<u32> for Version {
 }
 
 impl From<argon2::Version> for Version {
-    #[inline]
     fn from(version: argon2::Version) -> Self {
         match version {
             argon2::Version::V0x10 => Self::V0x10,

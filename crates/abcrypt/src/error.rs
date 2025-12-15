@@ -43,7 +43,6 @@ pub enum Error {
 }
 
 impl fmt::Display for Error {
-    #[inline]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::InvalidLength => write!(f, "encrypted data is shorter than 164 bytes"),
@@ -66,7 +65,6 @@ impl fmt::Display for Error {
 
 #[cfg(feature = "std")]
 impl std::error::Error for Error {
-    #[inline]
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         match self {
             Self::InvalidArgon2Params(err) | Self::InvalidArgon2Context(err) => Some(err),
@@ -78,14 +76,12 @@ impl std::error::Error for Error {
 }
 
 impl From<MacError> for Error {
-    #[inline]
     fn from(err: MacError) -> Self {
         Self::InvalidHeaderMac(err)
     }
 }
 
 impl From<chacha20poly1305::Error> for Error {
-    #[inline]
     fn from(err: chacha20poly1305::Error) -> Self {
         Self::InvalidMac(err)
     }

@@ -21,8 +21,6 @@ pub struct Params {
 
 impl Params {
     /// Creates a new Argon2 parameters.
-    #[must_use]
-    #[inline]
     fn new() -> Option<NonNull<Self>> {
         NonNull::new(Box::into_raw(Box::default()))
     }
@@ -32,7 +30,6 @@ impl Params {
     /// # Safety
     ///
     /// This must not violate the safety conditions of `Box::from_raw`.
-    #[inline]
     unsafe fn free(params: Option<NonNull<Self>>) {
         if let Some(p) = params {
             // SAFETY: just checked that `p` is not a null pointer.
@@ -59,7 +56,6 @@ impl Params {
     ///
     /// Behavior is undefined if `ciphertext` and `ciphertext_len` violates the
     /// safety conditions of `slice::from_raw_parts`.
-    #[must_use]
     unsafe fn read(
         ciphertext: Option<NonNull<u8>>,
         ciphertext_len: usize,
@@ -90,8 +86,6 @@ impl Params {
     /// Gets memory size in KiB.
     ///
     /// Returns `0` if `params` is null.
-    #[must_use]
-    #[inline]
     fn memory_cost(params: Option<NonNull<Self>>) -> u32 {
         // SAFETY: just checked that `params` is not a null pointer.
         params
@@ -102,8 +96,6 @@ impl Params {
     /// Gets number of iterations.
     ///
     /// Returns `0` if `params` is null.
-    #[must_use]
-    #[inline]
     fn time_cost(params: Option<NonNull<Self>>) -> u32 {
         // SAFETY: just checked that `params` is not a null pointer.
         params
@@ -114,8 +106,6 @@ impl Params {
     /// Gets degree of parallelism.
     ///
     /// Returns `0` if `params` is null.
-    #[must_use]
-    #[inline]
     fn parallelism(params: Option<NonNull<Self>>) -> u32 {
         // SAFETY: just checked that `params` is not a null pointer.
         params
@@ -125,7 +115,6 @@ impl Params {
 }
 
 impl Default for Params {
-    #[inline]
     fn default() -> Self {
         let (memory_cost, time_cost, parallelism) = (
             argon2::Params::DEFAULT_M_COST,
@@ -141,7 +130,6 @@ impl Default for Params {
 }
 
 impl From<abcrypt::Params> for Params {
-    #[inline]
     fn from(params: abcrypt::Params) -> Self {
         let (memory_cost, time_cost, parallelism) = (
             params.memory_cost(),
@@ -157,7 +145,6 @@ impl From<abcrypt::Params> for Params {
 }
 
 /// Creates a new Argon2 parameters.
-#[must_use]
 #[unsafe(no_mangle)]
 pub extern "C-unwind" fn abcrypt_params_new() -> Option<NonNull<Params>> {
     Params::new()
@@ -191,7 +178,6 @@ pub unsafe extern "C-unwind" fn abcrypt_params_free(params: Option<NonNull<Param
 ///
 /// Behavior is undefined if `ciphertext` and `ciphertext_len` violates the
 /// safety conditions of `slice::from_raw_parts`.
-#[must_use]
 #[unsafe(no_mangle)]
 pub unsafe extern "C-unwind" fn abcrypt_params_read(
     ciphertext: Option<NonNull<u8>>,
@@ -204,7 +190,6 @@ pub unsafe extern "C-unwind" fn abcrypt_params_read(
 /// Gets memory size in KiB.
 ///
 /// Returns `0` if `params` is null.
-#[must_use]
 #[unsafe(no_mangle)]
 pub extern "C-unwind" fn abcrypt_params_memory_cost(params: Option<NonNull<Params>>) -> u32 {
     Params::memory_cost(params)
@@ -213,7 +198,6 @@ pub extern "C-unwind" fn abcrypt_params_memory_cost(params: Option<NonNull<Param
 /// Gets number of iterations.
 ///
 /// Returns `0` if `params` is null.
-#[must_use]
 #[unsafe(no_mangle)]
 pub extern "C-unwind" fn abcrypt_params_time_cost(params: Option<NonNull<Params>>) -> u32 {
     Params::time_cost(params)
@@ -222,7 +206,6 @@ pub extern "C-unwind" fn abcrypt_params_time_cost(params: Option<NonNull<Params>
 /// Gets degree of parallelism.
 ///
 /// Returns `0` if `params` is null.
-#[must_use]
 #[unsafe(no_mangle)]
 pub extern "C-unwind" fn abcrypt_params_parallelism(params: Option<NonNull<Params>>) -> u32 {
     Params::parallelism(params)

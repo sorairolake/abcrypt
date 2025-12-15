@@ -13,7 +13,6 @@ use abcrypt::{
 
 use crate::ErrorCode;
 
-#[allow(clippy::module_name_repetitions)]
 /// Encrypts `plaintext` and write to `out`.
 ///
 /// This uses the recommended Argon2 parameters according to the OWASP Password

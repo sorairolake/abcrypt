@@ -158,7 +158,6 @@ impl<'c> Decryptor<'c> {
     /// # assert_eq!(plaintext, data);
     /// ```
     #[cfg(feature = "alloc")]
-    #[inline]
     pub fn decrypt_to_vec(&self) -> Result<Vec<u8>> {
         let mut buf = vec![u8::default(); self.out_len()];
         self.decrypt(&mut buf)?;
@@ -179,7 +178,6 @@ impl<'c> Decryptor<'c> {
     /// assert_eq!(cipher.out_len(), 14);
     /// ```
     #[must_use]
-    #[inline]
     pub const fn out_len(&self) -> usize {
         self.ciphertext.len()
     }
@@ -216,7 +214,6 @@ impl<'c> Decryptor<'c> {
 /// # assert_eq!(plaintext, data);
 /// ```
 #[cfg(feature = "alloc")]
-#[inline]
 pub fn decrypt(ciphertext: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Vec<u8>> {
     Decryptor::new(&ciphertext, passphrase).and_then(|c| c.decrypt_to_vec())
 }

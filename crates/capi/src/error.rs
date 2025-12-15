@@ -10,7 +10,6 @@ use abcrypt::Error;
 
 /// The error code for the abcrypt encrypted data format.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-#[allow(clippy::module_name_repetitions)]
 #[repr(C)]
 pub enum ErrorCode {
     /// Everything is ok.
@@ -61,7 +60,6 @@ impl ErrorCode {
     ///
     /// Behavior is undefined if `buf` and `buf_len` violates the safety
     /// conditions of `slice::from_raw_parts`.
-    #[must_use]
     unsafe fn error_message(self, buf: Option<NonNull<u8>>, buf_len: usize) -> Self {
         let message = CString::new(self.to_string())
             .expect("error message should not contain the null character");
@@ -83,7 +81,6 @@ impl ErrorCode {
 }
 
 impl fmt::Display for ErrorCode {
-    #[inline]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::Ok => write!(f, "everything is ok"),
@@ -103,7 +100,6 @@ impl fmt::Display for ErrorCode {
 }
 
 impl From<Error> for ErrorCode {
-    #[inline]
     fn from(error: Error) -> Self {
         match error {
             Error::InvalidLength => Self::InvalidLength,
@@ -130,7 +126,6 @@ impl From<Error> for ErrorCode {
 ///
 /// Behavior is undefined if `buf` and `buf_len` violates the safety conditions
 /// of `slice::from_raw_parts`.
-#[must_use]
 #[unsafe(no_mangle)]
 pub unsafe extern "C-unwind" fn abcrypt_error_message(
     error_code: ErrorCode,

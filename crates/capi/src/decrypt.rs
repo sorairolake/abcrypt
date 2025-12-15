@@ -10,7 +10,6 @@ use abcrypt::Decryptor;
 
 use crate::ErrorCode;
 
-#[allow(clippy::module_name_repetitions)]
 /// Decrypts `ciphertext` and write to `out`.
 ///
 /// # Errors

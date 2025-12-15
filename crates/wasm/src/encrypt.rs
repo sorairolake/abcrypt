@@ -24,7 +24,6 @@ pub fn encrypt(plaintext: &[u8], passphrase: &[u8]) -> Result<Vec<u8>, JsError> 
     abcrypt::encrypt(plaintext, passphrase).map_err(JsError::from)
 }
 
-#[allow(clippy::module_name_repetitions)]
 /// Encrypts `plaintext` with the specified Argon2 parameters and into a newly
 /// allocated `Uint8Array`.
 ///
@@ -49,7 +48,6 @@ pub fn encrypt_with_params(
     abcrypt::encrypt_with_params(plaintext, passphrase, params).map_err(JsError::from)
 }
 
-#[allow(clippy::module_name_repetitions)]
 /// Encrypts `plaintext` with the specified Argon2 type, Argon2 version and
 /// Argon2 parameters and into a newly allocated `Uint8Array`.
 ///

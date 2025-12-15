@@ -28,7 +28,6 @@ impl Params {
     /// - The Argon2 type is invalid.
     /// - The Argon2 version is invalid.
     /// - The Argon2 parameters are invalid.
-    #[inline]
     #[new]
     pub fn new(ciphertext: &[u8]) -> PyResult<Self> {
         let params = abcrypt::Params::new(ciphertext)
@@ -39,7 +38,6 @@ impl Params {
 
     /// Gets memory size in KiB.
     #[must_use]
-    #[inline]
     #[getter]
     pub const fn memory_cost(&self) -> u32 {
         self.0.memory_cost()
@@ -47,7 +45,6 @@ impl Params {
 
     /// Gets number of iterations.
     #[must_use]
-    #[inline]
     #[getter]
     pub const fn time_cost(&self) -> u32 {
         self.0.time_cost()
@@ -55,7 +52,6 @@ impl Params {
 
     /// Gets degree of parallelism.
     #[must_use]
-    #[inline]
     #[getter]
     pub const fn parallelism(&self) -> u32 {
         self.0.parallelism()
