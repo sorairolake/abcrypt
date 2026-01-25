@@ -25,14 +25,13 @@ struct Opt {
     /// Input file.
     ///
     /// If [FILE] is not specified, data will be read from standard input.
-    #[arg(value_name("FILE"))]
-    input: Option<PathBuf>,
+    file: Option<PathBuf>,
 }
 
 fn main() -> anyhow::Result<()> {
     let opt = Opt::parse();
 
-    let ciphertext = if let Some(file) = opt.input {
+    let ciphertext = if let Some(file) = opt.file {
         fs::read(&file).with_context(|| format!("could not read data from {}", file.display()))
     } else {
         let mut buf = Vec::new();

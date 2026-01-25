@@ -30,9 +30,9 @@ pub fn run() -> anyhow::Result<()> {
     match opt.command {
         Command::Encrypt(arg) => {
             if arg.passphrase_from_stdin {
-                ensure_stdin_does_not_conflict(arg.input.as_deref())?;
+                ensure_stdin_does_not_conflict(arg.file.as_deref())?;
             }
-            let input = input::read(arg.input.as_deref())?;
+            let input = input::read(arg.file.as_deref())?;
 
             let passphrase = match (
                 arg.passphrase_from_tty,
@@ -71,9 +71,9 @@ pub fn run() -> anyhow::Result<()> {
         }
         Command::Decrypt(arg) => {
             if arg.passphrase_from_stdin {
-                ensure_stdin_does_not_conflict(arg.input.as_deref())?;
+                ensure_stdin_does_not_conflict(arg.file.as_deref())?;
             }
-            let input = input::read(arg.input.as_deref())?;
+            let input = input::read(arg.file.as_deref())?;
 
             let passphrase = match (
                 arg.passphrase_from_tty,
@@ -113,7 +113,7 @@ pub fn run() -> anyhow::Result<()> {
             }
         }
         Command::Argon2(arg) => {
-            let input = input::read(arg.input.as_deref())?;
+            let input = input::read(arg.file.as_deref())?;
 
             let argon2 =
                 Argon2::new(input).context("data is not a valid abcrypt encrypted file")?;
@@ -121,7 +121,7 @@ pub fn run() -> anyhow::Result<()> {
             eprintln!("Version: {:#x}", u32::from(argon2.version()));
         }
         Command::Information(arg) => {
-            let input = input::read(arg.input.as_deref())?;
+            let input = input::read(arg.file.as_deref())?;
 
             let params = params::get(&input)?;
             #[cfg(feature = "json")]

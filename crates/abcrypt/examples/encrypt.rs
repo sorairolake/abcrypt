@@ -57,8 +57,7 @@ struct Opt {
     /// Input file.
     ///
     /// If [FILE] is not specified, data will be read from standard input.
-    #[arg(value_name("FILE"))]
-    input: Option<PathBuf>,
+    file: Option<PathBuf>,
 }
 
 #[derive(Clone, Debug, Default, ValueEnum)]
@@ -108,7 +107,7 @@ impl From<Argon2Version> for Version {
 fn main() -> anyhow::Result<()> {
     let opt = Opt::parse();
 
-    let plaintext = if let Some(file) = opt.input {
+    let plaintext = if let Some(file) = opt.file {
         fs::read(&file).with_context(|| format!("could not read data from {}", file.display()))
     } else {
         let mut buf = Vec::new();

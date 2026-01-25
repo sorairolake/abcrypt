@@ -146,8 +146,8 @@ pub struct Encrypt {
     /// Input file.
     ///
     /// If [FILE] is not specified, data will be read from standard input.
-    #[arg(value_name("FILE"), value_hint(ValueHint::FilePath))]
-    pub input: Option<PathBuf>,
+    #[arg(value_hint(ValueHint::FilePath))]
+    pub file: Option<PathBuf>,
 }
 
 #[derive(Args, Debug)]
@@ -192,8 +192,8 @@ pub struct Decrypt {
     /// Input file.
     ///
     /// If [FILE] is not specified, data will be read from standard input.
-    #[arg(value_name("FILE"), value_hint(ValueHint::FilePath))]
-    pub input: Option<PathBuf>,
+    #[arg(value_hint(ValueHint::FilePath))]
+    pub file: Option<PathBuf>,
 }
 
 #[derive(Args, Debug)]
@@ -201,8 +201,8 @@ pub struct Argon2 {
     /// Input file.
     ///
     /// If [FILE] is not specified, data will be read from standard input.
-    #[arg(value_name("FILE"), value_hint(ValueHint::FilePath))]
-    pub input: Option<PathBuf>,
+    #[arg(value_hint(ValueHint::FilePath))]
+    pub file: Option<PathBuf>,
 }
 
 #[derive(Args, Debug)]
@@ -215,8 +215,15 @@ pub struct Information {
     /// Input file.
     ///
     /// If [FILE] is not specified, data will be read from standard input.
-    #[arg(value_name("FILE"), value_hint(ValueHint::FilePath))]
-    pub input: Option<PathBuf>,
+    #[arg(value_hint(ValueHint::FilePath))]
+    pub file: Option<PathBuf>,
+}
+
+#[derive(Args, Debug)]
+pub struct Completion {
+    /// Shell to generate completion for.
+    #[arg(value_enum, ignore_case(true))]
+    pub shell: Shell,
 }
 
 impl Opt {
@@ -229,13 +236,6 @@ impl Opt {
             &mut io::stdout(),
         );
     }
-}
-
-#[derive(Args, Debug)]
-pub struct Completion {
-    /// Shell to generate completion for.
-    #[arg(value_enum, ignore_case(true))]
-    pub shell: Shell,
 }
 
 #[derive(Clone, Debug, ValueEnum)]
