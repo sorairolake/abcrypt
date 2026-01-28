@@ -53,7 +53,7 @@ impl fmt::Display for Error {
             Self::UnknownVersion(version) => write!(f, "unknown version number `{version}`"),
             Self::InvalidArgon2Type(_) => write!(f, "invalid Argon2 type"),
             Self::InvalidArgon2Version(version) => {
-                write!(f, "invalid Argon2 version `{version:#x}`")
+                write!(f, "invalid Argon2 version `{version:#X}`")
             }
             Self::InvalidArgon2Params(_) => write!(f, "invalid Argon2 parameters"),
             Self::InvalidArgon2Context(_) => write!(f, "invalid Argon2 context"),
@@ -646,7 +646,7 @@ mod tests {
         );
         assert_eq!(
             format!("{}", Error::InvalidArgon2Version(u32::MAX)),
-            "invalid Argon2 version `0xffffffff`"
+            "invalid Argon2 version `0xFFFFFFFF`"
         );
         assert_eq!(
             format!("{}", Error::InvalidArgon2Params(argon2::Error::AdTooLong)),

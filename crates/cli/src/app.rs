@@ -118,7 +118,7 @@ pub fn run() -> anyhow::Result<()> {
             let argon2 =
                 Argon2::new(input).context("data is not a valid abcrypt encrypted file")?;
             eprintln!("Type: {:?}", argon2.variant());
-            eprintln!("Version: {:#x}", u32::from(argon2.version()));
+            eprintln!("Version: {:#X}", u32::from(argon2.version()));
         }
         Command::Information(arg) => {
             let input = input::read(arg.file.as_deref())?;

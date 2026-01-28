@@ -259,8 +259,8 @@ mod tests {
             Error::InvalidArgon2Version(u32::MIN)
         );
         assert_eq!(
-            Version::try_from(0xf).unwrap_err(),
-            Error::InvalidArgon2Version(0xf)
+            Version::try_from(0xF).unwrap_err(),
+            Error::InvalidArgon2Version(0xF)
         );
         assert_eq!(
             Version::try_from(0x11).unwrap_err(),
