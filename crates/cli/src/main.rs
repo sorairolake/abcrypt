@@ -4,8 +4,6 @@
 
 // Lint levels of rustc.
 #![forbid(unsafe_code)]
-// Lint levels of Clippy.
-#![allow(clippy::multiple_crate_versions)]
 
 mod app;
 mod cli;
