@@ -55,3 +55,7 @@ ignore = [
   "PLR2004",
 ]
 select = ["ALL"]
+
+[tool.ruff.format]
+docstring-code-format = true
+line-ending = "lf"
