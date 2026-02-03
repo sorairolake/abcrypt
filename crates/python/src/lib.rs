@@ -24,7 +24,7 @@ pub use crate::params::Params;
 
 /// Specifications of the abcrypt encrypted data format.
 #[derive(Clone, Copy, Debug)]
-#[pyclass]
+#[pyclass(skip_from_py_object)]
 pub struct Format;
 
 #[pymethods]
