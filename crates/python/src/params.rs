@@ -10,7 +10,7 @@ use crate::error::Error;
 
 /// The Argon2 parameters used for the encrypted data.
 #[derive(Clone, Copy, Debug)]
-#[pyclass]
+#[pyclass(skip_from_py_object)]
 pub struct Params(abcrypt::Params);
 
 #[pymethods]
