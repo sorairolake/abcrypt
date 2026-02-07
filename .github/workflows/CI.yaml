@@ -329,7 +329,6 @@ jobs:
       - name: Setup uv
         uses: astral-sh/setup-uv@v7.2.1
         with:
-          python-version: "3.14" # latest stable version of Python 3
           working-directory: crates/python
           enable-cache: true
       - name: Run formatter in check mode
