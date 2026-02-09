@@ -5,11 +5,12 @@
     "jsr:@cliffy/flags@1.0.0-rc.8": "1.0.0-rc.8",
     "jsr:@cliffy/internal@1.0.0-rc.8": "1.0.0-rc.8",
     "jsr:@cliffy/table@1.0.0-rc.8": "1.0.0-rc.8",
-    "jsr:@std/bytes@^1.0.5": "1.0.6",
-    "jsr:@std/cli@^1.0.23": "1.0.23",
-    "jsr:@std/fmt@~1.0.2": "1.0.8",
+    "jsr:@std/bytes@^1.0.6": "1.0.6",
+    "jsr:@std/cli@^1.0.27": "1.0.27",
+    "jsr:@std/fmt@^1.0.9": "1.0.9",
+    "jsr:@std/fmt@~1.0.2": "1.0.9",
     "jsr:@std/internal@^1.0.12": "1.0.12",
-    "jsr:@std/io@~0.225.2": "0.225.2",
+    "jsr:@std/io@~0.225.3": "0.225.3",
     "jsr:@std/text@~1.0.7": "1.0.16"
   },
   "jsr": {
@@ -19,7 +20,7 @@
         "jsr:@cliffy/flags",
         "jsr:@cliffy/internal",
         "jsr:@cliffy/table",
-        "jsr:@std/fmt",
+        "jsr:@std/fmt@~1.0.2",
         "jsr:@std/text"
       ]
     },
@@ -35,26 +36,30 @@
     "@cliffy/table@1.0.0-rc.8": {
       "integrity": "8bbcdc2ba5e0061b4b13810a24e6f5c6ab19c09f0cce9eb691ccd76c7c6c9db5",
       "dependencies": [
-        "jsr:@std/fmt"
+        "jsr:@std/fmt@~1.0.2"
       ]
     },
     "@std/bytes@1.0.6": {
       "integrity": "f6ac6adbd8ccd99314045f5703e23af0a68d7f7e58364b47d2c7f408aeb5820a"
     },
-    "@std/cli@1.0.23": {
-      "integrity": "bf95b7a9425ba2af1ae5a6359daf58c508f2decf711a76ed2993cd352498ccca",
+    "@std/cli@1.0.27": {
+      "integrity": "eba97edd0891871a7410e835dd94b3c260c709cca5983df2689c25a71fbe04de",
       "dependencies": [
+        "jsr:@std/fmt@^1.0.9",
         "jsr:@std/internal"
       ]
     },
     "@std/fmt@1.0.8": {
       "integrity": "71e1fc498787e4434d213647a6e43e794af4fd393ef8f52062246e06f7e372b7"
     },
+    "@std/fmt@1.0.9": {
+      "integrity": "2487343e8899fb2be5d0e3d35013e54477ada198854e52dd05ed0422eddcabe0"
+    },
     "@std/internal@1.0.12": {
       "integrity": "972a634fd5bc34b242024402972cd5143eac68d8dffaca5eaa4dba30ce17b027"
     },
-    "@std/io@0.225.2": {
-      "integrity": "3c740cd4ee4c082e6cfc86458f47e2ab7cb353dc6234d5e9b1f91a2de5f4d6c7",
+    "@std/io@0.225.3": {
+      "integrity": "27b07b591384d12d7b568f39e61dff966b8230559122df1e9fd11cc068f7ddd1",
       "dependencies": [
         "jsr:@std/bytes"
       ]
@@ -66,8 +71,8 @@
   "workspace": {
     "dependencies": [
       "jsr:@cliffy/command@^1.0.0-rc.8",
-      "jsr:@std/cli@^1.0.23",
-      "jsr:@std/io@~0.225.2"
+      "jsr:@std/cli@^1.0.27",
+      "jsr:@std/io@~0.225.3"
     ]
   }
 }
