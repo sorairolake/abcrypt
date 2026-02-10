@@ -18,8 +18,8 @@ dev = [
 [package.metadata.requires-dev]
 dev = [
     { name = "pytest", specifier = ">=9.0.2" },
-    { name = "ruff", specifier = ">=0.14.14" },
-    { name = "ty", specifier = ">=0.0.14" },
+    { name = "ruff", specifier = ">=0.15.0" },
+    { name = "ty", specifier = ">=0.0.15" },
 ]
 
 [[package]]
