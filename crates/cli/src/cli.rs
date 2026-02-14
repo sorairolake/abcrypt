@@ -62,7 +62,7 @@ pub enum Command {
 }
 
 #[derive(Args, Debug)]
-#[allow(clippy::struct_excessive_bools)]
+#[expect(clippy::struct_excessive_bools)]
 #[command(group(ArgGroup::new("passphrase")))]
 pub struct Encrypt {
     /// Output the result to a file.
@@ -254,7 +254,7 @@ pub enum Shell {
     /// Nushell.
     Nushell,
 
-    #[allow(clippy::enum_variant_names)]
+    #[expect(clippy::enum_variant_names)]
     /// PowerShell.
     PowerShell,
 

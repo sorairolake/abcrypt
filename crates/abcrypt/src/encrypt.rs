@@ -227,7 +227,7 @@ impl<'m> Encryptor<'m> {
         buf
     }
 
-    #[allow(clippy::missing_panics_doc)]
+    #[expect(clippy::missing_panics_doc)]
     /// Returns the number of output bytes of the encrypted data.
     ///
     /// # Examples

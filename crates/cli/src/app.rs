@@ -23,7 +23,7 @@ fn ensure_stdin_does_not_conflict(path: Option<&Path>) -> anyhow::Result<()> {
 }
 
 /// Runs the program and returns the result.
-#[allow(clippy::too_many_lines)]
+#[expect(clippy::too_many_lines)]
 pub fn run() -> anyhow::Result<()> {
     let opt = Opt::parse();
 
