@@ -34,7 +34,7 @@ fmt:
 
 # Run the linter
 clippy:
-    cargo clippy --all-features -- -D warnings
+    cargo +nightly clippy --all-features -- -D warnings
 
 # Apply lint suggestions
 clippy-fix:
