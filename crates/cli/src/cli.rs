@@ -489,6 +489,8 @@ impl TypedValueParser for ParallelismValueParser {
 
 #[cfg(test)]
 mod tests {
+    use byte_unit::ParseError;
+
     use super::*;
 
     #[test]
@@ -560,8 +562,6 @@ mod tests {
 
     #[test]
     fn from_str_memory_cost_with_invalid_unit() {
-        use byte_unit::ParseError;
-
         assert!(matches!(
             MemoryCost::from_str("19922944 A")
                 .unwrap_err()
@@ -580,8 +580,6 @@ mod tests {
 
     #[test]
     fn from_str_memory_cost_with_nan() {
-        use byte_unit::ParseError;
-
         assert!(matches!(
             MemoryCost::from_str("n B")
                 .unwrap_err()

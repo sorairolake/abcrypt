@@ -5,6 +5,8 @@
 //! Error types for this crate.
 
 use core::{fmt, result};
+#[cfg(feature = "std")]
+use std::error;
 
 use blake2::digest::MacError;
 
@@ -64,8 +66,8 @@ impl fmt::Display for Error {
 }
 
 #[cfg(feature = "std")]
-impl std::error::Error for Error {
-    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+impl error::Error for Error {
+    fn source(&self) -> Option<&(dyn error::Error + 'static)> {
         match self {
             Self::InvalidArgon2Params(err) | Self::InvalidArgon2Context(err) => Some(err),
             Self::InvalidHeaderMac(err) => Some(err),
