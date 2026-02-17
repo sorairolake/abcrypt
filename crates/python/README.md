@@ -23,10 +23,6 @@ To install this library:
 pip install abcrypt-py
 ```
 
-### Documentation
-
-See the [documentation][docs-url] for more details.
-
 ## Minimum supported Rust version
 
 The minimum supported Rust version (MSRV) of this library is v1.88.0.

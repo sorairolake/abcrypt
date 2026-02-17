@@ -32,10 +32,6 @@ wasm-pack build
 
 This will generate build artifacts in the `pkg` directory.
 
-### Documentation
-
-See the [documentation][docs-url] for more details.
-
 ## Minimum supported Rust version
 
 The minimum supported Rust version (MSRV) of this library is v1.88.0.
