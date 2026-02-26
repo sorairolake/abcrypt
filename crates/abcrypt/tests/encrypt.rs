@@ -233,7 +233,7 @@ fn success_with_context() {
 fn success_to_vec() {
     let ciphertext =
         Encryptor::with_params(&TEST_DATA, PASSPHRASE, Params::new(32, 3, 4, None).unwrap())
-            .map(|c| c.encrypt_to_vec())
+            .map(Encryptor::encrypt_to_vec)
             .unwrap();
     assert_ne!(ciphertext, TEST_DATA);
     assert_eq!(ciphertext.len(), TEST_DATA.len() + HEADER_SIZE + TAG_SIZE);
@@ -244,7 +244,7 @@ fn success_to_vec() {
     assert_eq!(params.parallelism(), 4);
 
     let plaintext = Decryptor::new(&ciphertext, PASSPHRASE)
-        .and_then(|c| c.decrypt_to_vec())
+        .and_then(Decryptor::decrypt_to_vec)
         .unwrap();
     assert_eq!(plaintext, TEST_DATA);
 }

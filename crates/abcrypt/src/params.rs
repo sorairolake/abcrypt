@@ -64,7 +64,7 @@ impl Params {
     /// assert_eq!(params.memory_cost(), 32);
     /// ```
     #[must_use]
-    pub const fn memory_cost(&self) -> u32 {
+    pub const fn memory_cost(self) -> u32 {
         self.memory_cost
     }
 
@@ -81,7 +81,7 @@ impl Params {
     /// assert_eq!(params.time_cost(), 3);
     /// ```
     #[must_use]
-    pub const fn time_cost(&self) -> u32 {
+    pub const fn time_cost(self) -> u32 {
         self.time_cost
     }
 
@@ -98,7 +98,7 @@ impl Params {
     /// assert_eq!(params.parallelism(), 4);
     /// ```
     #[must_use]
-    pub const fn parallelism(&self) -> u32 {
+    pub const fn parallelism(self) -> u32 {
         self.parallelism
     }
 }

@@ -80,7 +80,7 @@ fn success() {
 #[test]
 fn success_to_vec() {
     let plaintext = Decryptor::new(&TEST_DATA_ENC, PASSPHRASE)
-        .and_then(|c| c.decrypt_to_vec())
+        .and_then(Decryptor::decrypt_to_vec)
         .unwrap();
     assert_eq!(plaintext, TEST_DATA);
 }

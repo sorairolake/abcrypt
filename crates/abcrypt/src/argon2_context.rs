@@ -62,7 +62,7 @@ impl Argon2 {
     /// assert_eq!(argon2.variant(), Algorithm::Argon2id);
     /// ```
     #[must_use]
-    pub const fn variant(&self) -> Algorithm {
+    pub const fn variant(self) -> Algorithm {
         self.variant
     }
 
@@ -79,7 +79,7 @@ impl Argon2 {
     /// assert_eq!(argon2.version(), Version::V0x13);
     /// ```
     #[must_use]
-    pub const fn version(&self) -> argon2::Version {
+    pub const fn version(self) -> argon2::Version {
         self.version
     }
 }

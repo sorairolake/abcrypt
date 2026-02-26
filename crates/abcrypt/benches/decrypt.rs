@@ -17,7 +17,7 @@ static TEST_DATA_ENC: &[u8] = include_bytes!("../tests/data/v1/argon2id/v0x13/da
 fn decrypt(b: &mut Bencher) {
     b.iter(|| {
         Decryptor::new(&TEST_DATA_ENC, PASSPHRASE)
-            .and_then(|c| c.decrypt_to_vec())
+            .and_then(Decryptor::decrypt_to_vec)
             .unwrap()
     });
 }

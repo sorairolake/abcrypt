@@ -120,8 +120,8 @@ impl<'c> Decryptor<'c> {
     /// cipher.decrypt(&mut buf).unwrap();
     /// # assert_eq!(buf, *data);
     /// ```
-    pub fn decrypt<B: AsMut<[u8]> + ?Sized>(&self, buf: &mut B) -> Result<()> {
-        let inner = |decryptor: &Self, buf: &mut [u8]| -> Result<()> {
+    pub fn decrypt<B: AsMut<[u8]> + ?Sized>(self, buf: &mut B) -> Result<()> {
+        let inner = |decryptor: Self, buf: &mut [u8]| -> Result<()> {
             buf.copy_from_slice(decryptor.ciphertext);
 
             let cipher = XChaCha20Poly1305::new(&decryptor.dk.encrypt());
@@ -157,7 +157,7 @@ impl<'c> Decryptor<'c> {
     /// # assert_eq!(plaintext, data);
     /// ```
     #[cfg(feature = "alloc")]
-    pub fn decrypt_to_vec(&self) -> Result<Vec<u8>> {
+    pub fn decrypt_to_vec(self) -> Result<Vec<u8>> {
         let mut buf = vec![u8::default(); self.out_len()];
         self.decrypt(&mut buf)?;
         Ok(buf)
@@ -214,5 +214,5 @@ impl<'c> Decryptor<'c> {
 /// ```
 #[cfg(feature = "alloc")]
 pub fn decrypt(ciphertext: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Vec<u8>> {
-    Decryptor::new(&ciphertext, passphrase).and_then(|c| c.decrypt_to_vec())
+    Decryptor::new(&ciphertext, passphrase).and_then(Decryptor::decrypt_to_vec)
 }

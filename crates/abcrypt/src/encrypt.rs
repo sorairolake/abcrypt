@@ -189,17 +189,17 @@ impl<'m> Encryptor<'m> {
     /// cipher.encrypt(&mut buf);
     /// # assert_ne!(buf.as_slice(), data);
     /// ```
-    pub fn encrypt<B: AsMut<[u8]> + ?Sized>(&self, buf: &mut B) {
-        let inner = |encryptor: &Self, buf: &mut [u8]| {
+    pub fn encrypt<B: AsMut<[u8]> + ?Sized>(self, buf: &mut B) {
+        let inner = |encryptor: Self, buf: &mut [u8]| {
             buf[..HEADER_SIZE].copy_from_slice(&encryptor.header.as_bytes());
-            let payload = &mut buf[HEADER_SIZE..(self.out_len() - TAG_SIZE)];
+            let payload = &mut buf[HEADER_SIZE..(encryptor.out_len() - TAG_SIZE)];
             payload.copy_from_slice(encryptor.plaintext);
 
             let cipher = XChaCha20Poly1305::new(&encryptor.dk.encrypt());
             let tag = cipher
                 .encrypt_in_place_detached(&encryptor.header.nonce(), AAD, payload)
                 .expect("data too long");
-            buf[(self.out_len() - TAG_SIZE)..].copy_from_slice(&tag);
+            buf[(encryptor.out_len() - TAG_SIZE)..].copy_from_slice(&tag);
         };
         inner(self, buf.as_mut());
     }
@@ -221,7 +221,7 @@ impl<'m> Encryptor<'m> {
     /// ```
     #[cfg(feature = "alloc")]
     #[must_use]
-    pub fn encrypt_to_vec(&self) -> Vec<u8> {
+    pub fn encrypt_to_vec(self) -> Vec<u8> {
         let mut buf = vec![u8::default(); self.out_len()];
         self.encrypt(&mut buf);
         buf
@@ -276,7 +276,7 @@ impl<'m> Encryptor<'m> {
 /// [OWASP Password Storage Cheat Sheet]: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html#argon2id
 #[cfg(feature = "alloc")]
 pub fn encrypt(plaintext: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Result<Vec<u8>> {
-    Encryptor::new(&plaintext, passphrase).map(|c| c.encrypt_to_vec())
+    Encryptor::new(&plaintext, passphrase).map(Encryptor::encrypt_to_vec)
 }
 
 /// Encrypts `plaintext` with the specified [`Params`] and into a newly
@@ -310,7 +310,7 @@ pub fn encrypt_with_params(
     passphrase: impl AsRef<[u8]>,
     params: Params,
 ) -> Result<Vec<u8>> {
-    Encryptor::with_params(&plaintext, passphrase, params).map(|c| c.encrypt_to_vec())
+    Encryptor::with_params(&plaintext, passphrase, params).map(Encryptor::encrypt_to_vec)
 }
 
 /// Encrypts `plaintext` with the specified [`Algorithm`], [`Version`] and
@@ -346,5 +346,5 @@ pub fn encrypt_with_context(
     params: Params,
 ) -> Result<Vec<u8>> {
     Encryptor::with_context(&plaintext, passphrase, argon2_type, argon2_version, params)
-        .map(|c| c.encrypt_to_vec())
+        .map(Encryptor::encrypt_to_vec)
 }
