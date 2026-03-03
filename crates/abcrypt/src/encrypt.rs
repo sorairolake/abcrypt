@@ -198,7 +198,7 @@ impl<'m> Encryptor<'m> {
             let cipher = XChaCha20Poly1305::new(&encryptor.dk.encrypt());
             let tag = cipher
                 .encrypt_in_place_detached(&encryptor.header.nonce(), AAD, payload)
-                .expect("data too long");
+                .unwrap();
             buf[(encryptor.out_len() - TAG_SIZE)..].copy_from_slice(&tag);
         };
         inner(self, buf.as_mut());

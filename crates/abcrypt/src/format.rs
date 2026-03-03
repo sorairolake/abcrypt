@@ -162,39 +162,15 @@ impl Header {
         if version != Version::V1 {
             return Err(Error::UnsupportedVersion(version.into()));
         }
-        let argon2_type = u32::from_le_bytes(
-            data[8..12]
-                .try_into()
-                .expect("size of the Argon2 type should be 4 bytes"),
-        )
-        .try_into()?;
-        let argon2_version = u32::from_le_bytes(
-            data[12..16]
-                .try_into()
-                .expect("size of the Argon2 version should be 4 bytes"),
-        )
-        .try_into()?;
-        let memory_cost = u32::from_le_bytes(
-            data[16..20]
-                .try_into()
-                .expect("size of `memoryCost` should be 4 bytes"),
-        );
-        let time_cost = u32::from_le_bytes(
-            data[20..24]
-                .try_into()
-                .expect("size of `timeCost` should be 4 bytes"),
-        );
-        let parallelism = u32::from_le_bytes(
-            data[24..28]
-                .try_into()
-                .expect("size of `parallelism` should be 4 bytes"),
-        );
+        let argon2_type = u32::from_le_bytes(data[8..12].try_into().unwrap()).try_into()?;
+        let argon2_version = u32::from_le_bytes(data[12..16].try_into().unwrap()).try_into()?;
+        let memory_cost = u32::from_le_bytes(data[16..20].try_into().unwrap());
+        let time_cost = u32::from_le_bytes(data[20..24].try_into().unwrap());
+        let parallelism = u32::from_le_bytes(data[24..28].try_into().unwrap());
         let params = argon2::Params::new(memory_cost, time_cost, parallelism, None)
             .map(Params::from)
             .map_err(Error::InvalidArgon2Params)?;
-        let salt = data[28..60]
-            .try_into()
-            .expect("size of salt should be 32 bytes");
+        let salt = data[28..60].try_into().unwrap();
         let nonce = *XNonce::from_slice(&data[60..84]);
         let mac = Blake2bMac512Output::default();
         Ok(Self {

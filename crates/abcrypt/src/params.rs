@@ -103,6 +103,7 @@ impl Params {
     }
 }
 
+#[expect(clippy::fallible_impl_from)]
 impl From<Params> for argon2::Params {
     fn from(params: Params) -> Self {
         Self::new(
@@ -111,7 +112,7 @@ impl From<Params> for argon2::Params {
             params.parallelism(),
             None,
         )
-        .expect("`Params` should be valid as `argon2::Params`")
+        .unwrap()
     }
 }
 

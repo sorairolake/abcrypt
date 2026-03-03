@@ -61,8 +61,7 @@ impl ErrorCode {
     /// Behavior is undefined if `buf` and `buf_len` violates the safety
     /// conditions of `slice::from_raw_parts`.
     unsafe fn error_message(self, buf: Option<NonNull<u8>>, buf_len: usize) -> Self {
-        let message = CString::new(self.to_string())
-            .expect("error message should not contain the null character");
+        let message = CString::new(self.to_string()).unwrap();
         let message = message.as_bytes_with_nul();
         let Some(buf) = buf else { return Self::Error };
         // SAFETY: just checked that `buf` is not a null pointer.
@@ -74,7 +73,7 @@ impl ErrorCode {
     /// Returns the number of output bytes of the error message.
     fn error_message_out_len(self) -> usize {
         CString::new(self.to_string())
-            .expect("error message should not contain the null character")
+            .unwrap()
             .as_bytes_with_nul()
             .len()
     }
