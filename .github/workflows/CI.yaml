@@ -368,7 +368,7 @@ jobs:
           pip install meson ninja
           meson -v
       - name: Setup just
-        uses: extractions/setup-just@v3
+        uses: extractions/setup-just@v4.0.0
       - name: Cache build artifacts
         uses: Swatinem/rust-cache@v2.8.2
       - name: Build examples for the C API
