@@ -53,7 +53,7 @@ jobs:
           asciidoctor-pdf -V
           asciidoctor-epub3 -V
       - name: Setup just
-        uses: extractions/setup-just@v3
+        uses: extractions/setup-just@v4.0.0
       - name: Build a book
         run: just build-book
       - name: Minify a book
