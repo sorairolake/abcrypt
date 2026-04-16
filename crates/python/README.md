@@ -23,6 +23,10 @@ To install this library:
 pip install abcrypt-py
 ```
 
+## Examples
+
+Please see the [examples] directory for examples of using this library.
+
 ## Minimum supported Rust version
 
 The minimum supported Rust version (MSRV) of this library is v1.88.0.
@@ -70,6 +74,7 @@ licensing information.
 [pypi-python-version-badge]: https://img.shields.io/pypi/pyversions/abcrypt-py?style=for-the-badge&logo=python
 [license-badge]: https://img.shields.io/pypi/l/abcrypt-py?style=for-the-badge
 [`abcrypt`]: https://crates.io/crates/abcrypt
+[examples]: examples
 [uv]: https://docs.astral.sh/uv/
 [CHANGELOG.adoc]: https://github.com/sorairolake/abcrypt/blob/develop/crates/python/CHANGELOG.adoc
 [CONTRIBUTING.adoc]: https://github.com/sorairolake/abcrypt/blob/develop/CONTRIBUTING.adoc

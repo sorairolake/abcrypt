@@ -52,6 +52,10 @@ This supports `no_std` mode. Disables the `default` feature to enable this.
 
 See the [documentation][docs-url] for more details.
 
+## Examples
+
+Please see the [examples] directory for examples of using this library.
+
 ## Minimum supported Rust version
 
 The minimum supported Rust version (MSRV) of this library is v1.88.0.
@@ -93,6 +97,7 @@ licensing information.
 [docs-url]: https://docs.rs/abcrypt
 [license-badge]: https://img.shields.io/crates/l/abcrypt?style=for-the-badge
 [abcrypt encrypted data format]: ../../docs/spec/FORMAT.adoc
+[examples]: examples
 [CHANGELOG.adoc]: CHANGELOG.adoc
 [CONTRIBUTING.adoc]: ../../CONTRIBUTING.adoc
 [AUTHORS.adoc]: ../../AUTHORS.adoc
