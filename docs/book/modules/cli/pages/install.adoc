@@ -3,7 +3,10 @@
 // SPDX-License-Identifier: CC-BY-4.0
 
 = Installation
+:repology-url: https://repology.org
 :environment-variables-url: https://doc.rust-lang.org/cargo/reference/environment-variables.html#configuration-environment-variables
+:repology-badge: {repology-url}/badge/vertical-allrepos/abcrypt-cli.svg?columns=3
+:repology-versions: {repology-url}/project/abcrypt-cli/versions
 :release-page-url: https://github.com/sorairolake/abcrypt/releases
 
 == From source
@@ -15,6 +18,10 @@ cargo install abcrypt-cli
 
 If you want to enable optimizations such as LTO, set them using
 {environment-variables-url}[environment variables].
+
+== Via a package manager
+
+image::{repology-badge}[Packaging status,link={repology-versions}]
 
 == From binaries
 

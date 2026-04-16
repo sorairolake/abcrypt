@@ -27,6 +27,10 @@ cargo install abcrypt-cli
 If you want to enable optimizations such as LTO, set them using
 [environment variables].
 
+### Via a package manager
+
+[![Packaging status][repology-badge]][repology-versions]
+
 ### From binaries
 
 The [release page] contains pre-built binaries for Linux, macOS and Windows.
@@ -149,6 +153,8 @@ licensing information.
 [license-badge]: https://img.shields.io/crates/l/abcrypt-cli?style=for-the-badge
 [abcrypt encrypted data format]: ../../docs/spec/FORMAT.adoc
 [environment variables]: https://doc.rust-lang.org/cargo/reference/environment-variables.html#configuration-environment-variables
+[repology-badge]: https://repology.org/badge/vertical-allrepos/abcrypt-cli.svg?columns=3
+[repology-versions]: https://repology.org/project/abcrypt-cli/versions
 [release page]: https://github.com/sorairolake/abcrypt/releases
 [BUILD.adoc]: BUILD.adoc
 [`abcrypt(1)`]: ../../docs/man/man1/abcrypt.1.adoc
