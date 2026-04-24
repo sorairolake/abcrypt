@@ -20,7 +20,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
       - name: Check Semantic Versioning
-        uses: obi1kenobi/cargo-semver-checks-action@v2.8
+        uses: obi1kenobi/cargo-semver-checks-action@v2.9
         with:
           package: abcrypt
           feature-group: all-features
