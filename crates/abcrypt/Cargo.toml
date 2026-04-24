@@ -42,7 +42,7 @@ default-features = false
 features = ["getrandom"]
 
 [dependencies.rand]
-version = "0.8.5"
+version = "0.8.6"
 default-features = false
 features = ["getrandom", "std_rng"]
 
