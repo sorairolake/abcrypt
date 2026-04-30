@@ -14,7 +14,7 @@ repository = "https://github.com/sorairolake/abcrypt"
 
 [workspace.dependencies]
 anyhow = "1.0.102"
-clap = { version = "4.6.0", features = ["derive"] }
+clap = { version = "4.6.1", features = ["derive"] }
 
 [workspace.dependencies.dialoguer]
 version = "0.12.0"
