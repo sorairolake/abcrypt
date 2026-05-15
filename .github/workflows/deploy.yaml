@@ -38,7 +38,7 @@ jobs:
           npm ci
           npx antora -v
       - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@v1.306.0
         with:
           ruby-version: 4.0
       - name: Setup Python
