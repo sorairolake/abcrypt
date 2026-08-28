@@ -60,3 +60,6 @@ select = ["ALL"]
 [tool.ruff.format]
 docstring-code-format = true
 line-ending = "lf"
+
+[tool.ty.rules]
+deprecated = "ignore"
