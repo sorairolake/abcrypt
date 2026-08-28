@@ -392,7 +392,7 @@ jobs:
         with:
           toolchain: stable
       - name: Setup Deno
-        uses: denoland/setup-deno@v2.0.4
+        uses: denoland/setup-deno@v2.0.5
         with:
           deno-version: v2.x
       - name: Install wasm-pack
