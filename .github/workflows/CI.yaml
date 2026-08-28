@@ -53,7 +53,7 @@ jobs:
           toolchain: ${{ matrix.toolchain }}
           targets: ${{ matrix.target }}
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.9.1
+        uses: Swatinem/rust-cache@v2.9.2
         with:
           key: ${{ matrix.target }}
       - name: Check packages
@@ -109,7 +109,7 @@ jobs:
           toolchain: ${{ matrix.toolchain }}
           targets: ${{ matrix.target }}
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.9.1
+        uses: Swatinem/rust-cache@v2.9.2
         with:
           key: ${{ matrix.target }}
       - name: Run tests
@@ -156,7 +156,7 @@ jobs:
         with:
           node-version: 24
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.9.1
+        uses: Swatinem/rust-cache@v2.9.2
       - name: Check a package
         run: wasm-pack build -s sorairolake -t nodejs --dev crates/wasm
 
@@ -189,7 +189,7 @@ jobs:
         with:
           node-version: 24
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.9.1
+        uses: Swatinem/rust-cache@v2.9.2
       - name: Run tests
         run: wasm-pack test --node crates/wasm
 
@@ -260,7 +260,7 @@ jobs:
           toolchain: nightly
           components: rustfmt
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.9.1
+        uses: Swatinem/rust-cache@v2.9.2
       - name: Run formatter in check mode
         run: cargo fmt --check
 
@@ -276,7 +276,7 @@ jobs:
           toolchain: nightly
           components: clippy
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.9.1
+        uses: Swatinem/rust-cache@v2.9.2
       - name: Run linter
         run: cargo clippy -- -D warnings
       - name: Run linter (all features)
@@ -295,7 +295,7 @@ jobs:
         with:
           toolchain: nightly
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.9.1
+        uses: Swatinem/rust-cache@v2.9.2
       - name: Run linter
         env:
           RUSTDOCFLAGS: "--cfg docsrs -D warnings"
@@ -312,7 +312,7 @@ jobs:
         with:
           toolchain: nightly
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.9.1
+        uses: Swatinem/rust-cache@v2.9.2
       - name: Run benchmarks
         run: cargo bench -p abcrypt
 
@@ -371,7 +371,7 @@ jobs:
       - name: Setup just
         uses: extractions/setup-just@v4.0.0
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.9.1
+        uses: Swatinem/rust-cache@v2.9.2
       - name: Build examples for the C API
         run: just build-capi-examples
       - name: Run formatter in check mode
@@ -400,7 +400,7 @@ jobs:
         with:
           version: "latest"
       - name: Cache build artifacts
-        uses: Swatinem/rust-cache@v2.9.1
+        uses: Swatinem/rust-cache@v2.9.2
       - name: Run formatter in check mode
         run: deno fmt --check deno.jsonc examples/*.ts
         working-directory: crates/wasm
