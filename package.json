@@ -17,7 +17,7 @@
     "@antora/cli": "3.1.14",
     "@antora/collector-extension": "1.0.3",
     "@antora/lunr-extension": "1.0.0-alpha.13",
-    "@antora/site-generator": "3.1.14",
+    "@antora/site-generator": "3.1.15",
     "@djencks/asciidoctor-mathjax": "0.0.9"
   }
 }
