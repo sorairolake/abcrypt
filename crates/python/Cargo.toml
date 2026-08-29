@@ -22,7 +22,7 @@ name = "abcrypt_py"
 
 [dependencies]
 abcrypt = { path = "../abcrypt", version = "0.5.0" }
-pyo3 = "0.28.3"
+pyo3 = "0.29.2"
 
 [lints]
 workspace = true
