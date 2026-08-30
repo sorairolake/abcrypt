@@ -33,8 +33,8 @@ impl Argon2 {
     /// # Examples
     ///
     /// ```
-    /// # use abcrypt::Argon2;
-    /// #
+    /// use abcrypt::Argon2;
+    ///
     /// let ciphertext = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
     ///
     /// assert!(Argon2::new(ciphertext).is_ok());
@@ -54,8 +54,8 @@ impl Argon2 {
     /// # Examples
     ///
     /// ```
-    /// # use abcrypt::{Argon2, argon2::Algorithm};
-    /// #
+    /// use abcrypt::{Argon2, argon2::Algorithm};
+    ///
     /// let ciphertext = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
     ///
     /// let argon2 = Argon2::new(ciphertext).unwrap();
@@ -71,8 +71,8 @@ impl Argon2 {
     /// # Examples
     ///
     /// ```
-    /// # use abcrypt::{Argon2, argon2::Version};
-    /// #
+    /// use abcrypt::{Argon2, argon2::Version};
+    ///
     /// let ciphertext = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
     ///
     /// let argon2 = Argon2::new(ciphertext).unwrap();
