@@ -11,6 +11,13 @@ updates:
     cooldown:
       default-days: 7
 
+  - package-ecosystem: "deno"
+    directory: "/crates/wasm"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
+
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
