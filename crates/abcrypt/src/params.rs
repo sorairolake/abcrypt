@@ -37,8 +37,8 @@ impl Params {
     /// # Examples
     ///
     /// ```
-    /// # use abcrypt::Params;
-    /// #
+    /// use abcrypt::Params;
+    ///
     /// let ciphertext = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
     ///
     /// assert!(Params::new(ciphertext).is_ok());
@@ -56,8 +56,8 @@ impl Params {
     /// # Examples
     ///
     /// ```
-    /// # use abcrypt::Params;
-    /// #
+    /// use abcrypt::Params;
+    ///
     /// let ciphertext = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
     ///
     /// let params = Params::new(ciphertext).unwrap();
@@ -73,8 +73,8 @@ impl Params {
     /// # Examples
     ///
     /// ```
-    /// # use abcrypt::Params;
-    /// #
+    /// use abcrypt::Params;
+    ///
     /// let ciphertext = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
     ///
     /// let params = Params::new(ciphertext).unwrap();
@@ -90,8 +90,8 @@ impl Params {
     /// # Examples
     ///
     /// ```
-    /// # use abcrypt::Params;
-    /// #
+    /// use abcrypt::Params;
+    ///
     /// let ciphertext = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
     ///
     /// let params = Params::new(ciphertext).unwrap();
