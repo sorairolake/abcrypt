@@ -125,7 +125,9 @@ impl<'m> Encryptor<'m> {
             let mut header = Header::new(argon2_type, argon2_version, params);
 
             // The derived key size is 96 bytes. The first 256 bits are for
-            // XChaCha20-Poly1305 key, and the last 512 bits are for BLAKE2b-512-MAC key.
+            // XChaCha20-Poly1305 key, and the last 512 bits are for
+            // BLAKE2b-512-MAC key.
+
             let mut dk = [u8::default(); DerivedKey::SIZE];
             let argon2 = Argon2::new(
                 header.argon2_type().into(),
