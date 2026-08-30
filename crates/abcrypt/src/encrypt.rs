@@ -188,6 +188,7 @@ impl<'m> Encryptor<'m> {
     /// let cipher = Encryptor::with_params(data, passphrase, params).unwrap();
     /// let mut buf = [u8::default(); 178];
     /// cipher.encrypt(&mut buf);
+    /// assert_ne!(buf.as_slice(), data);
     /// ```
     pub fn encrypt<B: AsMut<[u8]> + ?Sized>(self, buf: &mut B) {
         let inner = |encryptor: Self, buf: &mut [u8]| {
@@ -270,6 +271,7 @@ impl<'m> Encryptor<'m> {
 /// let passphrase = "passphrase";
 ///
 /// let ciphertext = abcrypt::encrypt(data, passphrase).unwrap();
+/// assert_ne!(ciphertext, data);
 /// ```
 ///
 /// [OWASP Password Storage Cheat Sheet]: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html#argon2id
@@ -301,6 +303,7 @@ pub fn encrypt(plaintext: impl AsRef<[u8]>, passphrase: impl AsRef<[u8]>) -> Res
 ///
 /// let params = Params::new(32, 3, 4, None).unwrap();
 /// let ciphertext = abcrypt::encrypt_with_params(data, passphrase, params).unwrap();
+/// assert_ne!(ciphertext, data);
 /// ```
 #[cfg(feature = "alloc")]
 pub fn encrypt_with_params(
@@ -333,6 +336,7 @@ pub fn encrypt_with_params(
 /// let ciphertext =
 ///     abcrypt::encrypt_with_context(data, passphrase, Algorithm::Argon2i, Version::V0x10, params)
 ///         .unwrap();
+/// assert_ne!(ciphertext, data);
 /// ```
 #[cfg(feature = "alloc")]
 pub fn encrypt_with_context(
