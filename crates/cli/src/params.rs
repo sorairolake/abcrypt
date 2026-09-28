@@ -13,7 +13,8 @@ pub fn get(data: &[u8]) -> anyhow::Result<Params> {
 /// Prints the encryption parameters.
 fn display(memory_cost: u32, time_cost: u32, parallelism: u32) {
     eprint!(
-        "Parameters used: memoryCost = {memory_cost}; timeCost = {time_cost}; parallelism = {parallelism};"
+        "Parameters used: memoryCost = {memory_cost}; timeCost = {time_cost}; parallelism = \
+         {parallelism};"
     );
 }
 
