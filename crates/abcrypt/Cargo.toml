@@ -34,7 +34,6 @@ required-features = ["serde", "std"]
 [dependencies]
 argon2 = { version = "0.5.3", default-features = false }
 blake2 = { version = "0.10.6", default-features = false }
-serde = { version = "1.0.228", default-features = false, features = ["derive"], optional = true }
 
 [dependencies.chacha20poly1305]
 version = "0.10.1"
@@ -45,6 +44,12 @@ features = ["getrandom"]
 version = "0.8.6"
 default-features = false
 features = ["getrandom", "std_rng"]
+
+[dependencies.serde]
+version = "1.0.228"
+default-features = false
+features = ["derive"]
+optional = true
 
 [dev-dependencies]
 anyhow.workspace = true
