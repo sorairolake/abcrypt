@@ -1,11 +1,11 @@
 {
   "version": "5",
   "specifiers": {
-    "jsr:@cliffy/command@1.3.0": "1.3.0",
-    "jsr:@cliffy/flags@1.3.0": "1.3.0",
-    "jsr:@cliffy/internal@1.3.0": "1.3.0",
-    "jsr:@cliffy/table@1.3.0": "1.3.0",
-    "jsr:@cliffy/upgrade@1.3.0": "1.3.0",
+    "jsr:@cliffy/command@1.3.1": "1.3.1",
+    "jsr:@cliffy/flags@^1.3.1": "1.3.1",
+    "jsr:@cliffy/internal@^1.3.1": "1.3.1",
+    "jsr:@cliffy/table@^1.3.1": "1.3.1",
+    "jsr:@cliffy/upgrade@^1.3.1": "1.3.1",
     "jsr:@std/bytes@^1.0.6": "1.0.6",
     "jsr:@std/cli@1.0.32": "1.0.32",
     "jsr:@std/fmt@^1.0.10": "1.0.10",
@@ -18,8 +18,8 @@
     "jsr:@std/text@^1.0.19": "1.1.0"
   },
   "jsr": {
-    "@cliffy/command@1.3.0": {
-      "integrity": "b460075f8165750ccdf6829cbae08e12f3c552cd4b0eeb4437ac5d844c87b2d0",
+    "@cliffy/command@1.3.1": {
+      "integrity": "366ab6d5f68abe3ded22c09f65c151cfba600fa26690a4763f390c2f1e07ca4d",
       "dependencies": [
         "jsr:@cliffy/flags",
         "jsr:@cliffy/internal",
@@ -29,24 +29,24 @@
         "jsr:@std/text"
       ]
     },
-    "@cliffy/flags@1.3.0": {
-      "integrity": "6f2c102d683b121595961845e83f41bb52dd59a958e6bfa7076cd1dfc46bf71e",
+    "@cliffy/flags@1.3.1": {
+      "integrity": "12f38efa0c8c2531c09f1b9a70bae4c4dcfbe01793bac11ac8ac92dddedaa294",
       "dependencies": [
         "jsr:@cliffy/internal",
         "jsr:@std/text"
       ]
     },
-    "@cliffy/internal@1.3.0": {
-      "integrity": "96d00e7087f1b4e3dda701c1c2ebf378fbda2d8006f48b88000733a5d9e02291"
+    "@cliffy/internal@1.3.1": {
+      "integrity": "b309718fbfb8a226e74bc06f151d4459c2bdfa7ce68482decca75106bbf28816"
     },
-    "@cliffy/table@1.3.0": {
-      "integrity": "a7aed9607efe6f37e8cbe71862a70bee76caf4df8282efe4ea75347c407f3731",
+    "@cliffy/table@1.3.1": {
+      "integrity": "483c43936b9be148cbedd8bd39e5c0d098c9c87c4667fe2ad9b8acff77f79b8b",
       "dependencies": [
         "jsr:@std/fmt"
       ]
     },
-    "@cliffy/upgrade@1.3.0": {
-      "integrity": "6f14c7bd13bc4c94065225f8819b748036a6fa0513da5fe21b38d387535734e7",
+    "@cliffy/upgrade@1.3.1": {
+      "integrity": "9407061b092de52533d291e2488df24ec0718e28e024ac208603c0e16ae6407a",
       "dependencies": [
         "jsr:@cliffy/internal",
         "jsr:@cliffy/table",
@@ -105,7 +105,7 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@cliffy/command@1.3.0",
+      "jsr:@cliffy/command@1.3.1",
       "jsr:@std/cli@1.0.32",
       "jsr:@std/io@0.225.3"
     ]
