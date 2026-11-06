@@ -20,7 +20,7 @@ pub use crate::{
     params::Params,
 };
 
-#[allow(clippy::missing_const_for_fn)]
+#[expect(clippy::missing_const_for_fn)]
 /// Returns the number of bytes of the header.
 #[must_use]
 #[wasm_bindgen(js_name = headerSize)]
@@ -28,7 +28,7 @@ pub fn header_size() -> usize {
     abcrypt::HEADER_SIZE
 }
 
-#[allow(clippy::missing_const_for_fn)]
+#[expect(clippy::missing_const_for_fn)]
 /// Returns the number of bytes of the MAC (authentication tag) of the
 /// ciphertext.
 #[must_use]
