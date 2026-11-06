@@ -33,7 +33,7 @@ impl Params {
             .map_err(JsError::from)
     }
 
-    #[allow(clippy::missing_const_for_fn)]
+    #[expect(clippy::missing_const_for_fn)]
     /// Gets memory size in KiB.
     #[must_use]
     #[wasm_bindgen(js_name = memoryCost, getter)]
@@ -41,7 +41,7 @@ impl Params {
         self.0.memory_cost()
     }
 
-    #[allow(clippy::missing_const_for_fn)]
+    #[expect(clippy::missing_const_for_fn)]
     /// Gets number of iterations.
     #[must_use]
     #[wasm_bindgen(js_name = timeCost, getter)]
@@ -49,7 +49,7 @@ impl Params {
         self.0.time_cost()
     }
 
-    #[allow(clippy::missing_const_for_fn)]
+    #[expect(clippy::missing_const_for_fn)]
     /// Gets degree of parallelism.
     #[must_use]
     #[wasm_bindgen(getter)]
