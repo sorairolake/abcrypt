@@ -19,6 +19,12 @@ include = ["/LICENSES", "/README.md", "/src"]
 [package.metadata.docs.rs]
 all-features = true
 
+[features]
+default = ["std"]
+alloc = ["argon2/alloc"]
+serde = ["dep:serde"]
+std = ["alloc", "argon2/std", "blake2/std", "chacha20poly1305/std"]
+
 [[example]]
 name = "decrypt"
 required-features = ["std"]
@@ -57,12 +63,6 @@ clap.workspace = true
 dialoguer.workspace = true
 serde_json = "1.0.149"
 serde_test = "1.0.177"
-
-[features]
-default = ["std"]
-alloc = ["argon2/alloc"]
-serde = ["dep:serde"]
-std = ["alloc", "argon2/std", "blake2/std", "chacha20poly1305/std"]
 
 [lints]
 workspace = true
