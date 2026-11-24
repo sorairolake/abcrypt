@@ -15,6 +15,10 @@ keywords = ["abcrypt"]
 categories = ["command-line-utilities"]
 include = ["/LICENSES", "/README.md", "/src"]
 
+[features]
+default = ["json"]
+json = ["dep:serde_json"]
+
 [[bin]]
 name = "abcrypt"
 path = "src/main.rs"
@@ -33,10 +37,6 @@ sysexits = "0.13.0"
 [dev-dependencies]
 assert_cmd = "2.2.1"
 predicates = "3.1.4"
-
-[features]
-default = ["json"]
-json = ["dep:serde_json"]
 
 [lints]
 workspace = true
