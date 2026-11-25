@@ -27,10 +27,10 @@ Issues = "https://github.com/sorairolake/abcrypt/issues"
 Repository = "https://github.com/sorairolake/abcrypt"
 
 [dependency-groups]
-dev = ["pytest>=9.0.3", "ruff>=0.15.10", "ty>=0.0.29"]
+dev = ["pytest~=9.2.0", "ruff~=0.17.5", "ty~=0.0.103"]
 
 [build-system]
-requires = ["maturin>=1.4,<2.0"]
+requires = ["maturin~=1.16"]
 build-backend = "maturin"
 
 [tool.maturin]
