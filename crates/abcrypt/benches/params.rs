@@ -13,6 +13,6 @@ use test::Bencher;
 static TEST_DATA_ENC: &[u8] = include_bytes!("../tests/data/v1/argon2id/v0x13/data.txt.abcrypt");
 
 #[bench]
-fn params(b: &mut Bencher) {
+fn new(b: &mut Bencher) {
     b.iter(|| Params::new(TEST_DATA_ENC));
 }
