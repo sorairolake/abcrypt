@@ -76,12 +76,6 @@ enum Version {
     V1,
 }
 
-impl From<Version> for u8 {
-    fn from(version: Version) -> Self {
-        version as Self
-    }
-}
-
 impl TryFrom<u8> for Version {
     type Error = Error;
 
@@ -91,6 +85,12 @@ impl TryFrom<u8> for Version {
             1 => Ok(Self::V1),
             v => Err(Error::UnknownVersion(v)),
         }
+    }
+}
+
+impl From<Version> for u8 {
+    fn from(version: Version) -> Self {
+        version as Self
     }
 }
 
@@ -342,12 +342,6 @@ mod tests {
     }
 
     #[test]
-    fn from_version_to_u8() {
-        assert_eq!(u8::from(Version::V0), 0);
-        assert_eq!(u8::from(Version::V1), 1);
-    }
-
-    #[test]
     fn try_from_u8_to_version() {
         assert_eq!(Version::try_from(0).unwrap(), Version::V0);
         assert_eq!(Version::try_from(1).unwrap(), Version::V1);
@@ -360,6 +354,12 @@ mod tests {
             Version::try_from(u8::MAX).unwrap_err(),
             Error::UnknownVersion(u8::MAX)
         );
+    }
+
+    #[test]
+    fn from_version_to_u8() {
+        assert_eq!(u8::from(Version::V0), 0);
+        assert_eq!(u8::from(Version::V1), 1);
     }
 
     #[test]

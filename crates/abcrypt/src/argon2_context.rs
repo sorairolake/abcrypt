@@ -98,22 +98,6 @@ pub enum Variant {
     Argon2id,
 }
 
-impl From<Variant> for u32 {
-    fn from(variant: Variant) -> Self {
-        variant as Self
-    }
-}
-
-impl From<Variant> for Algorithm {
-    fn from(variant: Variant) -> Self {
-        match variant {
-            Variant::Argon2d => Self::Argon2d,
-            Variant::Argon2i => Self::Argon2i,
-            Variant::Argon2id => Self::Argon2id,
-        }
-    }
-}
-
 impl TryFrom<u32> for Variant {
     type Error = Error;
 
@@ -137,6 +121,22 @@ impl From<Algorithm> for Variant {
     }
 }
 
+impl From<Variant> for u32 {
+    fn from(variant: Variant) -> Self {
+        variant as Self
+    }
+}
+
+impl From<Variant> for Algorithm {
+    fn from(variant: Variant) -> Self {
+        match variant {
+            Variant::Argon2d => Self::Argon2d,
+            Variant::Argon2i => Self::Argon2i,
+            Variant::Argon2id => Self::Argon2id,
+        }
+    }
+}
+
 /// Version of Argon2.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 #[repr(u32)]
@@ -146,21 +146,6 @@ pub enum Version {
 
     /// Version 0x13.
     V0x13 = 0x13,
-}
-
-impl From<Version> for u32 {
-    fn from(version: Version) -> Self {
-        version as Self
-    }
-}
-
-impl From<Version> for argon2::Version {
-    fn from(version: Version) -> Self {
-        match version {
-            Version::V0x10 => Self::V0x10,
-            Version::V0x13 => Self::V0x13,
-        }
-    }
 }
 
 impl TryFrom<u32> for Version {
@@ -184,23 +169,24 @@ impl From<argon2::Version> for Version {
     }
 }
 
+impl From<Version> for u32 {
+    fn from(version: Version) -> Self {
+        version as Self
+    }
+}
+
+impl From<Version> for argon2::Version {
+    fn from(version: Version) -> Self {
+        match version {
+            Version::V0x10 => Self::V0x10,
+            Version::V0x13 => Self::V0x13,
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn from_variant_to_u32() {
-        assert_eq!(u32::from(Variant::Argon2d), 0);
-        assert_eq!(u32::from(Variant::Argon2i), 1);
-        assert_eq!(u32::from(Variant::Argon2id), 2);
-    }
-
-    #[test]
-    fn from_variant_to_algorithm() {
-        assert_eq!(Algorithm::from(Variant::Argon2d), Algorithm::Argon2d);
-        assert_eq!(Algorithm::from(Variant::Argon2i), Algorithm::Argon2i);
-        assert_eq!(Algorithm::from(Variant::Argon2id), Algorithm::Argon2id);
-    }
 
     #[test]
     fn try_from_u32_to_variant() {
@@ -229,21 +215,17 @@ mod tests {
     }
 
     #[test]
-    fn from_version_to_u32() {
-        assert_eq!(u32::from(Version::V0x10), 0x10);
-        assert_eq!(u32::from(Version::V0x13), 0x13);
+    fn from_variant_to_u32() {
+        assert_eq!(u32::from(Variant::Argon2d), 0);
+        assert_eq!(u32::from(Variant::Argon2i), 1);
+        assert_eq!(u32::from(Variant::Argon2id), 2);
     }
 
     #[test]
-    fn from_version_to_argon2_version() {
-        assert_eq!(
-            argon2::Version::from(Version::V0x10),
-            argon2::Version::V0x10
-        );
-        assert_eq!(
-            argon2::Version::from(Version::V0x13),
-            argon2::Version::V0x13
-        );
+    fn from_variant_to_algorithm() {
+        assert_eq!(Algorithm::from(Variant::Argon2d), Algorithm::Argon2d);
+        assert_eq!(Algorithm::from(Variant::Argon2i), Algorithm::Argon2i);
+        assert_eq!(Algorithm::from(Variant::Argon2id), Algorithm::Argon2id);
     }
 
     #[test]
@@ -284,5 +266,23 @@ mod tests {
     fn from_argon2_version_to_version() {
         assert_eq!(Version::from(argon2::Version::V0x10), Version::V0x10);
         assert_eq!(Version::from(argon2::Version::V0x13), Version::V0x13);
+    }
+
+    #[test]
+    fn from_version_to_u32() {
+        assert_eq!(u32::from(Version::V0x10), 0x10);
+        assert_eq!(u32::from(Version::V0x13), 0x13);
+    }
+
+    #[test]
+    fn from_version_to_argon2_version() {
+        assert_eq!(
+            argon2::Version::from(Version::V0x10),
+            argon2::Version::V0x10
+        );
+        assert_eq!(
+            argon2::Version::from(Version::V0x13),
+            argon2::Version::V0x13
+        );
     }
 }

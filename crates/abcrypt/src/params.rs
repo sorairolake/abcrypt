@@ -103,6 +103,18 @@ impl Params {
     }
 }
 
+impl From<argon2::Params> for Params {
+    fn from(params: argon2::Params) -> Self {
+        let (memory_cost, time_cost, parallelism) =
+            (params.m_cost(), params.t_cost(), params.p_cost());
+        Self {
+            memory_cost,
+            time_cost,
+            parallelism,
+        }
+    }
+}
+
 #[expect(clippy::fallible_impl_from)]
 impl From<Params> for argon2::Params {
     fn from(params: Params) -> Self {
@@ -113,17 +125,5 @@ impl From<Params> for argon2::Params {
             None,
         )
         .unwrap()
-    }
-}
-
-impl From<argon2::Params> for Params {
-    fn from(params: argon2::Params) -> Self {
-        let (memory_cost, time_cost, parallelism) =
-            (params.m_cost(), params.t_cost(), params.p_cost());
-        Self {
-            memory_cost,
-            time_cost,
-            parallelism,
-        }
     }
 }
