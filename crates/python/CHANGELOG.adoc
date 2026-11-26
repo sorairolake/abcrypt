@@ -19,6 +19,7 @@ project adheres to https://semver.org/[Semantic Versioning].
 === Changed
 
 * Bump MSRV to 1.88.0 ({pull-request-url}/886[#886])
+* Bump `requires-python` to `>=3.11` ({pull-request-url}/1211[#1211])
 
 == {compare-url}/abcrypt-py-v0.2.0\...abcrypt-py-v0.3.0[0.3.0] - 2025-07-28
 
