@@ -31,7 +31,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v7
         with:
-          node-version: 24
+          node-version: 26
           cache: "npm"
       - name: Install dependencies
         run: |
@@ -44,7 +44,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v7
         with:
-          python-version: "3.14"
+          python-version: "3.15"
       - name: Install Asciidoctor
         run: |
           sudo apt-get update
